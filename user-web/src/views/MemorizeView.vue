@@ -80,7 +80,6 @@
               <section class="qx-memorize-answer-card">
                 <div class="qx-memorize-answer-head">
                   <span>正确答案</span>
-                  <strong>{{ currentAnswerSummary }}</strong>
                 </div>
                 <PythonMarkdown class="qx-memorize-answer-body" :markdown="answerDisplay(currentQuestion)" />
               </section>
@@ -171,12 +170,6 @@ const currentQuestionTypeBadge = computed(() => {
   const label = questionTypeText(currentQuestion.value);
   if (label.endsWith('题') || label === '题目') return label;
   return `${label}题`;
-});
-const currentAnswerSummary = computed(() => {
-  const question = currentQuestion.value;
-  if (!question) return '-';
-  if (question.type === 'fill' || question.type === 'python') return '见下方答案';
-  return answerKeySummary(question, officialAnswer(question));
 });
 const isMarkdownStem = computed(() => {
   const question = currentQuestion.value;
@@ -308,19 +301,4 @@ function answerDisplay(question: any) {
     .join('\n');
 }
 
-function answerKeySummary(question: any, values: string[]) {
-  if (!question || !values.length) return '-';
-  const options = normalizeOptions(question.options || []);
-  return values
-    .map((item) => {
-      const option = options.find((candidate) => {
-        if (question.type === 'judge') return judgeAnswerKey(candidate.key) === judgeAnswerKey(item) || judgeAnswerKey(candidate.keyLabel) === judgeAnswerKey(item);
-        return candidate.key === item || candidate.keyLabel === item;
-      });
-      if (option) return optionKeyDisplay(option, question.type);
-      if (question.type === 'judge') return judgeAnswerKey(item);
-      return item;
-    })
-    .join('、');
-}
 </script>

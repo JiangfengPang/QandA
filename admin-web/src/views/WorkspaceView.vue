@@ -247,7 +247,7 @@
                 <el-table class="question-table" :data="questions" stripe border>
                   <el-table-column type="index" width="56" />
                   <el-table-column prop="stem" label="题干" min-width="340" show-overflow-tooltip />
-                  <el-table-column label="类型" width="100"><template #default="{ row }">{{ questionTypeLabel(row.type) }}</template></el-table-column>
+                  <el-table-column label="类型" width="120"><template #default="{ row }">{{ questionTypeLabel(row) }}</template></el-table-column>
                   <el-table-column label="答案" width="130">
                     <template #default="{ row }">{{ questionAnswerSummary(row) }}</template>
                   </el-table-column>
@@ -307,6 +307,14 @@
             <el-option label="判断" value="judge" />
             <el-option label="Python题" value="python" />
           </el-select>
+        </el-form-item>
+        <el-form-item v-if="questionForm.type === 'python'" label="题型标签">
+          <el-input
+            v-model="questionForm.typeLabel"
+            maxlength="40"
+            show-word-limit
+            placeholder="默认：Python题；例如：Python基础、编程题"
+          />
         </el-form-item>
         <el-form-item label="题干">
           <el-input v-model="questionForm.stem" type="textarea" :rows="4" placeholder="请输入题目内容，Python题可使用 Markdown" />
@@ -438,7 +446,7 @@ const questionKeyword = ref('');
 const questionType = ref('');
 const questionMeta = reactive({ page: 1, pageSize: 20, total: 0 });
 const questionDialog = ref(false);
-const questionForm = reactive<any>({ id: '', type: 'single', stem: '', score: 0, answer: [], explanation: '', options: [], pythonAnswerMarkdown: '' });
+const questionForm = reactive<any>({ id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], explanation: '', options: [], pythonAnswerMarkdown: '' });
 const renderedPythonAnswer = computed(() => renderMarkdown(questionForm.pythonAnswerMarkdown || ''));
 const status = ref<any>({});
 
@@ -906,7 +914,10 @@ async function handleMarkdownCopyClick(event: MouseEvent) {
   }
 }
 
-function questionTypeLabel(type: string) {
+function questionTypeLabel(questionOrType: any) {
+  const type = typeof questionOrType === 'object' && questionOrType !== null ? questionOrType.type : questionOrType;
+  const customLabel = typeof questionOrType === 'object' && questionOrType !== null ? String(questionOrType.typeLabel || '').trim() : '';
+  if (customLabel) return customLabel;
   return ({ single: '单选', multiple: '多选', judge: '判断', fill: '填空', python: 'Python题' } as Record<string, string>)[type] || type || '题目';
 }
 
@@ -921,6 +932,12 @@ function resetPythonQuestionAnswer() {
   }
 }
 
+function normalizedQuestionTypeLabel() {
+  if (questionForm.type !== 'python') return '';
+  const label = String(questionForm.typeLabel || '').trim();
+  return label === 'Python题' ? '' : label;
+}
+
 async function loadQuestions() {
   if (!selectedBank.value) return;
   const qs = new URLSearchParams({ page: String(questionMeta.page), pageSize: String(questionMeta.pageSize), bankId: selectedBank.value.id });
@@ -933,7 +950,7 @@ async function loadQuestions() {
 
 function openQuestionCreate() {
   if (!selectedBank.value) return ElMessage.warning('请先选择题库');
-  Object.assign(questionForm, { id: '', type: 'single', stem: '', score: 0, answer: [], explanation: '', options: [{ label: 'A', content: '' }, { label: 'B', content: '' }], pythonAnswerMarkdown: '' });
+  Object.assign(questionForm, { id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], explanation: '', options: [{ label: 'A', content: '' }, { label: 'B', content: '' }], pythonAnswerMarkdown: '' });
   questionDialog.value = true;
 }
 
@@ -942,6 +959,7 @@ function openQuestionEdit(row: any) {
   Object.assign(questionForm, {
     id: row.id,
     type: row.type,
+    typeLabel: row.typeLabel || '',
     stem: row.stem,
     score: row.score,
     answer: rowAnswer,
@@ -987,6 +1005,7 @@ async function saveQuestion() {
     ? {
         bankId: selectedBank.value.id,
         type: questionForm.type,
+        typeLabel: normalizedQuestionTypeLabel(),
         stem: questionForm.stem,
         score: Number(questionForm.score || 0),
         answer: [questionForm.pythonAnswerMarkdown],
@@ -996,6 +1015,7 @@ async function saveQuestion() {
     : {
         bankId: selectedBank.value.id,
         type: questionForm.type,
+        typeLabel: '',
         stem: questionForm.stem,
         score: Number(questionForm.score || 0),
         answer: questionForm.answer,
@@ -1044,7 +1064,12 @@ async function loadStatus() {
 
 watch(() => questionForm.type, (type) => {
   if (type === 'judge') applyJudgeQuestionOptions();
-  if (type === 'python') resetPythonQuestionAnswer();
+  if (type === 'python') {
+    resetPythonQuestionAnswer();
+    if (!String(questionForm.typeLabel || '').trim()) questionForm.typeLabel = 'Python题';
+  } else {
+    questionForm.typeLabel = '';
+  }
   if (type === 'single' || type === 'multiple') ensureQuestionChoiceOptions();
 });
 

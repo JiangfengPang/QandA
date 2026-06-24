@@ -452,6 +452,7 @@ function normalizeQuestionInput<T extends {
 }
 
 const questionTypeSchema = z.enum(['single', 'multiple', 'judge', 'python']);
+const questionTypeLabelSchema = z.string().trim().max(40, '题型标签不能超过 40 个字符').optional();
 const questionOptionSchema = z.object({
   label: z.string().trim().min(1, '选项标识不能为空').max(20, '选项标识不能超过 20 个字符'),
   content: z.string().max(100000, '选项内容过长')
@@ -478,7 +479,7 @@ function validateQuestionDefinition(input: {
 
 router.post('/questions', asyncHandler(async (req, res) => {
   const schema = z.object({
-    bankId: z.string().trim().min(1), type: questionTypeSchema.default('single'), stem: z.string().trim().min(1),
+    bankId: z.string().trim().min(1), type: questionTypeSchema.default('single'), typeLabel: questionTypeLabelSchema, stem: z.string().trim().min(1),
     score: z.number().min(0).max(10000).optional(), difficulty: z.string().max(30).optional(), explanation: z.string().max(500000).optional(),
     answer: answerListSchema.default([]), tags: z.array(z.string().max(100)).max(50).default([]),
     options: z.array(questionOptionSchema).max(100).default([])
@@ -489,6 +490,7 @@ router.post('/questions', asyncHandler(async (req, res) => {
     data: {
       bankId: input.bankId,
       type: input.type,
+      typeLabel: input.type === 'python' ? input.typeLabel || null : null,
       stem: input.stem,
       score: input.score ?? 0,
       difficulty: input.difficulty,
@@ -504,7 +506,7 @@ router.post('/questions', asyncHandler(async (req, res) => {
 
 router.put('/questions/:id', asyncHandler(async (req, res) => {
   const schema = z.object({
-    bankId: z.string().trim().min(1).optional(), type: questionTypeSchema.optional(), stem: z.string().trim().min(1).optional(),
+    bankId: z.string().trim().min(1).optional(), type: questionTypeSchema.optional(), typeLabel: questionTypeLabelSchema, stem: z.string().trim().min(1).optional(),
     score: z.number().min(0).max(10000).optional(), difficulty: z.string().max(30).optional(),
     explanation: z.string().max(500000).optional(), isActive: z.boolean().optional(),
     answer: answerListSchema.optional(), tags: z.array(z.string().max(100)).max(50).optional(),
@@ -526,12 +528,18 @@ router.put('/questions/:id', asyncHandler(async (req, res) => {
     });
     validateQuestionDefinition(merged);
 
-    const { options, answer, tags, ...rest } = parsed;
+    const { options, answer, tags, typeLabel, ...rest } = parsed;
+    const nextTypeLabel = typeof typeLabel !== 'undefined'
+      ? typeLabel || null
+      : parsed.type && merged.type !== 'python'
+        ? null
+        : undefined;
     const saved = await tx.question.update({
       where: { id: current.id },
       data: {
         ...rest,
         type: merged.type,
+        ...(typeof nextTypeLabel !== 'undefined' ? { typeLabel: nextTypeLabel } : {}),
         answerJson: merged.answer,
         ...(tags ? { tagsJson: tags } : {})
       }

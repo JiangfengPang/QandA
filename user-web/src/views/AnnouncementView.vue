@@ -107,6 +107,7 @@ import { showToast } from 'vant';
 import { api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
 import type { AnnouncementItem } from '../data/announcementMock';
+import { copyTextToClipboard } from '../utils/clipboard';
 import { decodeMarkdownCode, renderMarkdown } from '../utils/markdown';
 import '../styles/announcements.css';
 
@@ -157,12 +158,11 @@ async function handleMarkdownCopy(event: MouseEvent) {
   const code = decodeMarkdownCode(button.dataset.code || '');
   if (!code) return;
 
-  try {
-    await navigator.clipboard.writeText(code);
+  if (await copyTextToClipboard(code)) {
     showToast('代码已复制');
-  } catch {
-    showToast({ type: 'fail', message: '复制失败' });
+    return;
   }
+  showToast({ type: 'fail', message: '复制失败，请长按选择代码复制' });
 }
 
 async function loadAnnouncements() {

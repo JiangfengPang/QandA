@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { showToast } from 'vant';
+import { copyTextToClipboard } from '../utils/clipboard';
 import { decodeMarkdownCode, renderMarkdown } from '../utils/markdown';
 
 const props = defineProps<{
@@ -25,11 +26,10 @@ async function handleCopyClick(event: MouseEvent) {
   const code = decodeMarkdownCode(button.dataset.code || '');
   if (!code) return;
 
-  try {
-    await navigator.clipboard.writeText(code);
+  if (await copyTextToClipboard(code)) {
     showToast('代码已复制');
-  } catch {
-    showToast({ type: 'fail', message: '复制失败' });
+    return;
   }
+  showToast({ type: 'fail', message: '复制失败，请长按选择代码复制' });
 }
 </script>
