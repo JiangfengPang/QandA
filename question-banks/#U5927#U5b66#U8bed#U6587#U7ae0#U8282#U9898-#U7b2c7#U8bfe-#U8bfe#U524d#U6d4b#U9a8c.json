@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-7",
+    "name": "第7课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-7-pretest-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-课前小测试",
+        "单选题"
+      ],
+      "score": 14.2,
+      "question": "《<北京大学月刊>发刊词》是一篇(  )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "议论文"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "散文"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "记叙文"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "剧本"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 议论文。之所以选A，是因为“议论文”能直接回答题干中的“《<北京大学月刊>发刊词》是一篇()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-pretest-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-课前小测试",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "被毛泽东称为“学界泰斗，人世楷模”的人是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "鲁迅"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "胡适"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "蔡元培"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "李大钊"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 蔡元培。之所以选C，是因为毛泽东称蔡元培为“学界泰斗，人世楷模”，强调其在近代教育史上的地位。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-pretest-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-课前小测试",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "《<北京大学月刊>发刊词》的作者是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "蔡元培"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "朱光潜"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "钱锺书"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "余秋雨"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 蔡元培。之所以选A，是因为“蔡元培”能直接回答题干中的“《<北京大学月刊>发刊词》的作者是()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-pretest-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-课前小测试",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "《<北京大学月刊>发刊词》所使用的语言是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "古白话"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "古文"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "浅近文言文"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "普通话"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 浅近文言文。之所以选C，是因为“浅近文言文”能直接回答题干中的“《<北京大学月刊>发刊词》所使用的语言是()”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-pretest-005",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-课前小测试",
+        "判断题"
+      ],
+      "score": 14.3,
+      "question": "《<北京大学月刊>发刊词》初次刊登是在1918年。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。之所以判断为错误，是因为题干关于“《<北京大学月刊>发刊词》初次刊登是在1918年。”的表述过于绝对，或把相关概念、事实关系说错了。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-pretest-006",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-课前小测试",
+        "判断题"
+      ],
+      "score": 14.3,
+      "question": "蔡元培是中国近代教育家。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。之所以判断为正确，是因为题干关于“蔡元培是中国近代教育家。”的表述符合相关概念或事实，没有把范围说错。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-pretest-007",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-课前小测试",
+        "判断题"
+      ],
+      "score": 14.3,
+      "question": "蔡元培在《<北京大学月刊>发刊词》中提出了“兼容并收”的教育主张。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。之所以判断为正确，是因为蔡元培主张思想自由、兼容并包，强调大学应容纳不同学派和思想。题干说法与这一点一致。"
+    }
+  ]
+}

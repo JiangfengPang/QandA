@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-11",
+    "name": "第11课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-11-pretest-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-课前小测试",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "( )指屈原、宋玉为代表的楚辞以及后世模仿楚辞的作品。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "律赋"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "汉赋"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "骈赋"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "骚赋"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 骚赋。之所以选D，是因为“骚赋”能直接回答题干中的“()指屈原、宋玉为代表的楚辞以及后世模仿楚辞的作品。”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-11-pretest-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-课前小测试",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "“乃有剑客惭恩，少年报士。”句中“士”的意思是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "士兵"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "好友"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "战士"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "士气"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 好友。之所以选B，是因为“好友”能直接回答题干中的““乃有剑客惭恩，少年报士。”句中“士”的意思是()”，与课文内容、文学常识或概念要求相符；A、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-11-pretest-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-课前小测试",
+        "单选题"
+      ],
+      "score": 33.4,
+      "question": "以《恨赋》《别赋》最为著名的作者是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "白居易"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "苏轼"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "李白"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "江淹"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 江淹。之所以选D，是因为“江淹”能直接回答题干中的“以《恨赋》《别赋》最为著名的作者是()”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    }
+  ]
+}

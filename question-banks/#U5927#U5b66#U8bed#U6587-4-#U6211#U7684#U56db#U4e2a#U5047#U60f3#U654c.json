@@ -1,0 +1,679 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-4",
+    "name": "4-我的四个假想敌",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-4-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《乡愁》中“长大后，乡愁是一张窄窄的”后面接什么?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "车票"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "门票"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "船票"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "机票"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 船票。之所以选C，是因为船票最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列哪一项不是军事上的术语?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "堡垒最容易从内部攻破。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "一切已崩溃，失去重心。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "假想敌在实弹射击了。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "滩头阵地已经被入侵的军队占领去了。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 一切已崩溃，失去重心。。本题问的是不符合题意的一项，一切已崩溃，失去重心。正是与题干限定不一致的选项，所以选B；A、C、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《我的四个假想敌》中，“战争”的敌我双方是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "父亲与女儿的男友"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "父亲与女儿"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "女儿与女儿的男友"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "母亲与女儿的男友"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 父亲与女儿的男友。之所以选A，是因为父亲与女儿的男友最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "文中下列加点的词的注音和字形完全正确的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "嗫嚅其词(niè)开门辑盗(yī)惴惴不安(zhuì)"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "蹑手蹑足(niè)屏声止息(bǐng)果实累累(léi)"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "鬼鬼崇崇(suì)腹背受敌(fǔ)迁回曲折(qū)"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "不胜负荷(hè)里应外合(yīng)暝暝之中(míng)"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 蹑手蹑足(niè)屏声止息(bǐng)果实累累(léi)。本题考查字音辨析，B项注音符合规范，因此选B；A、C、D项存在读音不准确或不符合题干要求的问题。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《我的四个假想敌》的体裁是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "戏剧"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "散文"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "诗歌"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "小说"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 散文。题干考查文章体裁或文体判断，散文符合本课文本的表达方式和写作形态，因此选B；A、C、D项不符合。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "关于《我的四个假想敌》中父亲的微妙心理,下列说法哪项是错误的?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "将男友们视为“假想敌”是出于对女儿的关爱。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "女儿目前的男友均不符合自己的标准，所以将他们视为“假想敌”。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "想到女儿将要出嫁和今后的寂寞,父亲不由得患得患失。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "目睹爱女长到婚嫁年龄,不忍割舍,却无法阻拦。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 女儿目前的男友均不符合自己的标准，所以将他们视为“假想敌”。。本题问的是不符合题意的一项，女儿目前的男友均不符合自己的标准，所以将他们视为“假想敌”。正是与题干限定不一致的选项，所以选B；A、C、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下面不属于《我的四个假想敌》一文语言特点的是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "巧用成语"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "善用比喻"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "妙用谚语"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "引用明诗"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 妙用谚语。本题要求辨析“不属于/不正确”的一项，妙用谚语与文中实际使用的语言特点、修辞手法或论证方式不符，因此选C；A、B、D项更符合文本特点。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列修辞和表现手法正确的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "他在一首妙诗《由女婴之父来唱的歌》之中，说他生了女儿之后，惴惴不安，感到不知什么地方正有个男婴也在长大，现在虽然还浑浑噩噩，口吐白述，却注定将来会抢走他的女儿。于是做父亲的每次在公园里看见娶儿车中的男要，都不由神色一变，暗暗想:“会不会是这家伙?” (想象)"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "昔日的童话之门砰地一关，再也回不去了。 (拟人)"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "但自己辖下的女生，尤其是前面的三位，已有“不稳”的现象，却令我想起叶慈的一句诗:一切已崩溃，失去重心。 (引用)"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "我当然不会应他。哪有这么容易的事!我像一棵果树，天长地久在这里立了多年风霜雨露，样样有份，换来果实累累，不胜负荷。而你，偶尔过路的小子，竞然一伸手就来摘果子，活该蟠地的树根绊你一交!而最可恼的，却是树上的果子，竞有自动落入行人手中的样子。 (类比)"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 但自己辖下的女生，尤其是前面的三位，已有“不稳”的现象，却令我想起叶慈的一句诗:一切已崩溃，失去重心。 (引用)。本题考查文本的表达技巧，但自己辖下的女生，尤其是前面的三位，已有“不稳”的现象，却令我想起叶慈的一句诗:一切已崩溃，失去重心。 (引用)能够准确概括题干所举语句或文章的写法，因此选C；A、B、D项与语境中的表达方式不对应。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列哪项不是作者频用军事术语的作用?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "惟妙惟肖地刻画了为女父者对那些颇有“敌意”却又甘为败将的微妙心理。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "紧扣题旨，暗喻父亲与候选女婿对女儿的争夺战。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "使文章语言幽默风趣。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "作者也是一个军事家，想让读者了解军事术语。"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 作者也是一个军事家，想让读者了解军事术语。。本题问的是“不属于/不是”的一项，作者也是一个军事家，想让读者了解军事术语。与题干限定的作者、作品或出处不符，因此选D；A、B、C项反而符合题干所属范围。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列对散文相关内容和艺术特色的分析鉴赏，不正确的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "父亲认为十岁以前的女儿最可爱;在姻缘上女儿竟然将父亲而不是男友作为作战对象;女儿越大，父亲的阵地越易失守。这些都是现实生活中一个有女儿的父亲的真实心态。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "“昔日的童话之门砰地一关，再也回不去了”在文中的意思是女儿已经长大了，不再需要父亲讲童话故事了，父女交流的门就此关上，形象地表现了父亲的失落之感。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "小说标题为“我的四个假想敌”，用语幽默俏皮，既表明四个未来的女婿并不是真正的敌人，也展现出一个父亲明知女儿成年后将会嫁为人妻但内心却割舍不下的深爱。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "散文中塑造的几个形象都很鲜活，有在女儿长大成人后心态复杂的父亲，有鬼鬼祟祟、伺机而动的“假想敌”，还有把母亲当成顾问、为男友做“内奸\"的女儿，等等。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. “昔日的童话之门砰地一关，再也回不去了”在文中的意思是女儿已经长大了，不再需要父亲讲童话故事了，父女交流的门就此关上，形象地表现了父亲的失落之感。。本题要求辨析“不属于/不正确”的一项，“昔日的童话之门砰地一关，再也回不去了”在文中的意思是女儿已经长大了，不再需要父亲讲童话故事了，父女交流的门就此关上，形象地表现了父亲的失落之感。与文中实际使用的语言特点、修辞手法或论证方式不符，因此选B；A、C、D项更符合文本特点。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "余光中《乡愁》中“乡愁是一枚小小的邮票”运用了什么修辞手法?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "排比"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "比喻"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "拟人"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "夸张"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 比喻。本题考查文本的表达技巧，比喻能够准确概括题干所举语句或文章的写法，因此选B；A、C、D项与语境中的表达方式不对应。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下面哪一篇不是余光中的作品?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《听听那冷雨》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《我的四个假想敌》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《乡愁》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《讲故事的人》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《讲故事的人》。本题问的是“不属于/不是”的一项，《讲故事的人》与题干限定的作者、作品或出处不符，因此选D；A、B、C项反而符合题干所属范围。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "余光中被称为?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "“乡愁诗人”"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "“乡土诗人”"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "“朦胧诗人”"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "“先锋诗人”"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. “乡愁诗人”。之所以选A，是因为“乡愁诗人”最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-014",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "余光中是台湾著名诗人，一生只专注于诗歌创作。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-015",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "余光中诗歌常常将古典与现代巧妙融合。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "余光中说:“中文必须精通,中文不通,将祸延吾孙”。这充分体现了他对中华文化的重视和认同。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "《我的四个假想敌》的主题是父爱。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "“二人同心，其利断金”的意思是只要两个人一条心，就能发挥很大的力量,告诉我们要团结协作。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "《我的四个假想敌》一文塑造了一个严厉、古板的父亲形象。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    }
+  ]
+}

@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-29",
+  "subjects": [
+    {
+      "id": "subject-bmvcex",
+      "name": "大学语文",
+      "description": "",
+      "color": "#f05c5c",
+      "file": "大学语文.json",
+      "units": [
+        {
+          "id": "unit-1",
+          "name": "1-序二篇",
+          "description": "",
+          "file": "大学语文-1-序二篇.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-2",
+          "name": "2-语言的功能与陷阱",
+          "description": "",
+          "file": "大学语文-2-语言的功能与陷阱.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-3",
+          "name": "3-讲故事的人",
+          "description": "",
+          "file": "大学语文-3-讲故事的人.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-4",
+          "name": "4-我的四个假想敌",
+          "description": "",
+          "file": "大学语文-4-我的四个假想敌.json",
+          "questionCount": 19
+        },
+        {
+          "id": "unit-5",
+          "name": "5-下棋",
+          "description": "",
+          "file": "大学语文-5-下棋.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-6",
+          "name": "6-金岳霖先生",
+          "description": "",
+          "file": "大学语文-6-金岳霖先生.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-7",
+          "name": "7-国立西南联合大学纪念碑碑文",
+          "description": "",
+          "file": "大学语文-7-国立西南联合大学纪念碑碑文.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-8",
+          "name": "8-北京大学月刊发刊词",
+          "description": "",
+          "file": "大学语文-8-北京大学月刊发刊词.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-9",
+          "name": "9-专家与通人",
+          "description": "",
+          "file": "大学语文-9-专家与通人.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-10",
+          "name": "10-西湖七月半",
+          "description": "",
+          "file": "大学语文-10-西湖七月半.json",
+          "questionCount": 20
+        }
+      ]
+    },
+    {
+      "id": "subject-m2kuvf",
+      "name": "大学生心理健康",
+      "description": "",
+      "color": "#48cd23",
+      "file": "大学生心理健康.json",
+      "units": [
+        {
+          "id": "unit-uqrkqh",
+          "name": "第一章-课后作业",
+          "description": "",
+          "file": "大学生心理健康-第一章-课后作业.json",
+          "questionCount": 34
+        },
+        {
+          "id": "unit-z9mn6b",
+          "name": "第二章-课后作业",
+          "description": "",
+          "file": "大学生心理健康-第二章-课后作业.json",
+          "questionCount": 27
+        },
+        {
+          "id": "unit-uboxao",
+          "name": "第三章-课后作业",
+          "description": "",
+          "file": "大学生心理健康-第三章-课后作业.json",
+          "questionCount": 8
+        },
+        {
+          "id": "unit-140ici",
+          "name": "第四章-课后作业",
+          "description": "",
+          "file": "大学生心理健康-第四章-课后作业.json",
+          "questionCount": 8
+        },
+        {
+          "id": "unit-amkt0b",
+          "name": "第五章-课后作业",
+          "description": "",
+          "file": "大学生心理健康-第五章-课后作业.json",
+          "questionCount": 8
+        },
+        {
+          "id": "unit-f06gp8",
+          "name": "第六章-课后作业",
+          "description": "",
+          "file": "大学生心理健康-第六章-课后作业.json",
+          "questionCount": 31
+        },
+        {
+          "id": "unit-daf9xm",
+          "name": "第七章-课后作业",
+          "description": "",
+          "file": "大学生心理健康-第七章-课后作业.json",
+          "questionCount": 25
+        }
+      ]
+    },
+    {
+      "id": "subject-bmu0zf",
+      "name": "大学英语",
+      "description": "",
+      "color": "#fb39fe",
+      "file": "大学英语.json",
+      "units": [
+        {
+          "id": "unit-x8jc3w",
+          "name": "第一单元",
+          "description": "",
+          "file": "大学英语-第一单元.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-x8ggao",
+          "name": "第二单元",
+          "description": "",
+          "file": "大学英语-第二单元.json",
+          "questionCount": 20
+        },
+        {
+          "id": "unit-x8j5fn",
+          "name": "第三单元",
+          "description": "",
+          "file": "大学英语-第三单元.json",
+          "questionCount": 36
+        }
+      ]
+    },
+    {
+      "id": "subject-36al8j",
+      "name": "大学语文章节题",
+      "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+      "color": "#5b8def",
+      "file": "大学语文章节题.json",
+      "units": [
+        {
+          "id": "unit-1",
+          "name": "第1课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第1课-课前测验.json",
+          "questionCount": 3
+        },
+        {
+          "id": "unit-1-2",
+          "name": "第1课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第1课-文学常识.json",
+          "questionCount": 6
+        },
+        {
+          "id": "unit-2",
+          "name": "第2课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第2课-课前测验.json",
+          "questionCount": 3
+        },
+        {
+          "id": "unit-2-2",
+          "name": "第2课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第2课-文学常识.json",
+          "questionCount": 6
+        },
+        {
+          "id": "unit-3",
+          "name": "第3课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第3课-课前测验.json",
+          "questionCount": 5
+        },
+        {
+          "id": "unit-3-2",
+          "name": "第3课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第3课-文学常识.json",
+          "questionCount": 6
+        },
+        {
+          "id": "unit-4",
+          "name": "第4课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第4课-课前测验.json",
+          "questionCount": 5
+        },
+        {
+          "id": "unit-4-2",
+          "name": "第4课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第4课-文学常识.json",
+          "questionCount": 6
+        },
+        {
+          "id": "unit-5",
+          "name": "第5课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第5课-课前测验.json",
+          "questionCount": 3
+        },
+        {
+          "id": "unit-5-2",
+          "name": "第5课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第5课-文学常识.json",
+          "questionCount": 7
+        },
+        {
+          "id": "unit-6",
+          "name": "第6课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第6课-课前测验.json",
+          "questionCount": 3
+        },
+        {
+          "id": "unit-6-2",
+          "name": "第6课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第6课-文学常识.json",
+          "questionCount": 6
+        },
+        {
+          "id": "unit-7",
+          "name": "第7课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第7课-课前测验.json",
+          "questionCount": 7
+        },
+        {
+          "id": "unit-7-2",
+          "name": "第7课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第7课-文学常识.json",
+          "questionCount": 16
+        },
+        {
+          "id": "unit-8",
+          "name": "第8课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第8课-课前测验.json",
+          "questionCount": 3
+        },
+        {
+          "id": "unit-8-2",
+          "name": "第8课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第8课-文学常识.json",
+          "questionCount": 6
+        },
+        {
+          "id": "unit-9",
+          "name": "第9课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第9课-课前测验.json",
+          "questionCount": 3
+        },
+        {
+          "id": "unit-9-2",
+          "name": "第9课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第9课-文学常识.json",
+          "questionCount": 12
+        },
+        {
+          "id": "unit-10",
+          "name": "第10课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第10课-课前测验.json",
+          "questionCount": 10
+        },
+        {
+          "id": "unit-10-2",
+          "name": "第10课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第10课-文学常识.json",
+          "questionCount": 6
+        },
+        {
+          "id": "unit-11",
+          "name": "第11课-课前测验",
+          "description": "",
+          "file": "大学语文章节题-第11课-课前测验.json",
+          "questionCount": 3
+        },
+        {
+          "id": "unit-11-2",
+          "name": "第11课-文学常识",
+          "description": "",
+          "file": "大学语文章节题-第11课-文学常识.json",
+          "questionCount": 6
+        }
+      ]
+    }
+  ]
+}

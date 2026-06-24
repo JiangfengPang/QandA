@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-5",
+    "name": "第5课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-5-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-课前小测试",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "小品文是( )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "戏剧"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "小说"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "诗歌"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "散文"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 散文。之所以选D，是因为小品文篇幅短小、笔调灵活，常从生活小事切入，兼具趣味与思辨，属于散文的一种。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-课前小测试",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "下面哪项不是梁实秋小品文的语言特点( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "简洁成癖"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "不喜修饰"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "文白交融"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "长短句并用"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 不喜修饰。之所以选B，是因为小品文篇幅短小、笔调灵活，常从生活小事切入，兼具趣味与思辨，属于散文的一种。而题干问的是不符合或不属于的一项，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-课前小测试",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "下面不符合梁实秋散文的创作特点的是( )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "作品有着分明的民族意识、爱国情怀和家国之恋"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "注重追求精神的愉悦"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "不太关注与表现人性"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "常常以调侃、幽默的笔调来砧砭时弊"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 不太关注与表现人性。之所以选C，是因为“不太关注与表现人性”与题干中的“下面不符合梁实秋散文的创作特点的是()。”不一致，正好属于本题要找的错误项；A、B、D反而更符合题意。"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+/*
+ * Practice option feedback states.
+ *
+ * This file is imported after practice.css and desktop-adaptive.css on purpose.
+ * Several adaptive rules reset .qx-option-button background/border for sizing,
+ * so the submitted/selected feedback colors must be declared last.
+ */
+
+.app-frame.is-practice-frame .qx-option-button.selected {
+  border-color: #93c5fd;
+  background: #f0f7ff;
+  color: var(--qx-ink);
+}
+
+.app-frame.is-practice-frame .qx-option-button.selected .option-key {
+  background: var(--qx-blue);
+  color: #fff;
+}
+
+.app-frame.is-practice-frame .qx-option-button.correct,
+.app-frame.is-practice-frame .qx-option-button.correct:disabled,
+.app-frame.is-practice-frame .qx-option-button.correct:hover {
+  border-color: #73d7a2;
+  background: #f0fff6;
+  color: var(--qx-ink);
+}
+
+.app-frame.is-practice-frame .qx-option-button.correct .option-key,
+.app-frame.is-practice-frame .qx-option-button.correct:disabled .option-key {
+  background: #18b889;
+  color: #fff;
+}
+
+.app-frame.is-practice-frame .qx-option-button.wrong,
+.app-frame.is-practice-frame .qx-option-button.wrong:disabled,
+.app-frame.is-practice-frame .qx-option-button.wrong:hover {
+  border-color: #ff9aaa;
+  background: #fff5f5;
+  color: var(--qx-ink);
+}
+
+.app-frame.is-practice-frame .qx-option-button.wrong .option-key,
+.app-frame.is-practice-frame .qx-option-button.wrong:disabled .option-key {
+  background: #ff5a6d;
+  color: #fff;
+}
+
+/* Wrong must win when an answered option has both selected and wrong classes. */
+.app-frame.is-practice-frame .qx-option-button.selected.wrong,
+.app-frame.is-practice-frame .qx-option-button.selected.wrong:disabled,
+.app-frame.is-practice-frame .qx-option-button.selected.wrong:hover {
+  border-color: #ff9aaa;
+  background: #fff5f5;
+}
+
+.app-frame.is-practice-frame .qx-option-button.selected.wrong .option-key,
+.app-frame.is-practice-frame .qx-option-button.selected.wrong:disabled .option-key {
+  background: #ff5a6d;
+  color: #fff;
+}
+
+.app-frame.is-practice-frame .qx-option-button.selected.correct,
+.app-frame.is-practice-frame .qx-option-button.selected.correct:disabled,
+.app-frame.is-practice-frame .qx-option-button.selected.correct:hover {
+  border-color: #73d7a2;
+  background: #f0fff6;
+}
+
+.app-frame.is-practice-frame .qx-option-button.selected.correct .option-key,
+.app-frame.is-practice-frame .qx-option-button.selected.correct:disabled .option-key {
+  background: #18b889;
+  color: #fff;
+}
+
+@media (min-width: 981px) {
+  .app-frame.is-practice-frame .qx-option-button.selected,
+  .app-frame.is-practice-frame .qx-option-button.selected:disabled,
+  .app-frame.is-practice-frame .qx-option-button.selected:hover,
+  .app-frame.is-practice-frame .qx-option-button.correct,
+  .app-frame.is-practice-frame .qx-option-button.correct:disabled,
+  .app-frame.is-practice-frame .qx-option-button.correct:hover,
+  .app-frame.is-practice-frame .qx-option-button.wrong,
+  .app-frame.is-practice-frame .qx-option-button.wrong:disabled,
+  .app-frame.is-practice-frame .qx-option-button.wrong:hover,
+  .app-frame.is-practice-frame .qx-option-button.selected.wrong,
+  .app-frame.is-practice-frame .qx-option-button.selected.wrong:disabled,
+  .app-frame.is-practice-frame .qx-option-button.selected.wrong:hover,
+  .app-frame.is-practice-frame .qx-option-button.selected.correct,
+  .app-frame.is-practice-frame .qx-option-button.selected.correct:disabled,
+  .app-frame.is-practice-frame .qx-option-button.selected.correct:hover {
+    border-color: transparent;
+    background: transparent;
+    color: #333;
+  }
+
+  .app-frame.is-practice-frame .qx-option-button.selected .option-key,
+  .app-frame.is-practice-frame .qx-option-button.selected:disabled .option-key {
+    border-color: #1881ff;
+    background: #1881ff;
+    color: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-option-button.correct .option-key,
+  .app-frame.is-practice-frame .qx-option-button.correct:disabled .option-key,
+  .app-frame.is-practice-frame .qx-option-button.selected.correct .option-key,
+  .app-frame.is-practice-frame .qx-option-button.selected.correct:disabled .option-key {
+    border-color: #35be73;
+    background: #35be73;
+    color: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-option-button.wrong .option-key,
+  .app-frame.is-practice-frame .qx-option-button.wrong:disabled .option-key,
+  .app-frame.is-practice-frame .qx-option-button.selected.wrong .option-key,
+  .app-frame.is-practice-frame .qx-option-button.selected.wrong:disabled .option-key {
+    border-color: #ff5a49;
+    background: #ff5a49;
+    color: #fff;
+  }
+}

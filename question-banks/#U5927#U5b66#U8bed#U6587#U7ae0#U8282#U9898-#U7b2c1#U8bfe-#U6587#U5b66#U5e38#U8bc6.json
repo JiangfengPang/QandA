@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-1-2",
+    "name": "第1课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "college-chinese-literary-common-sense-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "天人合一",
+        "张载",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "是谁首次将“天人合一”作为一个完整的哲学命题明确提出的？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "老子"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "庄子"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "张载"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "孟子"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 张载。之所以选C，是因为“天人合一”作为完整哲学命题，通常认为由北宋哲学家张载明确提出。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "college-chinese-literary-common-sense-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "婵娟",
+        "苏轼",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "“但愿人长久，千里共婵娟”，其中“婵娟”指的是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "月亮"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "姻缘"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "太阳"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "美人"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 月亮。之所以选A，是因为“婵娟”在“但愿人长久，千里共婵娟”中指明月，表达对远方亲人的思念。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "college-chinese-literary-common-sense-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "屠苏",
+        "春节",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "“爆竹声中一岁除，春风送暖入屠苏”，这里的“屠苏”指的是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "苏州"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "房屋"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "酒"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "庄稼"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 酒。之所以选C，是因为“酒”能直接回答题干中的““爆竹声中一岁除，春风送暖入屠苏”，这里的“屠苏”指的是什么？”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-literary-common-sense-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "拱手礼",
+        "传统礼仪",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "“拱手而立”表示对长者的尊敬，一般来说，男子行拱手礼时应该怎样？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "左手在外"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "右手在外"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "双手交叉"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "左手在上"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 左手在外。之所以选A，是因为“左手在外”能直接回答题干中的““拱手而立”表示对长者的尊敬，一般来说，男子行拱手礼时应该怎样？”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-literary-common-sense-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "三十六计",
+        "兵书",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "《三十六计》是体现我国古代卓越军事思想的一部兵书，下列不属于《三十六计》的是哪一项？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "浑水摸鱼"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "反戈一击"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "笑里藏刀"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "反客为主"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 反戈一击。之所以选B，是因为“反戈一击”与题干中的“《三十六计》是体现我国古代卓越军事思想的一部兵书，下列不属于《三十六计》的是哪一项？”不一致，正好属于本题要找的错误项；A、C、D反而更符合题意。"
+    },
+    {
+      "id": "college-chinese-literary-common-sense-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "京剧脸谱",
+        "色彩含义",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "我国的京剧脸谱色彩含义丰富，红色一般表示忠勇侠义，白色一般表示阴险奸诈，那么黑色一般表示什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "忠耿正直"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "刚愎自用"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "卑鄙无耻"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "凶狠残暴"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 忠耿正直。之所以选A，是因为“忠耿正直”能直接回答题干中的“我国的京剧脸谱色彩含义丰富，红色一般表示忠勇侠义，白色一般表示阴险奸诈，那么黑色一般表示什么？”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    }
+  ]
+}

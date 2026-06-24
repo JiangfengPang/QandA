@@ -1,0 +1,232 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
+}
+
+model User {
+  id                   String          @id @default(cuid())
+  username             String          @unique @db.VarChar(64)
+  passwordHash         String          @db.VarChar(191)
+  nickname             String          @db.VarChar(80)
+  email                String?         @unique @db.VarChar(191)
+  avatarUrl            String?         @db.VarChar(500)
+  role                 UserRole        @default(STUDENT)
+  isActive             Boolean         @default(true)
+  autoShowExplanation  Boolean         @default(true)
+  autoAddWrong         Boolean         @default(true)
+  autoAdvanceOnCorrect Boolean         @default(true)
+  questionFontSize     String          @default("standard") @db.VarChar(20)
+  showQuestionOverview Boolean         @default(true)
+  resetCodeHash        String?         @db.VarChar(191)
+  resetCodeExpiresAt   DateTime?
+  resetCodeAttempts    Int             @default(0)
+  sessionVersion       Int             @default(0)
+  lastActiveAt         DateTime?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  answers              UserAnswer[]
+  favorites            UserFavorite[]
+  wrongs               WrongQuestion[]
+  announcementReads    AnnouncementRead[]
+  adminOperationLogs   AdminOperationLog[]
+
+  @@index([role, lastActiveAt])
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  legacyId    String?  @unique @db.VarChar(80)
+  name        String   @db.VarChar(120)
+  description String?  @db.Text
+  color       String?  @db.VarChar(32)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  banks       Bank[]
+
+  @@index([name])
+}
+
+model Bank {
+  id          String     @id @default(cuid())
+  subjectId   String
+  legacyId    String?    @db.VarChar(100)
+  name        String     @db.VarChar(180)
+  description String?    @db.Text
+  sourceFile  String?    @db.VarChar(255)
+  sortOrder   Int        @default(0)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  questions   Question[]
+
+  @@unique([subjectId, legacyId])
+  @@index([subjectId])
+  @@index([name])
+}
+
+model Question {
+  id          String           @id @default(cuid())
+  bankId      String
+  legacyId    String?          @db.VarChar(120)
+  type        String           @db.VarChar(30)
+  typeLabel   String?          @db.VarChar(40)
+  difficulty  String?          @db.VarChar(30)
+  score       Float            @default(0)
+  stem        String           @db.Text
+  answerJson  Json
+  tagsJson    Json?
+  explanation String?          @db.Text
+  rawJson     Json?
+  sortOrder   Int              @default(0)
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  bank        Bank             @relation(fields: [bankId], references: [id], onDelete: Cascade)
+  options     QuestionOption[]
+  answers     UserAnswer[]
+  favorites   UserFavorite[]
+  wrongs      WrongQuestion[]
+
+  @@index([bankId])
+  @@index([type])
+  @@index([legacyId])
+}
+
+model QuestionOption {
+  id         String   @id @default(cuid())
+  questionId String
+  label      String   @db.VarChar(20)
+  content    String   @db.Text
+  isCorrect  Boolean  @default(false)
+  sortOrder  Int      @default(0)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}
+
+model UserAnswer {
+  id              String   @id @default(cuid())
+  userId          String
+  questionId      String
+  clientAnswerId  String?  @db.VarChar(120)
+  selectedJson    Json
+  isCorrect       Boolean
+  durationSeconds Int      @default(0)
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question        Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clientAnswerId])
+  @@index([userId, createdAt])
+  @@index([userId, questionId, createdAt])
+  @@index([questionId])
+}
+
+model UserFavorite {
+  id         String   @id @default(cuid())
+  userId     String
+  questionId String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@index([questionId])
+}
+
+model WrongQuestion {
+  id             String   @id @default(cuid())
+  userId         String
+  questionId     String
+  wrongCount     Int      @default(1)
+  lastAnsweredAt DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@index([questionId])
+}
+
+model Announcement {
+  id            String             @id @default(cuid())
+  title         String             @db.VarChar(160)
+  summary       String             @db.VarChar(300)
+  contentJson   Json
+  categoryLabel String             @db.VarChar(40)
+  statusLabel   String             @default("已发布") @db.VarChar(40)
+  statusTone    String             @default("success") @db.VarChar(20)
+  publisher     String             @default("QandA 教务助手") @db.VarChar(80)
+  isPublished   Boolean            @default(false)
+  isPinned      Boolean            @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  reads         AnnouncementRead[]
+
+  @@index([isPublished, isPinned, publishedAt])
+  @@index([categoryLabel])
+  @@index([statusLabel])
+}
+
+model AnnouncementRead {
+  id             String       @id @default(cuid())
+  userId         String
+  announcementId String
+  readAt         DateTime     @default(now())
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, announcementId])
+  @@index([announcementId])
+  @@index([userId, readAt])
+}
+
+
+model EmailVerificationCode {
+  id         String    @id @default(cuid())
+  email      String    @db.VarChar(191)
+  purpose    String    @db.VarChar(40)
+  codeHash   String    @db.VarChar(191)
+  attempts   Int       @default(0)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([email, purpose])
+  @@index([email, purpose, consumedAt, createdAt])
+  @@index([expiresAt])
+}
+
+model AdminOperationLog {
+  id          String   @id @default(cuid())
+  adminId     String
+  action      String   @db.VarChar(60)
+  summary     String   @db.VarChar(255)
+  method      String   @db.VarChar(10)
+  path        String   @db.VarChar(255)
+  targetType  String?  @db.VarChar(60)
+  targetId    String?  @db.VarChar(191)
+  ipAddress   String?  @db.VarChar(80)
+  userAgent   String?  @db.VarChar(500)
+  statusCode  Int
+  durationMs  Int
+  detailsJson Json?
+  createdAt   DateTime @default(now())
+  admin       User     @relation(fields: [adminId], references: [id], onDelete: Restrict)
+
+  @@index([adminId, createdAt])
+  @@index([action, createdAt])
+  @@index([createdAt])
+}

@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-10-2",
+    "name": "第10课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-10-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "10-文学常识测试",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "苏轼在《念奴娇·赤壁怀古》中提到了“羽扇纶巾，谈笑间，樯橹灰飞烟灭”，“羽扇纶巾”形容的是下面哪位历史人物?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "周瑜"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "诸葛亮"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "孙策"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "曹操"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 周瑜。之所以选A，是因为“羽扇纶巾，谈笑间，樯橹灰飞烟灭”写的是周瑜的儒将风度。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-10-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "10-文学常识测试",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "琵琶本名“批把”，“批把”一词来源于什么?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "长在枇杷树上的果实"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "制作琵琶的工艺"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "制造琵琶的材料"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "演奏琵琶的方式"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 演奏琵琶的方式。之所以选D，是因为“演奏琵琶的方式”能直接回答题干中的“琵琶本名“批把”，“批把”一词来源于什么?”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-10-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "10-文学常识测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "成语“请君入瓮”，“请”的是谁?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "狄仁杰"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "上官婉儿"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "周兴"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "来俊臣"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 周兴。之所以选C，是因为“周兴”能直接回答题干中的“成语“请君入瓮”，“请”的是谁?”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-10-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "10-文学常识测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "按照戏曲界的行话，以下哪个表示最后一出?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "一轴戏"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "压轴戏"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "中轴戏"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "大轴戏"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 大轴戏。之所以选D，是因为“大轴戏”能直接回答题干中的“按照戏曲界的行话，以下哪个表示最后一出?”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-10-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "10-文学常识测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "水浒一百单八将中有几位女性?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "三位"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "两位"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "四位"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "五位"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 三位。之所以选A，是因为“三位”能直接回答题干中的“水浒一百单八将中有几位女性?”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-10-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "10-文学常识测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "从事贸易活动的人叫做“商人”，这跟历史上的哪个朝代有关?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "商代"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "汉代"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "元代"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "唐代"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 商代。之所以选A，是因为“商代”能直接回答题干中的“从事贸易活动的人叫做“商人”，这跟历史上的哪个朝代有关?”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    }
+  ]
+}

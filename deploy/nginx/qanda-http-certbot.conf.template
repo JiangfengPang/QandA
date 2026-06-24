@@ -1,0 +1,16 @@
+# 首次申请 HTTPS 证书前使用的 HTTP 临时配置
+# 先替换域名并 reload nginx，再用 certbot 申请证书。
+server {
+  listen 80;
+  server_name qanda.example.com admin.example.com;
+
+  root /var/www/certbot;
+
+  location /.well-known/acme-challenge/ {
+    root /var/www/certbot;
+  }
+
+  location / {
+    return 200 "QandA certbot temporary server\n";
+  }
+}

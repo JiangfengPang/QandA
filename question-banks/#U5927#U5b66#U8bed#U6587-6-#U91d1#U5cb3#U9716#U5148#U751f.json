@@ -1,0 +1,677 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-6",
+    "name": "6-金岳霖先生",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-6-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "金岳霖想要做的自己是怎样的?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "愿意听人安排和号令"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "内和外、言和行、所想和所做都追求一致的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "不遵守自己内心的拘束、安排和号令"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "愿意受到拘束"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 内和外、言和行、所想和所做都追求一致的。之所以选B，是因为内和外、言和行、所想和所做都追求一致的最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "汪曾祺笔下的西南联大是在我国抗日战争时期由三所大学联合组建而成的，这三所大学不包括:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "清华大学"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "北京大学"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "南开大学"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "复旦大学"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 复旦大学。本题问的是不符合题意的一项，复旦大学正是与题干限定不一致的选项，所以选D；A、B、C项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "汪曾祺在写金岳霖先生时写了闻一多和朱自清，这种写法叫做:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "插叙"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "闲笔"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "衬托"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "铺垫"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 闲笔。本题考查文本的表达技巧，闲笔能够准确概括题干所举语句或文章的写法，因此选B；A、C、D项与语境中的表达方式不对应。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列词语书写全对的一组是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "跳蚤 释鳏 讷闷"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "演译 枯燥 篮球"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "窄袖 毡子 罗辑"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "呢帽 眼镜 羊绒"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 呢帽 眼镜 羊绒。本题考查字形和词语书写，D项书写规范，因此选D；A、B、C项存在错别字或词语写法不规范的问题。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "真和率两个字象征着谁:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "金岳霖"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "汪曾祺"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "林徽因"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "梁思成"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 金岳霖。之所以选A，是因为金岳霖最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "文章《金岳霖先生》主要写了什么形象?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "学生之壮哉"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "学生之伟哉"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "先生的自然洒脱"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "先生的落魄有趣"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 先生的落魄有趣。先生的落魄有趣最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选D；A、B、C项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "汪曾祺写过剧本:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《受戒》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《孔乙己》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《沙家浜》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《大淖记事》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《沙家浜》。之所以选C，是因为《沙家浜》最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列词语注音全对的一组是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "相当(xiàng dàng)"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "尊重(zūn chóng)"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "校舍(xiào shě)"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "释鳏(shì guān)"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 释鳏(shì guān)。本题考查字音辨析，D项注音符合规范，因此选D；A、B、C项存在读音不准确或不符合题干要求的问题。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "以下不是金岳霖形象的有",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "活得透彻"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "做得透彻"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "光明正大"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "蝇营狗苟"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 蝇营狗苟。本题问的是不符合题意的一项，蝇营狗苟正是与题干限定不一致的选项，所以选D；A、B、C项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "文章《跑警报》主要写了什么形象?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "学生之伟哉"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "先生的自然洒脱"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "先生的落魄有趣"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "学生之壮哉"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 学生之伟哉。学生之伟哉最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-011",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "金岳霖先生治学精深，而且著作很多。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-012",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "汪曾祺，江苏高邮人，中国现代作家、散文家、戏剧家，京派作家的代表人物。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-013",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "汪曾祺的文章看似杂乱，实际上是苦心编谋的。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-014",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "金岳霖先生主要研究的领域是历史学。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-015",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "汪曾祺叙事的核心记忆是西南联大的人和事。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "金岳霖先生开设的“符号逻辑”是必修课。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "汪曾祺于1939年考入西南联大，觉得西南联大的许多教授都应该有人好好地写一写。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "金岳霖先生曾写过一篇游戏文章《释鳏》。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "《金岳霖先生》是一篇怀人散文。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-020",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "6-金岳霖先生",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "金岳霖先生上课时从来不提问。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    }
+  ]
+}

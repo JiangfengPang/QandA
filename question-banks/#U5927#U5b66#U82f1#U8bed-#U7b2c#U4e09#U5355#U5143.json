@@ -1,0 +1,1385 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmu0zf",
+    "name": "大学英语",
+    "description": "",
+    "color": "#fb39fe"
+  },
+  "unit": {
+    "id": "unit-x8j5fn",
+    "name": "第三单元",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-001",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "assign",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "解雇"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "分配"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "忽略"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "评估"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 分配。之所以选B，是因为assign 表示“分配、指派”，常用于分配任务、安排工作或指定人员。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-002",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "endure",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "逃避"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "享受"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "忍受"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "加速"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 忍受。之所以选C，是因为endure 表示“忍受、忍耐”，强调承受困难、痛苦或压力。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-003",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "exhibit",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "隐藏"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "破坏"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "展示"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "模仿"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 展示。之所以选C，是因为exhibit 表示“展示、表现出”，可用于展示行为、特征或展品。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-004",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "flexible",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "僵硬的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "复杂的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "灵活的"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "脆弱的"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 灵活的。之所以选C，是因为flexible 表示“灵活的、可调整的”，和 strict、fixed、rigid 意义相反。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-005",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "internal",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "外部的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "内部的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "临时的"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "次要的"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 内部的。之所以选B，是因为internal 表示“内部的、内心的”，与 external、outward 相对。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-006",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "parallel",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "垂直的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "平行的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "交叉的"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "分散的"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 平行的。之所以选B，是因为parallel 可表示“平行的”，也可表示“与……并行、相对应发展”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-007",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "persistence",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "放弃"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "坚持"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "犹豫"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "改变"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 坚持。之所以选B，是因为persistence 表示“坚持、毅力”，强调持续努力不轻易放弃。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-008",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "recruit(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "解雇"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "招募"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "培训"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "退休"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 招募。之所以选B，是因为recruit 表示“招募、招聘”，常用于寻找合格人员加入组织。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-009",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "stunning(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "普通的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "乏味的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "惊人的"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "可怕的"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 惊人的。之所以选C，是因为stunning 表示“惊人的、极美的、令人震撼的”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-010",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "vigorous(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "懒散的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "虚弱的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "充满活力的"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "缓慢的"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 充满活力的。之所以选C，是因为vigorous 表示“充满活力的、有力的”，常形容运动、活动或生命力。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-011",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "be accustomed to(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "习惯于"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "反对"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "依赖"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "忽视"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 习惯于。之所以选A，是因为be accustomed to 表示“习惯于”，后面通常接名词或动名词。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-012",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "be based on(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "基于"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "超越"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "忽略"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "怀疑"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 基于。之所以选A，是因为be based on 表示“基于、以……为基础”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-013",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "for the sake of(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "为了…的利益"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "反对"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "由于"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "除非"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 为了…的利益。之所以选A，是因为for the sake of 表示“为了……的利益、为了……”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-014",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "have a passion for(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "对…有热情"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "对…冷漠"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "对…恐惧"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "对…厌倦"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 对…有热情。之所以选A，是因为have a passion for 表示“对……有热情、热爱……”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-015",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 0,
+      "question": "no exaggeration(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "夸张地说"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "毫不夸张"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "沉默"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "虚构"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 夸张地说。之所以选A，是因为no exaggeration 表示“毫不夸张”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-016",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "strive for(1.7分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "放弃"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "妥协"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "努力争取"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "忽视"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 努力争取。之所以选C，是因为strive for 表示“努力争取、为……奋斗”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-017",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "take it for granted that",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "认为…是理所当然的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "质疑…的真实性"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "对…感到惊讶"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "对…表示感谢"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 认为…是理所当然的。之所以选A，是因为take it for granted that... 表示“想当然地认为……”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-018",
+      "type": "single",
+      "typeLabel": "词汇题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "tap into",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "堵塞"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "开发(潜力、资源)"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "忽略"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "复制"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 开发(潜力、资源)。之所以选B，是因为tap into 表示“开发、利用某种潜力或资源”。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-019",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "The boss said, \"The schedule is completely ______ because I do not need to be around and watch when you do your work.\"",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "strict"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "flexible"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "fixed"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "rigid"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. flexible。之所以选B，是因为flexible 表示“灵活的、可调整的”，和 strict、fixed、rigid 意义相反。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-020",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Currently, the stock market is not very stable, but over the long run, the growth of stock funds will ______ the growth of the economy.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "oppose"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "parallel"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "hinder"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "diverge"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. parallel。之所以选B，是因为currently 表示“当前、目前”，强调现在这个时间点。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-021",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "These student volunteers can decide how to perform any ______ work, for which they are qualified and have a strong passion.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "optional"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "assigned"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "chosen"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "random"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. assigned。之所以选B，是因为assigned 是 assign 的过去分词，表示“被分配的、被指派的”。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-022",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Human beings, by providing environmental enrichment, encourage animals to explore, interact, and ______ natural behaviors.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "suppress"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "ignore"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "restrain"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "exhibit"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. exhibit。之所以选D，是因为exhibit 表示“展示、表现出”，可用于展示行为、特征或展品。放入句子后，语义和搭配都能与上下文衔接；A、B、C项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-023",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Along with extraordinary courage, qualities like ______, teamwork, and most importantly, leadership shine in all of our student activities.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "laziness"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "hesitation"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "persistence"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "inconsistency"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. persistence。之所以选C，是因为persistence 表示“坚持、毅力”，强调持续努力不轻易放弃。放入句子后，语义和搭配都能与上下文衔接；A、B、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-024",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "This is a beautiful part of the city to live in, with stylish and architecturally ______ historic buildings lining the clean and quiet streets.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "ordinary"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "stunning"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "plain"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "ugly"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. stunning。之所以选B，是因为stunning 表示“惊人的、极美的、令人震撼的”。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-025",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "An energetic search will soon be put in place to ______ a qualified person who can continue with the leadership of a big company.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "remix"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "dismiss"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "retain"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "recruit"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. recruit。之所以选D，是因为recruit 表示“招募、招聘”，常用于寻找合格人员加入组织。放入句子后，语义和搭配都能与上下文衔接；A、B、C项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-026",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "I've ______ hardships throughout my life, so I think I can handle the stress and achieve my full potential in this company.(3.9分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "enjoyed"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "endured"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "avoided"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "escaped"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. endured。之所以选B，是因为endured 是 endure 的过去式或过去分词，表示“已经忍受、经历并承受了”。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-027",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Many people believe that ______ exercise and outdoor sports could better help people stay healthy and strong.(3.9分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "discouraging"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "informative"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "vigorous"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "talented"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. vigorous。之所以选C，是因为vigorous 表示“充满活力的、有力的”，常形容运动、活动或生命力。放入句子后，语义和搭配都能与上下文衔接；A、B、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-028",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "With the help of my family and friends, all of my ______ doubts about myself gradually disappeared and my confidence was restored.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "external"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "surface"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "internal"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "outward"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. internal。之所以选C，是因为internal 表示“内部的、内心的”，与 external、outward 相对。放入句子后，语义和搭配都能与上下文衔接；A、B、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-029",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "The course project that I completed weeks ago has helped me ______ my creativity and intuition which I didn’t even realize I had.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "trap into"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "tap into"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "trip into"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "trade into"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. tap into。之所以选B，是因为tap into 表示“开发、利用某种潜力或资源”。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-030",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Many people probably ______ fast Internet access is almost everywhere – at home, at work, and even in the most remote areas.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "take it for"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "take it for granted"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "take it as"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "take after"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. take it for granted。之所以选B，是因为take it for granted 表示“认为……理所当然”。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-031",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "It’s probably true that we always ______ the goal that we consider challenging but achievable to gain a sense of accomplishment.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "strive for"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "shiver to"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "shrink to"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "sprint to"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. strive for。之所以选A，是因为strive for 表示“努力争取、为……奋斗”。放入句子后，语义和搭配都能与上下文衔接；B、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-032",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "It’s ______ say that the kitchen he installed last month is 100 times better, and now I fortunately have the kitchen I dreamed of.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "no exaggeration"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "no exaggeration to"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "no exception to"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "no exception"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. no exaggeration to。之所以选B，是因为It is no exaggeration to say... 是固定表达，意思是“毫不夸张地说……”。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-033",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Since the exam ______ what you have learned, you can expect to see some questions from previous assignments.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "is based on"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "is built for"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "is derived from"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "is focused to"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. is based on。之所以选A，是因为is based on 表示“基于、以……为依据”。放入句子后，语义和搭配都能与上下文衔接；B、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-034",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "I think journalists work in a timely manner and ______ deadlines or tight working schedules because they were well trained in this way.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "are accustomed by"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "are accustomed to"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "are adjusted by"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "are adjusted to"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. are accustomed to。之所以选B，是因为are accustomed to 表示“习惯于”，后面接名词或动名词。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-035",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "The situation between us is very challenging, but we have to learn how to handle the difficult situation ______ improving our relations.(3.9分)",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "for the sake"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "for the sake of"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "for the purpose"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "for the cause"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. for the sake of。之所以选B，是因为for the sake of 表示“为了……的利益、为了……”。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8j5fn-036",
+      "type": "single",
+      "typeLabel": "单选题",
+      "difficulty": "easy",
+      "tags": [
+        "第三单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "The award-winning chef says that since he was young, he ________ for Chinese food because of its rich ingredients and well-balanced nutrition.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "has had a passion for"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "has kept a positive mindset"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "has maintained positivity"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "has designed balanced"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. has had a passion for。之所以选A，是因为has had a passion for 表示“长期以来一直热爱……”。放入句子后，语义和搭配都能与上下文衔接；B、C、D项在词义或搭配上不符合句意。"
+    }
+  ]
+}

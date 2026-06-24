@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-2-2",
+    "name": "第2课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "college-chinese-unit-2-literary-common-sense-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "静夜思",
+        "李白",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "“床前明月光”是李白的千古名句，其中“床”指的是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "窗户的护栏"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "窗户"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "井上的围栏"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "卧具"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 井上的围栏。之所以选C，是因为“井上的围栏”能直接回答题干中的““床前明月光”是李白的千古名句，其中“床”指的是什么？”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-unit-2-literary-common-sense-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "水墨画",
+        "诗句",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "下列哪一句诗描写的场景最适合采用水墨画来表现？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "返景入深林，复照青苔上"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "落霞与孤鹜齐飞，秋水共长天一色"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "孤舟蓑笠翁，独钓寒江雪"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "接天莲叶无穷碧，映日荷花别样红"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 孤舟蓑笠翁，独钓寒江雪。之所以选C，是因为“孤舟蓑笠翁，独钓寒江雪”能直接回答题干中的“下列哪一句诗描写的场景最适合采用水墨画来表现？”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-unit-2-literary-common-sense-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "元宵节",
+        "欧阳修",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "“月上柳梢头，人约黄昏后”描写的是哪个传统节日？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "端午节"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "七夕节"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "中秋节"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "元宵节"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 元宵节。之所以选D，是因为“元宵节”能直接回答题干中的““月上柳梢头，人约黄昏后”描写的是哪个传统节日？”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-unit-2-literary-common-sense-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "项羽",
+        "成语典故",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "下列哪个成语典故与项羽有关？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "暗度陈仓"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "背水一战"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "破釜沉舟"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "隔岸观火"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 破釜沉舟。之所以选C，是因为“破釜沉舟”能直接回答题干中的“下列哪个成语典故与项羽有关？”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-unit-2-literary-common-sense-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "仞",
+        "计量单位",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "我国古代有很多计量单位，比如诗句“黄河远上白云间，一片孤城万仞山”中的“仞”，一仞约相当于什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "半步的距离"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "一个成年人的高度"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "一舍"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "成年人一臂的长度"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 一个成年人的高度。之所以选B，是因为“一个成年人的高度”能直接回答题干中的“我国古代有很多计量单位，比如诗句“黄河远上白云间，一片孤城万仞山”中的“仞”，一仞约相当于什么？”，与课文内容、文学常识或概念要求相符；A、C、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-unit-2-literary-common-sense-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "对子",
+        "清华招生题",
+        "文学常识"
+      ],
+      "score": 16.7,
+      "question": "1932年，清华大学招生试题中有一道对子题，上联“孙行者”，下面下联中最合适的是哪一项？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "唐三藏"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "周作人"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "祖冲之"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "郁达夫"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 祖冲之。之所以选C，是因为“祖冲之”能直接回答题干中的“1932年，清华大学招生试题中有一道对子题，上联“孙行者”，下面下联中最合适的是哪一项？”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    }
+  ]
+}

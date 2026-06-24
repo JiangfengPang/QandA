@@ -1,0 +1,281 @@
+{
+  "version": 1,
+  "source": "QandA 格式化",
+  "subject": {
+    "id": "subject-psych-health",
+    "name": "大学生心理健康",
+    "description": "",
+    "color": "#48cd23"
+  },
+  "unit": {
+    "id": "unit-psych-ch4-homework",
+    "name": "第四章-课后作业",
+    "description": "题量：8；满分：100；作答时间：04-20 11:25 至 06-25 11:25"
+  },
+  "questions": [
+    {
+      "id": "psych-ch4-hw-001",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "情绪的产生不需要触发事件。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。情绪通常是在一定触发事件或情境刺激下产生的，这个触发事件可以是外部发生的事情，也可以是个体内心的想法、回忆或评价。没有任何触发因素就产生情绪的说法不准确，所以本题判断为错。"
+    },
+    {
+      "id": "psych-ch4-hw-002",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "情绪的动机功能是指能够激发、维持和调节个体的行为。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。情绪不仅是一种主观体验，还会推动个体采取行动。例如恐惧会促使人回避危险，愤怒可能促使人维护边界，愉快会增强继续参与某项活动的意愿。因此情绪具有激发、维持和调节行为的动机功能。"
+    },
+    {
+      "id": "psych-ch4-hw-003",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "压抑情绪不能起到调节情绪的作用。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。压抑情绪通常只是把情绪暂时压下去，并没有真正理解、表达或处理情绪来源。长期压抑还可能增加心理压力，使情绪以更强烈或更隐蔽的方式表现出来。因此压抑情绪不是健康有效的情绪调节方式，本题判断为对。"
+    },
+    {
+      "id": "psych-ch4-hw-004",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "不同的看待或评价往往会引出不同的情绪感受。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。同一件事情因为个体的解释和评价不同，可能引发不同情绪。例如把一次失败看成“我不行”会带来沮丧，把它看成“还有改进空间”则更可能带来动力。认知评价会影响情绪感受，所以本题判断为对。"
+    },
+    {
+      "id": "psych-ch4-hw-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "单选题"
+      ],
+      "score": 12.5,
+      "question": "以下哪项不属于健康的情绪调节方式? ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "写日记记录感受"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "向信任的朋友倾诉"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "暴饮暴食缓解压力"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "进行正念冥想"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 暴饮暴食缓解压力。写日记、向朋友倾诉和正念冥想都有助于觉察、表达或稳定情绪，属于较健康的调节方式。暴饮暴食虽然可能短暂转移压力，但容易带来身体负担和新的心理困扰，所以不属于健康的情绪调节方式。"
+    },
+    {
+      "id": "psych-ch4-hw-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "单选题"
+      ],
+      "score": 12.5,
+      "question": "面对压力时，以下哪种反应属于“战斗或逃跑”模式? ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "冷静分析问题"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "心跳加快、肌肉紧张"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "完全放松、无动于衷"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "理性制定解决方案"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 心跳加快、肌肉紧张。“战斗或逃跑”模式是个体面对威胁或压力时的生理应激反应，常表现为心跳加快、呼吸加深、肌肉紧张、警觉性增强等。B项正符合这种应激反应，所以选B。"
+    },
+    {
+      "id": "psych-ch4-hw-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "单选题"
+      ],
+      "score": 12.5,
+      "question": "长期高压可能导致的身体反应不包括? ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "失眠"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "免疫力下降"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "消化系统问题"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "精力充沛、思维敏捷"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 精力充沛、思维敏捷。长期处在高压状态下，身体容易出现失眠、免疫力下降、消化系统不适等应激反应。精力充沛、思维敏捷通常不是长期高压带来的负面身体反应，所以本题选D。"
+    },
+    {
+      "id": "psych-ch4-hw-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第四章-课后作业",
+        "单选题"
+      ],
+      "score": 12.5,
+      "question": "以下哪种方法有助于提高情绪觉察能力? ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "忽视自己的情绪变化"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "每天记录情绪变化及触发事件"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "把所有情绪归为“无所谓”"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "避免思考情绪相关的问题"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 每天记录情绪变化及触发事件。情绪觉察能力需要个体主动观察自己的情绪变化，并理解情绪与事件、想法之间的关系。每天记录情绪和触发事件，有助于发现情绪规律，提高对自身情绪的识别和理解能力，所以选B。"
+    }
+  ]
+}

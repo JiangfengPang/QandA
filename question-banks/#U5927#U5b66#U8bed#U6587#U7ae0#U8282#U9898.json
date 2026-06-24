@@ -1,0 +1,4981 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-29",
+  "subjects": [
+    {
+      "id": "subject-36al8j",
+      "name": "大学语文章节题",
+      "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+      "color": "#5b8def",
+      "units": [
+        {
+          "id": "unit-1",
+          "name": "第1课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "college-chinese-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "庄子显灵记",
+                "文体"
+              ],
+              "score": 33.3,
+              "question": "《庄子显灵记》属于什么文体？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "小说"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "散文"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "诗剧"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "话剧"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "college-chinese-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "季羡林",
+                "人与自然"
+              ],
+              "score": 33.3,
+              "question": "季羡林先生认为解决21世纪理论界面临的问题的核心是促进人与自然的和谐相处。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "college-chinese-pretest-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "序",
+                "文体常识"
+              ],
+              "score": 33.3,
+              "question": "下列关于“序”的表述不正确的一项是：",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "“序”也作“叙”或称“引”，一般写在书籍或文章前面，列于书后的称为“跋”或“后序”。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "古代的序除了书序外，另有一种序是惜别赠言的文字，叫作“赠序”。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "书序的作用在于作者向读者推荐自己的著作，说明写作过程、写作目的、著作的主要内容、作者的情况等。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "“赠序”的内容多是对于所赠亲友的赞许、推重或勉励之辞。"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-1-2",
+          "name": "第1课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "college-chinese-literary-common-sense-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "天人合一",
+                "张载",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "是谁首次将“天人合一”作为一个完整的哲学命题明确提出的？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "老子"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "庄子"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "张载"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "孟子"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "商周时期是“天人合一”思想的萌芽，春秋战国时期道家、儒家又从不同维度发展了这一思想，如老子强调“人法地，地法天，天法道，道法自然”，庄子提出“天地与我并生，而万物与我为一”，孟子主张“尽其心者，知其性也；知其性，则知天矣”，但均未将其作为完整命题提出。北宋哲学家张载在《正蒙·乾称篇》中首次明确将“天人合一”作为独立哲学命题，系统阐述了天与人的统一性。"
+            },
+            {
+              "id": "college-chinese-literary-common-sense-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "婵娟",
+                "苏轼",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "“但愿人长久，千里共婵娟”，其中“婵娟”指的是什么？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "月亮"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "姻缘"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "太阳"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "美人"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "婵娟的意思：①形容姿态美好；②美女、美人；③形容月色明媚或指明月。句中的“婵娟”是第三种释义。"
+            },
+            {
+              "id": "college-chinese-literary-common-sense-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "屠苏",
+                "春节",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "“爆竹声中一岁除，春风送暖入屠苏”，这里的“屠苏”指的是什么？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "苏州"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "房屋"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "酒"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "庄稼"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "屠苏，酒名。古代中国风俗于农历正月初一饮屠苏酒以避瘟疫。"
+            },
+            {
+              "id": "college-chinese-literary-common-sense-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "拱手礼",
+                "传统礼仪",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "“拱手而立”表示对长者的尊敬，一般来说，男子行拱手礼时应该怎样？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "左手在外"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "右手在外"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "双手交叉"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "左手在上"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "因为古人认为杀人时拿刀都是用右手，右手在前杀气太重。所以右手握拳，用代表友好的左手在外，把右手包住。"
+            },
+            {
+              "id": "college-chinese-literary-common-sense-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "三十六计",
+                "兵书",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "《三十六计》是体现我国古代卓越军事思想的一部兵书，下列不属于《三十六计》的是哪一项？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "浑水摸鱼"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "反戈一击"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "笑里藏刀"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "反客为主"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "胜战计：瞒天过海、围魏救赵、借刀杀人、以逸待劳、趁火打劫、声东击西；敌战计：无中生有、暗渡陈仓、隔岸观火、笑里藏刀、李代桃僵、顺手牵羊；攻战计：打草惊蛇、借尸还魂、调虎离山、欲擒故纵、抛砖引玉、擒贼擒王；混战计：釜底抽薪、混水摸鱼、金蝉脱壳、关门捉贼、远交近攻、假道伐虢；并战计：偷梁换柱、指桑骂槐、假痴不癫、上屋抽梯、树上开花、反客为主；败战计：美人计、空城计、反间计、苦肉计、连环计、走为上。"
+            },
+            {
+              "id": "college-chinese-literary-common-sense-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "京剧脸谱",
+                "色彩含义",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "我国的京剧脸谱色彩含义丰富，红色一般表示忠勇侠义，白色一般表示阴险奸诈，那么黑色一般表示什么？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "忠耿正直"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "刚愎自用"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "卑鄙无耻"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "凶狠残暴"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "红色的脸谱表示忠勇侠义，如关羽、姜维；黑色的脸谱表示刚烈正直、勇猛鲁莽，如包拯、李逵等；黄色的脸谱表示凶狠残暴，如宇文成都、典韦；白色的脸谱表示阴险奸诈，如曹操、赵高等。"
+            }
+          ]
+        },
+        {
+          "id": "unit-2",
+          "name": "第2课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "college-chinese-unit-2-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "语言",
+                "语系",
+                "语族"
+              ],
+              "score": 33.3,
+              "question": "每种语言根据其起源、使用地域、构词方法、发音等特点，分为了各个不同的家族，家族内部又进一步细分为多个分支。从大到小分别为什么？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "语族 → 语支 → 语系 → 语言 → 方言"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "语系 → 语族 → 语支 → 语言 → 方言"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "语族 → 语系 → 语言 → 语支 → 方言"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "语系 → 语族 → 语言 → 语支 → 方言"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "college-chinese-unit-2-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "语言",
+                "语系",
+                "印欧语系"
+              ],
+              "score": 33.3,
+              "question": "世界第一大语系是什么？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "印欧语系"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "阿尔泰诸语"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "亚非语系"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "汉藏语系"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "college-chinese-unit-2-pretest-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "语言",
+                "定义",
+                "符号系统"
+              ],
+              "score": 33.3,
+              "question": "关于“语言”的定义，选项中说法不正确的一项是哪一项？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "语言的客观存在形式首先是有声的口头语言"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "语言是人们说出来的话"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "语言是一个符号系统"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "语言是一种社会现象"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-2-2",
+          "name": "第2课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "college-chinese-unit-2-literary-common-sense-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "静夜思",
+                "李白",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "“床前明月光”是李白的千古名句，其中“床”指的是什么？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "窗户的护栏"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "窗户"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "井上的围栏"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "卧具"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "宋代版本的《静夜思》为“床前看月光，疑是地上霜。举头望山月，低头思故乡。”明代版本为“床前明月光，疑是地上霜。举头望明月，低头思故乡。”围栏是传统解释，但目前存在争论。一说指井栏，从考古发现来看，中国最早的水井是木结构水井。古代井栏有数米高，成方框形围住井口，防止人跌入井内，这方框形既像四堵墙，又像古代的床，因此古代井栏又叫银床。另有“窗”的通假字、本义坐卧器具等说法。"
+            },
+            {
+              "id": "college-chinese-unit-2-literary-common-sense-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "水墨画",
+                "诗句",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "下列哪一句诗描写的场景最适合采用水墨画来表现？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "返景入深林，复照青苔上"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "落霞与孤鹜齐飞，秋水共长天一色"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "孤舟蓑笠翁，独钓寒江雪"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "接天莲叶无穷碧，映日荷花别样红"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "水墨画追求意境，通常不强调艳丽色彩。“孤舟蓑笠翁，独钓寒江雪”画面清冷、简淡，留白感强，最适合用水墨画表现。"
+            },
+            {
+              "id": "college-chinese-unit-2-literary-common-sense-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "元宵节",
+                "欧阳修",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "“月上柳梢头，人约黄昏后”描写的是哪个传统节日？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "端午节"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "七夕节"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "中秋节"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "元宵节"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "此句出自欧阳修词《生查子·元夕》，元夕即元宵节。"
+            },
+            {
+              "id": "college-chinese-unit-2-literary-common-sense-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "项羽",
+                "成语典故",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "下列哪个成语典故与项羽有关？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "暗度陈仓"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "背水一战"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "破釜沉舟"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "隔岸观火"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "“破釜沉舟”出自《史记·项羽本纪》：“项羽乃悉引兵渡河，皆沉船，破釜甑，烧庐舍，持三日粮，以示士卒必死，无一还心。”意思是把饭锅打破，把渡船凿沉，比喻不留退路，做事果决。“暗度陈仓”与韩信有关，“背水一战”与韩信有关，“隔岸观火”指对别人的急难不加救助而旁观。"
+            },
+            {
+              "id": "college-chinese-unit-2-literary-common-sense-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "仞",
+                "计量单位",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "我国古代有很多计量单位，比如诗句“黄河远上白云间，一片孤城万仞山”中的“仞”，一仞约相当于什么？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "半步的距离"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "一个成年人的高度"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "一舍"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "成年人一臂的长度"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "仞是古代的长度单位，一仞相当于七八尺，差不多是一个成年人的高度。跬是长度单位，半步为跬；舍是长度单位，古代行军时以三十里为一舍。"
+            },
+            {
+              "id": "college-chinese-unit-2-literary-common-sense-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "对子",
+                "清华招生题",
+                "文学常识"
+              ],
+              "score": 16.7,
+              "question": "1932年，清华大学招生试题中有一道对子题，上联“孙行者”，下面下联中最合适的是哪一项？",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "唐三藏"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "周作人"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "祖冲之"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "郁达夫"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "名词对名词，动词对动词，虚词对虚词，上下联又是人名对人名。“孙”可对“祖”，“行”和“冲”都是动词，可以相对；“者”和“之”同为虚词，也可相对，所以“祖冲之”最合适。"
+            }
+          ]
+        },
+        {
+          "id": "unit-3",
+          "name": "第3课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-3-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-课前小测验-讲故事的人",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "我记忆中最痛苦的一件事(     )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "跟随着母亲去集体的地里捡麦穗"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "母亲尊重识字的人"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "卖白菜多算老人一毛钱"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "打碎暖瓶"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-课前小测验-讲故事的人",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "《讲故事的人》的作者是(     )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "莫言"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "王蒙"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "巴金"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "余华"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-课前小测验-讲故事的人",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "莫言少年时期经历的苦难不包括(    )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "年少辍学，饱尝孤独与辛苦"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "母亲病重导致莫言背井离乡"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "家庭贫困，饱受饥饿"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "因长得不好看被同学嘲笑"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-课前小测验-讲故事的人",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "对文章内容的理解正确的一项是(    )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "文章共分为三个部分，围绕着母亲对我的影响、成长经历和主要作品三个内容展开演讲的。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "青岛之行，使作者产生了想离开故乡到外边去看世界的强烈愿望。他回来以后就决定走出高密东北乡这个让作者十分留恋与不舍的地方，开始他人生的重要时期。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "文中提到:中国的先贤老子所说的那样:“福兮祸所伏，祸兮福所倚”。这里的“祸”指的是我童年时期痛苦的经历，“福”指的是这些痛苦的经历培养了我丰富的想象力。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "作者的写作历程是:从一个用耳朵聆听故事，用嘴巴讲述故事的孩子，开始尝试用笔来讲述故事。刚开始写的作品就被发表了，而且文学价值也很高。"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-课前小测验-讲故事的人",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "与其他三项相比，下列哪一项是莫言最新的作品(     )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《不被大风吹倒》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《晚熟的人》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《透明的红萝卜》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《生死疲劳》"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-3-2",
+          "name": "第3课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-3-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6666666667,
+              "question": "假如你的一首五绝诗被杂志社采用，按照正文部分每字5元来计算，你应得多少稿费?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "100元"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "500元"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "200元"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "50元"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "五绝即五言绝句，共四句，每句五字，正文共20字；按每字5元计算，稿费为20×5=100元。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6666666667,
+              "question": "诸子百家中名家的特点是注重逻辑辩证，以下哪个典故能体现名家的这一特点?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "任人唯亲"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "指鹿为马"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "知人善用"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "白马非马"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "“白马非马”出自公孙龙，体现名家围绕名实、概念内涵与外延进行辩论的特点。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6666666667,
+              "question": "《百家姓》中没有下面哪个姓?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "巫"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "乌"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "肖"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "萧"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "《百家姓》中有“巫”“乌”“萧”等姓；“肖”并非宋版《百家姓》所列姓氏。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6666666667,
+              "question": "我们常说的“十八般武艺”最初指的是什么?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "十八种厨具"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "使用十八种兵器的技能"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "十八种武术动作"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "十八般手艺"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "“十八般武艺”原与“十八般兵器”相关，最初指使用多种兵器的技能。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6666666667,
+              "question": "下面哪个字常用作表示顺序的第五位?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "戎"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "戌"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "戊"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "戍"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "天干顺序为甲、乙、丙、丁、戊、己、庚、辛、壬、癸，其中第五位是“戊”。"
+            },
+            {
+              "id": "subject-bmvcex-unit-3-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "3-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6666666667,
+              "question": "“生旦净末丑”是京剧的行当，其中“净”是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "男角"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "女角"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "花旦"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "丑角"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "净行俗称花脸、花面，一般扮演男性角色。"
+            }
+          ]
+        },
+        {
+          "id": "unit-4",
+          "name": "第4课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-4-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-我的四个假想敌-课前测试题",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "《我的四个假想敌》最主要的一个行文特色是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "运用了科技术语"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "运用了军事术语"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "运用了经济术语"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "运用了政治术语"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-我的四个假想敌-课前测试题",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "“环伺”的正确读音是",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "huán cì"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "huài sì"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "huán sì"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "huài cì"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-我的四个假想敌-课前测试题",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "《我的四个假想敌》一文中“假想敌”指的是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "女儿的妈妈"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "女儿"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "敌人"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "女儿的男朋友"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-我的四个假想敌-课前测试题",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "《我的四个假想敌》的体裁是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "爱情"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "小说"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "散文"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "亲情"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-我的四个假想敌-课前测试题",
+                "单选题"
+              ],
+              "score": 20,
+              "question": "《我的四个假想敌》的作者是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "叶圣陶"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "余光中"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "沈从文"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "张中行"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-4-2",
+          "name": "第4课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-4-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "被鲁迅誉为“史家之绝唱，无韵之离骚”的是我国古代哪部著作?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《史记》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《战国策》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《资治通鉴》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《左传》"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "下列有关表述错误的一项是",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "我国最早的国别体、纪传体、断代体史书，分别是《国语》《史记》《汉书》《春秋》是我国第一部叙事详备的编年体史书。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "我国古典文学的形式多种多样，诗歌包括诗、词、曲等，散文有叙事、记游、说理、抒情等类别，小说有笔记、传奇、平话、章回小说等体裁，戏曲有杂剧(北曲)、南曲等"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "散曲是金、元两代兴起、从“词”蜕化出来的一种歌曲，体式和词相近，较为自由，可以在字数定格外加衬字，较多地使用口语，有小令和套数两种形式"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "唐代小说称“传奇”，明代的戏剧也称“传奇”，汤显祖的《牡丹亭》就是明代传奇的杰出作品"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "与杨炯、王勃、卢照邻并称为“初唐四杰”的是",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "李白"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "白居易"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "骆宾王"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "李商隐"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "下列说法不正确的一项是",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "历史剧往往注重剧情和史实的吻合，郭沫若却独辟蹊径，超越了史实的局限，以达到借古讽今的目的，如历史剧《屈原》。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "我国“五四”新文化运动以前的文学叫古典文学。在古典文学中，先秦散文、两汉史传文学、唐诗、宋词、元曲、明清小说，代表了各个时期文学的最高成就。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "我国古代有些文学形式，在不同朝代所指有别，如“传奇”，唐宋时代是指文言短篇小说，明清时代也可指戏曲作品;“乐府”，汉代可指民歌，宋代也可指词。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "唐传奇的出现，标志着我国古典小说的成熟，著名的传奇有李朝威的《莺莺传》、元稹的《柳毅传》等。"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "下列表述不正确的一项是",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "古体诗和近体诗是从诗的音律角度来划分的，二者的区别是:近体诗的行数、字数和用韵不固定，古体诗的行数、字数和用韵固定。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "词分小令、中调和长调，这是依据字数的多少来划分的。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "中国古代戏剧以“戏”和“曲”为主要因素，称为“戏曲”。主要包括南戏、杂剧、传奇及各种地方戏。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "“赋”是我国古代一种文体，它讲求文采、韵律，兼具诗歌和散文的性质。著名的赋有杜牧的《阿房宫赋》、苏轼的《前赤壁赋》和欧阳修的《秋声赋》等。"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-4-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "4-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "下列文学常识表述错误的一项是",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "马致远是元曲四大家之一"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "小李杜是指唐代诗人李白和杜甫，大李杜是指晚唐诗人李商隐和杜牧"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "建安文学“三曹”是指曹操、曹丕、曹植"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《狂人日记》是我国第一篇白话小说"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-5",
+          "name": "第5课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-5-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-课前小测试",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "小品文是( )。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "戏剧"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "小说"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "诗歌"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "散文"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-课前小测试",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "下面哪项不是梁实秋小品文的语言特点( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "简洁成癖"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "不喜修饰"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "文白交融"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "长短句并用"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-课前小测试",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "下面不符合梁实秋散文的创作特点的是( )。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "作品有着分明的民族意识、爱国情怀和家国之恋"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "注重追求精神的愉悦"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "不太关注与表现人性"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "常常以调侃、幽默的笔调来砧砭时弊"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "关注人性、表现人性，并倾注心力于人性的抑恶扬善。"
+            }
+          ]
+        },
+        {
+          "id": "unit-5-2",
+          "name": "第5课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-5-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-文学常识小测验",
+                "单选题"
+              ],
+              "score": 14.2,
+              "question": "李清照词中的“绿肥红瘦”描写的是什么季节的景色?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "仲夏"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "暮春"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "初春"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "绿叶茂盛，花渐凋谢，所以可以看出指暮春时节，也形容春残的景象。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-文学常识小测验",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "下面哪个成语与秦始皇有关?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "图穷匕见"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "指鹿为马"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "奇货可居"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "图穷匕见说的是荆轲刺秦王的故事；奇货可居说的是吕不韦“投资”秦始皇父亲的故事；指鹿为马则是赵高“欺负”秦始皇儿子的故事。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-文学常识小测验",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "《诗经》是我国第一部诗歌总集，《诗经》里面包括多少首诗?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "三百首"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "三百零五首"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "《诗经》是我国第一部诗歌总集，共收入自西周初期至春秋中叶约五百年间的诗歌305篇。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-文学常识小测验",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "唱念做打是中国戏曲表演的四种艺术手段，也是戏曲表演的四项基本功，其中“做”指的是:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "器械表演"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "舞蹈动作"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "面部表情"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "唱指唱功，念指具有音乐性的念白，做指舞蹈化的形体动作，打指武打和翻跌的技艺。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-文学常识小测验",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "算盘是中国传统计算工具，利用算盘能进行开平方的运算吗?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "不能"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "能"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "算盘可以进行开平方运算。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-文学常识小测验",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "《孙子兵法》的作者是:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "孙武"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "孙膑"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "《孙子兵法》的作者是孙武；孙膑所著为《孙膑兵法》，又名《齐孙子》。"
+            },
+            {
+              "id": "subject-bmvcex-unit-5-literature-007",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "5-文学常识小测验",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "“海上升明月，天涯共此时”是谁的名句?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "张九龄"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "王勃"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "出自张九龄《望月怀远》。"
+            }
+          ]
+        },
+        {
+          "id": "unit-6",
+          "name": "第6课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-6-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-课前测试题",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "国立西南联合大学前后共存在了8年零11个月。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-6-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-课前测试题",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "电影《无问西东》的片名来自( )。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "北京大学校歌中的一句歌词"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "南开大学校歌中的一句歌词"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "清华大学的校训"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "清华大学校歌中的一句歌词"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-6-pretest-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-课前测试题",
+                "单选题"
+              ],
+              "score": 33.4,
+              "question": "国立西南联合大学的校训是“刚毅坚卓”。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-6-2",
+          "name": "第6课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-6-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "古代宫殿大门前成对的石狮一般都是:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "左雌右雄"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "左雄右雌"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "古代宫殿大门前成对的石狮一般为左雄右雌。"
+            },
+            {
+              "id": "subject-bmvcex-unit-6-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "唐代诗人贾岛“二句三年得，一吟双泪流”的诗句是:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "鸟宿池边树，僧敲月下门。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "独行潭底影，数息树边身。"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "出自贾岛《题诗后》：“二句三年得，一吟双泪流。知音如不赏，归卧故山秋。”"
+            },
+            {
+              "id": "subject-bmvcex-unit-6-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "“结发”在古时是指结婚时:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "妻子把头发束起来"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "丈夫把头发束起来"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "把夫妻头发束在一起"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "结发是古代婚姻习俗，指夫妻成婚时各取头上一根头发，合而作结。"
+            },
+            {
+              "id": "subject-bmvcex-unit-6-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "《西游记》中唐僧的原型是:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "鉴真"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "玄奘"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "《西游记》中唐僧的原型是玄奘。"
+            },
+            {
+              "id": "subject-bmvcex-unit-6-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "“鄂尔多斯”在蒙古语中是什么意思:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "众多宫殿"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "大草原"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "盛产羊毛的地方"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "美丽的地方"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "“鄂尔多”在蒙古语中是“宫帐”的意思，“斯”表示复数，即“很多”。"
+            },
+            {
+              "id": "subject-bmvcex-unit-6-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "6-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "我国传统表示次序的“天干”共有几个字:",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "十个"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "十二个"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "十天干为：甲、乙、丙、丁、戊、己、庚、辛、壬、癸。"
+            }
+          ]
+        },
+        {
+          "id": "unit-7",
+          "name": "第7课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-7-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-课前小测试",
+                "单选题"
+              ],
+              "score": 14.2,
+              "question": "《<北京大学月刊>发刊词》是一篇(  )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "议论文"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "散文"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "记叙文"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "剧本"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-课前小测试",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "被毛泽东称为“学界泰斗，人世楷模”的人是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "鲁迅"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "胡适"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "蔡元培"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "李大钊"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-pretest-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-课前小测试",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "《<北京大学月刊>发刊词》的作者是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "蔡元培"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "朱光潜"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "钱锺书"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "余秋雨"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-pretest-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-课前小测试",
+                "单选题"
+              ],
+              "score": 14.3,
+              "question": "《<北京大学月刊>发刊词》所使用的语言是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "古白话"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "古文"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "浅近文言文"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "普通话"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-pretest-005",
+              "type": "judge",
+              "typeLabel": "判断题",
+              "difficulty": "easy",
+              "tags": [
+                "7-课前小测试",
+                "判断题"
+              ],
+              "score": 14.3,
+              "question": "《<北京大学月刊>发刊词》初次刊登是在1918年。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-pretest-006",
+              "type": "judge",
+              "typeLabel": "判断题",
+              "difficulty": "easy",
+              "tags": [
+                "7-课前小测试",
+                "判断题"
+              ],
+              "score": 14.3,
+              "question": "蔡元培是中国近代教育家。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-pretest-007",
+              "type": "judge",
+              "typeLabel": "判断题",
+              "difficulty": "easy",
+              "tags": [
+                "7-课前小测试",
+                "判断题"
+              ],
+              "score": 14.3,
+              "question": "蔡元培在《<北京大学月刊>发刊词》中提出了“兼容并收”的教育主张。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-7-2",
+          "name": "第7课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-7-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "中国的六大古都是:( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "北京、西安、成都、开封、南京、杭州"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "北京、西安、洛阳、开封、南京、杭州"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "北京、西安、开封、南京、洛阳、武汉"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "北京、西安、天津、洛阳、杭州、开封"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "中国六大古都通常指北京、西安、洛阳、开封、南京、杭州。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "属于四大名绣的是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "鄂绣"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "豫绣"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "蜀绣"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "赣绣"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "中国四大名绣通常指苏绣、湘绣、粤绣、蜀绣。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "《史记》是中国第一部( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "国别史"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "编年史"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "编年体通史"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "纪传体通史"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "《史记》是中国第一部纪传体通史。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "不属于中国四大佛山的是:( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "九华山"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "普陀山"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "武当山"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "峨眉山"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "中国四大佛教名山为五台山、峨眉山、普陀山、九华山；武当山不属于四大佛山。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "“一日不见，如隔三秋”里的“三秋”是指:( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "三个月"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "三年"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "三十年"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "三个季度"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "“三秋”可指三个季度，即九个月。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "龙门石窟位于下列哪个省:( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "山东"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "甘肃"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "河南"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "陕西"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "龙门石窟位于河南省洛阳市。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-007",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "中国的三教合一指的是哪三种宗教?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "道教、儒教、基督教"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "儒教、佛教、道教"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "佛教、基督教、伊斯兰教"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "佛教、道教、基督教"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "三教合一通常指儒、释、道三教融合。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-008",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.2,
+              "question": "中国三大传统节日是什么?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "元宵节，端午节，春节"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "清明节，中秋节，春节"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "春节，元旦，中秋节"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "春节，端午节，中秋节"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "中国三大传统节日通常指春节、端午节、中秋节。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-009",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "耄耋之年指的是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "五六十岁"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "六七十岁"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "八九十岁"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "七八十岁"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "耄耋之年通常指八九十岁的年纪。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-010",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "李清照词 “人比黄花瘦”中的黄花是什么花 ( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "黄花"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "丁香花"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "菊花"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "腊梅花"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "“人比黄花瘦”中的“黄花”指菊花。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-011",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "我国一共有多少个省级行政区?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "34 个"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "31 个"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "30 个"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "29 个"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "我国共有34个省级行政区。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-012",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "中国古代称戏曲演员为“梨园子弟”，“梨园子弟”的称号出自哪个朝代: ( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "宋朝"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "唐朝"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "元朝"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "清朝"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "“梨园子弟”的称号出自唐朝，与唐玄宗教演艺人有关。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-013",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "下列属于我国四大传说故事的是:( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《嫦娥奔月》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《山海经》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《田螺姑娘》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《孟姜女》"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "中国四大民间传说通常指《牛郎织女》《孟姜女》《梁山伯与祝英台》《白蛇传》。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-014",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "地动仪发明于哪个朝代( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "东晋"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "东汉"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "西晋"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "西汉"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "地动仪由东汉张衡发明。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-015",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "我们常说的“鸿雁传书”源自于以下哪个历史故事( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "霸王别姬"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "楚汉相争"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "文姬归汉"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "苏武牧羊"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "“鸿雁传书”源自苏武牧羊的历史故事。"
+            },
+            {
+              "id": "subject-bmvcex-unit-7-literature-016",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "7-文学常识小测试",
+                "单选题"
+              ],
+              "score": 6.3,
+              "question": "文成公主与松赞干布和亲是在什么时期:( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "唐玄宗"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "唐高宗"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "唐太宗"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "唐中宗"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "文成公主与松赞干布和亲发生在唐太宗时期。"
+            }
+          ]
+        },
+        {
+          "id": "unit-8",
+          "name": "第8课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-8-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-课前测试题",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "西南联合大学的校址主要位于( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "昆明"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "重庆"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "贵阳"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "成都"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-8-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-课前测试题",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "冯友兰的著作不包括( )。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《中国哲学简史》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《中国哲学史新编》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《论道》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《中国哲学史》"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-8-pretest-003",
+              "type": "judge",
+              "typeLabel": "判断题",
+              "difficulty": "easy",
+              "tags": [
+                "8-课前测试题",
+                "判断题"
+              ],
+              "score": 33.4,
+              "question": "冯友兰的贞元六书包括《新哲学》、《新事论》、《新世训》、《新原人》、《新原道》和《新知言》六部著作‌。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-8-2",
+          "name": "第8课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-8-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "成语“白驹过隙”比喻( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "时光飞逝"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "人生如梦"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "时间宝贵"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "速度飞快"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "“白驹过隙”本义指白色骏马在缝隙前飞快越过，比喻时间过得很快，光阴易逝。"
+            },
+            {
+              "id": "subject-bmvcex-unit-8-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "下列选项中与“亡羊补牢”意思最接近的是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "往者不可谏，来者犹可追"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "祸兮，福之所倚，福兮，祸之所伏"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "失之东隅，收之桑榆"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "人无远虑，必有近忧"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "“亡羊补牢”指出了问题以后及时补救，以防继续受损，与“往者不可谏，来者犹可追”意思最接近。"
+            },
+            {
+              "id": "subject-bmvcex-unit-8-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "下面哪个成语和曹操有关?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "望梅止渴"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "画饼充饥"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "背水一战"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "四面楚歌"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "“望梅止渴”与曹操行军途中以梅林激励士兵的故事有关。"
+            },
+            {
+              "id": "subject-bmvcex-unit-8-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "墨子的主要思想是“兼爱”，他所反对的“爱有差等”这一观点是哪家学派的?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "道家"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "儒家"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "法家"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "名家"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "“爱有差等”与儒家以血亲伦理为基础的差等之爱相关。"
+            },
+            {
+              "id": "subject-bmvcex-unit-8-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "拍电影时常用的“杀青”来表示拍摄完成，“杀青”原指什么?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "制作竹简的一道工序"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "加工新茶的一种方法"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "制作陶器的一道工序"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "制作丝绸的一道工序"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "“杀青”最初指古代制作竹简时烤干水分、刮去青皮等处理工序，后泛指著作或拍摄完成。"
+            },
+            {
+              "id": "subject-bmvcex-unit-8-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "8-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "王羲之对一种动物十分偏爱，并从它的体态姿势上领悟到书法执笔运笔的道理，这是什么动物?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "鱼"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "鸡"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "鹤"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "鹅"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "相传王羲之喜爱鹅，并从鹅的体态姿势中领悟书法执笔运笔的道理。"
+            }
+          ]
+        },
+        {
+          "id": "unit-9",
+          "name": "第9课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-9-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-课前测试题",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "一百多年来中国教育始终没有解决的一个大问题是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "教育目的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "教学观念"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "课程设置"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "教学目标"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-课前测试题",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "梅贻琦先生倡导( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "通专兼顾"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "通才教育"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "重“专”轻“通”"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "专才教育"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-pretest-003",
+              "type": "judge",
+              "typeLabel": "判断题",
+              "difficulty": "easy",
+              "tags": [
+                "9-课前测试题",
+                "判断题"
+              ],
+              "score": 33.4,
+              "question": "文章认为，整个社会长期被金钱第一、专家至上、高速发展等急功近利的观念所困扰，这使“专才”的培养大受影响，“通才”的制造仍在进行。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "正确"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-9-2",
+          "name": "第9课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-9-literature-2-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测试2",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "下列文学常识表述正确的一项是()。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "司马迁，西汉史学家、文学家。《史记》是我国第一部编年体通史。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《史记》记载了上自传说中的黄帝时代，下至汉武帝共3000多年的历史，一共120篇。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《史记》分本纪、世家、列传、书、表五个体例。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "韩愈，字退之，世称韩昌黎。唐代文学家，与刘禹锡共同倡导了“古文运动”。宋代苏轼称他“文起八代之衰”，明人推他为唐宋八大家之首。"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-2-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测试2",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "下列表述有误的一项是(    )。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "词的标题与词牌有严格的区别，标题表明词所涉及的内容，词牌是与韵相配合的乐调，二者分别表示词的内容和形式。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "现代戏剧主要指20世纪以来从西方传入的话剧(如《雷雨》)、歌剧(如《白毛女》)和舞剧(如《红色娘子军》)等，话剧是其中的主体。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "“汉乐府”本是汉武帝设立的掌管音乐的官府，后来成为诗体的名称。《木兰辞》和《孔雀东南飞》被称为“乐府双璧”。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "西方表现主义小说的代表是被誉为美国当代戏剧奠基人的尤金奥尼尔，西方表现主义戏剧的代表是奥地利的卡夫卡。"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-2-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测试2",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "1918年，鲁迅发表在《新青年》上的我国现代文学史上的第一篇白话小说是(  )。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《祝福》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《药》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《狂人日记》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《伤逝》"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-2-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测试2",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "下列作品不是莎士比亚四大悲剧的一项是(    )。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《奥赛罗》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《李尔王》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《麦克白》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《威尼斯商人》"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-2-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测试2",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "“先天下之忧而忧，后天下之乐而乐”出自哪位作家的哪部作品()?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "范仲淹——《岳阳楼记》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "欧阳修——《醉翁亭记》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "柳宗元——《小石潭记》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "王安石——《游褒禅山记》"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-2-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测试2",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "下列各项中，作家、作品、体裁对应不正确的一项是()。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "孙犁——《荷花淀》——小说"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "朱自清——《荷塘月色》——散文"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "司马迁——《鸿门宴》——小说"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "鲁迅——《祝福》——小说"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "以下四位谁曾经中过状元?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "欧阳修"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "范仲淹"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "韩愈"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "文天祥"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "文天祥二十岁时考取进士，殿试时被宋理宗亲自选为第一名。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "“美”字最初的含义是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "羊大即为美"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "远方茂盛的森林"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "戴着头饰站立的人"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "土地里生长的花朵"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "甲骨文中的“美”像戴着头饰站立的人，后来字形演变才被误解为“羊”“大”组合。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "《尚书》中的“尚”是什么意思?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "崇尚"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "上古"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "官名"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "高尚"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "“尚”通“上”，《尚书》即上古之书。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "孔子为自己的教学定为“孔门四教”，具体指的是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "仁、义、礼、信"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "德、智、体、美"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "修身、齐家、治国、平天下"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "文、行、忠、信"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "孔门四教指文、行、忠、信。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "俗语说“化干戈为玉帛”，干戈都是兵器，下面哪种武器属于防御武器?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "矛"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "干"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "刀"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "戈"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "“干”后来多用于防御，属于防御性武器。"
+            },
+            {
+              "id": "subject-bmvcex-unit-9-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "9-文学常识小测验",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "《霸王别姬》是京剧中的名段，“虞姬”这一角色在京剧中属于( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "矛"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "青衣"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "花旦"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "刀"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "虞姬在京剧行当中属于青衣。"
+            }
+          ]
+        },
+        {
+          "id": "unit-10",
+          "name": "第10课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-10-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "下列对《西湖七月半》中 “杭人游湖” 的描述，正确的是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "寅出卯归，赏月游玩"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "巳出酉归，避月如仇"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "寅出酉归，避月如仇"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "巳出卯归，赏月游玩"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "在《西湖七月半》中，作者写道“杭人游湖，巳出酉归，避月如仇”。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "下列句子中加点词的解释，不正确的一项是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "跻入人丛(通“挤”，挤进)"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "灯火优傒(优伶和仆役)"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "峨冠盛筵(高冠)"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "竹肉相发(竹子和肉)"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "“竹肉相发”中“竹”指管乐器，“肉”指歌喉，并非竹子和肉。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "下列各组句子中，加点词的意义和用法都相同的一组是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "看月而人不见其看月之态 / 秦王恐其破璧"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "亦船亦声歌，名妓闲僧 / 亦步亦趋"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "向之浅斟低唱者出 / 则无望民之多于邻国也"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "以五类看之 / 焉用亡郑以陪邻"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "《西湖七月半》的主旨是赞美( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "西湖之风土民情"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "杭州观月之盛况"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "西湖月色之美景"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "文人赏月之清雅"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "文章通过对各类游客赏月情态的描写，体现出作者文人雅士的审美情趣，主旨是赞美文人赏月之清雅。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "下列对文中 “杭人游湖” 的理解，不正确的一项是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "二更以前，西湖边人声和鼓乐声嘈杂喧闹，如同水波涌腾、大地震荡。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "七月半这天晚上，杭人爱虚名，一群群人争相出城，多赏把守城门的士卒一些小费。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "杭人游湖喜欢在上午十点左右出门，下午六点左右回来，躲避月亮如同躲避仇人。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "杭人游湖时，大船小船一起靠岸，人们能看到美丽的景致，也能欣赏到月光下的西湖。"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "文中写“大船小船一齐凑岸，一无所见”，说明杭人游湖时因人多拥挤，并不能真正欣赏景致。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "下列对本文写作手法和主旨的理解，不正确的一项是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "文章采用了对比的手法，将五类看月之人进行对比，突出了不同人的情态格调。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "作者通过描写七月半西湖的热闹景象，表达了对繁华世俗生活的喜爱和向往。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "文中先写杭人游湖的喧闹嘈杂，后写自己等人在人散之后看月的情景，形成鲜明对比，衬托出作者清高雅洁的情怀。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "作者在入清以后写这篇追忆明末杭州风习的小品，勾画出一幅人情世态，蕴含着国破家亡的悲愤。"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "作者描写热闹景象并非表达对繁华世俗生活的喜爱，而是表现对庸俗世态的批判。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-007",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "《西湖七月半》中，“小船轻幌，净几暖炉，茶铛旋煮，素瓷静递，好友佳人，邀月同坐” 描写的是哪类人( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "名妓闲僧"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "文人雅士"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "达官贵人"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "名娃闺秀"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "这段文字描写的是文人雅士清幽雅致的赏月情趣。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-008",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "《西湖七月半》中，作者对达官显贵的态度是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "批判"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "赞赏"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "同情"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "羡慕"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "作者通过描写达官显贵附庸风雅、讲究排场的情态，对其进行了批判与讽刺。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-009",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "《西湖七月半》选自张岱的( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《陶庵梦忆》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《琅嬛文集》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《夜航船》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《西湖梦寻》"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "《西湖七月半》选自张岱的《陶庵梦忆》。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-pretest-010",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-课前测试题",
+                "单选题"
+              ],
+              "score": 10,
+              "question": "下列对文中五类看月之人的分析，不正确的一项是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "“名为看月而实不见月者”，这类人是达官贵人，他们坐在楼船上，吹箫击鼓，摆着盛大的酒席，只是为了附庸风雅。"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "“看月而人不见其看月之态，亦不作意看月者”，这是作者最欣赏的一类人，他们是作者自己和好友佳人，他们看月是真正的享受，不刻意做作。"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "“身在月下而实不看月者”，指的是名娃闺秀，她们带着娈童，在船台上团团而坐，左盼右顾，只是来凑个热闹。"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "“亦看月而欲人看其看月者”，是那些名妓闲僧，他们希望别人关注他们看月的姿态，以显示自己的高雅。"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "该类人虽为作者欣赏，但不能简单等同于作者自己和好友佳人。"
+            }
+          ]
+        },
+        {
+          "id": "unit-10-2",
+          "name": "第10课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-10-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-文学常识测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "苏轼在《念奴娇·赤壁怀古》中提到了“羽扇纶巾，谈笑间，樯橹灰飞烟灭”，“羽扇纶巾”形容的是下面哪位历史人物?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "周瑜"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "诸葛亮"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "孙策"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "曹操"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "“羽扇纶巾”出自苏轼《念奴娇·赤壁怀古》：“遥想公瑾当年……羽扇纶巾”，公瑾即周瑜。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-文学常识测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "琵琶本名“批把”，“批把”一词来源于什么?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "长在枇杷树上的果实"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "制作琵琶的工艺"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "制造琵琶的材料"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "演奏琵琶的方式"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "“批把”源自演奏拨法，往下弹称“批”，往上挑称“把”。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-文学常识测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "成语“请君入瓮”，“请”的是谁?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "狄仁杰"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "上官婉儿"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "周兴"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "来俊臣"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "“请君入瓮”讲的是武则天时期酷吏来俊臣用周兴自己的办法整治周兴。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-文学常识测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "按照戏曲界的行话，以下哪个表示最后一出?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "一轴戏"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "压轴戏"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "中轴戏"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "大轴戏"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "戏曲行话中，最后一出称为“大轴戏”，倒数第二出才称为“压轴戏”。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-文学常识测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "水浒一百单八将中有几位女性?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "三位"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "两位"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "四位"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "五位"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "水浒一百单八将中有三位女性：一丈青扈三娘、母夜叉孙二娘、母大虫顾大嫂。"
+            },
+            {
+              "id": "subject-bmvcex-unit-10-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "10-文学常识测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "从事贸易活动的人叫做“商人”，这跟历史上的哪个朝代有关?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "商代"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "汉代"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "元代"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "唐代"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "“商人”这一称呼与商代及商族人从事贸易活动有关。"
+            }
+          ]
+        },
+        {
+          "id": "unit-11",
+          "name": "第11课-课前测验",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-11-pretest-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-课前小测试",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "( )指屈原、宋玉为代表的楚辞以及后世模仿楚辞的作品。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "律赋"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "汉赋"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "骈赋"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "骚赋"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-11-pretest-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-课前小测试",
+                "单选题"
+              ],
+              "score": 33.3,
+              "question": "“乃有剑客惭恩，少年报士。”句中“士”的意思是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "士兵"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "好友"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "战士"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "士气"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-11-pretest-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-课前小测试",
+                "单选题"
+              ],
+              "score": 33.4,
+              "question": "以《恨赋》《别赋》最为著名的作者是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "白居易"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "苏轼"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "李白"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "江淹"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-11-2",
+          "name": "第11课-文学常识",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmvcex-unit-11-literature-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "“问世间、情为何物，直教生死相许”这句诗写的是( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "大雁"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "鹦鹉"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "鸳鸯"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "黄雀"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-11-literature-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.6,
+              "question": "我国古代的“乐府双璧”是指( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《长歌行》和《木兰诗》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《孔雀东南飞》和《子夜歌》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《陌上桑》和《子夜歌》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《孔雀东南飞》和《木兰诗》"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-11-literature-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "宋代词人辛弃疾的名句“众里寻他千百度。蓦然回首，那人却在，灯火阑珊处”写的是我国传统节日( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "元宵节"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "中秋节"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "端午节"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "七夕节"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-11-literature-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "“滥竽充数”出自哪部书?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "《墨子》"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "《庄子》"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "《孟子》"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "《韩非子》"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-11-literature-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "成语“退避三舍”中的“三舍”指( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "九十里"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "一百里"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "六十里"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "三十里"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmvcex-unit-11-literature-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "11-文学常识小测试",
+                "单选题"
+              ],
+              "score": 16.7,
+              "question": "中国历史上被誉为“医学百科全书”的作者是谁?( )",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "孙思邈"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "扁鹊"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "李时珍"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "华佗"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

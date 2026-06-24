@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-5-2",
+    "name": "第5课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-5-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-文学常识小测验",
+        "单选题"
+      ],
+      "score": 14.2,
+      "question": "李清照词中的“绿肥红瘦”描写的是什么季节的景色?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "仲夏"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "暮春"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "初春"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 暮春。之所以选B，是因为“绿肥”写绿叶繁盛，“红瘦”写红花凋谢，这是春末花残叶盛的景象，所以对应暮春。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-文学常识小测验",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "下面哪个成语与秦始皇有关?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "图穷匕见"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "指鹿为马"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "奇货可居"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 图穷匕见。之所以选A，是因为“图穷匕见”出自荆轲刺秦王的故事，图卷展开到最后露出匕首，所以与秦始皇相关。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-文学常识小测验",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "《诗经》是我国第一部诗歌总集，《诗经》里面包括多少首诗?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "三百首"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "三百零五首"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 三百零五首。之所以选B，是因为《诗经》是我国第一部诗歌总集，共305篇，传统上也称“诗三百”。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-文学常识小测验",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "唱念做打是中国戏曲表演的四种艺术手段，也是戏曲表演的四项基本功，其中“做”指的是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "器械表演"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "舞蹈动作"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "面部表情"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 舞蹈动作。之所以选B，是因为戏曲“四功”中，唱是唱腔，念是念白，做是舞蹈化、程式化的形体动作，打是武打翻跌。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-文学常识小测验",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "算盘是中国传统计算工具，利用算盘能进行开平方的运算吗?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "不能"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "能"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 能。之所以选B，是因为传统算盘不仅能进行加减乘除，也能通过珠算方法进行开平方等较复杂运算。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-文学常识小测验",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "《孙子兵法》的作者是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "孙武"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "孙膑"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 孙武。之所以选A，是因为“孙武”能直接回答题干中的“《孙子兵法》的作者是:”，与课文内容、文学常识或概念要求相符；B不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-literature-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-文学常识小测验",
+        "单选题"
+      ],
+      "score": 14.3,
+      "question": "“海上升明月，天涯共此时”是谁的名句?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "张九龄"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "王勃"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 张九龄。之所以选A，是因为“海上生明月，天涯共此时”出自唐代张九龄《望月怀远》。这正好解释了题干所问，所以应选A。"
+    }
+  ]
+}

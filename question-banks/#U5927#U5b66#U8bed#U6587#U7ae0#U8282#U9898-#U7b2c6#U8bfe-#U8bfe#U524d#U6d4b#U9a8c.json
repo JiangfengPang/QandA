@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-6",
+    "name": "第6课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-6-pretest-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-课前测试题",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "国立西南联合大学前后共存在了8年零11个月。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 正确。之所以选A，是因为“正确”能直接回答题干中的“国立西南联合大学前后共存在了8年零11个月。”，与课文内容、文学常识或概念要求相符；B不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-pretest-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-课前测试题",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "电影《无问西东》的片名来自( )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "北京大学校歌中的一句歌词"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "南开大学校歌中的一句歌词"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "清华大学的校训"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "清华大学校歌中的一句歌词"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 清华大学校歌中的一句歌词。之所以选D，是因为电影《无问西东》的片名来自清华大学校歌中的歌词。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-pretest-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-课前测试题",
+        "单选题"
+      ],
+      "score": 33.4,
+      "question": "国立西南联合大学的校训是“刚毅坚卓”。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 正确。之所以选A，是因为“刚毅坚卓”是西南联合大学校训，体现抗战时期师生坚韧、独立和追求学术的精神。这正好解释了题干所问，所以应选A。"
+    }
+  ]
+}

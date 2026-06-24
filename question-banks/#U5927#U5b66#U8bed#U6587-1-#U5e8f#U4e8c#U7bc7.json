@@ -1,0 +1,701 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-1",
+    "name": "1-序二篇",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "college-chinese-xu-er-pian-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序",
+        "判断"
+      ],
+      "score": 5,
+      "question": "序，按作者分为：自己写的序，叫“自序”；别人写的“序”，叫“他序”。在著作正文前“自序”和“他序”不能并存。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "天人合一",
+        "张载"
+      ],
+      "score": 5,
+      "question": "首次将“天人合一”作为一个完整哲学命题明确提出的是北宋哲学家张载。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "陈省身",
+        "文化冲突"
+      ],
+      "score": 5,
+      "question": "陈省身认为人类正处在一个新的春秋时代，这个时代是指什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "东方与西方间的新式战争"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "人与自然的冲突"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "中国文化与西方文化冲突"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "国家与国家间的新式战争"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 中国文化与西方文化冲突。中国文化与西方文化冲突最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选C；A、B、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "季羡林"
+      ],
+      "score": 5,
+      "question": "在下列选项中，哪一个称号并非对季羡林先生的誉称？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "学界泰斗"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "国学大师"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "国宝"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "文化昆仑"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 文化昆仑。本题问的是不符合题意的一项，文化昆仑正是与题干限定不一致的选项，所以选D；A、B、C项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "陈省身",
+        "爱因斯坦"
+      ],
+      "score": 5,
+      "question": "陈省身强调他常和爱因斯坦见面，其目的是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "暗示范曾作品的重大价值"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "说明自己和爱因斯坦的关系"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "说明爱因斯坦博学"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "暗示中西文化互相融会的价值"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 暗示中西文化互相融会的价值。暗示中西文化互相融会的价值最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选D；A、B、C项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "庄子显灵记",
+        "范曾"
+      ],
+      "score": 5,
+      "question": "《庄子显灵记》的作者是谁？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "庄子"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "陈省身"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "季羡林"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "范曾"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 范曾。题干考查作者、作品或出处的对应关系，范曾与本课相关文学常识一致，因此选D；A、B、C项不符合这一对应关系。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "陈省身",
+        "序文特点"
+      ],
+      "score": 5,
+      "question": "以下不属于陈省身给《庄子显灵记》所作的序文的特点是哪一项？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "层次明晰"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "言约旨远"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "委婉含蓄"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "文辞跳荡"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 层次明晰。本题问的是不符合题意的一项，层次明晰正是与题干限定不一致的选项，所以选A；B、C、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "天人合一"
+      ],
+      "score": 5,
+      "question": "下列表述中与“天人合一”思想一致的一项是？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "天地与我并生，而万物与我为一"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "人定胜天"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "征服自然，改造自然"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "人类在大自然面前翘尾巴"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 天地与我并生，而万物与我为一。天地与我并生，而万物与我为一最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "字词"
+      ],
+      "score": 5,
+      "question": "下列词语书写全对的一组是？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "翘尾巴 关健 灵犀"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "弊端 陶醉 报负"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "遐想 精湛 深邃"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "造旨 气概 涉及"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 遐想 精湛 深邃。本题考查字形和词语书写，C项书写规范，因此选C；A、B、D项存在错别字或词语写法不规范的问题。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "课文主旨"
+      ],
+      "score": 5,
+      "question": "本课序一和序二两篇文章主要讨论的问题是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "在对待人与自然的关系问题上，东西方文化的差异"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "对范曾的著作的主要内容进行评述"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "对西方著名人物的哲学思想进行评价"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "对庄子显灵事件的评价"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 在对待人与自然的关系问题上，东西方文化的差异。在对待人与自然的关系问题上，东西方文化的差异最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "字音"
+      ],
+      "score": 5,
+      "question": "下列词语注音全对的一组是？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "弊端(bì duān) 庶几(shù jǐ)"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "溽暑(rǔ shǔ) 遐想(xiá xiǎng)"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "处理(chǔ lǐ) 付梓(fù zǐ)"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "灵犀(lín xī) 效颦(xiào píng)"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 处理(chǔ lǐ) 付梓(fù zǐ)。本题考查字音辨析，C项注音符合规范，因此选C；A、B、D项存在读音不准确或不符合题干要求的问题。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "李商隐",
+        "诗句"
+      ],
+      "score": 5,
+      "question": "“身无彩凤双飞翼，心有灵犀一点通”是唐代诗人李商隐的诗句。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "报任安书",
+        "史记"
+      ],
+      "score": 5,
+      "question": "“究天人之际，通古今之变，成一家之言”语出哪里，并是哪部作品的创作宗旨？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《论语》；《春秋》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《报仁安书》；《史记》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《训俭示康》；《资治通鉴》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《秋水》；《齐物论》"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 《报仁安书》；《史记》。题干考查作者、作品或出处的对应关系，《报仁安书》；《史记》与本课相关文学常识一致，因此选B；A、C、D项不符合这一对应关系。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序"
+      ],
+      "score": 5,
+      "question": "下面哪个篇目与《序二篇》是不同类型的序？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《兰亭集序》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《伶官传序》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《送东阳马生序》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《<呐喊>自序》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《送东阳马生序》。之所以选C，是因为《送东阳马生序》最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-015",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "季羡林",
+        "自然观"
+      ],
+      "score": 5,
+      "question": "以下的观点与季羡林先生的看法一致的是？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "科学对我们的生活产生了重大的、积极的影响"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "我们应该警惕西方人对待自然的观念"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "东方文化落后于西方文化"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "我们同五百年前的人已经不一样了"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 我们应该警惕西方人对待自然的观念。我们应该警惕西方人对待自然的观念最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选B；A、C、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-016",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序一",
+        "序二",
+        "判断"
+      ],
+      "score": 5,
+      "question": "序一认为近代西方文化错了；序二认为中华文化也有局限性。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "错误"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "正确"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-017",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "歌德",
+        "自然观"
+      ],
+      "score": 5,
+      "question": "歌德说“大自然不会犯错，犯错误的是人”，意思是大自然是不可改变的，人类在自然面前只能被动接受。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-018",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "季羡林",
+        "天人合一"
+      ],
+      "score": 5,
+      "question": "季羡林先生提倡“天人合一”，从本意上来说，就是指人类与自然界和谐共生。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "错误"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "正确"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-019",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "陈省身",
+        "道德经"
+      ],
+      "score": 5,
+      "question": "陈省身提到爱因斯坦看老子的《道德经》，说明西方的伟人也在关注和了解中华思想和文化。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "错误"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "正确"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-020",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "观点比较"
+      ],
+      "score": 5,
+      "question": "根据课文，下列哪种说法最能体现本课两位作者在观点上的主要差别？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "序一作者（季羡林）读了《庄子显灵记》引发了对人与自然关系的思考，序二作者（陈省身）希望范曾再写一本《老子显灵记》。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "序一作者（季羡林）介绍了与范曾认识的经过，序二作者（陈省身）没有介绍。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "序一作者（季羡林）认为《庄子显灵记》体现了范曾哲学思想，序二作者（陈省身）认为《庄子显灵记》有杜甫诗的气概。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "序一作者（季羡林）认为西方近几百年征服自然的做法是错的，而序二作者（陈省身）则认为西方近五百年的科技发展是伟大的，改变了人类。"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 序一作者（季羡林）认为西方近几百年征服自然的做法是错的，而序二作者（陈省身）则认为西方近五百年的科技发展是伟大的，改变了人类。。题干考查作者、作品或出处的对应关系，序一作者（季羡林）认为西方近几百年征服自然的做法是错的，而序二作者（陈省身）则认为西方近五百年的科技发展是伟大的，改变了人类。与本课相关文学常识一致，因此选D；A、B、C项不符合这一对应关系。"
+    }
+  ]
+}

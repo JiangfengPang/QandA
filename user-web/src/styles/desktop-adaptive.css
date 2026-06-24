@@ -1,0 +1,381 @@
+/*
+  Desktop/laptop adaptive density layer.
+  Purpose: keep the single user-web project readable on notebooks without making every desktop element oversized.
+  This file intentionally affects only non-touch desktop widths; mobile practice layout remains controlled by practice.css.
+*/
+
+@media (min-width: 981px) {
+  :root {
+    --desktop-frame-max-w: 1420px;
+    --desktop-frame-gutter: 24px;
+    --desktop-sidebar-w: 182px;
+    --desktop-shell-gap: 14px;
+    --desktop-card-radius: 16px;
+    --desktop-card-pad: 16px;
+    --desktop-header-h: 68px;
+    --desktop-header-title: clamp(24px, 1.8vw, 30px);
+    --desktop-title: clamp(20px, 1.65vw, 26px);
+    --desktop-body: 14px;
+    --desktop-small: 12px;
+    --desktop-control-h: 44px;
+    --qx-page-topbar-h: var(--desktop-header-h);
+    --qx-page-topbar-padding: 10px 18px;
+    --qx-page-topbar-radius: 15px;
+    --qx-page-topbar-align: center;
+    --qx-page-topbar-title-size: var(--desktop-header-title);
+    --qx-page-topbar-title-margin: 0;
+    --qx-page-topbar-device-size: 11.5px;
+  }
+
+  .app-frame {
+    width: min(calc(100% - var(--desktop-frame-gutter)), var(--desktop-frame-max-w));
+    min-height: calc(100vh - 24px);
+    margin: 12px auto;
+    grid-template-columns: var(--desktop-sidebar-w) minmax(0, 1fr);
+    gap: var(--desktop-shell-gap);
+  }
+
+  .app-sidebar {
+    top: 12px;
+    min-height: calc(100vh - 24px);
+    padding: 14px 10px;
+    border-radius: var(--desktop-card-radius);
+  }
+
+  .brand {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 9px;
+    padding: 0 2px 14px;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .brand-mark img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand strong {
+    font-size: 13px;
+  }
+
+  .brand span {
+    font-size: 10.5px;
+  }
+
+  .nav-tabs {
+    gap: 8px;
+    padding: 20px 6px 0;
+  }
+
+  .nav-tab {
+    min-height: 40px;
+    grid-template-columns: 26px minmax(0, auto);
+    gap: 10px;
+    border-radius: 12px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .nav-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 9px;
+  }
+
+  .nav-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .nav-badge {
+    top: 5px;
+    right: 8px;
+  }
+
+  .qx-stats-card,
+  .qx-stats-metric,
+  .qx-unit-card,
+  .qx-question-card,
+  .qx-quiz-overview,
+  .qx-study-panel,
+  .qx-recent-card,
+  .qx-overview-card {
+    border-radius: var(--desktop-card-radius);
+    box-shadow: 0 8px 22px rgba(21, 42, 68, 0.07);
+  }
+
+  .qx-home-page .qx-page-header,
+  .qx-library-page:not(.qx-review-page-new) .qx-page-header,
+  .qstat-topbar,
+  .qrev-topbar {
+    height: var(--qx-page-topbar-h);
+    min-height: var(--qx-page-topbar-h);
+    padding: var(--qx-page-topbar-padding);
+    border-radius: var(--qx-page-topbar-radius);
+  }
+
+  .qx-home-page .qx-page-header h1,
+  .qx-library-page:not(.qx-review-page-new) .qx-page-header h1,
+  .qstat-topbar h1,
+  .qrev-title {
+    margin-top: var(--qx-page-topbar-title-margin);
+    font-size: var(--qx-page-topbar-title-size);
+  }
+
+  .qx-home-page .qx-page-header span,
+  .qx-library-page:not(.qx-review-page-new) .qx-page-header span,
+  .qstat-device,
+  .qrev-device {
+    font-size: var(--qx-page-topbar-device-size);
+  }
+}
+
+@media (min-width: 981px) and (max-height: 900px) {
+  :root {
+    --desktop-frame-max-w: 1460px;
+    --desktop-frame-gutter: 20px;
+    --desktop-sidebar-w: 176px;
+    --desktop-shell-gap: 12px;
+    --desktop-header-h: 62px;
+    --desktop-header-title: clamp(23px, 1.65vw, 28px);
+    --desktop-title: clamp(18px, 1.45vw, 23px);
+    --desktop-card-pad: 14px;
+    --desktop-control-h: 42px;
+  }
+
+  .app-sidebar {
+    padding: 12px 9px;
+  }
+
+  .nav-tabs {
+    gap: 7px;
+    padding-top: 18px;
+  }
+
+  .nav-tab {
+    min-height: 38px;
+    font-size: 12.5px;
+  }
+}
+
+@media (min-width: 981px) {
+  .app-frame.is-practice-frame {
+    width: min(calc(100% - var(--desktop-frame-gutter)), var(--desktop-frame-max-w));
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-screen {
+    gap: 12px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-header {
+    min-height: var(--desktop-header-h);
+    padding: 12px 18px;
+    border-radius: 16px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-title-block h1,
+  .qx-quiz-title-block h1 {
+    font-size: var(--desktop-header-title);
+    line-height: 1.05;
+    max-width: min(760px, 100%);
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-device {
+    font-size: 11px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-pill-btn {
+    min-height: 30px;
+    height: 30px;
+    padding: 0 12px;
+    font-size: 11px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-layout,
+  .qx-quiz-layout {
+    grid-template-columns: minmax(0, 1fr) clamp(184px, 14.6vw, 208px);
+    gap: 14px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-content {
+    gap: 12px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card {
+    max-height: calc(100vh - 196px);
+    padding: var(--desktop-card-pad);
+    border-radius: var(--desktop-card-radius);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card-head,
+  .qx-question-card-head {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .pill,
+  .tag-row span {
+    min-height: 24px;
+    padding: 0 9px;
+    font-size: 11px;
+  }
+
+  .qx-favorite-btn {
+    min-height: 30px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-progress,
+  .qx-question-progress {
+    gap: 6px;
+    margin: 10px 0 14px;
+    font-size: 12px;
+  }
+
+  .progress-line {
+    height: 6px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-small .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-standard .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-large .qx-question-title,
+  .qx-question-title {
+    margin-bottom: 14px;
+    font-size: var(--practice-question-font-size, var(--desktop-title));
+    color: #202124;
+    line-height: 1.58;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .qx-option-list {
+    gap: 9px;
+  }
+
+  .app-frame.is-practice-frame .qx-option-button,
+  .app-frame.is-practice-frame .qx-question-card.is-font-small .qx-option-button,
+  .app-frame.is-practice-frame .qx-question-card.is-font-large .qx-option-button,
+  .qx-option-button {
+    min-height: 52px;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 12px;
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: #24272d;
+    font-size: var(--practice-option-font-size, 16px);
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .option-key {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .qx-result-box {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+
+  .qx-simple-answer {
+    gap: 6px;
+    line-height: 1.55;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar,
+  .qx-quiz-action-bar {
+    gap: 14px;
+    padding: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar .qx-action-btn,
+  .qx-action-btn {
+    min-height: var(--desktop-control-h);
+    border-radius: 12px;
+    font-size: 13px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-overview,
+  .qx-quiz-overview {
+    max-height: calc(100vh - 196px);
+    padding: 14px;
+    border-radius: var(--desktop-card-radius);
+  }
+
+  .qx-overview-head {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .qx-overview-head h2 {
+    font-size: 18px;
+  }
+
+  .qx-overview-head p {
+    font-size: 12px;
+  }
+
+  .qx-overview-groups {
+    gap: 12px;
+  }
+
+  .qx-question-index-grid {
+    gap: 7px;
+  }
+
+  .qx-question-index-grid button {
+    min-height: 32px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 760px) {
+  :root {
+    --desktop-header-h: 58px;
+    --desktop-header-title: clamp(22px, 1.65vw, 27px);
+    --desktop-title: clamp(17px, 1.32vw, 21px);
+    --desktop-card-pad: 12px;
+    --desktop-control-h: 38px;
+  }
+
+  .app-frame {
+    min-height: calc(100vh - 16px);
+    margin: 8px auto;
+  }
+
+  .app-sidebar {
+    top: 8px;
+    min-height: calc(100vh - 16px);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card,
+  .app-frame.is-practice-frame .qx-quiz-overview,
+  .qx-quiz-overview {
+    max-height: calc(100vh - 172px);
+  }
+
+  .qx-option-list {
+    gap: 8px;
+  }
+
+  .app-frame.is-practice-frame .qx-option-button,
+  .qx-option-button {
+    min-height: 42px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}

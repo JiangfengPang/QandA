@@ -1,0 +1,463 @@
+/*
+  QandA mobile UI system - clean scoped layer
+  设计原则：
+  1. 在窄屏或 iPhone 桌面站点模式下生效，不影响普通桌面端。
+  2. 普通一级页面和答题页完全分域：普通页面走文档流，答题页走 fixed 三段式。
+  3. 不使用全局 transform / zoom；小屏幕通过 clamp、断点和组件尺寸适配。
+*/
+
+@media (max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px) {
+  :root {
+    --m-max-w: 430px;
+    --m-x: clamp(10px, 3.4vw, 15px);
+    --m-gap: clamp(9px, 3vw, 13px);
+    --m-radius: clamp(14px, 4vw, 18px);
+    --m-nav-h: calc(clamp(66px, 17vw, 78px) + env(safe-area-inset-bottom));
+    --m-header-h: clamp(58px, 15.5vw, 68px);
+    --m-title-xl: clamp(24px, 6.8vw, 31px);
+    --m-title-lg: clamp(17px, 4.8vw, 21px);
+    --m-title-md: clamp(14px, 4vw, 17px);
+    --m-body: clamp(12px, 3.35vw, 14px);
+    --m-caption: clamp(10px, 2.9vw, 12px);
+    --m-control-h: clamp(36px, 9.8vw, 42px);
+    --m-card-pad: clamp(10px, 3.1vw, 14px);
+    --qx-page-topbar-h: var(--m-header-h);
+    --qx-page-topbar-padding: clamp(12px, 3.4vw, 16px) clamp(16px, 4.5vw, 20px);
+    --qx-page-topbar-radius: var(--m-radius);
+    --qx-page-topbar-align: center;
+    --qx-page-topbar-title-size: var(--m-title-xl);
+    --qx-page-topbar-title-margin: 0;
+    --qx-page-topbar-device-size: var(--m-caption);
+  }
+
+  html,
+  body,
+  #app {
+    min-width: 320px;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-size: 22px 22px, 22px 22px, auto, auto;
+  }
+
+  /* ===================== 普通移动端页面：文档流 + 底部导航 ===================== */
+  .app-frame:not(.is-practice-frame) {
+    width: 100% !important;
+    max-width: var(--m-max-w) !important;
+    min-height: 100dvh !important;
+    margin: 0 auto !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .app-shell {
+    width: 100% !important;
+    min-height: 100dvh !important;
+    padding: var(--m-x) var(--m-x) calc(var(--m-nav-h) + var(--m-x)) !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .app-sidebar {
+    position: fixed !important;
+    z-index: 700 !important;
+    left: max(var(--m-x), calc((100vw - var(--m-max-w)) / 2 + var(--m-x))) !important;
+    right: max(var(--m-x), calc((100vw - var(--m-max-w)) / 2 + var(--m-x))) !important;
+    bottom: max(var(--m-x), env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    width: auto !important;
+    height: calc(var(--m-nav-h) - env(safe-area-inset-bottom)) !important;
+    min-height: 0 !important;
+    padding: 5px !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, .94) !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, .14) !important;
+    backdrop-filter: blur(14px);
+    overflow: visible !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .app-sidebar .brand {
+    display: none !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .nav-tabs {
+    height: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 3px !important;
+    padding: 0 !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .nav-tab {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 4px 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    align-content: center !important;
+    gap: 3px !important;
+    border-radius: 14px !important;
+    font-size: clamp(10.5px, 2.9vw, 12px) !important;
+    line-height: 1.08 !important;
+    font-weight: 760 !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .nav-icon {
+    width: clamp(25px, 6.7vw, 30px) !important;
+    height: clamp(25px, 6.7vw, 30px) !important;
+    border-radius: 10px !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .nav-icon svg {
+    width: clamp(14px, 3.8vw, 16px) !important;
+    height: clamp(14px, 3.8vw, 16px) !important;
+  }
+
+  .app-frame:not(.is-practice-frame) .nav-badge {
+    top: 7px !important;
+    right: calc(50% - 23px) !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+    font-size: 10px !important;
+  }
+
+  .qx-page,
+  .qx-home-page,
+  .qx-library-page,
+  .qx-review-page-new,
+  .qstat-page,
+  .qmine-page,
+  .qrev-page {
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: var(--m-gap) !important;
+  }
+
+  .qx-page-header,
+  .qx-home-page .qx-page-header,
+  .qx-library-page:not(.qx-review-page-new) .qx-page-header,
+  .qstat-topbar,
+  .qrev-topbar {
+    min-height: var(--qx-page-topbar-h) !important;
+    height: var(--qx-page-topbar-h) !important;
+    padding: var(--qx-page-topbar-padding) !important;
+    border-radius: var(--qx-page-topbar-radius) !important;
+    display: flex !important;
+    align-items: var(--qx-page-topbar-align) !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .qx-page-header span,
+  .qstat-device,
+  .qrev-device {
+    display: none !important;
+  }
+
+  .qx-page-header h1,
+  .qstat-topbar h1,
+  .qrev-title {
+    margin: var(--qx-page-topbar-title-margin) 0 0 !important;
+    font-size: var(--qx-page-topbar-title-size) !important;
+    line-height: .98 !important;
+    font-weight: 820 !important;
+  }
+
+  .qx-mini-link,
+  .qx-btn,
+  .qstat-clear-btn,
+  .qstat-review-link {
+    min-height: var(--m-control-h) !important;
+    height: var(--m-control-h) !important;
+    border-radius: 999px !important;
+    font-size: clamp(12px, 3.25vw, 14px) !important;
+    font-weight: 780 !important;
+    white-space: nowrap !important;
+  }
+
+  .qx-card,
+  .qx-study-panel,
+  .qx-recent-card,
+  .qx-overview-card,
+  .qx-library-shell,
+  .qstat-panel,
+  .qmine-panel {
+    border-radius: var(--m-radius) !important;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, .055) !important;
+  }
+
+  .qx-card-head h2,
+  .qstat-panel-head h2,
+  .qmine-panel-head h2 {
+    font-size: var(--m-title-md) !important;
+    line-height: 1.2 !important;
+  }
+
+  .qx-card-head p,
+  .qstat-panel-head p,
+  .qmine-panel-head p,
+  .qx-empty-line,
+  .qx-library-empty {
+    font-size: var(--m-caption) !important;
+    line-height: 1.35 !important;
+  }
+
+  /* 首页 */
+  .qx-home-grid,
+  .qx-home-main {
+    display: block !important;
+    min-width: 0 !important;
+  }
+
+  .qx-study-panel,
+  .qx-recent-card,
+  .qx-overview-card {
+    padding: var(--m-card-pad) !important;
+    margin-bottom: var(--m-gap) !important;
+  }
+
+  .qx-study-big-stat {
+    padding: clamp(10px, 3vw, 13px) !important;
+    border-radius: 14px !important;
+  }
+
+  .qx-study-big-stat strong {
+    font-size: clamp(24px, 6.8vw, 31px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .qx-study-big-stat p,
+  .qx-study-stat em,
+  .qx-recent-row p {
+    font-size: var(--m-caption) !important;
+  }
+
+  .qx-study-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .qx-study-stat {
+    min-height: clamp(50px, 13.5vw, 58px) !important;
+    padding: 8px !important;
+    border-radius: 14px !important;
+    grid-template-columns: clamp(26px, 7vw, 30px) minmax(0, 1fr) !important;
+    gap: 7px !important;
+  }
+
+  .qx-study-stat strong,
+  .qx-recent-row strong {
+    font-size: clamp(14px, 3.8vw, 17px) !important;
+  }
+
+  /* 题库页 */
+  .qx-library-shell:not(.qx-review-shell) {
+    display: grid !important;
+    grid-template-columns: clamp(74px, 20vw, 92px) minmax(0, 1fr) !important;
+    gap: 0 !important;
+    min-height: calc(100dvh - var(--m-header-h) - var(--m-nav-h) - 30px) !important;
+    max-height: none !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .qx-subject-rail {
+    width: auto !important;
+    padding: 7px 0 !important;
+    overflow-y: auto !important;
+    border-radius: var(--m-radius) 0 0 var(--m-radius) !important;
+  }
+
+  .qx-rail-subject {
+    min-height: clamp(64px, 17vw, 80px) !important;
+    padding: 9px 8px !important;
+    border-radius: 0 !important;
+    text-align: left !important;
+  }
+
+  .qx-rail-subject strong {
+    font-size: clamp(12px, 3.35vw, 14px) !important;
+    line-height: 1.25 !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .qx-rail-subject span {
+    margin-top: 6px !important;
+    font-size: clamp(10px, 2.8vw, 11.5px) !important;
+  }
+
+  .qx-library-main {
+    min-width: 0 !important;
+    padding: 10px !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  .qx-library-main::-webkit-scrollbar,
+  .qx-subject-rail::-webkit-scrollbar { display: none !important; }
+
+  .qx-library-stat-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .qx-library-stat-row article {
+    min-height: clamp(48px, 12.8vw, 58px) !important;
+    padding: 8px 9px !important;
+    border-radius: 13px !important;
+  }
+
+  .qx-library-stat-row span {
+    font-size: clamp(10px, 2.8vw, 11px) !important;
+  }
+
+  .qx-library-stat-row strong {
+    margin-top: 2px !important;
+    font-size: clamp(18px, 5vw, 24px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .qx-library-buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-top: 9px !important;
+  }
+
+  .qx-bank-card-grid {
+    display: grid !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+    padding-bottom: calc(var(--m-nav-h) + 14px) !important;
+  }
+
+  .qx-unit-item-card {
+    min-height: clamp(72px, 19vw, 88px) !important;
+    padding: 10px 34px 10px 12px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+  }
+
+  .qx-unit-item-head h3 {
+    font-size: clamp(15px, 4.2vw, 18px) !important;
+    line-height: 1.2 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .qx-unit-item-head span {
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+    border-radius: 0 0 0 12px !important;
+  }
+
+  .qx-unit-item-card p,
+  .qx-unit-progress em {
+    font-size: clamp(10.5px, 2.95vw, 12px) !important;
+    line-height: 1.35 !important;
+  }
+
+  .qx-unit-arrow {
+    right: 12px !important;
+    font-size: 28px !important;
+  }
+
+  /* 统计页 */
+  .qstat-page {
+    gap: var(--m-gap) !important;
+  }
+
+  .qstat-topbar {
+    align-items: center !important;
+  }
+
+  .qstat-clear-btn {
+    flex: 0 0 auto !important;
+    padding: 0 16px !important;
+  }
+
+  .qstat-metric-grid,
+  .qstat-top-grid,
+  .qstat-bottom-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: var(--m-gap) !important;
+  }
+
+  .qstat-top-grid,
+  .qstat-bottom-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .qstat-metric-card,
+  .qstat-panel {
+    min-width: 0 !important;
+    padding: var(--m-card-pad) !important;
+    border-radius: var(--m-radius) !important;
+  }
+
+  .qstat-metric-card strong,
+  .qstat-metric-card .qstat-metric-value {
+    font-size: clamp(20px, 5.6vw, 28px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .qstat-chart {
+    min-height: clamp(180px, 48vw, 230px) !important;
+  }
+
+  /* 我的页 */
+  .qmine-hero {
+    min-height: clamp(132px, 35vw, 170px) !important;
+    padding: clamp(16px, 4.5vw, 22px) !important;
+    border-radius: var(--m-radius) !important;
+  }
+
+  .qmine-hero-title,
+  .qmine-hero-name {
+    font-size: clamp(20px, 5.6vw, 28px) !important;
+  }
+
+  .qmine-hero-avatar {
+    width: clamp(58px, 16vw, 76px) !important;
+    height: clamp(58px, 16vw, 76px) !important;
+  }
+
+  .qmine-panel {
+    padding: var(--m-card-pad) !important;
+  }
+
+  .qmine-row {
+    min-height: clamp(52px, 14vw, 64px) !important;
+    padding: 10px 0 !important;
+  }
+
+  .qmine-row-title { font-size: clamp(13px, 3.6vw, 15px) !important; }
+  .qmine-row-desc { font-size: var(--m-caption) !important; }
+
+}
+
+@media (max-width: 380px) {
+  :root {
+    --m-x: 9px;
+    --m-gap: 9px;
+    --m-header-h: 58px;
+    --m-nav-h: calc(64px + env(safe-area-inset-bottom));
+    --m-title-xl: 24px;
+    --m-title-md: 14px;
+    --m-body: 12px;
+    --m-caption: 10px;
+    --m-control-h: 36px;
+    --m-card-pad: 10px;
+  }
+
+  .qx-library-shell:not(.qx-review-shell) { grid-template-columns: 72px minmax(0, 1fr) !important; }
+  .qx-library-main { padding: 8px !important; }
+  .qx-library-buttons .qx-btn { height: 38px !important; min-height: 38px !important; font-size: 12.5px !important; }
+  .qx-unit-item-card { min-height: 70px !important; padding-top: 10px !important; padding-bottom: 9px !important; }
+}

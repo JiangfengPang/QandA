@@ -1,0 +1,181 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {
+  enqueuePendingAnswer,
+  isPendingAnswerDue,
+  nextPendingRetryDelayMs,
+  pendingAnswerQueueKey,
+  readPendingAnswerQueue,
+  removePendingAnswer,
+  resetAuthFailedPendingAnswers,
+  retryDelayMs,
+  selectDuePendingAnswers,
+  summarizePendingAnswerQueue,
+  updatePendingAnswer,
+  type PendingAnswerRecord,
+  type QueueStorage
+} from '../src/utils/pendingAnswerQueue';
+
+class MemoryStorage implements QueueStorage {
+  data = new Map<string, string>();
+
+  getItem(key: string) {
+    return this.data.get(key) || null;
+  }
+
+  setItem(key: string, value: string) {
+    this.data.set(key, value);
+  }
+
+  removeItem(key: string) {
+    this.data.delete(key);
+  }
+}
+
+class ThrowingStorage implements QueueStorage {
+  getItem() {
+    throw new Error('storage unavailable');
+  }
+
+  setItem() {
+    throw new Error('storage unavailable');
+  }
+
+  removeItem() {
+    throw new Error('storage unavailable');
+  }
+}
+
+function pendingRecord(overrides: Partial<PendingAnswerRecord> = {}): PendingAnswerRecord {
+  return {
+    clientAnswerId: 'question-1:client-1',
+    questionId: 'question-1',
+    selectedAnswer: ['A'],
+    isCorrect: true,
+    answeredAt: '2026-06-16T00:00:00.000Z',
+    retryCount: 0,
+    lastTriedAt: '',
+    status: 'pending',
+    durationSeconds: 2,
+    ...overrides
+  };
+}
+
+test('pending answer queue is isolated per user and persists in storage', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord(), storage);
+  enqueuePendingAnswer('user-b', pendingRecord({ clientAnswerId: 'question-2:client-1', questionId: 'question-2' }), storage);
+
+  assert.equal(readPendingAnswerQueue('user-a', storage).length, 1);
+  assert.equal(readPendingAnswerQueue('user-b', storage).length, 1);
+  assert.equal(readPendingAnswerQueue('user-a', storage)[0].questionId, 'question-1');
+  assert.ok(storage.getItem(pendingAnswerQueueKey('user-a'))?.includes('question-1:client-1'));
+});
+
+test('same clientAnswerId is not enqueued twice', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord({ selectedAnswer: ['A'] }), storage);
+  enqueuePendingAnswer('user-a', pendingRecord({ selectedAnswer: ['B'] }), storage);
+
+  const records = readPendingAnswerQueue('user-a', storage);
+  assert.equal(records.length, 1);
+  assert.deepEqual(records[0].selectedAnswer, ['A']);
+  assert.equal(records[0].clientAnswerId, 'question-1:client-1');
+});
+
+test('successful sync removes the pending answer', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord(), storage);
+  removePendingAnswer('user-a', 'question-1:client-1', storage);
+
+  assert.deepEqual(readPendingAnswerQueue('user-a', storage), []);
+  assert.equal(storage.getItem(pendingAnswerQueueKey('user-a')), null);
+});
+
+test('retry backoff selects due records without blocking later records', () => {
+  const storage = new MemoryStorage();
+  const now = Date.parse('2026-06-16T00:00:10.000Z');
+  enqueuePendingAnswer('user-a', pendingRecord({
+    clientAnswerId: 'q1:stale',
+    questionId: 'q1',
+    retryCount: 3,
+    lastTriedAt: '2026-06-16T00:00:04.000Z',
+    status: 'failed'
+  }), storage);
+  enqueuePendingAnswer('user-a', pendingRecord({
+    clientAnswerId: 'q2:recent',
+    questionId: 'q2',
+    retryCount: 3,
+    lastTriedAt: '2026-06-16T00:00:08.000Z',
+    status: 'failed'
+  }), storage);
+
+  assert.equal(retryDelayMs(readPendingAnswerQueue('user-a', storage)[0]), 5000);
+  assert.deepEqual(selectDuePendingAnswers('user-a', now, storage).map((record) => record.clientAnswerId), ['q1:stale']);
+  assert.equal(nextPendingRetryDelayMs('user-a', now, storage), 0);
+});
+
+test('auth failures and invalid answers are kept but excluded from automatic retry', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord({ clientAnswerId: 'q1:auth', status: 'auth_failed', lastStatusCode: 401 }), storage);
+  enqueuePendingAnswer('user-a', pendingRecord({ clientAnswerId: 'q2:invalid', questionId: 'q2', status: 'invalid', lastStatusCode: 400 }), storage);
+
+  const records = readPendingAnswerQueue('user-a', storage);
+  assert.equal(isPendingAnswerDue(records[0], Date.now()), false);
+  assert.equal(isPendingAnswerDue(records[1], Date.now()), false);
+  assert.deepEqual(summarizePendingAnswerQueue('user-a', storage), {
+    total: 1,
+    retryable: 0,
+    syncing: 0,
+    authFailed: 1,
+    invalid: 1
+  });
+});
+
+test('auth failed answers can retry after login refresh', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord({ status: 'auth_failed', retryCount: 1, lastStatusCode: 401 }), storage);
+  resetAuthFailedPendingAnswers('user-a', storage);
+
+  const [record] = readPendingAnswerQueue('user-a', storage);
+  assert.equal(record.status, 'pending');
+  assert.equal(record.lastStatusCode, undefined);
+});
+
+test('stale syncing answers become retryable after a page refresh', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord({
+    status: 'syncing',
+    retryCount: 1,
+    lastTriedAt: '2026-06-16T00:00:00.000Z'
+  }), storage);
+
+  assert.equal(selectDuePendingAnswers('user-a', Date.parse('2026-06-16T00:00:10.000Z'), storage).length, 0);
+  assert.equal(selectDuePendingAnswers('user-a', Date.parse('2026-06-16T00:00:31.000Z'), storage).length, 1);
+});
+
+test('status updates keep clientAnswerId stable across retries', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord(), storage);
+  updatePendingAnswer('user-a', 'question-1:client-1', (record) => ({
+    ...record,
+    status: 'failed',
+    retryCount: record.retryCount + 1,
+    lastTriedAt: '2026-06-16T00:00:01.000Z'
+  }), storage);
+
+  const [record] = readPendingAnswerQueue('user-a', storage);
+  assert.equal(record.clientAnswerId, 'question-1:client-1');
+  assert.equal(record.retryCount, 1);
+  assert.equal(record.status, 'failed');
+});
+
+test('queue keeps a same-page fallback when localStorage is unavailable', () => {
+  const storage = new ThrowingStorage();
+  const userKey = `storage-fallback-${Date.now()}`;
+  enqueuePendingAnswer(userKey, pendingRecord(), storage);
+
+  const records = readPendingAnswerQueue(userKey, null);
+  assert.equal(records.length, 1);
+  assert.equal(records[0].clientAnswerId, 'question-1:client-1');
+});

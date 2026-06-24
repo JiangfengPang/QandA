@@ -1,0 +1,2311 @@
+/*
+  Practice layout - rebuilt from layout primitives, not incremental patches.
+  Desktop keeps project card style. Mobile and iPhone desktop-site mode use a true three-zone viewport:
+  fixed top bar / scrollable content / fixed bottom action bar.
+*/
+
+.app-frame.is-practice-frame {
+  width: min(100% - 32px, 1280px);
+}
+
+.app-frame.is-practice-frame .app-shell {
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-quiz-screen {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.app-frame.is-practice-frame .qx-practice-mobile-header {
+  display: none;
+}
+
+.app-frame.is-practice-frame .qx-mobile-favorite-btn {
+  display: none;
+}
+
+.app-frame.is-practice-frame .qx-practice-desktop-header {
+  width: 100%;
+}
+
+.app-frame.is-practice-frame .qx-quiz-header {
+  min-height: 86px;
+  padding: 14px 20px;
+  border-radius: 18px;
+  align-items: stretch;
+}
+
+.app-frame.is-practice-frame .qx-quiz-header-row {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: end;
+}
+
+.app-frame.is-practice-frame .qx-quiz-title-block,
+.app-frame.is-practice-frame .qx-question-head-main {
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-quiz-title-block h1 {
+  margin: 6px 0 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(26px, 2.6vw, 34px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.app-frame.is-practice-frame .qx-quiz-device {
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+
+.app-frame.is-practice-frame .qx-quiz-header-side,
+.app-frame.is-practice-frame .qx-quiz-header-actions {
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 9px;
+  flex-wrap: nowrap;
+}
+
+.app-frame.is-practice-frame .qx-quiz-pill-btn {
+  flex: 0 0 auto;
+  min-height: 34px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.app-frame.is-practice-frame .qx-quiz-layout {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 16px;
+  align-items: start;
+}
+
+.app-frame.is-practice-frame .qx-quiz-content {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 14px;
+  align-content: start;
+}
+
+.app-frame.is-practice-frame .qx-quiz-main {
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-question-card {
+  height: auto;
+  min-height: 0;
+  max-height: calc(100vh - 250px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 24px 24px;
+}
+
+.app-frame.is-practice-frame .qx-question-card::-webkit-scrollbar,
+.app-frame.is-practice-frame .qx-quiz-overview::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-frame.is-practice-frame .qx-question-card::-webkit-scrollbar-thumb,
+.app-frame.is-practice-frame .qx-quiz-overview::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(148, 163, 184, .36);
+}
+
+.app-frame.is-practice-frame .qx-question-card-head {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.app-frame.is-practice-frame .qx-question-head-main {
+  width: 100%;
+}
+
+.app-frame.is-practice-frame .qx-desktop-progress-row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.app-frame.is-practice-frame .qx-desktop-question-count {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.app-frame.is-practice-frame .qx-question-title-row {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.app-frame.is-practice-frame .qx-question-type-badge {
+  flex: 0 0 auto;
+  margin-top: 3px;
+}
+
+.app-frame.is-practice-frame .qx-favorite-icon {
+  display: block;
+  width: 17px;
+  height: 17px;
+}
+
+.app-frame.is-practice-frame .qx-question-progress {
+  width: 100%;
+  margin: 0 0 18px;
+  padding: 0;
+  text-align: left;
+}
+
+.app-frame.is-practice-frame .qx-desktop-progress-row {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.app-frame.is-practice-frame .qx-question-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0 0 16px;
+  color: #202124;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.app-frame.is-practice-frame .qx-option-button {
+  color: #24272d;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.app-frame.is-practice-frame .option-key {
+  font-weight: 500;
+}
+
+.app-frame.is-practice-frame .qx-quiz-action-bar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 5;
+}
+
+.app-frame.is-practice-frame .qx-quiz-action-bar .qx-action-btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 54px;
+  border-radius: 16px;
+}
+
+.app-frame.is-practice-frame .qx-action-btn.primary {
+  background: linear-gradient(135deg, #18b889, #0ca86f);
+  box-shadow: 0 16px 26px rgba(24, 184, 137, .18);
+}
+
+.app-frame.is-practice-frame .qx-action-btn.ghost {
+  background: rgba(255,255,255,.94);
+}
+
+.app-frame.is-practice-frame .qx-option-button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.app-frame.is-practice-frame .qx-question-card.is-font-small {
+  --practice-question-font-size: 15px;
+  --practice-option-font-size: 15px;
+  --practice-q-font: clamp(15px, 4.1vw, 16px);
+  --practice-option-font: clamp(14px, 3.8vw, 15px);
+}
+
+.app-frame.is-practice-frame .qx-question-card.is-font-standard {
+  --practice-question-font-size: 17px;
+  --practice-option-font-size: 16px;
+  --practice-q-font: clamp(16px, 4.55vw, 18px);
+  --practice-option-font: clamp(15px, 4.15vw, 16.5px);
+}
+
+.app-frame.is-practice-frame .qx-question-card.is-font-large {
+  --practice-question-font-size: 20px;
+  --practice-option-font-size: 18px;
+  --practice-q-font: clamp(18px, 5.2vw, 21px);
+  --practice-option-font: clamp(17px, 4.8vw, 19px);
+}
+
+.app-frame.is-practice-frame .qx-question-card.is-font-small .qx-question-title,
+.app-frame.is-practice-frame .qx-question-card.is-font-standard .qx-question-title,
+.app-frame.is-practice-frame .qx-question-card.is-font-large .qx-question-title {
+  font-size: var(--practice-question-font-size, 17px);
+}
+
+.app-frame.is-practice-frame .qx-question-card.is-font-small .qx-option-button,
+.app-frame.is-practice-frame .qx-question-card.is-font-standard .qx-option-button,
+.app-frame.is-practice-frame .qx-question-card.is-font-large .qx-option-button {
+  font-size: var(--practice-option-font-size, 16px);
+}
+
+.qx-reveal-answer-btn {
+  margin-top: 10px;
+  height: 34px;
+  padding: 0 16px;
+  border: 1px solid rgba(24, 129, 255, .24);
+  border-radius: 999px;
+  background: rgba(24, 129, 255, .08);
+  color: var(--qx-blue-dark);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (min-width: 981px) {
+  .app-frame.is-practice-frame .qx-quiz-overview {
+    position: static;
+    top: auto;
+    align-self: start;
+    margin-top: 0;
+    transform: none;
+    max-height: calc(100vh - 250px);
+  }
+}
+
+@media (max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px) {
+  :root {
+    --practice-top-h: clamp(86px, 22vw, 104px);
+    --practice-bottom-h: clamp(72px, 18vw, 88px);
+    --practice-max-w: var(--m-max-w, 430px);
+    --practice-pad-x: clamp(12px, 4.1vw, 18px);
+    --practice-q-font: clamp(16px, 4.55vw, 18px);
+    --practice-option-font: clamp(15px, 4.15vw, 16.5px);
+    --practice-meta-font: clamp(12px, 3.3vw, 13px);
+    --practice-title-font: clamp(15px, 4.1vw, 17px);
+    --practice-btn-font: clamp(13px, 3.7vw, 14.5px);
+  }
+
+  .app-frame.is-practice-frame {
+    width: 100% !important;
+    height: var(--practice-vvh, 100dvh);
+    min-height: var(--practice-vvh, 100dvh);
+    margin: 0 auto !important;
+    display: block !important;
+    overflow: hidden !important;
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .app-sidebar {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .app-shell {
+    position: relative !important;
+    width: 100% !important;
+    height: var(--practice-vvh, 100dvh);
+    min-height: var(--practice-vvh, 100dvh);
+    overflow: hidden !important;
+    padding: 0 !important;
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-view,
+  .app-frame.is-practice-frame .qx-quiz-screen,
+  .app-frame.is-practice-frame .qx-quiz-layout {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: block !important;
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-content {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-practice-desktop-header {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-practice-mobile-header {
+    display: block !important;
+    width: 100%;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+    width: min(100vw, var(--practice-max-w));
+    height: calc(var(--practice-top-h) + env(safe-area-inset-top));
+    min-height: 0 !important;
+    margin: 0 auto !important;
+    padding: env(safe-area-inset-top) 0 0 !important;
+    border: 0;
+    border-radius: 0 !important;
+    background: #fff !important;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, .04);
+    color: var(--qx-ink);
+    display: block !important;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-nav-row {
+    height: calc(var(--practice-top-h) * .54);
+    padding: 0 var(--practice-pad-x);
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr) 34px;
+    align-items: center;
+    gap: clamp(6px, 2.5vw, 10px);
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-back-btn,
+  .app-frame.is-practice-frame .qx-mobile-overview-btn {
+    width: clamp(30px, 9vw, 36px);
+    height: clamp(30px, 9vw, 36px);
+    min-width: clamp(30px, 9vw, 36px);
+    min-height: clamp(30px, 9vw, 36px);
+    border: 1px solid rgba(211, 221, 235, .95);
+    border-radius: clamp(9px, 2.8vw, 12px);
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: #162033;
+    box-shadow: 0 5px 12px rgba(15, 23, 42, .035);
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-back-btn {
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-back-btn svg,
+  .app-frame.is-practice-frame .qx-mobile-overview-btn svg,
+  .app-frame.is-practice-frame .qx-favorite-icon {
+    width: clamp(17px, 5.4vw, 20px);
+    height: clamp(17px, 5.4vw, 20px);
+    stroke-width: 2.35;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-back-btn .qx-icon,
+  .app-frame.is-practice-frame .qx-mobile-overview-btn .qx-icon {
+    width: clamp(18px, 5.4vw, 21px);
+    height: clamp(18px, 5.4vw, 21px);
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-quiz-title {
+    margin: 0;
+    min-width: 0;
+    color: #202124;
+    font-size: var(--practice-title-font);
+    line-height: 1.22;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-progress-row {
+    height: calc(var(--practice-top-h) * .46);
+    padding: 0 var(--practice-pad-x) clamp(6px, 1.8vw, 8px);
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) clamp(30px, 9vw, 36px);
+    align-items: center;
+    column-gap: clamp(12px, 3.6vw, 16px);
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-question-count {
+    min-width: 0;
+    padding-right: 2px;
+    color: #7c8490;
+    font-size: var(--practice-meta-font);
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-question-count strong {
+    color: #4b5563;
+    font-size: calc(var(--practice-meta-font) + 1px);
+    font-weight: 600;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-progress-line {
+    height: clamp(4px, 1.3vw, 6px);
+    background: #e9eef5;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-progress-line span {
+    background: var(--qx-blue);
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-main {
+    position: fixed !important;
+    top: calc(var(--practice-top-h) + env(safe-area-inset-top));
+    left: 0;
+    right: 0;
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom));
+    z-index: 100;
+    width: min(100vw, var(--practice-max-w));
+    margin: 0 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain;
+    overscroll-behavior-x: contain;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+    display: block !important;
+    padding: 0 var(--practice-pad-x) 18px !important;
+    background: #fff;
+    scrollbar-width: none;
+    transform: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-main::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: clamp(7px, 2.4vw, 11px) 0 14px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card-head {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 clamp(10px, 3vw, 14px) !important;
+    padding: clamp(4px, 1.6vw, 6px) 0 clamp(10px, 2.9vw, 12px) !important;
+    border-bottom: 1px solid #eef2f7;
+  }
+
+  .app-frame.is-practice-frame .qx-question-head-main {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+  }
+
+  .app-frame.is-practice-frame .qx-desktop-question-progress,
+  .app-frame.is-practice-frame .qx-desktop-favorite-btn {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title-row {
+    display: grid !important;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(8px, 2.7vw, 11px);
+  }
+
+  .app-frame.is-practice-frame .qx-question-inline-count {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-type-badge {
+    min-height: clamp(34px, 9.4vw, 38px);
+    margin: 0;
+    padding: 0 clamp(8px, 2.6vw, 10px);
+    border-radius: clamp(9px, 2.5vw, 10px);
+    font-size: clamp(10px, 2.9vw, 11.5px);
+    font-weight: 500;
+    line-height: 1;
+    justify-content: center;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title-row .qx-question-title {
+    align-self: center;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-small .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-standard .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-large .qx-question-title {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    color: #202124;
+    font-size: var(--practice-q-font) !important;
+    line-height: 1.58 !important;
+    font-weight: 400 !important;
+    letter-spacing: 0;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+  }
+
+  .app-frame.is-practice-frame .qx-option-list {
+    display: grid;
+    gap: clamp(8px, 2.6vw, 10px);
+    padding: clamp(4px, 1.8vw, 6px) 0 8px;
+  }
+
+  .app-frame.is-practice-frame .qx-option-button,
+  .app-frame.is-practice-frame .qx-question-card.is-font-small .qx-option-button,
+  .app-frame.is-practice-frame .qx-question-card.is-font-large .qx-option-button {
+    min-height: clamp(44px, 13vw, 50px) !important;
+    border-radius: clamp(7px, 2.3vw, 8px) !important;
+    grid-template-columns: clamp(27px, 8vw, 32px) minmax(0, 1fr) !important;
+    gap: clamp(7px, 2.4vw, 9px) !important;
+    padding: clamp(7px, 2.4vw, 9px) clamp(9px, 3vw, 11px) !important;
+    border: 1px solid #d9e3ef;
+    color: #24272d;
+    font-size: var(--practice-option-font) !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .option-key {
+    width: clamp(25px, 7.6vw, 28px);
+    height: clamp(25px, 7.6vw, 28px);
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #68717f;
+    font-size: clamp(11px, 3.2vw, 12.5px);
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-multiple-question .option-key {
+    border-radius: clamp(6px, 2vw, 8px);
+  }
+
+  .app-frame.is-practice-frame .qx-result-box {
+    margin-top: clamp(10px, 3vw, 14px) !important;
+    padding: clamp(10px, 3vw, 12px) clamp(11px, 3vw, 13px) !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: #f3f7fb;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-row {
+    display: flex !important;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: clamp(5px, 1.6vw, 7px) clamp(10px, 3vw, 14px);
+    color: #334155;
+    font-size: clamp(12px, 3.35vw, 13px);
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-row b {
+    margin-left: 4px;
+    font-weight: 600;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-correct {
+    color: #18b889;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-wrong {
+    color: #ff5a6d;
+  }
+
+  .app-frame.is-practice-frame .qx-result-judge-icon {
+    width: clamp(15px, 4vw, 17px);
+    height: clamp(15px, 4vw, 17px);
+  }
+
+  .app-frame.is-practice-frame .qx-analysis-title {
+    display: block;
+    margin: clamp(8px, 2.4vw, 10px) 0 clamp(5px, 1.8vw, 7px);
+    color: #334155;
+    font-size: clamp(12px, 3.35vw, 13px);
+    line-height: 1.45;
+    font-weight: 700;
+  }
+
+  .app-frame.is-practice-frame .qx-result-status,
+  .app-frame.is-practice-frame .qx-correct-answer-line {
+    font-size: clamp(12px, 3.35vw, 13px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-simple-answer,
+  .app-frame.is-practice-frame .qx-explanation-text {
+    font-size: clamp(11.5px, 3.2vw, 12.5px) !important;
+    line-height: 1.58 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar {
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 320;
+    width: min(100vw, var(--practice-max-w)) !important;
+    height: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom));
+    min-height: 0 !important;
+    margin: 0 auto !important;
+    padding: clamp(10px, 3vw, 14px) var(--practice-pad-x) calc(clamp(10px, 3vw, 14px) + env(safe-area-inset-bottom)) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) max-content !important;
+    gap: clamp(9px, 3vw, 12px) !important;
+    pointer-events: auto;
+    background: linear-gradient(180deg, rgba(255,255,255,.62), #fff 26%, #fff 100%);
+    border-top: 1px solid #eef2f7;
+    box-shadow: 0 -10px 22px rgba(15, 23, 42, .05);
+    transform: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar .qx-action-btn {
+    min-height: clamp(44px, 12.8vw, 50px) !important;
+    height: clamp(44px, 12.8vw, 50px) !important;
+    border-radius: 8px !important;
+    font-size: var(--practice-btn-font) !important;
+    line-height: 1;
+    letter-spacing: .02em;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-favorite-btn {
+    min-width: clamp(78px, 23vw, 94px);
+    min-height: clamp(44px, 12.8vw, 50px);
+    height: clamp(44px, 12.8vw, 50px);
+    padding: 0 clamp(8px, 2.5vw, 11px);
+    border: 1px solid #d9e3ef;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(4px, 1.5vw, 6px);
+    background: #fff;
+    color: #526074;
+    font-size: clamp(10.5px, 2.9vw, 12px);
+    line-height: 1;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-favorite-btn.active {
+    border-color: rgba(246, 194, 68, .54);
+    background: #fff7da;
+    color: #b77900;
+  }
+
+  .app-frame.is-practice-frame .qx-mobile-favorite-btn .qx-favorite-icon {
+    width: clamp(14px, 4vw, 16px);
+    height: clamp(14px, 4vw, 16px);
+  }
+
+  .app-frame.is-practice-frame .qx-action-btn.ghost {
+    border: 0 !important;
+    background: #f0f2f5 !important;
+    color: #334155;
+    box-shadow: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-action-btn.primary {
+    border: 0 !important;
+    background: linear-gradient(135deg, #18b889, #10a874) !important;
+    color: #fff;
+    box-shadow: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 340;
+    background: rgba(15, 23, 42, .34);
+    border: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-overview {
+    display: none;
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom) + 8px);
+    z-index: 350;
+    width: min(calc(100vw - 24px), calc(var(--practice-max-w) - 24px));
+    max-height: min(58vh, 520px);
+    margin: 0 auto;
+    overflow: auto;
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 22px 54px rgba(15, 23, 42, .20);
+    transform: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-overview.open {
+    display: block;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-summary {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-close {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-close .qx-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* ================================
+   答题卡状态样式：桌面端 + 移动端共用
+   仅保留题号状态颜色、当前题描边和收藏角标。
+   不显示统计块和图例，避免全览弹窗过重。
+================================ */
+.app-frame.is-practice-frame .qx-question-index-grid {
+  gap: 9px;
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn {
+  position: relative;
+  min-width: 0;
+  min-height: 38px;
+  height: 38px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  transition: transform .16s ease, border-color .16s ease, background-color .16s ease, box-shadow .16s ease, color .16s ease;
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn:active {
+  transform: scale(.96);
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.unanswered {
+  color: #64748b;
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.answered {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.correct {
+  color: #047857;
+  background: #ecfdf5;
+  border-color: #86efac;
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.wrong {
+  color: #e11d48;
+  background: #fff1f2;
+  border-color: #fda4af;
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.active {
+  border-color: #1881ff;
+  box-shadow: 0 0 0 2px rgba(24, 129, 255, .22), 0 8px 18px rgba(24, 129, 255, .16);
+  outline: 0;
+}
+
+.app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.favorite {
+  padding-top: 1px;
+}
+
+.app-frame.is-practice-frame .qx-overview-number {
+  position: relative;
+  z-index: 1;
+}
+
+.app-frame.is-practice-frame .qx-overview-favorite-mark {
+  position: absolute;
+  top: -5px;
+  right: -4px;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #f59e0b;
+  border: 1px solid #fed7aa;
+  font-size: 10px;
+  line-height: 1;
+  box-shadow: 0 6px 12px rgba(245, 158, 11, .18);
+}
+
+.app-frame.is-practice-frame .qx-overview-favorite-mark .qx-icon {
+  width: 10px;
+  height: 10px;
+}
+
+.app-frame.is-practice-frame .qx-overview-group h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 9px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.app-frame.is-practice-frame .qx-overview-group h3 span {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+@media (max-width: 380px) {
+  .app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn {
+    min-height: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
+}
+
+/* Python 题：正确答案 Markdown 展示区 */
+.app-frame.is-practice-frame .qx-python-answer-card {
+  margin-top: 14px;
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  box-shadow: 0 12px 28px rgba(24, 129, 255, .07);
+}
+
+.app-frame.is-practice-frame .qx-python-answer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #f8fbff;
+  border-bottom: 1px solid #e5edf8;
+}
+
+.app-frame.is-practice-frame .qx-python-answer-head strong {
+  display: block;
+  color: #0f172a;
+  font-size: 17px;
+  font-weight: 950;
+}
+
+.app-frame.is-practice-frame .qx-python-answer-head span {
+  display: block;
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.app-frame.is-practice-frame .qx-python-copy-btn {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 13px;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+/* Memorize mode: independent practice-style reading flow */
+.app-frame.is-practice-frame .qx-memorize-view .qx-question-card {
+  display: grid;
+  gap: 16px;
+}
+
+.app-frame.is-practice-frame .qx-memorize-mode-pill {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #0f8a66;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.app-frame.is-practice-frame .qx-memorize-answer-card {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #cdeedd;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #f5fcf8 0%, #ffffff 100%);
+  box-shadow: 0 12px 28px rgba(16, 168, 116, .08);
+}
+
+.app-frame.is-practice-frame .qx-memorize-answer-head {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-frame.is-practice-frame .qx-memorize-answer-head span {
+  color: #0f8a66;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.app-frame.is-practice-frame .qx-memorize-answer-head strong {
+  min-width: 0;
+  color: #174436;
+  font-size: 13px;
+  font-weight: 900;
+  text-align: right;
+}
+
+.app-frame.is-practice-frame .qx-memorize-answer-body,
+.app-frame.is-practice-frame .qx-memorize-answer-body p {
+  margin: 0;
+  color: #173b31;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 650;
+}
+
+.app-frame.is-practice-frame .qx-memorize-answer-body pre {
+  margin: 0;
+}
+
+.app-frame.is-practice-frame .qx-memorize-overview .qx-question-index-grid .qx-overview-index-btn.answered {
+  color: #0f8a66;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.app-frame.is-practice-frame .qx-memorize-overview {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 981px) {
+  .app-frame.is-practice-frame .qx-memorize-view .qx-quiz-layout {
+    grid-template-columns: minmax(0, 1fr) 240px;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-overview {
+    width: 100%;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-view .qx-question-card {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px) {
+  .app-frame.is-practice-frame .qx-memorize-view .qx-question-card {
+    gap: clamp(12px, 3.4vw, 16px);
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-answer-card {
+    gap: clamp(9px, 2.8vw, 12px);
+    padding: clamp(11px, 3.2vw, 14px);
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-answer-head {
+    display: grid;
+    justify-content: stretch;
+    gap: 4px;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-answer-head strong {
+    text-align: left;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-answer-body,
+  .app-frame.is-practice-frame .qx-memorize-answer-body p {
+    font-size: var(--practice-option-font);
+    line-height: 1.62;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-action-bar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-mode-pill {
+    display: none;
+  }
+
+  .app-frame.is-practice-frame .qx-memorize-overview {
+    width: min(calc(100vw - 24px), calc(var(--practice-max-w) - 24px)) !important;
+  }
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer {
+  padding: 16px;
+  color: #1f2937;
+  line-height: 1.8;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer h1,
+.app-frame.is-practice-frame .qx-markdown-answer h2,
+.app-frame.is-practice-frame .qx-markdown-answer h3,
+.app-frame.is-practice-frame .qx-markdown-answer h4,
+.app-frame.is-practice-frame .qx-markdown-answer h5,
+.app-frame.is-practice-frame .qx-markdown-answer h6 {
+  margin: 16px 0 10px;
+  color: #0f172a;
+  font-weight: 950;
+  line-height: 1.4;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer h1:first-child,
+.app-frame.is-practice-frame .qx-markdown-answer h2:first-child,
+.app-frame.is-practice-frame .qx-markdown-answer h3:first-child,
+.app-frame.is-practice-frame .qx-markdown-answer h4:first-child,
+.app-frame.is-practice-frame .qx-markdown-answer p:first-child {
+  margin-top: 0;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer p {
+  margin: 10px 0;
+  color: #334155;
+  font-size: 15px;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer p code {
+  padding: 2px 6px;
+  border-radius: 7px;
+  background: #eef6ff;
+  color: #0f5fc6;
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+  font-size: .92em;
+  font-weight: 850;
+}
+
+.app-frame.is-practice-frame .qx-code-card {
+  margin: 12px 0 16px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid #1f2937;
+  background: #0f172a;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, .16);
+}
+
+.app-frame.is-practice-frame .qx-code-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 14px;
+  background: #111827;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.app-frame.is-practice-frame .qx-code-card pre {
+  margin: 0;
+  padding: 14px 16px;
+  max-height: 360px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre;
+}
+
+.app-frame.is-practice-frame .qx-code-card code {
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+}
+
+.app-frame.is-practice-frame .qx-python-empty-answer {
+  padding: 18px 16px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .app-frame.is-practice-frame .qx-python-answer-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .app-frame.is-practice-frame .qx-python-copy-btn {
+    width: 100%;
+  }
+
+  .app-frame.is-practice-frame .qx-code-card pre {
+    font-size: 13px;
+  }
+}
+
+/* 真实 Markdown 渲染增强：代码高亮、行号、表格、引用 */
+.app-frame.is-practice-frame .qx-question-title-markdown {
+  display: block;
+  margin-bottom: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.app-frame.is-practice-frame .qx-question-title-markdown p {
+  margin: 0 0 10px;
+  font-size: 22px;
+  line-height: 1.7;
+  font-weight: 850;
+  color: #1f2937;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer ul,
+.app-frame.is-practice-frame .qx-markdown-answer ol {
+  margin: 10px 0 12px 22px;
+  padding: 0;
+  color: #334155;
+  line-height: 1.8;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer blockquote {
+  margin: 12px 0;
+  padding: 10px 14px;
+  border-left: 4px solid #60a5fa;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #334155;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer table {
+  width: 100%;
+  margin: 12px 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer th,
+.app-frame.is-practice-frame .qx-markdown-answer td {
+  border: 1px solid #e2e8f0;
+  padding: 9px 11px;
+  text-align: left;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer th {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-weight: 900;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer a {
+  color: #1d4ed8;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer a:hover {
+  text-decoration: underline;
+}
+
+.app-frame.is-practice-frame .qx-md-code-card {
+  margin: 14px 0 18px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #1e293b;
+  background: #0f172a;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, .16);
+}
+
+.app-frame.is-practice-frame .qx-md-code-card .qx-code-toolbar {
+  height: 40px;
+  padding: 0 14px;
+  background: #111827;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.app-frame.is-practice-frame .qx-code-lang {
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.app-frame.is-practice-frame .qx-code-copy-btn {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 8px;
+  background: rgba(255,255,255,.08);
+  color: #dbeafe;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.app-frame.is-practice-frame .qx-code-copy-btn:hover {
+  background: rgba(255,255,255,.16);
+}
+
+.app-frame.is-practice-frame .qx-md-code-card .qx-code-pre {
+  margin: 0;
+  padding: 0;
+  max-height: 360px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre;
+}
+
+.app-frame.is-practice-frame .qx-md-code-card code.hljs {
+  display: block;
+  padding: 0;
+  background: transparent;
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+}
+
+.app-frame.is-practice-frame .qx-code-lines {
+  display: block;
+  counter-reset: qx-code-line;
+  padding: 12px 0;
+}
+
+.app-frame.is-practice-frame .qx-code-line {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  min-height: 24px;
+}
+
+.app-frame.is-practice-frame .qx-code-line-no {
+  counter-increment: qx-code-line;
+  user-select: none;
+  text-align: right;
+  padding-right: 14px;
+  margin-right: 14px;
+  color: #64748b;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+
+.app-frame.is-practice-frame .qx-code-line-no::before {
+  content: counter(qx-code-line);
+}
+
+.app-frame.is-practice-frame .qx-code-line-content {
+  min-width: 0;
+  padding-right: 16px;
+}
+
+@media (max-width: 640px) {
+  .app-frame.is-practice-frame .qx-question-title-markdown p {
+    font-size: 19px;
+  }
+
+  .app-frame.is-practice-frame .qx-code-line {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .app-frame.is-practice-frame .qx-code-line-no {
+    padding-right: 10px;
+    margin-right: 10px;
+  }
+}
+
+
+/* Python/Markdown 题：代码块过长时只在代码区内部滚动，避免撑高整张题卡 */
+.app-frame.is-practice-frame .qx-md-code-card .qx-code-pre,
+.app-frame.is-practice-frame .qx-code-card pre {
+  max-height: 360px;
+}
+
+@media (max-width: 640px) {
+  .app-frame.is-practice-frame .qx-md-code-card .qx-code-pre,
+  .app-frame.is-practice-frame .qx-code-card pre {
+    max-height: 260px;
+  }
+}
+
+/* Markdown 数学公式：支持 $...$、$$...$$、\(...\)、\[...\]，长公式横向滚动 */
+.app-frame.is-practice-frame .qx-markdown-answer .katex,
+.app-frame.is-practice-frame .qx-question-title-markdown .katex {
+  font-size: 1.06em;
+  color: #0f172a;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer .qx-math-block,
+.app-frame.is-practice-frame .qx-question-title-markdown .qx-math-block {
+  margin: 12px 0 16px;
+  padding: 6px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer .katex-display,
+.app-frame.is-practice-frame .qx-question-title-markdown .katex-display {
+  margin: 0;
+  min-width: max-content;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer .qx-math-block::-webkit-scrollbar,
+.app-frame.is-practice-frame .qx-question-title-markdown .qx-math-block::-webkit-scrollbar {
+  height: 8px;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer .qx-math-block::-webkit-scrollbar-thumb,
+.app-frame.is-practice-frame .qx-question-title-markdown .qx-math-block::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #cbd5e1;
+}
+
+.app-frame.is-practice-frame .qx-markdown-answer .qx-math-error,
+.app-frame.is-practice-frame .qx-question-title-markdown .qx-math-error {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+/* 答题卡：科目练习时支持“单元 → 题型 → 题号”三级结构 */
+.app-frame.is-practice-frame .qx-overview-type-group {
+  display: grid;
+  gap: 8px;
+}
+
+.app-frame.is-practice-frame .qx-overview-type-group + .qx-overview-type-group {
+  margin-top: 10px;
+}
+
+.app-frame.is-practice-frame .qx-overview-type-group h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.app-frame.is-practice-frame .qx-overview-type-group h4 span {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+/* Desktop practice refresh: match the cleaner white-card exam layout. */
+@media (min-width: 981px) {
+  .app-frame.is-practice-frame {
+    --practice-desktop-panel-h: calc(100vh - 68px);
+    width: min(calc(100% - 48px), 1320px);
+    min-height: calc(100vh - 20px);
+    margin: 10px auto;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .app-frame.is-practice-frame::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: #f3f3f3;
+    pointer-events: none;
+  }
+
+  .app-frame.is-practice-frame .app-sidebar {
+    display: none;
+  }
+
+  .app-frame.is-practice-frame .app-shell {
+    min-height: calc(100vh - 20px);
+    padding: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-screen {
+    height: 100%;
+    gap: 10px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-header {
+    min-height: 38px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #333;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-header-row {
+    min-height: 38px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-title-block h1 {
+    max-width: 760px;
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-device {
+    display: none;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-pill-btn {
+    height: 32px;
+    min-height: 32px;
+    padding: 0 14px;
+    border: 1px solid #1881ff;
+    border-radius: 4px;
+    background: #fff;
+    color: #1881ff;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-pill-btn.solid {
+    background: #1881ff;
+    color: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 14px;
+    height: var(--practice-desktop-panel-h);
+    min-height: 0;
+    align-items: start;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-content {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 42px 32px 32px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-overview {
+    border: 0;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card {
+    min-height: 0;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card-head {
+    margin: 0 0 32px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-head-main {
+    position: relative;
+  }
+
+  .app-frame.is-practice-frame .qx-question-progress {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: auto;
+    margin: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-desktop-progress-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .app-frame.is-practice-frame .qx-desktop-question-count,
+  .app-frame.is-practice-frame .progress-line {
+    display: none;
+  }
+
+  .app-frame.is-practice-frame .qx-favorite-btn {
+    min-height: 26px;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #6f7680;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .app-frame.is-practice-frame .qx-favorite-btn.active {
+    background: transparent;
+    color: #565d66;
+  }
+
+  .app-frame.is-practice-frame .qx-favorite-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title-row {
+    display: grid;
+    grid-template-columns: max-content max-content minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: 9px;
+    row-gap: 6px;
+    padding-right: 88px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-type-badge {
+    min-height: 26px;
+    margin: 0;
+    padding: 0 9px;
+    border-radius: 4px;
+    background: #1881ff;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-question-inline-count {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-small .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-standard .qx-question-title,
+  .app-frame.is-practice-frame .qx-question-card.is-font-large .qx-question-title {
+    margin: 0;
+    color: #333;
+    font-size: var(--practice-question-font-size, 17px);
+    line-height: 1.58;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title-markdown {
+    padding: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title-markdown p {
+    margin: 0;
+    color: #333;
+    font-size: var(--practice-question-font-size, 17px);
+    line-height: 1.58;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-option-list {
+    gap: 16px;
+    padding: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-option-button,
+  .app-frame.is-practice-frame .qx-question-card.is-font-small .qx-option-button,
+  .app-frame.is-practice-frame .qx-question-card.is-font-standard .qx-option-button,
+  .app-frame.is-practice-frame .qx-question-card.is-font-large .qx-option-button {
+    min-height: 40px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 14px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #333;
+    font-size: var(--practice-option-font-size, 16px);
+    line-height: 1.55;
+    font-weight: 400;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-font-small {
+    --practice-question-font-size: 15px;
+    --practice-option-font-size: 15px;
+    --practice-q-font: clamp(15px, 4.1vw, 16px);
+    --practice-option-font: clamp(14px, 3.8vw, 15px);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-font-standard {
+    --practice-question-font-size: 17px;
+    --practice-option-font-size: 16px;
+    --practice-q-font: clamp(16px, 4.55vw, 18px);
+    --practice-option-font: clamp(15px, 4.15vw, 16.5px);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-font-large {
+    --practice-question-font-size: 20px;
+    --practice-option-font-size: 18px;
+    --practice-q-font: clamp(18px, 5.2vw, 21px);
+    --practice-option-font: clamp(17px, 4.8vw, 19px);
+  }
+
+  .app-frame.is-practice-frame .qx-option-button:hover {
+    background: transparent;
+  }
+
+  .app-frame.is-practice-frame .option-key {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #d8dadd;
+    border-radius: 999px;
+    background: #fff;
+    color: #4b4f56;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-multiple-question .option-key {
+    border-radius: 8px;
+  }
+
+  .app-frame.is-practice-frame .option-text {
+    min-width: 0;
+    align-self: center;
+  }
+
+  .app-frame.is-practice-frame .qx-fill-box {
+    max-width: 520px;
+    gap: 10px;
+  }
+
+  .app-frame.is-practice-frame .qx-fill-box label {
+    color: #555;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-fill-box input {
+    min-height: 48px;
+    border-radius: 4px;
+    border-color: #d9dee6;
+    font-size: 18px;
+  }
+
+  .app-frame.is-practice-frame .qx-result-box {
+    margin-top: 0;
+    padding: 18px 22px;
+    border: 0;
+    border-radius: 6px;
+    background: #f1f3f7;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-row b {
+    margin-left: 8px;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-correct {
+    color: #35be73;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-wrong {
+    color: #ff5a49;
+  }
+
+  .app-frame.is-practice-frame .qx-result-judge-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .app-frame.is-practice-frame .qx-simple-answer {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e5eb;
+  }
+
+  .app-frame.is-practice-frame .qx-analysis-title {
+    position: relative;
+    color: #222;
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  .app-frame.is-practice-frame .qx-analysis-title::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin: 0 10px 3px 0;
+    border-radius: 999px;
+    background: #1881ff;
+  }
+
+  .app-frame.is-practice-frame .qx-explanation-text {
+    margin: 0;
+    color: #4f5661;
+    font-size: 14.5px;
+    line-height: 1.72;
+    font-weight: 400;
+  }
+
+  .app-frame.is-practice-frame .qx-reveal-answer-btn {
+    height: 36px;
+    margin-top: 18px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar .qx-action-btn {
+    width: auto;
+    min-width: 112px;
+    min-height: 36px;
+    height: 36px;
+    padding: 0 16px;
+    border: 1px solid #1881ff;
+    border-radius: 4px;
+    background: #fff;
+    color: #1881ff;
+    box-shadow: none;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-action-btn.primary,
+  .app-frame.is-practice-frame .qx-action-btn.ghost {
+    background: #fff;
+    color: #1881ff;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-action-btn.primary:disabled,
+  .app-frame.is-practice-frame .qx-action-btn.ghost:disabled {
+    border-color: #d7dce3;
+    background: #fff !important;
+    color: #9aa3ad !important;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-overview {
+    position: sticky;
+    top: 0;
+    width: 300px;
+    height: var(--practice-desktop-panel-h);
+    max-height: var(--practice-desktop-panel-h);
+    padding: 20px 20px 22px;
+    overflow: auto;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-head {
+    align-items: center;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-head h2 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-head p {
+    margin: 0;
+    color: #1881ff;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    margin: 0 0 16px;
+    padding: 14px 0 2px;
+    border-top: 1px solid #eef0f3;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 400;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-summary span:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-summary b {
+    color: #333;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-summary .is-correct {
+    color: #35be73;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-summary .is-wrong {
+    color: #ff5a49;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-groups {
+    gap: 14px;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-group {
+    gap: 10px;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-group h3 {
+    margin: 0 0 2px;
+    color: #555;
+    font-size: 13px;
+    line-height: 1.25;
+    font-weight: 500;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-group h3 span,
+  .app-frame.is-practice-frame .qx-overview-type-group h4,
+  .app-frame.is-practice-frame .qx-overview-type-group h4 span {
+    color: #8c939d;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn {
+    min-height: 36px;
+    height: 36px;
+    border-radius: 4px;
+    border-color: #e5e7eb;
+    background: #fff;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.unanswered {
+    border-color: #e5e7eb;
+    background: #fff;
+    color: #333;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.answered {
+    border-color: #1881ff;
+    background: #1881ff;
+    color: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.correct {
+    border-color: #35be73;
+    background: #35be73;
+    color: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.wrong {
+    border-color: #ff5a49;
+    background: #ff5a49;
+    color: #fff;
+  }
+
+  .app-frame.is-practice-frame .qx-question-index-grid .qx-overview-index-btn.active {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .72), 0 0 0 2px rgba(24, 129, 255, .28);
+  }
+
+  .app-frame.is-practice-frame .qx-overview-favorite-mark {
+    top: -5px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    border-color: #fff;
+  }
+}
+
+
+/* 题目解析 Markdown 渲染修复：解析内容使用真实 Markdown，不再按普通文本输出 */
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown {
+  margin: 0;
+  padding: 0;
+  color: #4f5661;
+  font-size: 14.5px;
+  line-height: 1.72;
+  font-weight: 400;
+}
+
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h1,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h2,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h3,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h4,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h5,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h6 {
+  margin: 10px 0 6px;
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.55;
+  font-weight: 650;
+}
+
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown p {
+  margin: 6px 0;
+  color: #4f5661;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 400;
+}
+
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown ul,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown ol {
+  margin: 6px 0 8px 20px;
+  padding: 0;
+}
+
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown strong {
+  color: #334155;
+  font-weight: 650;
+}
+
+@media (max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px) {
+  :root {
+    --practice-top-h: clamp(78px, 19vw, 92px);
+    --practice-bottom-h: clamp(64px, 15.5vw, 76px);
+    --practice-pad-x: clamp(12px, 3.5vw, 16px);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card-head {
+    margin-bottom: clamp(8px, 2.4vw, 12px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-title-markdown,
+  .app-frame.is-practice-frame .qx-question-title-markdown p {
+    color: #202124 !important;
+    font-size: var(--practice-q-font) !important;
+    line-height: 1.58 !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card {
+    margin-top: clamp(8px, 2.4vw, 10px);
+    border-radius: 14px;
+    box-shadow: 0 10px 22px rgba(24, 129, 255, .06);
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer {
+    padding: clamp(12px, 3.4vw, 14px);
+    line-height: 1.66;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer h1,
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer h2,
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer h3 {
+    margin: 0 0 clamp(8px, 2.4vw, 10px);
+    font-size: clamp(18px, 5.2vw, 20px);
+    line-height: 1.35;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer p {
+    margin: clamp(6px, 2vw, 8px) 0;
+    font-size: clamp(14px, 3.8vw, 15px);
+    line-height: 1.65;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-code-card {
+    margin: clamp(8px, 2.4vw, 10px) 0 clamp(10px, 3vw, 12px);
+    border-radius: 13px;
+    box-shadow: 0 10px 18px rgba(15, 23, 42, .13);
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-code-toolbar {
+    height: 34px;
+    padding: 0 12px;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-code-card pre,
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-md-code-card .qx-code-pre {
+    max-height: 300px;
+    padding: 10px 12px;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-md-code-card code.hljs {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-code-lines {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-code-line {
+    grid-template-columns: 40px max-content;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-code-line-no {
+    padding-right: 9px;
+    margin-right: 9px;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-code-line-content {
+    min-width: max-content;
+    padding-right: 18px;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar {
+    padding-top: clamp(8px, 2.4vw, 10px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar .qx-action-btn,
+  .app-frame.is-practice-frame .qx-mobile-favorite-btn {
+    min-height: clamp(42px, 11.6vw, 46px) !important;
+    height: clamp(42px, 11.6vw, 46px) !important;
+  }
+}
+
+/* 答题页解析字号：覆盖桌面与移动端旧规则，让解析内容更易读。 */
+.app-frame.is-practice-frame .qx-analysis-title {
+  font-size: 17px;
+  line-height: 1.38;
+}
+
+.app-frame.is-practice-frame .qx-explanation-text,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown {
+  font-size: 16px;
+  line-height: 1.78;
+}
+
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h1,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h2,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h3,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h4,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h5,
+.app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h6 {
+  font-size: 15.5px;
+}
+
+.app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer h3 {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer p {
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.app-frame.is-practice-frame .qx-result-answer-row {
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.app-frame.is-practice-frame .qx-result-answer-row b {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+@media (max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px) {
+  .app-frame.is-practice-frame .qx-result-answer-row {
+    gap: clamp(7px, 2vw, 9px) clamp(12px, 3.4vw, 16px) !important;
+    font-size: clamp(15px, 4vw, 16.5px) !important;
+    line-height: 1.45 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-result-answer-row b {
+    margin-left: 5px !important;
+    font-weight: 700 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-result-judge-icon {
+    width: clamp(17px, 4.6vw, 19px) !important;
+    height: clamp(17px, 4.6vw, 19px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-analysis-title {
+    font-size: clamp(14.5px, 3.9vw, 16px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-explanation-text,
+  .app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown {
+    font-size: clamp(14px, 3.75vw, 15.5px) !important;
+    line-height: 1.72 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h1,
+  .app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h2,
+  .app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h3,
+  .app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h4,
+  .app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h5,
+  .app-frame.is-practice-frame .qx-simple-answer .qx-explanation-markdown h6 {
+    font-size: clamp(14.5px, 3.9vw, 16px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer h3 {
+    font-size: clamp(18px, 4.8vw, 20px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-python-answer-card .qx-markdown-answer p {
+    font-size: clamp(15px, 4vw, 16px) !important;
+  }
+}
+
+.qx-auto-advance-hint {
+  display: grid;
+  gap: 18px;
+  padding: 6px 24px 22px;
+}
+
+.qx-auto-advance-hint p {
+  margin: 0;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.65;
+  font-weight: 750;
+}
+
+.qx-auto-advance-hint-check {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 850;
+  cursor: pointer;
+  user-select: none;
+}
+
+.qx-auto-advance-hint-check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--qx-blue);
+  flex: 0 0 auto;
+}
+
+.qx-auto-advance-hint-dialog .van-dialog__header {
+  color: #0f172a;
+  font-weight: 950;
+}

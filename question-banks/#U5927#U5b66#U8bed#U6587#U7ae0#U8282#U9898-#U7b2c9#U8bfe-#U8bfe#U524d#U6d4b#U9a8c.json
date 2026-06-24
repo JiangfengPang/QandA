@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-9",
+    "name": "第9课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-9-pretest-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-课前测试题",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "一百多年来中国教育始终没有解决的一个大问题是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "教育目的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "教学观念"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "课程设置"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "教学目标"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 教育目的。之所以选A，是因为“教育目的”能直接回答题干中的“一百多年来中国教育始终没有解决的一个大问题是()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-pretest-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-课前测试题",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "梅贻琦先生倡导( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "通专兼顾"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "通才教育"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "重“专”轻“通”"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "专才教育"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 通专兼顾。之所以选A，是因为“通专兼顾”能直接回答题干中的“梅贻琦先生倡导()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-pretest-003",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "9-课前测试题",
+        "判断题"
+      ],
+      "score": 33.4,
+      "question": "文章认为，整个社会长期被金钱第一、专家至上、高速发展等急功近利的观念所困扰，这使“专才”的培养大受影响，“通才”的制造仍在进行。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。之所以判断为错误，是因为题干关于“文章认为，整个社会长期被金钱第一、专家至上、高速发展等急功近利的观念所困扰，这使“专…”的表述过于绝对，或把相关概念、事实关系说错了。"
+    }
+  ]
+}

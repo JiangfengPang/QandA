@@ -1,0 +1,727 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-8",
+    "name": "8-北京大学月刊发刊词",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-8-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列不属于“汉赋四大家”的是。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "班固"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "司马相如"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "司马迁"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "扬雄"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 司马迁。本题问的是不符合题意的一项，司马迁正是与题干限定不一致的选项，所以选C；A、B、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列划线字词解释正确的一项是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "静俟读者批判而已 (俟:看着)"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "倍蓰:五倍"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "常樊然并峙于其中(樊:纷杂)"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "计学:会计学"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 常樊然并峙于其中(樊:纷杂)。本题考查对词语、句意或课文内容的理解，常樊然并峙于其中(樊:纷杂)能够准确对应题干所问，因此选C；A、B、D项与题干含义不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "科举制度是古代中国最重要的人才选拔机制，下列关于科举制度的说法正确的是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "戊戌变法提出废止科举主张，科举制度从此退出历史舞台"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "起源于唐太宗时期，成熟于唐玄宗时期"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "“三元及第”是指接连在乡试、会试、殿试中都考中第一名"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "宋朝时科举增设武举，采用糊名法加强考试公平性"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. “三元及第”是指接连在乡试、会试、殿试中都考中第一名。之所以选C，是因为“三元及第”是指接连在乡试、会试、殿试中都考中第一名最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列关于我国古代典籍“四书五经”的相关表述，正确的是。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "“五经”指的是《诗经》《大学》《礼记》《周易》和《论语》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《易经》被誉为“群经之首，大道之源”"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "宋朝学者将《礼记》从《中庸》中抽出独立成书"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《四书》是《大学》《中庸》《礼记》《论语》"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 《易经》被誉为“群经之首，大道之源”。之所以选B，是因为《易经》被誉为“群经之首，大道之源”最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列选项与“万物并育而不相害,道并行而不相悖”、“和而不同”所体现的文化生活道理一致的是 ①海纳百川，有容乃大 ②天下兴亡，匹夫有责 ③推陈出新，革故鼎新 ④美美与共，天下大同",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "①④"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "①②"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "①③"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "②③"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. ①④。①④最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 0,
+      "question": "《<北京大学月刊>发刊词》一文体裁是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "议论文"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "说明文"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "应用文"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "记叙文"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 议论文。题干考查文章体裁或文体判断，议论文符合本课文本的表达方式和写作形态，因此选A；B、C、D项不符合。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "在《<北京大学月刊>发刊词》一文中,“共同研究学术之机关”的基本含义是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "强调大学的批判功能"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "强调大学的科学职能"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "强调大学的教育职能"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "强调大的学科功能"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 强调大学的科学职能。之所以选B，是因为强调大学的科学职能最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列哪一部作品不是秦汉时期的文学作品?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《战国策》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《汉书》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《史记》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《庄子》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《庄子》。本题问的是“不属于/不是”的一项，《庄子》与题干限定的作者、作品或出处不符，因此选D；A、B、C项反而符合题干所属范围。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列表述错误的一项是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "本文写作背景是民国初年，中国高等教育刚刚诞生。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "“万物并育而不相害，道并行而不悖”，此句出于《大学》。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "在《<北京大学月刊>发刊词》一文中，作者主要说了发行《月刊》的三个必要性。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "在《<北京大学月刊>发刊词》一文中作者集中阐发了自己的大学理念。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. “万物并育而不相害，道并行而不悖”，此句出于《大学》。。本题问的是不符合题意的一项，“万物并育而不相害，道并行而不悖”，此句出于《大学》。正是与题干限定不一致的选项，所以选B；A、C、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《后汉书》的作者是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "范晔"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "班固"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "司马迁"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "陈寿"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 范晔。题干考查作者、作品或出处的对应关系，范晔与本课相关文学常识一致，因此选A；B、C、D项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《<北京大学月刊>发刊词》选自",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《蔡元培全集》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《谈文学》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《旅途随笔》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《龙.虎.狗》"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 《蔡元培全集》。题干考查作者、作品或出处的对应关系，《蔡元培全集》与本课相关文学常识一致，因此选A；B、C、D项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "蔡元培在1918年撰文说:“万物并育而不相害，道并行而不相悖，哲学之唯心论与唯物论;文学之崇实论与理想论;经济学之干涉论与放任论并列其中，此大学之所以为大也。”此处蔡元培所说“大学之所以为大”的主要意义是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "学风开放，思想自由"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "规模宏大，名师众多"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "学科齐全，综合性强"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "重文轻理，倡新抑日"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 学风开放，思想自由。学风开放，思想自由最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《<北京大学月刊>发刊词》所使用的语言是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "普通话"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "浅近文言"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "古白话"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "古文"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 浅近文言。之所以选B，是因为浅近文言最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "蔡元培在《<北京大学月刊>发刊词》中:大学者，“囊括大典，网罗众家”之学府也……各国大学，哲学之唯心论与唯物论，文学、美术之理想派与写实派，计学之干涉论与放任论，常樊然并屿其中，此思想自由之通则，而大学之所以为大也。材料不能说明蔡元培:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "全盘否定中国古代封建文化"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "诠释了自己对大学的理解"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "提倡“兼容并包，思想自由”"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "鼓励和倡导资产阶级新文化"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 全盘否定中国古代封建文化。本题要求找与课文内容或观点不一致的一项，全盘否定中国古代封建文化偏离了文本主旨、人物观点或题干限定，所以选A；B、C、D项更符合原文意思。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-015",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《<北京大学月刊>发刊词》一文的作者是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "胡适"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "钱锺书"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "蔡元培"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "蒋梦麟"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 蔡元培。题干考查作者、作品或出处的对应关系，蔡元培与本课相关文学常识一致，因此选C；A、B、D项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "《<北京大学月刊>发刊词》这篇文章初次刊登于1919年《北京大学学报》。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "蔡元培先生曾经两次去美国莱比锡大学研修。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "蔡元培所有作品都收录于他所编的《蔡元培全集》。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "蔡元培先生是清朝时期的进士，后担任了北京大学的校长。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-020",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "8-北京大学月刊发刊词",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "蔡元培先生与毛泽东都是湖南人，因此毛泽东评价他是“学界泰斗人世楷模”。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。之所以判断为错误，是因为毛泽东称蔡元培为“学界泰斗，人世楷模”，强调其在近代教育史上的地位。题干说法与这一点不一致。"
+    }
+  ]
+}

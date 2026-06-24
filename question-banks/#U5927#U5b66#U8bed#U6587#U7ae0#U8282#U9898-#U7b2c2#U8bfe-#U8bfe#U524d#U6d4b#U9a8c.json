@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-2",
+    "name": "第2课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "college-chinese-unit-2-pretest-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "语言",
+        "语系",
+        "语族"
+      ],
+      "score": 33.3,
+      "question": "每种语言根据其起源、使用地域、构词方法、发音等特点，分为了各个不同的家族，家族内部又进一步细分为多个分支。从大到小分别为什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "语族 → 语支 → 语系 → 语言 → 方言"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "语系 → 语族 → 语支 → 语言 → 方言"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "语族 → 语系 → 语言 → 语支 → 方言"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "语系 → 语族 → 语言 → 语支 → 方言"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 语系 → 语族 → 语支 → 语言 → 方言。之所以选B，是因为“语系 → 语族 → 语支 → 语言 → 方言”能直接回答题干中的“每种语言根据其起源、使用地域、构词方法、发音等特点，分为了各个不同的家族，家族内部又…”，与课文内容、文学常识或概念要求相符；A、C、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-unit-2-pretest-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "语言",
+        "语系",
+        "印欧语系"
+      ],
+      "score": 33.3,
+      "question": "世界第一大语系是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "印欧语系"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "阿尔泰诸语"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "亚非语系"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "汉藏语系"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 印欧语系。之所以选A，是因为“印欧语系”能直接回答题干中的“世界第一大语系是什么？”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-unit-2-pretest-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "语言",
+        "定义",
+        "符号系统"
+      ],
+      "score": 33.3,
+      "question": "关于“语言”的定义，选项中说法不正确的一项是哪一项？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "语言的客观存在形式首先是有声的口头语言"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "语言是人们说出来的话"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "语言是一个符号系统"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "语言是一种社会现象"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 语言是人们说出来的话。之所以选B，是因为“语言是人们说出来的话”与题干中的“关于“语言”的定义，选项中说法不正确的一项是哪一项？”不一致，正好属于本题要找的错误项；A、C、D反而更符合题意。"
+    }
+  ]
+}

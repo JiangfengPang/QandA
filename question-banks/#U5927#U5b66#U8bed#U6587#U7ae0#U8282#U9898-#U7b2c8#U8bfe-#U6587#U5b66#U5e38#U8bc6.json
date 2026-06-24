@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-8-2",
+    "name": "第8课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-8-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "成语“白驹过隙”比喻( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "时光飞逝"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "人生如梦"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "时间宝贵"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "速度飞快"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 时光飞逝。之所以选A，是因为“白驹过隙”比喻时间过得非常快。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "下列选项中与“亡羊补牢”意思最接近的是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "往者不可谏，来者犹可追"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "祸兮，福之所倚，福兮，祸之所伏"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "失之东隅，收之桑榆"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "人无远虑，必有近忧"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 往者不可谏，来者犹可追。之所以选A，是因为“亡羊补牢”强调出错后及时补救，与“往者不可谏，来者犹可追”意思相近。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "下面哪个成语和曹操有关?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "望梅止渴"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "画饼充饥"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "背水一战"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "四面楚歌"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 望梅止渴。之所以选A，是因为“望梅止渴”与曹操有关，指用想象来安慰或激励自己。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "墨子的主要思想是“兼爱”，他所反对的“爱有差等”这一观点是哪家学派的?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "道家"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "儒家"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "法家"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "名家"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 儒家。之所以选B，是因为墨子主张兼爱，反对儒家“爱有差等”的差序之爱。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "拍电影时常用的“杀青”来表示拍摄完成，“杀青”原指什么?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "制作竹简的一道工序"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "加工新茶的一种方法"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "制作陶器的一道工序"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "制作丝绸的一道工序"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 制作竹简的一道工序。之所以选A，是因为“杀青”原指制作竹简时烘干竹青的工序，后来引申为作品完成。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "王羲之对一种动物十分偏爱，并从它的体态姿势上领悟到书法执笔运笔的道理，这是什么动物?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "鱼"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "鸡"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "鹤"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "鹅"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 鹅。之所以选D，是因为王羲之喜爱鹅，并从鹅的体态中领悟书法用笔之妙。这正好解释了题干所问，所以应选D。"
+    }
+  ]
+}

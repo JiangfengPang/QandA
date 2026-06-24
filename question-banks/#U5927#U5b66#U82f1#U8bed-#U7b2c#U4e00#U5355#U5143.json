@@ -1,0 +1,777 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmu0zf",
+    "name": "大学英语",
+    "description": "",
+    "color": "#fb39fe"
+  },
+  "unit": {
+    "id": "unit-x8jc3w",
+    "name": "第一单元",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“adequately” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "足够地;适当地"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "很少地"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "快速地"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "缓慢地"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 足够地;适当地。之所以选A，是因为adequately 表示“足够地、适当地”，强调程度已经达到要求，常用于说明证据、准备、说明等是否充分。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“adjust” 的意思是____。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "增加"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "调整;调节"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "减少"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "删除"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 调整;调节。之所以选B，是因为adjust 表示“调整、调节、适应”，强调根据情况作出改变。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“asset” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "债务"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "资产;财产"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "损失"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "费用"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 资产;财产。之所以选B，是因为asset 表示“资产、有价值的人或物”，可指财产，也可指对个人或组织有帮助的优势。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“competent” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "无能力的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "有能力的;能胜任的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "懒惰的"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "忙碌的"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 有能力的;能胜任的。之所以选B，是因为competent 表示“有能力的、能胜任的”，强调具备完成某项工作的能力。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“condense” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "扩展"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "连接"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "分散"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "压缩;精简"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 压缩;精简。之所以选D，是因为condense 表示“压缩、浓缩、精简”，常用于把内容变短或让信息更集中。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“deficit” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "盈余"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "赤字;亏损"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "收入"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "利润"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 赤字;亏损。之所以选B，是因为deficit 表示“赤字、亏损、不足”，常和 sleep deficit、budget deficit 等搭配。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“distinguish” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "区分;辨别"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "混淆"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "混合"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "忽视"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 区分;辨别。之所以选A，是因为distinguish 表示“区分、辨别”，常用于 distinguish between A and B。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“exceed” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "低于"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "等于"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "超过;超出"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "接近"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 超过;超出。之所以选C，是因为exceed 表示“超过、超出”，强调数量、程度或范围高于某一标准。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“precise” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "模糊的"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误的"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "大概的"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "精确的;准确的"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 精确的;准确的。之所以选D，是因为precise 表示“精确的、准确的”，强调表达、数据或位置非常明确。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "词汇题"
+      ],
+      "score": 5,
+      "question": "“proficiency” 是什么意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "熟练;精通"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "新手状态"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "错误操作"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "业余爱好"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 熟练;精通。之所以选A，是因为proficiency 表示“熟练、精通”，强调掌握某项技能的程度较高。题干考查该词或短语的基本含义，其他选项与它的词义不一致。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "In Chinese culture, adult children are expected to take care of their aged parents, so they ________to contact or visit their parents regularly.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "are obliged to"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "look after"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "care for"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "abandon"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. are obliged to。之所以选A，是因为be obliged to 表示“有义务做某事、必须做某事”，语气比普通 want to 更强。放入句子后，语义和搭配都能与上下文衔接；B、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "People won’t ______ avoiding natural disasters until personally affected.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "get over"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "get forward to"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "get serious about"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "get through with"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. get serious about。之所以选C，是因为get serious about 表示“认真对待、重视起来”。放入句子后，语义和搭配都能与上下文衔接；A、B、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "When you ______ a long-lost friend, you’ll be delighted.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "run into"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "run out of"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "run after"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "run over"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. run into。之所以选A，是因为run into 表示“偶然遇见”，常用于遇到熟人或碰到问题。放入句子后，语义和搭配都能与上下文衔接；B、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "We need to ______ facts and opinions for better comprehension.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "ignore"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "mix up"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "compare with"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "distinguish between"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. distinguish between。之所以选D，是因为distinguish between 表示“区分……和……”，后面常接两个需要辨别的对象。放入句子后，语义和搭配都能与上下文衔接；A、B、C项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-015",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "The growth of the food e-commerce sector in China has played an important role in promoting the sales of agricultural products_________ the fields.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "failed to support"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "fresh from"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "focused only on"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "opposed to"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. fresh from。之所以选B，是因为fresh from 表示“刚从……来的、新鲜来自……的”，用于说明来源新鲜。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-016",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "If I don’t like someone or something, I might just say I am ______ even if it sounds rude.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "always right"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "silent in"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "apologize"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "allergic to"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. allergic to。之所以选D，是因为allergic to 原义是“对……过敏”，口语中也可表示“非常讨厌、不喜欢”。放入句子后，语义和搭配都能与上下文衔接；A、B、C项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-017",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Researchers conducted tests to determine the negative consequences of a sleep ______.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "surplus"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "habit"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "deficit"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "cycle"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. deficit。之所以选C，是因为deficit 表示“赤字、亏损、不足”，常和 sleep deficit、budget deficit 等搭配。放入句子后，语义和搭配都能与上下文衔接；A、B、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-018",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Bees can ______ more than 10 similar flower odors due to their sense of smell.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "confuse"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "destroy"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "distinguish"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "Create"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. distinguish。之所以选C，是因为distinguish 表示“区分、辨别”，常用于 distinguish between A and B。放入句子后，语义和搭配都能与上下文衔接；A、B、D项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-019",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "Moving forward even in the face of difficulties has become the most important ______ in my life and career.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "challenge"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "mistake"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "reward"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "asset"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. asset。之所以选D，是因为asset 表示“资产、有价值的人或物”，可指财产，也可指对个人或组织有帮助的优势。放入句子后，语义和搭配都能与上下文衔接；A、B、C项在词义或搭配上不符合句意。"
+    },
+    {
+      "id": "subject-bmu0zf-unit-x8jc3w-020",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第一单元",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "The lawyer proclaimed that conclusions must be ______ supported by evidence.",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "randomly"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "adequately"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "partially"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "Temporarily"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. adequately。之所以选B，是因为adequately 表示“足够地、适当地”，强调程度已经达到要求，常用于说明证据、准备、说明等是否充分。放入句子后，语义和搭配都能与上下文衔接；A、C、D项在词义或搭配上不符合句意。"
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-3-2",
+    "name": "第3课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-3-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "3-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6666666667,
+      "question": "假如你的一首五绝诗被杂志社采用，按照正文部分每字5元来计算，你应得多少稿费?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "100元"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "500元"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "200元"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "50元"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 100元。之所以选A，是因为“100元”能直接回答题干中的“假如你的一首五绝诗被杂志社采用，按照正文部分每字5元来计算，你应得多少稿费?()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-3-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "3-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6666666667,
+      "question": "诸子百家中名家的特点是注重逻辑辩证，以下哪个典故能体现名家的这一特点?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "任人唯亲"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "指鹿为马"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "知人善用"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "白马非马"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 白马非马。之所以选D，是因为“白马非马”能直接回答题干中的“诸子百家中名家的特点是注重逻辑辩证，以下哪个典故能体现名家的这一特点?()”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-3-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "3-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6666666667,
+      "question": "《百家姓》中没有下面哪个姓?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "巫"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "乌"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "肖"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "萧"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 肖。之所以选C，是因为“肖”能直接回答题干中的“《百家姓》中没有下面哪个姓?”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-3-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "3-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6666666667,
+      "question": "我们常说的“十八般武艺”最初指的是什么?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "十八种厨具"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "使用十八种兵器的技能"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "十八种武术动作"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "十八般手艺"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 使用十八种兵器的技能。之所以选B，是因为“使用十八种兵器的技能”能直接回答题干中的“我们常说的“十八般武艺”最初指的是什么?()”，与课文内容、文学常识或概念要求相符；A、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-3-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "3-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6666666667,
+      "question": "下面哪个字常用作表示顺序的第五位?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "戎"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "戌"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "戊"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "戍"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 戊。之所以选C，是因为“戊”能直接回答题干中的“下面哪个字常用作表示顺序的第五位?()”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-3-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "3-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6666666667,
+      "question": "“生旦净末丑”是京剧的行当，其中“净”是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "男角"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "女角"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "花旦"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "丑角"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 男角。之所以选A，是因为“男角”能直接回答题干中的““生旦净末丑”是京剧的行当，其中“净”是()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-8",
+    "name": "第8课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-8-pretest-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-课前测试题",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "西南联合大学的校址主要位于( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "昆明"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "重庆"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "贵阳"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "成都"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 昆明。之所以选A，是因为“昆明”能直接回答题干中的“西南联合大学的校址主要位于()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-pretest-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "8-课前测试题",
+        "单选题"
+      ],
+      "score": 33.3,
+      "question": "冯友兰的著作不包括( )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《中国哲学简史》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《中国哲学史新编》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《论道》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《中国哲学史》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《论道》。之所以选C，是因为“《论道》”与题干中的“冯友兰的著作不包括()。”不一致，正好属于本题要找的错误项；A、B、D反而更符合题意。"
+    },
+    {
+      "id": "subject-bmvcex-unit-8-pretest-003",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "8-课前测试题",
+        "判断题"
+      ],
+      "score": 33.4,
+      "question": "冯友兰的贞元六书包括《新哲学》、《新事论》、《新世训》、《新原人》、《新原道》和《新知言》六部著作‌。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。之所以判断为错误，是因为题干关于“冯友兰的贞元六书包括《新哲学》、《新事论》、《新世训》、《新原人》、《新原道》和《新知言》六部著作‌。”的表述过于绝对，或把相关概念、事实关系说错了。"
+    }
+  ]
+}

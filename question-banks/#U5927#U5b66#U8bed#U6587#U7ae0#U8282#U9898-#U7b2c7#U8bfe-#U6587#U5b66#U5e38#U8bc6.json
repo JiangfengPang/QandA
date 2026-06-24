@@ -1,0 +1,625 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-7-2",
+    "name": "第7课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-7-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "中国的六大古都是:( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "北京、西安、成都、开封、南京、杭州"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "北京、西安、洛阳、开封、南京、杭州"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "北京、西安、开封、南京、洛阳、武汉"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "北京、西安、天津、洛阳、杭州、开封"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 北京、西安、洛阳、开封、南京、杭州。之所以选B，是因为中国六大古都通常指北京、西安、洛阳、开封、南京、杭州。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "属于四大名绣的是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "鄂绣"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "豫绣"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "蜀绣"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "赣绣"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 蜀绣。之所以选C，是因为我国四大名绣是苏绣、湘绣、粤绣、蜀绣。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "《史记》是中国第一部( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "国别史"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "编年史"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "编年体通史"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "纪传体通史"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 纪传体通史。之所以选D，是因为《史记》是中国第一部纪传体通史，体例包括本纪、世家、列传、书、表。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "不属于中国四大佛山的是:( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "九华山"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "普陀山"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "武当山"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "峨眉山"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 武当山。之所以选C，是因为中国四大佛教名山是五台山、普陀山、峨眉山、九华山，武当山以道教名山著称。而题干问的是不符合或不属于的一项，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "“一日不见，如隔三秋”里的“三秋”是指:( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "三个月"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "三年"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "三十年"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "三个季度"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 三个季度。之所以选D，是因为“三秋”在“一日不见，如隔三秋”中可理解为三个季度，强调思念中时间显得漫长。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "龙门石窟位于下列哪个省:( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "山东"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "甘肃"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "河南"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "陕西"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 河南。之所以选C，是因为龙门石窟位于河南洛阳，是我国著名石窟之一。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "中国的三教合一指的是哪三种宗教?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "道教、儒教、基督教"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "儒教、佛教、道教"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "佛教、基督教、伊斯兰教"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "佛教、道教、基督教"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 儒教、佛教、道教。之所以选B，是因为中国传统“三教合一”一般指儒、佛、道三家思想的融合。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.2,
+      "question": "中国三大传统节日是什么?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "元宵节，端午节，春节"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "清明节，中秋节，春节"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "春节，元旦，中秋节"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "春节，端午节，中秋节"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 春节，端午节，中秋节。之所以选D，是因为中国三大传统节日通常指春节、端午节、中秋节。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "耄耋之年指的是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "五六十岁"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "六七十岁"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "八九十岁"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "七八十岁"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 八九十岁。之所以选C，是因为“耄耋”指年纪很大的人，通常指八九十岁。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "李清照词 “人比黄花瘦”中的黄花是什么花 ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "黄花"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "丁香花"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "菊花"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "腊梅花"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 菊花。之所以选C，是因为李清照词中的“黄花”指菊花，常与重阳、秋日意象相关。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "我国一共有多少个省级行政区?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "34 个"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "31 个"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "30 个"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "29 个"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 34 个。之所以选A，是因为我国现有34个省级行政区，包括省、自治区、直辖市和特别行政区。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "中国古代称戏曲演员为“梨园子弟”，“梨园子弟”的称号出自哪个朝代: ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "宋朝"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "唐朝"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "元朝"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "清朝"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 唐朝。之所以选B，是因为“梨园子弟”源于唐玄宗设梨园教习歌舞，后来成为戏曲演员的代称。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "下列属于我国四大传说故事的是:( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《嫦娥奔月》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《山海经》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《田螺姑娘》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《孟姜女》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《孟姜女》。之所以选D，是因为《孟姜女》是中国四大民间传说之一，其他还有《牛郎织女》《梁山伯与祝英台》《白蛇传》。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "地动仪发明于哪个朝代( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "东晋"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "东汉"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "西晋"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "西汉"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 东汉。之所以选B，是因为地动仪由东汉张衡发明。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-015",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "我们常说的“鸿雁传书”源自于以下哪个历史故事( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "霸王别姬"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "楚汉相争"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "文姬归汉"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "苏武牧羊"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 苏武牧羊。之所以选D，是因为“鸿雁传书”常与苏武牧羊故事相联系，后来泛指传递书信。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-literature-016",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-文学常识小测试",
+        "单选题"
+      ],
+      "score": 6.3,
+      "question": "文成公主与松赞干布和亲是在什么时期:( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "唐玄宗"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "唐高宗"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "唐太宗"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "唐中宗"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 唐太宗。之所以选C，是因为文成公主与松赞干布和亲发生在唐太宗时期。这正好解释了题干所问，所以应选C。"
+    }
+  ]
+}

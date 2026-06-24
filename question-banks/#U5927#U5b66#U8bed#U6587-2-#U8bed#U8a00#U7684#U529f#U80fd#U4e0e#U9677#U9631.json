@@ -1,0 +1,706 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-2",
+    "name": "2-语言的功能与陷阱",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "college-chinese-language-function-traps-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "王蒙",
+        "语言陷阱"
+      ],
+      "score": 5,
+      "question": "《语言的功能和陷阱》里面认为“仁孝忠信”、“礼义廉耻”本来是好词儿，后来变成人们厌恶的词汇，这是一种语言的什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "双刃剑"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "言过其实"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "言不尽意"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "狗屎化效应"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 狗屎化效应。狗屎化效应最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选D；A、B、C项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "演讲稿",
+        "语言特色"
+      ],
+      "score": 5,
+      "question": "“……中国古代也有类似的故事，但是起码马语没有人语这么发达。如果马语比人语还发达的话，那么今天王蒙这个位置上的可能就是一匹公马了。”这段话语突出体现了此篇演讲稿的什么特色？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "外松内紧"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "亦庄亦谐"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "极具煽情"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "取譬引喻"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 亦庄亦谐。本题考查文本的表达技巧，亦庄亦谐能够准确概括题干所举语句或文章的写法，因此选B；A、C、D项与语境中的表达方式不对应。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "王蒙",
+        "作品"
+      ],
+      "score": 5,
+      "question": "下列作品中，不属于王蒙创作的是哪一项？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《班主任》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《踌躇的季节》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《组织部来了个年轻人》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《活动变人形》"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 《班主任》。之所以选A，是因为《班主任》是刘心武的代表作，不是王蒙作品；王蒙代表作包括《组织部来了个年轻人》《活动变人形》等。而题干问的是不符合或不属于的一项，所以应选A。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "文体",
+        "演讲词"
+      ],
+      "score": 5,
+      "question": "王蒙的《语言的功能与陷阱》是什么文体？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "以上都不是"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "一篇散文"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "一篇演讲词"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "一篇记叙文"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 一篇演讲词。题干考查文章体裁或文体判断，一篇演讲词符合本课文本的表达方式和写作形态，因此选C；A、B、D项不符合。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "论证方法",
+        "类比"
+      ],
+      "score": 5,
+      "question": "王蒙在论证语言既有好的一面又有坏的一面，即“语言是把双刃剑”时，比较《伊索》话剧中“最好的菜和最坏的菜都是口条”，这种论证方法是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "演绎法"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "类比法"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "递进法"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "归纳法"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 类比法。本题考查文本的表达技巧，类比法能够准确概括题干所举语句或文章的写法，因此选B；A、C、D项与语境中的表达方式不对应。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "medium",
+      "tags": [
+        "语言陷阱",
+        "扼杀创造"
+      ],
+      "score": 5,
+      "question": "“比如说‘举头望明月，低头思故乡’，这就造成了我们中国人的心理模式，我们一看到明月就会想到家乡……你有没有真实的对于明月的感受。”这段话语体现了王蒙先生所谓的语言的哪种陷阱？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "文不尽言"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "言过其实"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "扼杀创造"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "落入俗套"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 扼杀创造。扼杀创造最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选C；A、B、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "巴尔扎克",
+        "语言功能"
+      ],
+      "score": 5,
+      "question": "巴尔扎克能写很多故事的原因是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "写作是语言本身推着他走"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "故事发生情节推动着他写"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "他将故事写在草稿纸上然后进行整理"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "他脑中装着故事"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 写作是语言本身推着他走。写作是语言本身推着他走最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "语言陷阱",
+        "落入俗套"
+      ],
+      "score": 5,
+      "question": "“‘好好学习，天天向上’我觉得这话多好呀……但是现在你如果什么都是‘好好学习，天天向上’呢，它就已经丧失了它原本的力量。”这段话语体现了王蒙先生所谓的语言的哪种陷阱？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "扼杀创造"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "言过其实"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "落入俗套"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "文不尽言"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 落入俗套。落入俗套最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选C；A、B、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "语言功能"
+      ],
+      "score": 5,
+      "question": "王蒙发现语言的功能包括什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "产生意义"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "工具"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "排比"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "话语"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 产生意义。之所以选A，是因为产生意义最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "语言审美",
+        "汉字"
+      ],
+      "score": 5,
+      "question": "“一月日边明”表达了语言独立的审美特点。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "语言功能",
+        "社会功能"
+      ],
+      "score": 5,
+      "question": "语言最基本的社会功能是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "认知思维功能"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "文化传播功能"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "传递信息功能"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "人际互动功能"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 传递信息功能。之所以选C，是因为传递信息功能最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "契诃夫",
+        "苦恼"
+      ],
+      "score": 5,
+      "question": "王蒙在《语言的功能与陷阱》中以契诃夫小说《苦恼》为论据阐述的论点是什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "语言的创造功能"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "语言的心理功能"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "语言文字的修辞功能"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "语言的信仰功能"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 语言的心理功能。之所以选B，是因为语言的心理功能最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "社会情感",
+        "语言权力"
+      ],
+      "score": 5,
+      "question": "一个词总是凝聚着这个词特有的什么，它就会形成特殊的权力？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "意境"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "社会情感"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "内涵"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "语气"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 社会情感。之所以选B，是因为社会情感最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "芙蓉女儿诔",
+        "审美宣泄"
+      ],
+      "score": 5,
+      "question": "王蒙在《语言的功能和陷阱》里面提及了贾宝玉的《芙蓉女儿诔》，论述了什么？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "语言的审美宣泄功能"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "语言的浪漫功能"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "语言的记忆功能"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "语言的交际功能"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 语言的审美宣泄功能。之所以选A，是因为语言的审美宣泄功能最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-015",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "判断",
+        "语言"
+      ],
+      "score": 5,
+      "question": "语言形成了感情。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "判断",
+        "语言功能"
+      ],
+      "score": 5,
+      "question": "语言可以编造世界。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "判断",
+        "语言工具"
+      ],
+      "score": 5,
+      "question": "语言只是一种工具。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "判断",
+        "语言异化"
+      ],
+      "score": 5,
+      "question": "当语言以及文字脱离了生活、脱离了真实、脱离了真情以后，它就会变成一个反面的东西。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "判断",
+        "语言异化"
+      ],
+      "score": 5,
+      "question": "好的、成功的语言表达和文字表达，一定不会面临被异化的命运。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "college-chinese-language-function-traps-020",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "判断",
+        "扼杀创造"
+      ],
+      "score": 5,
+      "question": "语言文字还有一个陷阱，就是语言文字它可以反过来主宰我们，扼杀我们的创造性，扼杀我们活泼的生机。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    }
+  ]
+}

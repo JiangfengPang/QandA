@@ -1,0 +1,317 @@
+/*
+  User-facing typography layer.
+  Keep the existing visual identity while replacing the old 800-950 weight
+  scale with a calmer reading hierarchy shared by every user page.
+*/
+
+:root {
+  --qx-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
+    "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+  --qx-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei",
+    system-ui, sans-serif;
+  --qx-weight-regular: 400;
+  --qx-weight-medium: 500;
+  --qx-weight-semibold: 600;
+  --qx-weight-bold: 700;
+  --qx-reading-ink: #202124;
+  --qx-reading-muted: #667085;
+}
+
+html,
+body,
+#app,
+#app button,
+#app input,
+#app textarea,
+#app select {
+  font-family: var(--qx-font-sans);
+}
+
+body {
+  color: var(--qx-reading-ink);
+  font-weight: var(--qx-weight-regular);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Main navigation and common controls */
+#app .brand strong,
+#app .nav-tab {
+  font-weight: var(--qx-weight-semibold) !important;
+  letter-spacing: 0 !important;
+}
+
+#app .brand span {
+  font-weight: var(--qx-weight-regular) !important;
+  letter-spacing: 0 !important;
+}
+
+#app .brand-mark.is-user-avatar b {
+  font-weight: var(--qx-weight-bold) !important;
+}
+
+#app :is(
+  .qx-btn,
+  .qx-mini-link,
+  .qx-header-pill,
+  .qx-stats-pill,
+  .qx-quiz-pill-btn,
+  .qx-unit-top-btn,
+  .qx-action-btn,
+  .qx-favorite-btn,
+  .qx-small-btn,
+  .qstat-clear-btn,
+  .qstat-review-link,
+  .qrev-mode-btn,
+  .qrev-action-primary,
+  .qrev-action-danger,
+  .qmine-edit-btn,
+  .qmine-save-btn,
+  .qmine-modal-btn,
+  .qrev-card-btn,
+  .qx-practice-now-btn
+) {
+  font-weight: var(--qx-weight-semibold) !important;
+  letter-spacing: 0 !important;
+}
+
+#app :is(
+  .pill,
+  .tag-row span,
+  .qx-bank-tag,
+  .qmine-tag,
+  .qmine-mini-tag,
+  .qx-time-pill,
+  .qrev-chip
+) {
+  font-weight: var(--qx-weight-medium) !important;
+  letter-spacing: 0 !important;
+}
+
+/* Page titles */
+#app :is(
+  .qx-page-header h1,
+  .qx-home-time-header-copy h1,
+  .qx-stats-title-block h1,
+  .qx-unit-title-block h1,
+  .qx-quiz-title-block h1,
+  .qstat-topbar h1,
+  .qrev-title
+) {
+  font-family: var(--qx-font-display);
+  font-weight: var(--qx-weight-bold) !important;
+  letter-spacing: -.02em !important;
+}
+
+#app :is(
+  .qx-page-header span,
+  .qx-page-header p,
+  .qx-home-time-header-copy span,
+  .qx-stats-title-block span,
+  .qx-stats-title-block p,
+  .qx-unit-title-block span,
+  .qx-unit-title-block p,
+  .qx-quiz-device,
+  .qstat-device,
+  .qrev-device
+) {
+  font-weight: var(--qx-weight-medium) !important;
+  letter-spacing: .02em !important;
+}
+
+/* Shared cards, lists and reading copy */
+#app :is(
+  .qx-card-head h2,
+  .qx-overview-head h2,
+  .qx-review-main-head h2,
+  .qx-unit-copy h2,
+  .qx-unit-item-head h3,
+  .qx-bank-unit-info h4,
+  .qx-rail-subject strong,
+  .qx-review-subject strong,
+  .qx-unit-item-head span,
+  .qx-recent-row strong,
+  .qx-study-stat strong,
+  .qx-library-stat-row strong,
+  .qx-review-list-card h3
+) {
+  font-weight: var(--qx-weight-semibold) !important;
+  letter-spacing: 0 !important;
+}
+
+#app :is(
+  .qx-card-head p,
+  .qx-study-big-stat > span,
+  .qx-study-big-stat p,
+  .qx-study-stat em,
+  .qx-recent-row p,
+  .qx-library-stat-row span,
+  .qx-unit-item-card p,
+  .qx-unit-progress em,
+  .qx-rail-subject span,
+  .qx-review-subject span,
+  .qx-review-main-head p,
+  .qx-review-main-head span,
+  .qx-review-list-card p,
+  .qx-unit-copy > span,
+  .qx-unit-stat-row span,
+  .qx-bank-unit-info p,
+  .qx-empty-line,
+  .qx-library-empty
+) {
+  font-weight: var(--qx-weight-regular) !important;
+  letter-spacing: 0 !important;
+  line-height: 1.5;
+}
+
+/* Homepage */
+#app .qx-time-visual-content h2 {
+  font-family: var(--qx-font-display);
+  font-weight: var(--qx-weight-bold) !important;
+  letter-spacing: -.035em !important;
+}
+
+#app .qx-time-visual-content p,
+#app .qx-study-total-card > span {
+  font-weight: var(--qx-weight-regular) !important;
+}
+
+#app :is(.qx-study-big-stat strong, .qx-study-total-number-text) {
+  font-family: var(--qx-font-display);
+  font-weight: var(--qx-weight-bold) !important;
+}
+
+/* Review */
+#app :is(
+  .qrev-subject-item strong,
+  .qrev-card h3,
+  .qrev-question,
+  .qrev-answer-row strong,
+  .qrev-stats-row strong,
+  .qrev-empty h3
+) {
+  font-weight: var(--qx-weight-semibold) !important;
+  letter-spacing: 0 !important;
+}
+
+#app :is(
+  .qrev-subject-item > span:not(.qrev-subject-dot),
+  .qrev-stats-row span,
+  .qrev-answer-label,
+  .qrev-answer-row,
+  .qrev-card p,
+  .qrev-empty p
+) {
+  font-weight: var(--qx-weight-regular) !important;
+  letter-spacing: 0 !important;
+}
+
+#app .qrev-subject-dot {
+  font-weight: var(--qx-weight-semibold) !important;
+}
+
+/* Statistics */
+#app :is(
+  .qstat-panel-head h2,
+  .qstat-metric-value,
+  .qstat-advice-item strong,
+  .qstat-subject-card strong,
+  .qstat-subject-meta b
+) {
+  font-weight: var(--qx-weight-semibold) !important;
+  letter-spacing: 0 !important;
+}
+
+#app :is(
+  .qstat-metric-label,
+  .qstat-metric-sub,
+  .qstat-panel-head p,
+  .qstat-panel-head span,
+  .qstat-advice-item p,
+  .qstat-subject-main span,
+  .qstat-subject-meta,
+  .qstat-footer-tip,
+  .qstat-empty-tip
+) {
+  font-weight: var(--qx-weight-regular) !important;
+  letter-spacing: 0 !important;
+  line-height: 1.5;
+}
+
+#app .qstat-metric-value small {
+  font-weight: var(--qx-weight-medium) !important;
+}
+
+/* Profile and settings */
+#app :is(
+  .qmine-profile-main h2,
+  .qmine-panel-head h2,
+  .qmine-row-title,
+  .qmine-modal h2,
+  .qmine-stat strong,
+  .qmine-font-options strong
+) {
+  font-weight: var(--qx-weight-semibold) !important;
+  letter-spacing: 0 !important;
+}
+
+#app :is(
+  .qmine-profile-main p,
+  .qmine-panel-head p,
+  .qmine-row-desc,
+  .qmine-modal p,
+  .qmine-stat span,
+  .qmine-note,
+  .qmine-dialog-tip,
+  .qmine-about-text p,
+  .qmine-font-options span,
+  .qmine-version
+) {
+  font-weight: var(--qx-weight-regular) !important;
+  letter-spacing: 0 !important;
+  line-height: 1.5;
+}
+
+#app :is(
+  .qmine-avatar span,
+  .qmine-email-pill,
+  .qmine-row-icon,
+  .qmine-select-pill
+) {
+  font-weight: var(--qx-weight-semibold) !important;
+}
+
+/* Authentication */
+#app .auth-hero h1 {
+  font-family: var(--qx-font-display);
+  font-weight: var(--qx-weight-bold) !important;
+  letter-spacing: -.02em !important;
+}
+
+#app :is(.auth-hero p, .auth-switch, .qfp-tip) {
+  font-weight: var(--qx-weight-regular) !important;
+  line-height: 1.55;
+}
+
+#app .auth-switch a,
+#app .qfp-dev-code {
+  font-weight: var(--qx-weight-semibold) !important;
+}
+
+#app .auth-screen .van-button {
+  font-weight: var(--qx-weight-semibold) !important;
+}
+
+@media (max-width: 980px) {
+  #app :is(
+    .qx-page-header h1,
+    .qx-home-time-header-copy h1,
+    .qstat-topbar h1,
+    .qrev-title
+  ) {
+    letter-spacing: -.015em !important;
+  }
+}

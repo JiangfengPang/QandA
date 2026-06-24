@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-1",
+    "name": "第1课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "college-chinese-pretest-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "庄子显灵记",
+        "文体"
+      ],
+      "score": 33.3,
+      "question": "《庄子显灵记》属于什么文体？",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "小说"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "散文"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "诗剧"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "话剧"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 诗剧。之所以选C，是因为“诗剧”能直接回答题干中的“《庄子显灵记》属于什么文体？”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-pretest-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "季羡林",
+        "人与自然"
+      ],
+      "score": 33.3,
+      "question": "季羡林先生认为解决21世纪理论界面临的问题的核心是促进人与自然的和谐相处。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 正确。之所以选A，是因为“正确”能直接回答题干中的“季羡林先生认为解决21世纪理论界面临的问题的核心是促进人与自然的和谐相处。”，与课文内容、文学常识或概念要求相符；B不符合题干限定。"
+    },
+    {
+      "id": "college-chinese-pretest-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序",
+        "文体常识"
+      ],
+      "score": 33.3,
+      "question": "下列关于“序”的表述不正确的一项是：",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "“序”也作“叙”或称“引”，一般写在书籍或文章前面，列于书后的称为“跋”或“后序”。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "古代的序除了书序外，另有一种序是惜别赠言的文字，叫作“赠序”。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "书序的作用在于作者向读者推荐自己的著作，说明写作过程、写作目的、著作的主要内容、作者的情况等。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "“赠序”的内容多是对于所赠亲友的赞许、推重或勉励之辞。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 书序的作用在于作者向读者推荐自己的著作，说明写作过程、写作目的、著作的主要内容、作者的情况等。。之所以选C，是因为“书序的作用在于作者向读者推荐自己的著作，说明写作过程、写作目的、著作的主要内容、作者的情况等。”与题干中的“下列关于“序”的表述不正确的一项是：”不一致，正好属于本题要找的错误项；A、B、D反而更符合题意。"
+    }
+  ]
+}

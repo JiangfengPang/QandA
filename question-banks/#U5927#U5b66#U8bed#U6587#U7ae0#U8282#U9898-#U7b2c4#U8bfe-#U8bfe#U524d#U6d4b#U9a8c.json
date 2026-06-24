@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-4",
+    "name": "第4课-课前测验",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-4-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌-课前测试题",
+        "单选题"
+      ],
+      "score": 20,
+      "question": "《我的四个假想敌》最主要的一个行文特色是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "运用了科技术语"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "运用了军事术语"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "运用了经济术语"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "运用了政治术语"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 运用了军事术语。之所以选B，是因为“运用了军事术语”能直接回答题干中的“《我的四个假想敌》最主要的一个行文特色是()”，与课文内容、文学常识或概念要求相符；A、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌-课前测试题",
+        "单选题"
+      ],
+      "score": 20,
+      "question": "“环伺”的正确读音是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "huán cì"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "huài sì"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "huán sì"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "huài cì"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. huán sì。之所以选C，是因为“huán sì”能直接回答题干中的““环伺”的正确读音是”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌-课前测试题",
+        "单选题"
+      ],
+      "score": 20,
+      "question": "《我的四个假想敌》一文中“假想敌”指的是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "女儿的妈妈"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "女儿"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "敌人"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "女儿的男朋友"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 女儿的男朋友。之所以选D，是因为“女儿的男朋友”能直接回答题干中的“《我的四个假想敌》一文中“假想敌”指的是()”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌-课前测试题",
+        "单选题"
+      ],
+      "score": 20,
+      "question": "《我的四个假想敌》的体裁是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "爱情"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "小说"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "散文"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "亲情"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 散文。之所以选C，是因为“散文”能直接回答题干中的“《我的四个假想敌》的体裁是()”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-4-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "4-我的四个假想敌-课前测试题",
+        "单选题"
+      ],
+      "score": 20,
+      "question": "《我的四个假想敌》的作者是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "叶圣陶"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "余光中"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "沈从文"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "张中行"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 余光中。之所以选B，是因为“余光中”能直接回答题干中的“《我的四个假想敌》的作者是()”，与课文内容、文学常识或概念要求相符；A、C、D不符合题干限定。"
+    }
+  ]
+}

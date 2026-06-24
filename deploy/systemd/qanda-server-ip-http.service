@@ -1,0 +1,24 @@
+[Unit]
+Description=QandA API Server - IP HTTP Mode
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/qanda
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run start --workspace server
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=15
+User=qanda
+Group=qanda
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/www/qanda/uploads
+
+[Install]
+WantedBy=multi-user.target

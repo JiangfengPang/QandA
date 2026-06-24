@@ -1,0 +1,1222 @@
+.qmine-page {
+  min-width: 0;
+  min-height: calc(100vh - 40px);
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  color: var(--qx-ink);
+}
+
+.qmine-profile-hero {
+  min-height: 190px;
+  border-radius: 28px;
+  padding: 26px 30px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 92% 88%, rgba(255,255,255,.18) 0 22%, transparent 23%),
+    radial-gradient(circle at 92% 20%, rgba(255,255,255,.16), transparent 26%),
+    linear-gradient(135deg, var(--qx-blue) 0%, var(--qx-blue-dark) 100%);
+  box-shadow: 0 18px 42px rgba(24, 129, 255, .20);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 18px;
+}
+
+.qmine-profile-hero::after {
+  content: "";
+  position: absolute;
+  width: 245px;
+  height: 245px;
+  right: -82px;
+  bottom: -138px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.13);
+}
+
+.qmine-profile-main,
+.qmine-edit-btn {
+  position: relative;
+  z-index: 1;
+}
+
+.qmine-profile-main {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  max-width: 680px;
+  align-self: center;
+}
+
+.qmine-profile-main > div {
+  min-width: 0;
+}
+
+.qmine-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.96);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 14px 28px rgba(15,23,42,.16);
+}
+
+.qmine-avatar span {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eaf3ff;
+  color: var(--qx-blue);
+  font-size: 32px;
+  font-weight: 950;
+}
+
+.qmine-profile-main h2 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 950;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qmine-profile-main p {
+  margin: 0;
+  color: rgba(255,255,255,.88);
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 850;
+  letter-spacing: .01em;
+}
+
+.qmine-email-pill {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 15px;
+  border-radius: 999px;
+  background: #fff6e5;
+  color: #b36b00;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.qmine-email-pill.bound {
+  background: #e9f9f1;
+  color: #108a58;
+}
+
+.qmine-email-pill i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+
+.qmine-email-pill .qx-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.qmine-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 112px;
+  height: 40px;
+  padding: 0 22px;
+  border: 1px solid rgba(255, 255, 255, .46);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .16);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .24),
+    0 12px 26px rgba(15, 23, 42, .12);
+  backdrop-filter: blur(10px);
+  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+  white-space: nowrap;
+  justify-self: end;
+  align-self: start;
+}
+
+.qmine-edit-btn:hover {
+  border-color: rgba(255, 255, 255, .62);
+  background: rgba(255, 255, 255, .24);
+}
+
+.qmine-edit-btn:active {
+  transform: scale(.98);
+}
+
+.qmine-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr);
+  grid-template-areas:
+    "prefs security"
+    "system system";
+  gap: 16px;
+  align-items: stretch;
+}
+
+.qmine-system-panel { grid-area: system; }
+.qmine-security-panel { grid-area: security; }
+.qmine-prefs-panel { grid-area: prefs; }
+
+.qmine-panel {
+  border-radius: 22px;
+  border: 1px solid var(--qx-line);
+  background: rgba(255,255,255,.96);
+  box-shadow: var(--qx-card-shadow, 0 18px 45px rgba(21, 42, 68, .10));
+  overflow: hidden;
+  min-width: 0;
+}
+
+.qmine-panel-head {
+  padding: 20px 22px 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.qmine-panel-head h2 {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.25;
+  font-weight: 950;
+  color: var(--qx-ink);
+}
+
+.qmine-panel-head p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 800;
+}
+
+.qmine-tag {
+  min-height: 26px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.qmine-row {
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 22px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.qmine-row + .qmine-row {
+  border-top: 1px solid #edf2f7;
+}
+
+.qmine-row-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #ffffff, #eef6ff);
+  color: var(--qx-blue-dark);
+  font-size: 14px;
+  font-weight: 950;
+  box-shadow: inset 0 0 0 1px rgba(24,129,255,.13), 0 8px 18px rgba(24,129,255,.06);
+}
+
+.qmine-row-icon .qx-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.qmine-row-title {
+  display: block;
+  color: var(--qx-ink);
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 950;
+}
+
+.qmine-row-desc {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.qmine-row-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.qmine-row-action .qx-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.qmine-mini-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.qmine-mini-tag.warn {
+  background: #fff6e5;
+  color: #cc7800;
+}
+
+.qmine-switch {
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  padding: 3px;
+  transition: .2s ease;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.qmine-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(15,23,42,.20);
+  transition: .2s ease;
+}
+
+.qmine-switch.on { background: var(--qx-blue); }
+.qmine-switch.on::after { transform: translateX(20px); }
+
+.qmine-select-pill {
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #eef6ff;
+  color: var(--qx-blue-dark);
+  font-size: 12px;
+  font-weight: 950;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.qmine-danger-row .qmine-row-icon {
+  background: linear-gradient(145deg, #fff8fa, #fff1f4);
+  color: var(--qx-red);
+  box-shadow: inset 0 0 0 1px rgba(255,79,109,.14), 0 8px 18px rgba(255,79,109,.08);
+}
+
+.qmine-danger-row .qmine-row-title {
+  color: var(--qx-red);
+}
+
+.qmine-prefs-grid {
+  display: block;
+  gap: 0;
+  padding-bottom: 6px;
+}
+
+.qmine-prefs-grid .qmine-row {
+  border-right: 0;
+  min-height: 66px;
+}
+
+.qmine-version {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.qmine-note {
+  margin: 48px 2px 0;
+  color: #94a3b8;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.qmine-dialog-body {
+  padding: 10px 16px 18px;
+}
+
+.qmine-dialog-tip,
+.qmine-about-text p {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.55;
+  font-weight: 800;
+}
+
+.qmine-font-options {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.qmine-font-options button {
+  border: 1px solid #e4ebf3;
+  border-radius: 16px;
+  background: #f8fbff;
+  padding: 14px;
+  text-align: left;
+}
+
+.qmine-font-options button.active {
+  border-color: rgba(24, 129, 255, .36);
+  background: #eef6ff;
+}
+
+.qmine-font-options strong {
+  display: block;
+  color: var(--qx-ink);
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.qmine-font-options span {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@media (max-width: 1180px) {
+  .qmine-grid {
+    grid-template-columns: 1fr 1.25fr;
+  }
+}
+
+@media (min-width: 981px) {
+  .qmine-system-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .qmine-system-panel .qmine-panel-head {
+    grid-column: 1 / -1;
+  }
+
+  .qmine-system-panel .qmine-row {
+    min-height: 78px;
+  }
+
+  .qmine-system-panel .qmine-row + .qmine-row {
+    border-top: 0;
+    border-left: 1px solid #edf2f7;
+  }
+}
+
+@media (max-width: 980px) {
+  .qmine-page {
+    min-height: calc(100vh - 98px);
+    display: block;
+    overflow: auto;
+    padding-bottom: 8px;
+  }
+
+  .qmine-profile-hero {
+    margin-top: 0;
+    min-height: 210px;
+    border-radius: 28px;
+    padding: 22px;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .qmine-profile-main {
+    grid-template-columns: 74px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .qmine-avatar {
+    width: 74px;
+    height: 74px;
+  }
+
+  .qmine-avatar span {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+
+  .qmine-profile-main h2 {
+    margin-bottom: 9px;
+    font-size: 26px;
+  }
+
+  .qmine-profile-main p {
+    font-size: 13px;
+  }
+
+  .qmine-email-pill {
+    min-height: 30px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .qmine-email-pill i {
+    width: 10px;
+    height: 10px;
+  }
+
+  .qmine-edit-btn {
+    min-width: 94px;
+    height: 34px;
+    padding: 0 15px;
+    font-size: 13px;
+  }
+
+  .qmine-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .qmine-prefs-panel { order: 1; }
+  .qmine-security-panel { order: 2; }
+  .qmine-system-panel { order: 3; }
+
+  .qmine-panel {
+    margin-top: 0;
+    border-radius: 22px;
+  }
+
+  .qmine-panel-head {
+    padding: 18px 18px 8px;
+  }
+
+  .qmine-panel-head h2 {
+    font-size: 18px;
+  }
+
+  .qmine-row {
+    min-height: 64px;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .qmine-row-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .qmine-row-desc {
+    font-size: 11px;
+  }
+
+  .qmine-prefs-grid {
+    display: block;
+    padding-bottom: 6px;
+  }
+
+  .qmine-prefs-grid .qmine-row {
+    border-right: 0;
+    border-top: 1px solid #edf2f7;
+    min-height: 64px;
+  }
+
+  .qmine-prefs-grid .qmine-row:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .qmine-prefs-grid .qmine-row:first-child {
+    border-top: 0;
+  }
+
+  .qmine-note {
+    margin: 18px 4px 2px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 430px) {
+  .qmine-profile-hero {
+    min-height: 210px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .qmine-edit-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .qmine-profile-main {
+    padding-top: 36px;
+  }
+}
+
+@media (max-width: 380px) {
+  .qmine-profile-hero {
+    padding: 20px 18px;
+  }
+
+  .qmine-profile-main {
+    grid-template-columns: 66px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .qmine-avatar {
+    width: 66px;
+    height: 66px;
+  }
+
+  .qmine-avatar span {
+    width: 54px;
+    height: 54px;
+    font-size: 25px;
+  }
+
+  .qmine-edit-btn {
+    min-width: 84px;
+    padding: 0 12px;
+  }
+
+  .qmine-profile-main p {
+    font-size: 12px;
+  }
+
+  .qmine-row {
+    padding: 11px 13px;
+  }
+
+  .qmine-row-desc {
+    font-size: 10px;
+  }
+}
+
+/* Avatar upload and preview */
+.qmine-avatar {
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.qmine-avatar img,
+.qmine-avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+}
+
+.qmine-avatar-editor {
+  position: relative;
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  padding: 4px 0 14px;
+}
+
+.qmine-avatar-preview {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #eef6ff;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 10px 22px rgba(15,23,42,.10);
+}
+
+.qmine-avatar-preview span {
+  color: var(--qx-blue-dark);
+  font-size: 30px;
+  font-weight: 950;
+}
+
+.qmine-avatar-editor-actions {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.qmine-avatar-editor-actions button {
+  height: 32px;
+  border-radius: 999px;
+  padding: 0 13px;
+  background: var(--qx-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.qmine-avatar-editor-actions button.ghost {
+  background: #eef6ff;
+  color: var(--qx-blue-dark);
+}
+
+.qmine-avatar-editor-actions p {
+  flex-basis: 100%;
+  margin: 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 800;
+}
+
+.qmine-avatar-file {
+  display: none;
+}
+
+@media (max-width: 430px) {
+  .qmine-avatar-editor {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .qmine-avatar-preview {
+    width: 64px;
+    height: 64px;
+  }
+
+  .qmine-avatar-editor-actions button {
+    height: 30px;
+    padding: 0 11px;
+  }
+}
+
+
+
+
+/* Email dialog two-step layout */
+.qmine-email-dialog {
+  width: min(390px, calc(100vw - 32px));
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.qmine-email-dialog .van-dialog__header {
+  padding-top: 22px;
+  padding-bottom: 10px;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.qmine-email-dialog-body {
+  padding: 14px 22px 20px;
+}
+
+.qmine-email-current-card {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 8px 0 14px;
+}
+
+.qmine-email-current-label {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.qmine-email-current-card strong {
+  color: #0f172a;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 950;
+  letter-spacing: .01em;
+}
+
+.qmine-email-change-btn {
+  width: 100%;
+  height: 42px;
+  margin-top: 2px;
+  border: 0;
+  border-radius: 12px;
+  background: #eef6ff;
+  color: var(--qx-blue-dark);
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.qmine-email-dialog-body .van-cell {
+  padding: 10px 0;
+  align-items: flex-start;
+}
+
+.qmine-email-dialog-body .van-cell::after {
+  left: 0;
+  right: 0;
+}
+
+.qmine-email-dialog-body .van-field__label {
+  width: 70px;
+  flex: 0 0 70px;
+  margin-right: 12px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 34px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.qmine-email-dialog-body .van-field__body {
+  min-height: 34px;
+}
+
+.qmine-email-dialog-body .van-field__control {
+  min-width: 0;
+  color: #0f172a;
+  font-size: 13px;
+  line-height: 22px;
+}
+
+.qmine-email-dialog-body .van-field__control::placeholder {
+  color: #a8b3c4;
+  opacity: 1;
+  font-size: 12px;
+}
+
+.qmine-email-dialog-body .van-field__button {
+  padding-left: 10px;
+}
+
+.qmine-email-dialog-body .van-button--small {
+  min-width: 78px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.qmine-email-dialog .van-dialog__footer {
+  min-height: 50px;
+}
+
+.qmine-email-dialog .van-dialog__cancel,
+.qmine-email-dialog .van-dialog__confirm {
+  height: 50px;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+@media (max-width: 430px) {
+  .qmine-email-dialog-body {
+    padding: 12px 18px 18px;
+  }
+
+  .qmine-email-dialog-body .van-field__label {
+    width: 64px;
+    flex-basis: 64px;
+    margin-right: 10px;
+    font-size: 12px;
+  }
+
+  .qmine-email-current-card strong {
+    font-size: 18px;
+  }
+
+  .qmine-email-dialog-body .van-button--small {
+    min-width: 70px;
+    padding: 0 8px;
+  }
+}
+
+
+/* Password dialog layout optimization */
+:root {
+  --qmine-password-dialog-width: 390px;
+}
+
+.qmine-password-dialog {
+  width: min(var(--qmine-password-dialog-width), calc(100vw - 32px));
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.qmine-password-dialog .van-dialog__header {
+  padding-top: 22px;
+  padding-bottom: 10px;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.qmine-password-dialog-body {
+  padding: 12px 22px 18px;
+}
+
+.qmine-password-dialog-body .van-cell {
+  padding: 10px 0;
+  align-items: flex-start;
+}
+
+.qmine-password-dialog-body .van-cell::after {
+  left: 0;
+  right: 0;
+}
+
+.qmine-password-dialog-body .van-field__label {
+  width: 74px;
+  flex: 0 0 74px;
+  margin-right: 14px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 34px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.qmine-password-dialog-body .van-field__body {
+  min-height: 34px;
+}
+
+.qmine-password-dialog-body .van-field__control {
+  min-width: 0;
+  color: #0f172a;
+  font-size: 13px;
+  line-height: 22px;
+}
+
+.qmine-password-dialog-body .van-field__control::placeholder {
+  color: #a8b3c4;
+  opacity: 1;
+  font-size: 12px;
+}
+
+.qmine-password-dialog-body .van-field__button {
+  padding-left: 10px;
+}
+
+.qmine-password-dialog-body .van-button--small {
+  min-width: 78px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.qmine-password-dialog .van-dialog__footer {
+  min-height: 50px;
+}
+
+.qmine-password-dialog .van-dialog__cancel,
+.qmine-password-dialog .van-dialog__confirm {
+  height: 50px;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+@media (max-width: 430px) {
+  .qmine-password-dialog-body {
+    padding: 10px 18px 16px;
+  }
+
+  .qmine-password-dialog-body .van-field__label {
+    width: 66px;
+    flex-basis: 66px;
+    margin-right: 10px;
+    font-size: 12px;
+  }
+
+  .qmine-password-dialog-body .van-field__control::placeholder {
+    font-size: 11px;
+  }
+
+  .qmine-password-dialog-body .van-button--small {
+    min-width: 70px;
+    padding: 0 8px;
+  }
+}
+/* ===== 2026-06-07 profile hero avatar-background integration =====
+   不改变“我的”页其他卡片结构，只压缩顶部卡片高度，并让用户头像同步成为右半侧背景。 */
+.qmine-profile-hero {
+  --qmine-avatar-bg: none;
+  min-height: 152px !important;
+  height: 152px !important;
+  padding: 20px 28px !important;
+  border-radius: 28px !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  background:
+    radial-gradient(circle at 92% 88%, rgba(255,255,255,.12), transparent 33%),
+    linear-gradient(135deg, var(--qx-blue) 0%, var(--qx-blue-dark) 100%) !important;
+  isolation: isolate;
+}
+
+.qmine-profile-hero::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -9% !important;
+  right: -6% !important;
+  bottom: -9% !important;
+  width: 58% !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  background-image: var(--qmine-avatar-bg) !important;
+  background-size: cover !important;
+  background-position: center 42% !important;
+  opacity: .70 !important;
+  filter: blur(2px) saturate(1.12) contrast(1.04) !important;
+  transform: scale(1.035) !important;
+  z-index: -3 !important;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.12) 10%, rgba(0,0,0,.58) 26%, #000 48%, #000 100%) !important;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.12) 10%, rgba(0,0,0,.58) 26%, #000 48%, #000 100%) !important;
+}
+
+.qmine-profile-hero::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  z-index: -2 !important;
+  background:
+    linear-gradient(90deg, rgba(29,132,255,.98) 0%, rgba(19,112,239,.92) 42%, rgba(11,96,224,.52) 74%, rgba(8,84,214,.36) 100%),
+    radial-gradient(circle at 86% 86%, rgba(255,255,255,.16), transparent 34%) !important;
+}
+
+.qmine-profile-main,
+.qmine-edit-btn {
+  z-index: 1 !important;
+}
+
+.qmine-profile-main {
+  grid-template-columns: 76px minmax(0, 1fr) !important;
+  gap: 20px !important;
+  align-self: center !important;
+}
+
+.qmine-avatar {
+  width: 76px !important;
+  height: 76px !important;
+  padding: 5px !important;
+  background: rgba(255,255,255,.92) !important;
+  box-shadow: 0 14px 26px rgba(15,23,42,.16) !important;
+}
+
+.qmine-avatar img,
+.qmine-avatar span {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+.qmine-avatar span {
+  font-size: 30px !important;
+}
+
+.qmine-profile-main h2 {
+  margin: 0 0 8px !important;
+  font-size: 29px !important;
+  line-height: 1.05 !important;
+}
+
+.qmine-profile-main p {
+  font-size: 14px !important;
+  line-height: 1.25 !important;
+}
+
+.qmine-email-pill {
+  margin-top: 10px !important;
+  min-height: 30px !important;
+  padding: 0 14px !important;
+  font-size: 13px !important;
+}
+
+.qmine-edit-btn {
+  align-self: start !important;
+  min-width: 104px !important;
+  height: 38px !important;
+  padding: 0 18px !important;
+}
+
+@media (max-width: 980px) {
+  .qmine-profile-hero {
+    min-height: 168px !important;
+    height: 168px !important;
+    padding: 20px 22px !important;
+    border-radius: 26px !important;
+  }
+
+  .qmine-profile-hero::before {
+    width: 62% !important;
+    right: -16% !important;
+    opacity: .66 !important;
+  }
+
+  .qmine-profile-main {
+    grid-template-columns: 72px minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .qmine-avatar {
+    width: 72px !important;
+    height: 72px !important;
+  }
+
+  .qmine-profile-main h2 {
+    font-size: 25px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .qmine-profile-hero {
+    min-height: 166px !important;
+    height: 166px !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 12px !important;
+    padding: 18px 18px !important;
+  }
+
+  .qmine-profile-main {
+    padding-top: 22px !important;
+    grid-template-columns: 66px minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .qmine-avatar {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .qmine-edit-btn {
+    position: absolute !important;
+    top: 18px !important;
+    right: 18px !important;
+    height: 34px !important;
+    min-width: 92px !important;
+  }
+}
+
+/* ===== 2026-06-07 mine mobile compact final fix =====
+   继续压缩移动端个人卡片高度，保持原有信息结构不变。 */
+@media (max-width: 980px) {
+  .qmine-profile-hero {
+    min-height: 148px !important;
+    height: 148px !important;
+    padding: 18px 22px !important;
+  }
+
+  .qmine-profile-main {
+    grid-template-columns: 64px minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .qmine-avatar {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  .qmine-profile-main h2 {
+    font-size: 24px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .qmine-profile-main p {
+    font-size: 13px !important;
+  }
+
+  .qmine-email-pill {
+    min-height: 27px !important;
+    margin-top: 8px !important;
+    padding: 0 12px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .qmine-profile-hero {
+    min-height: 128px !important;
+    height: 128px !important;
+    padding: 14px 16px !important;
+  }
+
+  .qmine-profile-main {
+    padding-top: 0 !important;
+    grid-template-columns: 60px minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .qmine-profile-main > div {
+    padding-right: 102px !important;
+  }
+
+  .qmine-avatar {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .qmine-edit-btn {
+    top: 19px !important;
+    right: 16px !important;
+    min-width: 88px !important;
+    padding: 0 13px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .qmine-profile-main > div {
+    padding-right: 92px !important;
+  }
+
+  .qmine-edit-btn {
+    min-width: 82px !important;
+    padding: 0 11px !important;
+    font-size: 12px !important;
+  }
+}

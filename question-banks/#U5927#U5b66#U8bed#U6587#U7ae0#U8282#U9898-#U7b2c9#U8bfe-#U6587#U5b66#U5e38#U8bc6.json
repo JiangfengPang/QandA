@@ -1,0 +1,473 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-9-2",
+    "name": "第9课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-9-literature-2-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测试2",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "下列文学常识表述正确的一项是()。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "司马迁，西汉史学家、文学家。《史记》是我国第一部编年体通史。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《史记》记载了上自传说中的黄帝时代，下至汉武帝共3000多年的历史，一共120篇。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《史记》分本纪、世家、列传、书、表五个体例。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "韩愈，字退之，世称韩昌黎。唐代文学家，与刘禹锡共同倡导了“古文运动”。宋代苏轼称他“文起八代之衰”，明人推他为唐宋八大家之首。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《史记》分本纪、世家、列传、书、表五个体例。。之所以选C，是因为“《史记》分本纪、世家、列传、书、表五个体例。”能直接回答题干中的“下列文学常识表述正确的一项是()。”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-2-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测试2",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "下列表述有误的一项是(    )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "词的标题与词牌有严格的区别，标题表明词所涉及的内容，词牌是与韵相配合的乐调，二者分别表示词的内容和形式。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "现代戏剧主要指20世纪以来从西方传入的话剧(如《雷雨》)、歌剧(如《白毛女》)和舞剧(如《红色娘子军》)等，话剧是其中的主体。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "“汉乐府”本是汉武帝设立的掌管音乐的官府，后来成为诗体的名称。《木兰辞》和《孔雀东南飞》被称为“乐府双璧”。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "西方表现主义小说的代表是被誉为美国当代戏剧奠基人的尤金奥尼尔，西方表现主义戏剧的代表是奥地利的卡夫卡。"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 西方表现主义小说的代表是被誉为美国当代戏剧奠基人的尤金奥尼尔，西方表现主义戏剧的代表是奥地利的卡夫卡。。之所以选D，是因为“西方表现主义小说的代表是被誉为美国当代戏剧奠基人的尤金奥尼尔，西方表现主义戏剧的代表是奥地利的卡夫卡。”能直接回答题干中的“下列表述有误的一项是()。”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-2-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测试2",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "1918年，鲁迅发表在《新青年》上的我国现代文学史上的第一篇白话小说是(  )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《祝福》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《药》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《狂人日记》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《伤逝》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《狂人日记》。之所以选C，是因为鲁迅1918年发表在《新青年》上的《狂人日记》是我国现代文学史上第一篇白话小说。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-2-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测试2",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "下列作品不是莎士比亚四大悲剧的一项是(    )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《奥赛罗》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《李尔王》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《麦克白》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《威尼斯商人》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《威尼斯商人》。之所以选D，是因为《威尼斯商人》是莎士比亚喜剧，不属于四大悲剧。而题干问的是不符合或不属于的一项，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-2-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测试2",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "“先天下之忧而忧，后天下之乐而乐”出自哪位作家的哪部作品()?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "范仲淹——《岳阳楼记》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "欧阳修——《醉翁亭记》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "柳宗元——《小石潭记》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "王安石——《游褒禅山记》"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 范仲淹——《岳阳楼记》。之所以选A，是因为“先天下之忧而忧，后天下之乐而乐”出自范仲淹《岳阳楼记》。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-2-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测试2",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "下列各项中，作家、作品、体裁对应不正确的一项是()。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "孙犁——《荷花淀》——小说"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "朱自清——《荷塘月色》——散文"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "司马迁——《鸿门宴》——小说"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "鲁迅——《祝福》——小说"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 司马迁——《鸿门宴》——小说。之所以选C，是因为《鸿门宴》出自《史记·项羽本纪》，不是司马迁创作的小说。而题干问的是不符合或不属于的一项，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "以下四位谁曾经中过状元?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "欧阳修"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "范仲淹"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "韩愈"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "文天祥"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 文天祥。之所以选D，是因为文天祥曾中过状元，后来以抗元名节著称。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "“美”字最初的含义是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "羊大即为美"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "远方茂盛的森林"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "戴着头饰站立的人"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "土地里生长的花朵"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 戴着头饰站立的人。之所以选C，是因为“戴着头饰站立的人”能直接回答题干中的““美”字最初的含义是()”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "《尚书》中的“尚”是什么意思?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "崇尚"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "上古"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "官名"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "高尚"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 上古。之所以选B，是因为“上古”能直接回答题干中的“《尚书》中的“尚”是什么意思?()”，与课文内容、文学常识或概念要求相符；A、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "孔子为自己的教学定为“孔门四教”，具体指的是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "仁、义、礼、信"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "德、智、体、美"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "修身、齐家、治国、平天下"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "文、行、忠、信"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 文、行、忠、信。之所以选D，是因为孔子“孔门四教”指文、行、忠、信。这正好解释了题干所问，所以应选D。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "俗语说“化干戈为玉帛”，干戈都是兵器，下面哪种武器属于防御武器?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "矛"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "干"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "刀"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "戈"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 干。之所以选B，是因为“干”是盾牌，属于防御性兵器；“戈”是进攻性兵器。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-文学常识小测验",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "《霸王别姬》是京剧中的名段，“虞姬”这一角色在京剧中属于( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "矛"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "青衣"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "花旦"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "刀"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 青衣。之所以选B，是因为京剧《霸王别姬》中虞姬属于青衣行当，形象端庄柔婉。这正好解释了题干所问，所以应选B。"
+    }
+  ]
+}

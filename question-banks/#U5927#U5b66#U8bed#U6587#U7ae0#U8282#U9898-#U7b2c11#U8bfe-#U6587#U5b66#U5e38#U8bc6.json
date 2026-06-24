@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-11-2",
+    "name": "第11课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-11-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "“问世间、情为何物，直教生死相许”这句诗写的是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "大雁"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "鹦鹉"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "鸳鸯"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "黄雀"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 大雁。之所以选A，是因为“大雁”能直接回答题干中的““问世间、情为何物，直教生死相许”这句诗写的是()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-11-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "我国古代的“乐府双璧”是指( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《长歌行》和《木兰诗》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《孔雀东南飞》和《子夜歌》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《陌上桑》和《子夜歌》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《孔雀东南飞》和《木兰诗》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《孔雀东南飞》和《木兰诗》。之所以选D，是因为“《孔雀东南飞》和《木兰诗》”能直接回答题干中的“我国古代的“乐府双璧”是指()”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-11-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "宋代词人辛弃疾的名句“众里寻他千百度。蓦然回首，那人却在，灯火阑珊处”写的是我国传统节日( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "元宵节"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "中秋节"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "端午节"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "七夕节"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 元宵节。之所以选A，是因为“元宵节”能直接回答题干中的“宋代词人辛弃疾的名句“众里寻他千百度。”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-11-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "“滥竽充数”出自哪部书?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《墨子》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《庄子》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《孟子》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《韩非子》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《韩非子》。之所以选D，是因为“《韩非子》”能直接回答题干中的““滥竽充数”出自哪部书?()”，与课文内容、文学常识或概念要求相符；A、B、C不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-11-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "成语“退避三舍”中的“三舍”指( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "九十里"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "一百里"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "六十里"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "三十里"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 九十里。之所以选A，是因为“九十里”能直接回答题干中的“成语“退避三舍”中的“三舍”指()”，与课文内容、文学常识或概念要求相符；B、C、D不符合题干限定。"
+    },
+    {
+      "id": "subject-bmvcex-unit-11-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "11-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "中国历史上被誉为“医学百科全书”的作者是谁?( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "孙思邈"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "扁鹊"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "李时珍"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "华佗"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 李时珍。之所以选C，是因为“李时珍”能直接回答题干中的“中国历史上被誉为“医学百科全书”的作者是谁?()”，与课文内容、文学常识或概念要求相符；A、B、D不符合题干限定。"
+    }
+  ]
+}

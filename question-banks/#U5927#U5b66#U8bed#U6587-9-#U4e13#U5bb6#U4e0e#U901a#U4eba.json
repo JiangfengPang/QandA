@@ -1,0 +1,727 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-9",
+    "name": "9-专家与通人",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-9-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列读音正确一项是。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "梗概gěng gài;嗜好shì hǎo"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "足跛bó;一隅yīyú"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "舍本逐末shě běn zhuó mò;敷衍塞责fū yǎn sè zé"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "隔 阂gé hé ;隔膜gé mó"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 隔 阂gé hé ;隔膜gé mó。本题考查字音辨析，D项注音符合规范，因此选D；A、B、C项存在读音不准确或不符合题干要求的问题。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "被称为“其声如雷，其学如海，史学之宗”的是以下哪位先生。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "蔡元培"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "梅贻琦"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "雷海宗"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "胡适"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 雷海宗。之所以选C，是因为雷海宗最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "结合课文内容，下列说法不正确一项是、",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "大学期间，通专不能兼顾，因为人的能力有限。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "这是一篇论治学上的“专”与“通”关系的短文。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "文章谈及治学与人生关系的大文章。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "为造就“通人”，关键在力倡“通才教育”"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 大学期间，通专不能兼顾，因为人的能力有限。。本题问的是不符合题意的一项，大学期间，通专不能兼顾，因为人的能力有限。正是与题干限定不一致的选项，所以选A；B、C、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "大学生如何避免患“精神偏枯病”。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "注意补充身体营养。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "对学问建立广泛的兴趣。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "经常去做心理咨询。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "认真钻研本学科学问。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 对学问建立广泛的兴趣。。对学问建立广泛的兴趣。最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选B；A、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "作者在第一段举牛顿和达尔文的例子是为了说明什么?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "牛顿和达尔文非常了不起。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "在自然科学领域，伟大的人物不需要了解其他的学科。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "牛顿比达尔文更厉害。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "在自然科学领域，凡是伟大的人物都是对整个学问都感兴趣的人。"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 在自然科学领域，凡是伟大的人物都是对整个学问都感兴趣的人。。题干考查作者、作品或出处的对应关系，在自然科学领域，凡是伟大的人物都是对整个学问都感兴趣的人。与本课相关文学常识一致，因此选D；A、B、C项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "根据文章，关于人才状况下列哪些说法是正确的。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "主要问题是人才数量不够。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "学校pei'y培养的人才大多不合格，不能满足社会需要。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "人才培养的责任与教育当局及大学教师无关。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "社会上人才充足。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 学校pei'y培养的人才大多不合格，不能满足社会需要。。之所以选B，是因为学校pei'y培养的人才大多不合格，不能满足社会需要。最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "关于“十足的人”，下列说法正确的是。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "就是完美的人。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "就是指“通人”"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "就是只通自己本学科领域学问的人。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "就是专家。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 就是指“通人”。之所以选B，是因为就是指“通人”最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "学界太专的弊端与什么有关?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "学者们自身的思想认识不够。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "学者们自己没有多余的时间精力。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "高等教育制度导致的。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "大学的教学水平不高。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 高等教育制度导致的。。之所以选C，是因为高等教育制度导致的。最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "课文中关于大学课程设置，下列说法错误的是。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "基本的课程开设情况不理想。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "课程设置本末倒置"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "大学课程开设的数量不足。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "本科开设的课程过难。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 大学课程开设的数量不足。。本题问的是不符合题意的一项，大学课程开设的数量不足。正是与题干限定不一致的选项，所以选C；A、B、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "以下成语比喻“见识浅陋,没有远见”是哪一项?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "本末倒置"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "雕虫小技"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "眼光短浅"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "舍本逐末"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 眼光短浅。之所以选C，是因为眼光短浅最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列关于当今学问分门别类的原因，哪项不正确",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "各门学问之间差距非常大。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "为了研究的便利。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "人的精力有限。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "整个学问体系庞大复杂，分门别类有利于开展研究。"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 各门学问之间差距非常大。。本题要求找与课文内容或观点不一致的一项，各门学问之间差距非常大。偏离了文本主旨、人物观点或题干限定，所以选A；B、C、D项更符合原文意思。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列词语书写正确的是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "叼虫小技"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "考据将"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "应接不暇"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "略知梗慨"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 应接不暇。本题考查字形和词语书写，C项书写规范，因此选C；A、B、D项存在错别字或词语写法不规范的问题。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "文中第二段提到考据专家，下列哪种说法不正确。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "这个专家专业水平不高。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "作者认为这样的“专家”并不是更高层次的“大家”。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "这种专家只专注于自身学科领域的学问。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "这是作者生活中真实的例子。"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 这个专家专业水平不高。。本题问的是不符合题意的一项，这个专家专业水平不高。正是与题干限定不一致的选项，所以选A；B、C、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "作者在第二段提到的“科学家”，下列哪种说法正确。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "这个科学家不认真做实验。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "这个科学家是个残疾人。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "这个科学家可能在专业领域成就很高。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "这个科学家非常了解外界的世界。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 这个科学家可能在专业领域成就很高。。题干考查作者、作品或出处的对应关系，这个科学家可能在专业领域成就很高。与本课相关文学常识一致，因此选C；A、B、D项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-015",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "文中“死抱一隅之见”指的是。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "暴虎冯河、心胸狭窄之人。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "只关注自己研究方向、立场的人。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "躲在墙角，不问世事的人。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "目光短浅、无主见之人。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 只关注自己研究方向、立场的人。。本题考查对词语、句意或课文内容的理解，只关注自己研究方向、立场的人。能够准确对应题干所问，因此选B；A、C、D项与题干含义不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "根据文章，我们知道对知识学问的学习和探索，需要分门别类去进行，所以不必太关注其他学科领域的知识。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "很多专家经常会发表出一些幼稚的言论主要就是因为他们没有把自身学科领域的学问学好。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "根据作者所述，社会上很多人追求专家的头衔，这是当时的一大社会问题。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "本文作者的主要观点就是希望我们不要甘于做井底之蛙，应该有更广阔的视野和胸怀。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-9-020",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "9-专家与通人",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "本位作者雷海宗先生是一个历史学家，但是他对其他领域包括教育领域也都深有研究。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    }
+  ]
+}

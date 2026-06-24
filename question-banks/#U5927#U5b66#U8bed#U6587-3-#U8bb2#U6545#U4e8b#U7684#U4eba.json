@@ -1,0 +1,777 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-3",
+    "name": "3-讲故事的人",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "college-chinese-xu-er-pian-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言作品中起源于梦境的小说是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《丰乳肥臀》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《红高粱》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《透明的红萝卜》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《秋水》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《透明的红萝卜》。之所以选C，是因为《透明的红萝卜》最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 0,
+      "question": "根据文章内容，下列说法表述错误的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "作者围绕自己的创作历程，讲述了影响自己创作的一些主要因素，点点滴滴汇聚成一个个鲜活可感的故事，令人听来真实可信。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "演讲开始便回忆自己幼年的经历，这些往事内容丰富，主题鲜明，侧重点明晰，这样安排的目的是巧妙交代母亲对自己的人生的巨大影响，紧紧抓住听众的心。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "这篇演讲既是作者的获奖感言，也是作者自己在用讲故事的方式讲述自己成长及写作的心路历程，意在劝诫大家:一个人的成功不是一帆风顺的，要经受许多磨难才能有所成就。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "作者以讲故事开始，以讲故事结尾。文末作者说“今后的岁月里，我将继续讲我的故事”，这种既顾及到演讲的重点，又巧妙的结尾，让听众清楚所述的主要内容，看似无心，实则巧妙安排。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 这篇演讲既是作者的获奖感言，也是作者自己在用讲故事的方式讲述自己成长及写作的心路历程，意在劝诫大家:一个人的成功不是一帆风顺的，要经受许多磨难才能有所成就。。本题问的是不符合题意的一项，这篇演讲既是作者的获奖感言，也是作者自己在用讲故事的方式讲述自己成长及写作的心路历程，意在劝诫大家:一个人的成功不是一帆风顺的，要经受许多磨难才能有所成就。正是与题干限定不一致的选项，所以选C；A、B、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "辍学之后，莫言混迹于成人之中，开始了什么样的的漫长生涯",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "“用心阅读”"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "“用耳朵阅读”"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "“用感觉阅读”"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "“用嘴巴阅读”"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. “用耳朵阅读”。之所以选B，是因为“用耳朵阅读”最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言是母亲第几个孩子",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "第三个"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "第一个"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "第二个"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "最后一个"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 最后一个。之所以选D，是因为最后一个最符合题干所问的课文内容、文学常识或概念要求；A、B、C项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "母亲把难得吃上一顿且属于她的仅有的一碗饺子让给了一位乞讨的老人，是为了告诉莫言",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "慷慨大方"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "遵守规则"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "同情弱者"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "学会宽容"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 同情弱者。之所以选C，是因为同情弱者最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言母亲去世后，他决定撰写哪本书献给母亲",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《红高粱》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《秋水》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《丰乳肥臀》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《檀香刑》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《丰乳肥臀》。之所以选C，是因为《丰乳肥臀》最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言在演讲的开篇就提到了母亲，说明母亲对莫言的影响很大，通过讲述与母亲的故事，来照应",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "姑姑的形象"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "题目“讲故事的人”"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "小说《秋水》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "“小说必须虚构”的观点"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 题目“讲故事的人”。之所以选B，是因为题目“讲故事的人”最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "根据文章内容，下列说法表述错误的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "莫言认为《透明的红萝卜》是他的作品中最有象征性、最意味深长的一部。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《透明的红萝卜》的那个“浑身漆黑、具有超人的忍受痛苦的能力和超人的感受能力的孩子”更贴近莫言的灵魂。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "姑姑担心我成为一个耍贫嘴的孩子。她经常提醒我少说话，希望我能做一个沉默寡言、安稳大方的孩子,所以给作者起名叫莫言。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "在村子里，一个贫嘴的孩子，是招人厌烦的，有时候还会给自己和家庭带来麻烦。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 姑姑担心我成为一个耍贫嘴的孩子。她经常提醒我少说话，希望我能做一个沉默寡言、安稳大方的孩子,所以给作者起名叫莫言。。本题问的是不符合题意的一项，姑姑担心我成为一个耍贫嘴的孩子。她经常提醒我少说话，希望我能做一个沉默寡言、安稳大方的孩子,所以给作者起名叫莫言。正是与题干限定不一致的选项，所以选C；A、B、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "第一次出现了“高密东北乡”这个字眼的作品是。从此，就如同一个四处游荡的农民有了一片土地，我这样一个文学的流浪汉，终于有了一个可以安身立命的场所。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《秋水》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《生死疲劳》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《红楼梦》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《透明的红萝卜》"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 《秋水》。之所以选A，是因为《秋水》最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "从哪部小说开始，莫言终于从后台跳到了前台",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《秋水》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《丰乳肥臀》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《蛙》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《檀香刑》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《檀香刑》。之所以选D，是因为《檀香刑》最符合题干所问的课文内容、文学常识或概念要求；A、B、C项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "美国的威廉·福克纳和哥伦比亚的加西亚·马尔克斯给了莫言什么样的重要启发",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "一个作家必须要有一块属于自己的地方"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "一个作家必须要打破常规创作"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "一个作家必须要有国际视野"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "一个作家必须要擅于运用艺术加工手段"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 一个作家必须要有一块属于自己的地方。之所以选A，是因为一个作家必须要有一块属于自己的地方最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "以作者姑姑为原型的作品是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《蛙》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《丰乳肥臀》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《母亲》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《天堂蒜薹之歌》"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 《蛙》。题干考查作者、作品或出处的对应关系，《蛙》与本课相关文学常识一致，因此选A；B、C、D项不符合这一对应关系。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言在哪部小说里所写的那个因为话多被村子里厌恶的孩子，有他童年时的影子",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《鱼》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《牛》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《蛙》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《氓》"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 《牛》。之所以选B，是因为《牛》最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "根据莫言的体会，一个作家之所以会受到某一位作家的影响，其根本是因为",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "创作风格相似"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "两位作家私交甚密"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "选择的题材相近"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "影响者和被影响者灵魂深处的相似之处"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 影响者和被影响者灵魂深处的相似之处。之所以选D，是因为影响者和被影响者灵魂深处的相似之处最符合题干所问的课文内容、文学常识或概念要求；A、B、C项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-015",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言记忆中最痛苦的一件事是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "过早辍学"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "无意中多算买菜老人一毛钱"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "打碎了暖水壶"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "母亲因拣麦穗而遭看守人的没收与耳光"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 母亲因拣麦穗而遭看守人的没收与耳光。之所以选D，是因为母亲因拣麦穗而遭看守人的没收与耳光最符合题干所问的课文内容、文学常识或概念要求；A、B、C项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-016",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言哪本小说书名来自佛教经典，并受到“六道轮回”壁画的启示",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《红高粱》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《丰乳肥臀》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《生死疲劳》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《蛙》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《生死疲劳》。之所以选C，是因为《生死疲劳》最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-017",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "对讲述关于母亲的几件事的目的，理解最正确的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "感念母亲为人处世的态度对“我”的影响，表达对母亲的敬意"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "表现母亲以及普天下所有母亲所拥有的优秀品质与伟大精神"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "连讲了母亲的七件事，证明自己是个能讲故事、会讲故事的人"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "回忆了自己成长过程中的苦难岁月，真实再现中国的社会现实"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 感念母亲为人处世的态度对“我”的影响，表达对母亲的敬意。感念母亲为人处世的态度对“我”的影响，表达对母亲的敬意最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-018",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言在撰写逼近社会现实的小说时，如何处理才能让文学发端事件但超越事件，关心政治但大于政治",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "关注创作的时代背景"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "小说家在写作时，把所有的人都当作人来写"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "通过各种艺术加工手段"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "虚拟事件发生的起因"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 小说家在写作时，把所有的人都当作人来写。之所以选B，是因为小说家在写作时，把所有的人都当作人来写最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-019",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "根据文章内容，对莫言创作主张表述错误的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "强烈的现实主义关怀和深刻的人文思考"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "受他人赞扬或贬低的影响"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "直面现实，反思历史，对社会现象进行深刻的剖析与质疑"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "独立自主的思考立场和道德勇气"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 受他人赞扬或贬低的影响。本题问的是“不属于/不是”的一项，受他人赞扬或贬低的影响与题干限定的作者、作品或出处不符，因此选B；A、C、D项反而符合题干所属范围。"
+    },
+    {
+      "id": "college-chinese-xu-er-pian-020",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "序二篇",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "莫言哪部小说发端于现实生活中发生的事件、让一个真正的说书人登场",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《蛙》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《丰乳肥臀》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《秋水》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《天堂蒜薹之歌》"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 《天堂蒜薹之歌》。之所以选D，是因为《天堂蒜薹之歌》最符合题干所问的课文内容、文学常识或概念要求；A、B、C项与题干限定不一致。"
+    }
+  ]
+}

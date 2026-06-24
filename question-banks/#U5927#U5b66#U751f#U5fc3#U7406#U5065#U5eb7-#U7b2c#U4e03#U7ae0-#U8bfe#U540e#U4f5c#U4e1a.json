@@ -1,0 +1,845 @@
+{
+  "version": 1,
+  "source": "QandA 格式化",
+  "subject": {
+    "id": "subject-psych-health",
+    "name": "大学生心理健康",
+    "description": "",
+    "color": "#48cd23"
+  },
+  "unit": {
+    "id": "unit-psych-ch7-homework",
+    "name": "第七章-课后作业",
+    "description": "题量：25；满分：100；作答时间：05-26 14:00 至"
+  },
+  "questions": [
+    {
+      "id": "psych-ch7-hw-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "单选题"
+      ],
+      "score": 4,
+      "question": "积极心理学的核心研究内容不包括以下哪一项( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "人类积极品质"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "积极情绪"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "消极心理障碍"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "积极人际关系"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 消极心理障碍。积极心理学关注的是积极情绪、积极品质、积极人际关系、意义感和幸福感等内容。消极心理障碍更偏向传统临床心理学或异常心理学的研究重点，不属于积极心理学的核心研究内容，所以选C。"
+    },
+    {
+      "id": "psych-ch7-hw-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "单选题"
+      ],
+      "score": 4,
+      "question": "下列哪项不属于积极心理学领域的核心概念( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "福流"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "韧性"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "焦虑"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "感恩"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 焦虑。福流、韧性和感恩都属于积极心理学中常见的核心概念，分别强调投入体验、逆境恢复能力和积极情感资源。焦虑主要是一种负性情绪或心理困扰，不属于积极心理学的核心概念，所以选C。"
+    },
+    {
+      "id": "psych-ch7-hw-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "单选题"
+      ],
+      "score": 4,
+      "question": "“三件好事”练习的核心目的是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "记录日常琐事"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "强化感恩思维，提升积极体验敏感度"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "完成课堂任务"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "锻炼写作能力"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 强化感恩思维，提升积极体验敏感度。“三件好事”不是简单写流水账，而是让个体主动发现当天发生的积极事件，并思考它们为什么发生。这样可以训练个体对积极体验的觉察能力，强化感恩思维，所以选B。"
+    },
+    {
+      "id": "psych-ch7-hw-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "单选题"
+      ],
+      "score": 4,
+      "question": "情绪ABC理论中，决定情绪结果(C)的核心因素是( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "诱发事件(A)"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "个人信念(B)"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "情绪反应强度"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "他人评价"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 个人信念(B)。ABC理论中，A是诱发事件，B是个体对事件的信念、解释和评价，C是情绪和行为结果。真正影响情绪结果的关键不是事件本身，而是个体如何看待事件，所以选B。"
+    },
+    {
+      "id": "psych-ch7-hw-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "单选题"
+      ],
+      "score": 4,
+      "question": "下列哪项不属于不合理信念的三大类型( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "绝对化要求"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "过分概括化"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "合理预期"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "糟糕至极"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 合理预期。不合理信念常见类型包括绝对化要求、过分概括化和糟糕至极，它们会放大压力和负面情绪。合理预期强调基于现实作出适当判断，并不是不合理信念，所以选C。"
+    },
+    {
+      "id": "psych-ch7-hw-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "单选题"
+      ],
+      "score": 4,
+      "question": "积极心理冥想的核心意义不包括( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "清空所有思绪"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "锚定当下"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "接纳自我"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "滋养心灵"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 清空所有思绪。积极心理冥想并不是要求大脑完全空白，而是帮助个体把注意力带回当下，觉察自身体验，接纳自我并滋养内在积极资源。清空所有思绪是对冥想的误解，所以选A。"
+    },
+    {
+      "id": "psych-ch7-hw-007",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "多选题"
+      ],
+      "score": 4,
+      "question": "进食障碍是由生物、心理和社会因素交互作用导致的，例如 ( ) 。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "遗传倾向"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "完美主义"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "低自尊"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "以瘦为美"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": "正确答案：A、B、C、D。进食障碍通常不是单一原因造成的，而是生物、心理和社会因素共同作用的结果。遗传倾向属于生物因素，完美主义和低自尊属于心理因素，以瘦为美的文化压力属于社会因素，所以四项都选。"
+    },
+    {
+      "id": "psych-ch7-hw-008",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "多选题"
+      ],
+      "score": 4,
+      "question": "运动对健康的影响是多方面的，包括 ( ) 。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "增强心血管健康"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "控制体重和预防肥胖"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "增强骨骼和肌肉健康"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "改善心理健康"
+        },
+        {
+          "key": "E",
+          "keyLabel": "E",
+          "text": "提升免疫功能"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": "正确答案：A、B、C、D。按照本题给出的答案，运动的主要健康影响包括增强心血管健康、控制体重和预防肥胖、增强骨骼和肌肉健康，以及改善心理健康。E项虽然在现实中也可能与健康有关，但本题正确答案限定为ABCD，所以不选E。"
+    },
+    {
+      "id": "psych-ch7-hw-009",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "多选题"
+      ],
+      "score": 4,
+      "question": "应对失眠的行为有 ( )。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "早早上床"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "创造良好的睡眠环境"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "睡前刷手机"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "控制午睡时间和频率"
+        }
+      ],
+      "answer": [
+        "B",
+        "D"
+      ],
+      "explanation": "正确答案：B、D。创造安静、舒适、适合入睡的环境，有助于建立良好的睡眠条件；控制午睡时间和频率，也能减少对夜间睡眠的干扰。早早上床可能增加躺床清醒时间，睡前刷手机会刺激大脑、影响入睡，所以不选A、C。"
+    },
+    {
+      "id": "psych-ch7-hw-010",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "多选题"
+      ],
+      "score": 4,
+      "question": "拖延的原因包括 ( ) 。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "心情不好"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "保护自己在他人心目中美好印象"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "对时间的感知不客观"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "童年期有个严格的家长"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": "正确答案：A、B、C、D。拖延可能与情绪调节、形象保护、时间估计偏差和早期家庭经验有关。心情不好会让人逃避任务，保护形象可能使人害怕失败，对时间感知不客观会低估任务难度，严格家长也可能影响个体对任务和评价的反应，所以四项都选。"
+    },
+    {
+      "id": "psych-ch7-hw-011",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "多选题"
+      ],
+      "score": 4,
+      "question": "网络游戏成瘾的特点有 ( ) 。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "不可遏制的渴望"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "耐受性增强"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "矛盾与自责心理"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "网络游戏戒断的反复性，生理上的症状"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": "正确答案：A、B、C、D。网络游戏成瘾常表现为强烈渴望和难以控制，随着时间推移可能需要更长游戏时间获得满足，也可能出现矛盾、自责和戒断反应。题干四项都符合网络游戏成瘾的常见特点，所以全选。"
+    },
+    {
+      "id": "psych-ch7-hw-012",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "积极心理学是一门研究人类积极品质、积极情绪、积极人际关系及幸福密码的学科。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。积极心理学强调研究人的积极情绪、优势品质、积极关系、意义感和幸福感等内容。题干概括了积极心理学关注的主要方向，所以判断为对。"
+    },
+    {
+      "id": "psych-ch7-hw-013",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "积极心理学核心概念的科学内涵是可测量、可培养、可应用。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。积极心理学不是单纯的口号，而是强调积极品质和积极体验可以通过科学方法测量，也可以通过训练、干预和实践加以培养，并应用于学习、生活和心理健康促进中，所以判断为对。"
+    },
+    {
+      "id": "psych-ch7-hw-014",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "“三件好事”练习仅需要写下当天发生的三件积极事件，无需思考事件发生的原因。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。“三件好事”练习不仅要写下三件积极事件，还要思考这些事情为什么发生。反思原因可以帮助个体发现自身资源、他人支持和积极行为模式，所以题干说“无需思考原因”是错误的。"
+    },
+    {
+      "id": "psych-ch7-hw-015",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "加德纳多元智能理论的核心观点是“智能有优劣、少数人有优势”。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。加德纳多元智能理论强调智能具有多种类型，不同个体可能在不同智能领域具有优势。它不是用单一标准判断智能优劣，也不是认为只有少数人有优势，所以题干说法错误。"
+    },
+    {
+      "id": "psych-ch7-hw-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "情绪ABC理论中，A指诱发事件，B指信念，C指情绪结果。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。ABC理论中，A是诱发事件，B是个体对事件的信念、解释或评价，C是由此产生的情绪和行为结果。题干对ABC三个部分的对应关系表述正确，所以判断为对。"
+    },
+    {
+      "id": "psych-ch7-hw-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "注意力模式重塑的核心是从“关注缺陷”转向“发现美好”。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。注意力模式重塑强调改变长期盯着问题、缺陷和不足的习惯，转而训练自己发现积极事件、优势资源和美好体验。这有助于减少消耗、提升积极感受，所以判断为对。"
+    },
+    {
+      "id": "psych-ch7-hw-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "积极心理冥想的核心是清空所有思绪，让大脑处于空白状态。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。积极心理冥想不是把大脑清空，也不是强迫自己没有想法，而是觉察当下体验，接纳自己的感受，并把注意力带回当下或积极资源。因此题干把冥想理解为“清空所有思绪”是错误的。"
+    },
+    {
+      "id": "psych-ch7-hw-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "积极心理冥想可辅助识别自身优势、调节负面信念与情绪。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。积极心理冥想可以帮助个体更清楚地觉察自己的体验和内在资源，也有助于看见自身优势、调整消极想法和缓和负面情绪，所以本题判断为对。"
+    },
+    {
+      "id": "psych-ch7-hw-020",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "注意力模式的积极重塑，能帮助我们减少内耗，提升幸福感和心理韧性。( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。把注意力从单纯关注缺陷转向发现资源和积极体验，可以减少反复自责和过度消耗，也能增强积极感受和应对挫折的能力。因此注意力模式的积极重塑有助于提升幸福感和心理韧性。"
+    },
+    {
+      "id": "psych-ch7-hw-021",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "不健康的生活方式导致的癌症发病和死亡大幅度增加是目前最主要的可干预危险因素，也是当前癌症防控的切入点。 ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。不健康生活方式如吸烟、缺乏运动、不良饮食、大量饮酒等，会增加多种疾病和癌症风险。由于生活方式可以通过健康教育、行为改变和社会支持进行干预，因此它是癌症防控的重要切入点。"
+    },
+    {
+      "id": "psych-ch7-hw-022",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "不健康的生活方式如缺乏运动、吸烟、大量饮酒、非健康饮食和社交隔离等与癌症的发病、发展关系不大。 ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。缺乏运动、吸烟、大量饮酒、不健康饮食和社交隔离等生活方式，会影响身体健康和疾病风险，其中不少因素与癌症发生、发展有关。题干说关系不大，明显低估了生活方式的影响，所以判断为错。"
+    },
+    {
+      "id": "psych-ch7-hw-023",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "不健康生活方式不仅会增加抑郁症状，且不健康生活方式种类越多，抑郁症状发生风险越高。 ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。不健康生活方式会影响睡眠、身体状态、社会联系和情绪调节，进而增加抑郁症状风险。当不健康生活方式越多时，负面影响可能累积，所以抑郁症状发生风险也会升高。"
+    },
+    {
+      "id": "psych-ch7-hw-024",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "压力对健康生活方式的影响全是负面的。 ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。压力可能导致睡眠变差、饮食失衡或缺乏运动，但适度压力也可能促使个体调整目标、增强行动力和改善习惯。因此压力对健康生活方式的影响不全是负面的，关键在于压力水平和应对方式。"
+    },
+    {
+      "id": "psych-ch7-hw-025",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第七章-课后作业",
+        "判断题"
+      ],
+      "score": 4,
+      "question": "进食障碍患者只是节食而已，不会影响患者的心理健康，也不会对其生理健康造成严重的负面影响，更不会死亡。 ( )",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。进食障碍不是普通节食，而是一类会严重影响身心健康的心理与行为问题。它可能导致营养不良、内分泌紊乱、身体器官损害，也会伴随焦虑、抑郁和自我评价问题，严重时甚至危及生命，所以题干说法错误。"
+    }
+  ]
+}

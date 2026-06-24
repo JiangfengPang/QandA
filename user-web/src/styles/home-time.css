@@ -1,0 +1,586 @@
+/* Homepage time visual redesign
+   只维护 HomeView.vue 的首页时间段视觉，不影响题库、复盘、统计、我的页面。 */
+
+.qx-home-time-page {
+  --home-time-accent: var(--qx-blue);
+  --home-time-accent-dark: #0f74e8;
+  --home-time-total-bg: linear-gradient(135deg, #e8f5ff 0%, #f7fbff 100%);
+  --home-time-glow: 0 12px 24px rgba(22, 135, 248, .22);
+  --home-time-header: radial-gradient(circle at 92% 18%, rgba(255,255,255,.24), transparent 30%), linear-gradient(135deg, var(--qx-blue) 0%, #4d91ff 100%);
+  --home-time-header-shadow: 0 14px 32px rgba(20, 121, 246, .20);
+  --home-time-done: #18b875;
+  --home-time-done-dark: #13a169;
+  --home-time-wrong: #ff5570;
+  --home-time-wrong-dark: #e43f5c;
+  --home-time-accuracy: #ffad1f;
+  --home-time-accuracy-dark: #db8d0f;
+  --home-time-duration: #1687f8;
+  --home-time-duration-dark: #0f74e8;
+}
+
+/* 桌面端顶部栏：颜色跟随时间段图片，只显示设备号和“首页”，不显示说明文案。 */
+.qx-home-time-page > .qx-page-header.qx-home-time-header-strip {
+  display: flex !important;
+  align-items: var(--qx-page-topbar-align) !important;
+  justify-content: space-between !important;
+  height: var(--qx-page-topbar-h) !important;
+  min-height: var(--qx-page-topbar-h) !important;
+  padding: var(--qx-page-topbar-padding) !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: var(--qx-page-topbar-radius) !important;
+  overflow: hidden !important;
+  background: var(--home-time-header) !important;
+  box-shadow: var(--home-time-header-shadow) !important;
+  color: #fff !important;
+}
+
+.qx-home-time-page > .qx-page-header.qx-home-time-header-strip::before,
+.qx-home-time-page > .qx-page-header.qx-home-time-header-strip::after {
+  content: none !important;
+  display: none !important;
+}
+
+.qx-home-time-header-copy {
+  display: block !important;
+  min-width: 0;
+}
+
+.qx-home-time-header-copy span {
+  display: block !important;
+  color: rgba(255, 255, 255, .88) !important;
+  font-size: var(--qx-page-topbar-device-size) !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  letter-spacing: .04em !important;
+  margin: 0 !important;
+}
+
+.qx-home-time-header-copy h1 {
+  display: block !important;
+  margin: var(--qx-page-topbar-title-margin) 0 0 !important;
+  color: #fff !important;
+  font-size: var(--qx-page-topbar-title-size) !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  letter-spacing: .03em !important;
+}
+
+.qx-home-time-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 16px;
+}
+
+.qx-home-time-main {
+  display: grid !important;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: 18px;
+  align-items: stretch;
+  max-width: 100%;
+}
+
+.qx-time-visual-card {
+  min-height: 456px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  box-shadow: 0 24px 58px rgba(30, 79, 126, .15);
+  background: #111827;
+  isolation: isolate;
+}
+
+.qx-time-visual-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.015);
+}
+
+.qx-time-visual-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(7, 16, 34, .02) 0%, rgba(7, 16, 34, .10) 44%, rgba(7, 16, 34, .66) 100%),
+    radial-gradient(circle at 16% 18%, rgba(255, 255, 255, .14), transparent 32%);
+  pointer-events: none;
+}
+
+.qx-time-visual-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px;
+  color: #fff;
+}
+
+.qx-time-pill {
+  width: fit-content;
+  height: 34px;
+  padding: 0 13px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, .20);
+  border: 1px solid rgba(255, 255, 255, .25);
+  backdrop-filter: blur(12px);
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: .08em;
+}
+
+.qx-time-visual-content h2 {
+  max-width: 520px;
+  margin: 0;
+  font-size: clamp(30px, 3.3vw, 46px);
+  line-height: 1.14;
+  font-weight: 950;
+  letter-spacing: -.055em;
+  text-shadow: 0 12px 30px rgba(0, 0, 0, .20);
+}
+
+.qx-time-visual-content p {
+  max-width: 480px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, .88);
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 750;
+}
+
+.qx-study-panel-time {
+  min-height: 456px;
+  padding: 24px !important;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 18px;
+  border-radius: 28px;
+}
+
+.qx-study-panel-time .qx-card-head {
+  margin-bottom: 0;
+}
+
+/* 学习数据卡片内所有关键蓝色元素跟随时间段主色变化。 */
+.qx-study-panel-time .qx-blue-icon {
+  background: linear-gradient(135deg, var(--home-time-accent), var(--home-time-accent-dark)) !important;
+  box-shadow: var(--home-time-glow) !important;
+}
+
+.qx-study-panel-time .qx-mini-link {
+  color: var(--home-time-accent-dark) !important;
+  background: #eef6ff !important;
+}
+
+.qx-study-total-card {
+  min-height: 144px;
+  padding: 22px !important;
+  border-radius: 24px !important;
+  background: var(--home-time-total-bg, linear-gradient(135deg, #e8f5ff 0%, #f7fbff 100%)) !important;
+  border: 1px solid #d9e8f8 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .44);
+}
+
+.qx-study-total-card > span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--qx-muted);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 850;
+}
+
+.qx-study-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.qx-study-total-number-svg {
+  display: block;
+  width: clamp(150px, 13vw, 240px);
+  height: clamp(58px, 5.2vw, 86px);
+  flex: 0 1 auto;
+  overflow: visible;
+}
+
+.qx-study-total-number-text {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 84px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -.065em;
+}
+
+.qx-practice-now-btn {
+  height: 44px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--home-time-accent), var(--home-time-accent-dark)) !important;
+  color: #fff !important;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -.02em;
+  box-shadow: var(--home-time-glow) !important;
+  white-space: nowrap;
+  transform: translateY(4px);
+}
+
+.qx-practice-now-btn:active {
+  transform: translateY(5px) scale(.98);
+}
+
+.qx-study-panel-time .qx-study-stat-grid {
+  margin-top: 0 !important;
+  gap: 12px;
+}
+
+.qx-study-panel-time .qx-study-stat {
+  min-height: 104px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 0 16px;
+}
+
+/* 四个统计图标从当前时间段图片调色板中取色，并保持彼此区分。 */
+.qx-study-panel-time .qx-study-stat span {
+  width: 42px;
+  height: 42px;
+  font-size: 20px;
+  color: #fff !important;
+}
+
+.qx-study-panel-time .qx-study-stat span.green {
+  background: linear-gradient(135deg, var(--home-time-done), var(--home-time-done-dark)) !important;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, .12) !important;
+}
+
+.qx-study-panel-time .qx-study-stat span.red {
+  background: linear-gradient(135deg, var(--home-time-wrong), var(--home-time-wrong-dark)) !important;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, .12) !important;
+}
+
+.qx-study-panel-time .qx-study-stat span.orange {
+  background: linear-gradient(135deg, var(--home-time-accuracy), var(--home-time-accuracy-dark)) !important;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, .12) !important;
+}
+
+.qx-study-panel-time .qx-study-stat span.blue {
+  background: linear-gradient(135deg, var(--home-time-duration), var(--home-time-duration-dark)) !important;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, .12) !important;
+}
+
+.qx-study-panel-time .qx-study-stat em {
+  font-size: 13px;
+}
+
+.qx-study-panel-time .qx-study-stat strong {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.qx-study-panel-time .qx-study-stat:hover {
+  border-color: var(--home-time-accent) !important;
+}
+
+@media (max-width: 1180px) {
+  .qx-home-time-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .qx-time-visual-card,
+  .qx-study-panel-time {
+    min-height: 420px;
+  }
+}
+
+/* 移动端：首页顶部栏沿用全站一级页面规格。 */
+@media (max-width: 980px), (hover: none) and (pointer: coarse) {
+  .qx-home-time-page > .qx-page-header,
+  .qx-home-time-page > .qx-page-header.qx-home-time-header-strip {
+    display: flex !important;
+    visibility: visible !important;
+    height: var(--qx-page-topbar-h) !important;
+    min-height: var(--qx-page-topbar-h) !important;
+    max-height: none !important;
+    padding: var(--qx-page-topbar-padding) !important;
+    margin: 0 !important;
+    border-radius: var(--qx-page-topbar-radius) !important;
+    overflow: hidden !important;
+    box-shadow: var(--home-time-header-shadow) !important;
+    background: var(--home-time-header) !important;
+  }
+
+  .qx-home-time-grid {
+    gap: 12px;
+    margin-top: 0 !important;
+  }
+
+  .qx-home-time-main {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .qx-time-visual-card {
+    min-height: 300px;
+    border-radius: 24px;
+  }
+
+  .qx-time-visual-content {
+    padding: 20px;
+  }
+
+  .qx-time-pill {
+    height: 30px;
+    padding: 0 11px;
+    font-size: 12px;
+  }
+
+  .qx-time-visual-content h2 {
+    font-size: 28px;
+    line-height: 1.16;
+    letter-spacing: -.045em;
+  }
+
+  .qx-time-visual-content p {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  .qx-study-panel-time {
+    min-height: auto;
+    padding: 16px !important;
+    border-radius: 22px;
+    gap: 14px;
+  }
+
+  .qx-study-total-card {
+    min-height: 122px;
+    padding: 15px !important;
+    border-radius: 20px !important;
+  }
+
+  .qx-study-total-card > span {
+    font-size: 12px;
+  }
+
+  .qx-study-total-row {
+    gap: 8px;
+  }
+
+  .qx-study-total-number-svg {
+    width: 210px;
+    height: 86px;
+    max-width: calc(100% - 104px);
+  }
+
+  .qx-practice-now-btn {
+    height: 38px;
+    padding: 0 18px;
+    font-size: 14px;
+    transform: translateY(3px);
+  }
+
+  .qx-study-panel-time .qx-study-stat-grid {
+    gap: 8px;
+  }
+
+  .qx-study-panel-time .qx-study-stat {
+    min-height: 82px;
+    padding: 12px 14px;
+    border-radius: 18px;
+    grid-template-columns: 38px minmax(0, 1fr);
+    column-gap: 18px;
+  }
+
+  .qx-study-panel-time .qx-study-stat span,
+  .qx-study-panel-time .qx-study-stat span.green,
+  .qx-study-panel-time .qx-study-stat span.red,
+  .qx-study-panel-time .qx-study-stat span.orange,
+  .qx-study-panel-time .qx-study-stat span.blue {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+  }
+
+  .qx-study-panel-time .qx-study-stat em {
+    font-size: 12px;
+  }
+
+  .qx-study-panel-time .qx-study-stat strong {
+    font-size: 19px;
+  }
+}
+
+/* 横屏平板和矮窗口中控制主图占比，让学习数据在首屏露出。 */
+@media (min-width: 700px) and (max-width: 1180px) and (max-height: 760px) and (orientation: landscape) {
+  .qx-time-visual-card {
+    height: clamp(230px, 42svh, 280px);
+    min-height: 230px;
+  }
+}
+
+@media (max-width: 430px) {
+  .qx-study-panel-time .qx-study-stat {
+    padding: 11px 12px;
+    grid-template-columns: 36px minmax(0, 1fr);
+    column-gap: 16px;
+  }
+
+  .qx-study-panel-time .qx-study-stat span,
+  .qx-study-panel-time .qx-study-stat span.green,
+  .qx-study-panel-time .qx-study-stat span.red,
+  .qx-study-panel-time .qx-study-stat span.orange,
+  .qx-study-panel-time .qx-study-stat span.blue {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .qx-time-visual-card {
+    min-height: 282px;
+  }
+
+  .qx-time-visual-content h2 {
+    font-size: 26px;
+  }
+
+  .qx-study-total-number-svg {
+    width: 185px;
+    height: 76px;
+    max-width: calc(100% - 96px);
+  }
+
+  .qx-practice-now-btn {
+    padding: 0 15px;
+  }
+}
+
+/* 移动端学习数据四宫格：图标与文字保持适中距离，只作用于首页学习数据卡片。 */
+@media (max-width: 980px), (hover: none) and (pointer: coarse) {
+  .qx-home-time-page .qx-study-panel-time .qx-study-stat {
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    column-gap: 14px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .qx-home-time-page .qx-study-panel-time .qx-study-stat em,
+  .qx-home-time-page .qx-study-panel-time .qx-study-stat strong {
+    padding-left: 0 !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .qx-home-time-page .qx-study-panel-time .qx-study-stat {
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    column-gap: 12px !important;
+    padding-left: 15px !important;
+    padding-right: 12px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .qx-study-total-number-svg {
+    width: 165px;
+    height: 68px;
+    max-width: calc(100% - 92px);
+  }
+
+  .qx-home-time-page .qx-study-panel-time .qx-study-stat {
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    column-gap: 10px !important;
+    padding-left: 12px !important;
+    padding-right: 10px !important;
+  }
+}
+
+/* 首页学习数据：修复“题目总数”数字字距过紧的问题
+   仅作用于 HomeView 的题目总数大号数字，不影响其他页面。 */
+.qx-home-time-page .qx-study-total-number-text {
+  letter-spacing: .015em !important;
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: "tnum" 1, "kern" 1 !important;
+  text-rendering: geometricPrecision !important;
+}
+
+.qx-home-time-page .qx-study-total-number-svg {
+  width: clamp(170px, 14vw, 260px) !important;
+  overflow: visible !important;
+}
+
+@media (max-width: 980px), (hover: none) and (pointer: coarse) {
+  .qx-home-time-page .qx-study-total-number-text {
+    letter-spacing: .01em !important;
+  }
+
+  .qx-home-time-page .qx-study-total-number-svg {
+    width: 220px !important;
+    max-width: calc(100% - 108px) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .qx-home-time-page .qx-study-total-number-svg {
+    width: 196px !important;
+    max-width: calc(100% - 96px) !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .qx-home-time-page .qx-study-total-number-svg {
+    width: 174px !important;
+    max-width: calc(100% - 92px) !important;
+  }
+}
+
+/* 移动端首页不显示顶部栏：仅作用于 HomeView 的时间主题首页，不影响题库、复盘、统计、我的等页面。 */
+@media (max-width: 980px), (hover: none) and (pointer: coarse) {
+  .qx-home-time-page > .qx-page-header.qx-home-time-header-strip {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+}
+
+
+/* 移动端首页：隐藏顶部栏。只作用于首页，不影响其他页面 */
+@media (max-width: 980px), (hover: none) and (pointer: coarse) {
+  .qx-home-time-page > .qx-page-header.qx-home-time-header-strip,
+  .qx-home-time-page .qx-home-time-header-strip {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+}

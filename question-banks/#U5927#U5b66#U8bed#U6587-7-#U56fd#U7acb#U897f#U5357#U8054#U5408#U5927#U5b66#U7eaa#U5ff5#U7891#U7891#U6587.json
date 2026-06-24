@@ -1,0 +1,717 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-7",
+    "name": "7-国立西南联合大学纪念碑碑文",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-7-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》中提到“违千夫之诺诺，做一士之谔谔”这句话主要强调了以下哪种精神?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "独断专行，不顾他人"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "随波逐流，迎合大众"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "坚持真理，敢于直言"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "明哲保身，沉默寡言"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 坚持真理，敢于直言。坚持真理，敢于直言最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选C；A、B、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》提到的“千秋耻，终已雪”指的是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "国共内战"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "清朝的灭亡"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "日本的侵略"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "中国的落后"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 日本的侵略。本题考查对词语、句意或课文内容的理解，日本的侵略能够准确对应题干所问，因此选C；A、B、D项与题干含义不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》提到的“新亭对泣、还我河山”等典故，主要表现了什么?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "西南联大的艰苦卓绝"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "西南联大北迁代表着中国精神的回归"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "西南联大北迁代表着学术的自由"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "西南联大北迁代表着抗战的胜利"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 西南联大北迁代表着中国精神的回归。西南联大北迁代表着中国精神的回归最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选B；A、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》，三校联合办学的突出特点是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "统一课程标准"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "保持多元特色"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "侧重西学教育"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "推行军事化管理"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 保持多元特色。之所以选B，是因为保持多元特色最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》，作者认为中国历史地位的特殊性在于",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "资源丰富"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "古今传承"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "人口众多"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "地域广阔"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 古今传承。题干考查作者、作品或出处的对应关系，古今传承与本课相关文学常识一致，因此选B；A、C、D项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》中提到“南渡之人，未有能北返者”，并列举了晋人、宋人、明人等多次南渡的历史。最后提到“吾人为第四次之南渡，乃能于不十年间，收恢复之全功”，这最可能指的是以下哪一历史事件?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "北宋灭亡后南宋的建立"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "抗日战争胜利后中国的复兴"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "明朝灭亡后南明的建立"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "西晋灭亡后东晋的建立"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 抗日战争胜利后中国的复兴。本题考查对词语、句意或课文内容的理解，抗日战争胜利后中国的复兴能够准确对应题干所问，因此选B；A、C、D项与题干含义不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》，作者认为中国历史发展的特点是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "破旧立新"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "全盘西化"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "新旧交融"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "固守传统"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 新旧交融。题干考查作者、作品或出处的对应关系，新旧交融与本课相关文学常识一致，因此选C；A、B、D项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》中“八音合奏”比喻的核心内涵是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "音乐教育的重要性"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "多元文化的和谐共生"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "艺术形式的创新"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "礼乐制度的传承"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 多元文化的和谐共生。之所以选B，是因为多元文化的和谐共生最符合题干所问的课文内容、文学常识或概念要求；A、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》提到“联合大学之终始，岂非一代之盛事，旷百世而难愈者哉!”，这句话主要强调了西南联合大学的哪种作用?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "培养了一代杰出人才，推动了社会的繁荣发展"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "专注于科学研究，取得了大量学术成果"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "建立了严格的管理制度，维护了校园秩序"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "提供了丰富的娱乐活动，丰富了学生生活"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 培养了一代杰出人才，推动了社会的繁荣发展。培养了一代杰出人才，推动了社会的繁荣发展最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》中“万物并育而不相害，道并行而不相悖，小德川流，大德敦化，此天地之所以为大”体现了哪种思想?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "兼容并包"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "专制独裁"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "弱肉强食"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "孤立封闭"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 兼容并包。兼容并包最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》“联合大学之使命”的特点是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "与抗战相始终"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "专注于科技发展"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "延续传统文化"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "与经济建设同步"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 与抗战相始终。与抗战相始终最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选A；B、C、D项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "西南联合大学的校训是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "博学而笃志，切问而近思"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "自强不息，厚德载物"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "实事求是"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "刚毅坚卓"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 刚毅坚卓。之所以选D，是因为刚毅坚卓最符合题干所问的课文内容、文学常识或概念要求；A、B、C项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》强调西南联合大学的使命是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "培养军事人才"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "传播西方科学"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "推动工业发展"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "延续民族文化命脉"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 延续民族文化命脉。延续民族文化命脉最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选D；A、B、C项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "《国立西南联合大学纪念碑碑文》一文通过纪念联大历史，传承了多重精神遗产,不包括下面哪一项。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "团结自强"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "教育救国"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "学术自由"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "和平共处"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 和平共处。本题要求找与课文内容或观点不一致的一项，和平共处偏离了文本主旨、人物观点或题干限定，所以选D；A、B、C项更符合原文意思。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-015",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "西南联大结束于1945年抗日战争胜利后，三校立即返回平津复校。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "碑文记载西南联合大学培养的毕业生中，有后来获得诺贝尔奖的杨振宁、李政道。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "碑文中提到的“联合大学之终始，岂非一代之盛事，旷百世难遇者哉”，这里的“旷百世难遇”指的是南迁流离。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "碑文提到西南联大师生曾组织“湘黔滇旅行团”，步行跨越三省抵达昆明。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "碑文中提到的“尽笳吹，情弥切。千秋耻，终已雪”，这里的“千秋耻”指的是甲午海战的耻辱。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错误。这道题应判断为错误，是因为题干表述与本课相关文学常识、课文内容或概念关系不一致，存在作者、作品、文体、读音、字形、思想主旨或逻辑关系上的偏差。"
+    },
+    {
+      "id": "subject-bmvcex-unit-7-020",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "7-国立西南联合大学纪念碑碑文",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "纪念碑文中提到的“斯虽先民之恒言，实为民主之真谛”，这里的“斯”指的是兼容并包的精神。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    }
+  ]
+}

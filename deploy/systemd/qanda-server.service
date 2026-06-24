@@ -1,0 +1,25 @@
+[Unit]
+Description=QandA API Server
+After=network.target mysql.service docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/qanda
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run start --workspace server
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=15
+User=qanda
+Group=qanda
+
+# 基础加固
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/www/qanda/uploads
+
+[Install]
+WantedBy=multi-user.target

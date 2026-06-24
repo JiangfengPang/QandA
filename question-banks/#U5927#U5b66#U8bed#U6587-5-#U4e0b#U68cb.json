@@ -1,0 +1,717 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-bmvcex",
+    "name": "大学语文",
+    "description": "",
+    "color": "#f05c5c"
+  },
+  "unit": {
+    "id": "unit-5",
+    "name": "5-下棋",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-5-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "“指极其紧要的时刻”是哪个词语的意思?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "生死关头"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "剑拔弩张"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "旗鼓相当"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "不拘小节"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 生死关头。本题考查对词语、句意或课文内容的理解，生死关头能够准确对应题干所问，因此选A；B、C、D项与题干含义不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "20世纪30年代初，鲁迅写了《“论语”一年》、《小品文的危机》等文，所针对的作家是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "林语堂"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "胡适"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "胡秋原"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "梁实秋"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 林语堂。之所以选A，是因为林语堂最符合题干所问的课文内容、文学常识或概念要求；B、C、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "如果观棋者说错了，会有什么结果?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "其中一个下棋人感谢他。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "下棋的两人一起打他。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "下棋的人一起嘲笑他没水平。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "另一个下棋人也夸奖他。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 下棋的人一起嘲笑他没水平。。之所以选C，是因为下棋的人一起嘲笑他没水平。最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列哪项不是笠翁李渔所说的“下棋不如观棋”的原因",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "观者无得失心"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "观棋就是斗牛、斗鸡、斗蟋蟀"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "如看斗牛、斗鸡、斗蟋蟀一般"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "观棋是有趣的事，"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 观棋就是斗牛、斗鸡、斗蟋蟀。本题要求找与课文内容或观点不一致的一项，观棋就是斗牛、斗鸡、斗蟋蟀偏离了文本主旨、人物观点或题干限定，所以选B；A、C、D项更符合原文意思。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "梁实秋翻译过谁的作品?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "托尔斯泰"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "莎士比亚"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "普鲁斯特"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "乔伊斯"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 莎士比亚。题干考查作者、作品或出处的对应关系，莎士比亚与本课相关文学常识一致，因此选B；A、C、D项不符合这一对应关系。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列哪部作品不是梁实秋的?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《槐园梦忆》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《雅舍小品》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《边城》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《梁实秋散文选》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《边城》。本题问的是“不属于/不是”的一项，《边城》与题干限定的作者、作品或出处不符，因此选C；A、B、D项反而符合题干所属范围。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-007",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列词语中划线部分注音错误的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "抓耳挠腮 náo"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "阒不见人 qù"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "自怨自艾 ài"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "排闼 tà"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 自怨自艾 ài。本题要求找读音错误的一项，C项中存在注音不合规范的问题，因此选C；A、B、D项读音相对符合题干要求。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-008",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列词语解释错误的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "同归于尽:一起死亡或一同毁灭。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "长吁短叹:因伤感、烦闷、痛苦等不住地唉声叹气。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "无关痛痒:既不痛也不痒。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "索然寡味:毫无意味或毫无兴致的样子，索然无味。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 无关痛痒:既不痛也不痒。。本题要求找解释错误的一项，C项对词语、句意或课文内容的理解不准确，因此选C；A、B、D项解释相对符合原意。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-009",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "梁实秋是中国现代文学史上的一位重要作家，他的主要文学贡献是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "小说创作"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "诗歌创作"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "戏剧创作"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "散文创作"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "explanation": "正确答案：D. 散文创作。散文创作最能概括题干所问的课文内容、人物观点或文章主旨，符合原文语境和命题要求，因此选D；A、B、C项与题干重点不符。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-010",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列词语书写全部正确的是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "略胜一筹"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "构心斗角"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "长须短叹"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "干尽杀绝"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 略胜一筹。本题考查字形和词语书写，A项书写规范，因此选A；B、C、D项存在错别字或词语写法不规范的问题。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-011",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列各项中哪个不是爱好下棋的人的表现?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "下起棋来可以不顾性命。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "原来性情急躁易怒，可是下棋能够让他变得缓和平静。"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "和人争权夺利、招摇撞骗。"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "下棋打了起来。"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 和人争权夺利、招摇撞骗。。本题问的是不符合题意的一项，和人争权夺利、招摇撞骗。正是与题干限定不一致的选项，所以选C；A、B、D项则更符合原文内容或相关知识。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-012",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "“被挖者不敢出声，出声则口张，口张则车被挖回，挖回则必悔棋，悔棋则不得胜，这种认真的态度憨得可爱”一句中用到了什么修辞手法?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "顶真"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "夸张"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "比喻"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "排比"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 顶真。本题考查文本的表达技巧，顶真能够准确概括题干所举语句或文章的写法，因此选A；B、C、D项与语境中的表达方式不对应。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-013",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列词语中划线部分注音正确的一项是",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "忻然 jīn"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "中肯 zhōng"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "嗤之以鼻 chī"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "髀肉复生 pí"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 嗤之以鼻 chī。本题考查字音辨析，C项注音符合规范，因此选C；A、B、D项存在读音不准确或不符合题干要求的问题。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-014",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "单选题"
+      ],
+      "score": 5,
+      "question": "下列各项中哪部著作是梁实秋写的?",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "《蛙》"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "《生死疲劳》"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "《雅舍小品》"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "《红高粱》"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 《雅舍小品》。之所以选C，是因为《雅舍小品》最符合题干所问的课文内容、文学常识或概念要求；A、B、D项与题干限定不一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-015",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "《下棋》作者是梁实秋，他是文学家、翻译家，本文选自《雅舍小品全集》，体裁是散文(小品文)。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。之所以判断为正确，是因为小品文篇幅短小、笔调灵活，常从生活小事切入，兼具趣味与思辨，属于散文的一种。题干说法与这一点一致。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-016",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "《下棋》中作者的弈棋观，同时也是作者的人生观是:干什么事情既不能太张扬，也不可太低调，都要把握一个度，讲究不即不离，用中和的态度来对待生活。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-017",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "本文以诙谐幽默的笔法和细致的观察，淋漓尽致地描绘了下棋时的人性百态，写出了作者对人生境界的品味和反思。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-018",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "《雅舍小品》的作者是梁实秋。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-019",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "梁实秋的散文集《雅舍小品》中的文章，谈的是人生中的凡人小事。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    },
+    {
+      "id": "subject-bmvcex-unit-5-020",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "5-下棋",
+        "判断题"
+      ],
+      "score": 5,
+      "question": "文中说两个人下棋时先是神情潇洒，“如神仙中人”，后来棋势吃紧，便剑拔弩张，“如斗鹌鹑”，这是用了对比和比喻的修辞手法。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：正确。这道题应判断为正确，是因为题干表述与本课相关文学常识、课文内容或概念关系一致，没有把作者、作品、文体、读音、字形或思想主旨说反。"
+    }
+  ]
+}

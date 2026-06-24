@@ -1,0 +1,2923 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-29",
+  "subjects": [
+    {
+      "id": "subject-bmu0zf",
+      "name": "大学英语",
+      "description": "",
+      "color": "#fb39fe",
+      "units": [
+        {
+          "id": "unit-x8jc3w",
+          "name": "第一单元",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-001",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“adequately” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "足够地;适当地"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "很少地"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "快速地"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "缓慢地"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-002",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“adjust” 的意思是____。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "增加"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "调整;调节"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "减少"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "删除"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-003",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“asset” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "债务"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "资产;财产"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "损失"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "费用"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-004",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“competent” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "无能力的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "有能力的;能胜任的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "懒惰的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "忙碌的"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-005",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“condense” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "扩展"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "连接"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "分散"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "压缩;精简"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-006",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“deficit” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "盈余"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "赤字;亏损"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "收入"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "利润"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-007",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“distinguish” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "区分;辨别"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "混淆"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "混合"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "忽视"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-008",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“exceed” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "低于"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "等于"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "超过;超出"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "接近"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-009",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“precise” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "模糊的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "错误的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "大概的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "精确的;准确的"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-010",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“proficiency” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "熟练;精通"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "新手状态"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "错误操作"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "业余爱好"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-011",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "In Chinese culture, adult children are expected to take care of their aged parents, so they ________to contact or visit their parents regularly.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "are obliged to"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "look after"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "care for"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "abandon"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-012",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "People won’t ______ avoiding natural disasters until personally affected.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "get over"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "get forward to"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "get serious about"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "get through with"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-013",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "When you ______ a long-lost friend, you’ll be delighted.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "run into"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "run out of"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "run after"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "run over"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-014",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "We need to ______ facts and opinions for better comprehension.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "ignore"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "mix up"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "compare with"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "distinguish between"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-015",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The growth of the food e-commerce sector in China has played an important role in promoting the sales of agricultural products_________ the fields.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "failed to support"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "fresh from"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "focused only on"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "opposed to"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-016",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "If I don’t like someone or something, I might just say I am ______ even if it sounds rude.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "always right"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "silent in"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "apologize"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "allergic to"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-017",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Researchers conducted tests to determine the negative consequences of a sleep ______.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "surplus"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "habit"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "deficit"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "cycle"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-018",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Bees can ______ more than 10 similar flower odors due to their sense of smell.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "confuse"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "destroy"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "distinguish"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "Create"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-019",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Moving forward even in the face of difficulties has become the most important ______ in my life and career.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "challenge"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "mistake"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "reward"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "asset"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8jc3w-020",
+              "type": "single",
+              "typeLabel": "",
+              "difficulty": "easy",
+              "tags": [
+                "第一单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The lawyer proclaimed that conclusions must be ______ supported by evidence.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "randomly"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "adequately"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "partially"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "Temporarily"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-x8ggao",
+          "name": "第二单元",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-001",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“grab” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "敲打;敲击"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "抢夺;抓住"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "着迷;沉迷"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "犹豫;迟疑"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-002",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“passionate” 的意思是____。",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "非常热情的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "古怪的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "厚重的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "美丽的"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-003",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“currently” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "历史地"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "快速地"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "自动地"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "当前"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-004",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“magnificence” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "委屈"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "童话"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "宏伟"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "珍宝"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-005",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“gaze” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "竞跑"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "拍卖"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "凝视"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "证明"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-006",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“placement” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "安置;安排"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "地方"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "情节"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "制度"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-007",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“semester” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "书目"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "入室盗窃"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "范围"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "学期"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-008",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“confirm” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "怀疑"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "证实"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "相信"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "惊叹"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-009",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“hatred” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "幸福"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "喜爱"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "憎恶"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "悲伤"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-010",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "“browse” 是什么意思?",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "下载"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "浏览"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "删除"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "复制"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-011",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 0,
+              "question": "According to the news __________, her interest in writing about plants and animals came from her childhood.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "release"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "sentiment"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "resort"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "calling"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-012",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Those beginners who have never done painting before are looking to develop their __________ interests.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "academic"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "artistic"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "logical"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "elegant"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-013",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The tourists were awestruck at the of the Great Wall, the building of which started as early as the seventh century B.C.E.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "destruction"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "investment"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "intelligence"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "magnificence"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-014",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The website is reliable because I’ve made dozens of purchases from this very __________ site with zero problems.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "beautiful"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "reputable"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "worse"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "lasting"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-015",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Just as we all admire heroes, we look to others for inspiration and __________, but change has to start with you, as an individual.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "population"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "reputation"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "aspiration"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "education"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-016",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "When I first saw the scenery of Mount Huangshan, I was _______: the fascinating pine trees, the spectacular peaks, and the fairyland of clouds and mists.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "very upset"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "in awe"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "in sorrow"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "very angry"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-017",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Whenever there is a chance we can help these children, we make a top effort and don’t want to _______________.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "let them down"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "make them happy"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "make them nervous"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "make them strong"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-018",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "If you feel that your grades or your study skills are_____________ you may turn to your teachers for advice.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "very high"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "above the average"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "up to par"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "not up to par"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-019",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Science is not my profession, so if you want to discuss it, you could _______________ other people here who know science better than me.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "make fun of"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "pick the brains of"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "clean the ways of"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "stay out of"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8ggao-020",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第二单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "If one is always _____________ money, appearance, and social status, they will unfortunately forget what is most important in their life.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "busy with"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "lack of"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "uncomfortable with"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "obsessed with"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        },
+        {
+          "id": "unit-x8j5fn",
+          "name": "第三单元",
+          "description": "",
+          "questions": [
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-001",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "assign",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "解雇"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "分配"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "忽略"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "评估"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-002",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "endure",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "逃避"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "享受"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "忍受"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "加速"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-003",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "exhibit",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "隐藏"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "破坏"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "展示"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "模仿"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-004",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "flexible",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "僵硬的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "复杂的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "灵活的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "脆弱的"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-005",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "internal",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "外部的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "内部的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "临时的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "次要的"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-006",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "parallel",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "垂直的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "平行的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "交叉的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "分散的"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-007",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "persistence",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "放弃"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "坚持"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "犹豫"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "改变"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-008",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "recruit(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "解雇"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "招募"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "培训"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "退休"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-009",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "stunning(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "普通的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "乏味的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "惊人的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "可怕的"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-010",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "vigorous(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "懒散的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "虚弱的"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "充满活力的"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "缓慢的"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-011",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "be accustomed to(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "习惯于"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "反对"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "依赖"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "忽视"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-012",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "be based on(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "基于"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "超越"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "忽略"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "怀疑"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-013",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "for the sake of(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "为了…的利益"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "反对"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "由于"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "除非"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-014",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "have a passion for(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "对…有热情"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "对…冷漠"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "对…恐惧"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "对…厌倦"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-015",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 0,
+              "question": "no exaggeration(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "夸张地说"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "毫不夸张"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "沉默"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "虚构"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-016",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "strive for(1.7分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "放弃"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "妥协"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "努力争取"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "忽视"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-017",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "take it for granted that",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "认为…是理所当然的"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "质疑…的真实性"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "对…感到惊讶"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "对…表示感谢"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-018",
+              "type": "single",
+              "typeLabel": "词汇题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "词汇题"
+              ],
+              "score": 5,
+              "question": "tap into",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "堵塞"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "开发(潜力、资源)"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "忽略"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "复制"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-019",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The boss said, \"The schedule is completely ______ because I do not need to be around and watch when you do your work.\"",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "strict"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "flexible"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "fixed"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "rigid"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-020",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Currently, the stock market is not very stable, but over the long run, the growth of stock funds will ______ the growth of the economy.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "oppose"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "parallel"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "hinder"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "diverge"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-021",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "These student volunteers can decide how to perform any ______ work, for which they are qualified and have a strong passion.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "optional"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "assigned"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "chosen"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "random"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-022",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Human beings, by providing environmental enrichment, encourage animals to explore, interact, and ______ natural behaviors.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "suppress"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "ignore"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "restrain"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "exhibit"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-023",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Along with extraordinary courage, qualities like ______, teamwork, and most importantly, leadership shine in all of our student activities.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "laziness"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "hesitation"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "persistence"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "inconsistency"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-024",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "This is a beautiful part of the city to live in, with stylish and architecturally ______ historic buildings lining the clean and quiet streets.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "ordinary"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "stunning"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "plain"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "ugly"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-025",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "An energetic search will soon be put in place to ______ a qualified person who can continue with the leadership of a big company.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "remix"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "dismiss"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "retain"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "recruit"
+                }
+              ],
+              "answer": [
+                "D"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-026",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "I've ______ hardships throughout my life, so I think I can handle the stress and achieve my full potential in this company.(3.9分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "enjoyed"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "endured"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "avoided"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "escaped"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-027",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Many people believe that ______ exercise and outdoor sports could better help people stay healthy and strong.(3.9分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "discouraging"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "informative"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "vigorous"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "talented"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-028",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "With the help of my family and friends, all of my ______ doubts about myself gradually disappeared and my confidence was restored.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "external"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "surface"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "internal"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "outward"
+                }
+              ],
+              "answer": [
+                "C"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-029",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The course project that I completed weeks ago has helped me ______ my creativity and intuition which I didn’t even realize I had.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "trap into"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "tap into"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "trip into"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "trade into"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-030",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Many people probably ______ fast Internet access is almost everywhere – at home, at work, and even in the most remote areas.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "take it for"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "take it for granted"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "take it as"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "take after"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-031",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "It’s probably true that we always ______ the goal that we consider challenging but achievable to gain a sense of accomplishment.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "strive for"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "shiver to"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "shrink to"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "sprint to"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-032",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "It’s ______ say that the kitchen he installed last month is 100 times better, and now I fortunately have the kitchen I dreamed of.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "no exaggeration"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "no exaggeration to"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "no exception to"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "no exception"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-033",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "Since the exam ______ what you have learned, you can expect to see some questions from previous assignments.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "is based on"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "is built for"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "is derived from"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "is focused to"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-034",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "I think journalists work in a timely manner and ______ deadlines or tight working schedules because they were well trained in this way.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "are accustomed by"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "are accustomed to"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "are adjusted by"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "are adjusted to"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-035",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The situation between us is very challenging, but we have to learn how to handle the difficult situation ______ improving our relations.(3.9分)",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "for the sake"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "for the sake of"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "for the purpose"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "for the cause"
+                }
+              ],
+              "answer": [
+                "B"
+              ],
+              "explanation": "暂无解析。"
+            },
+            {
+              "id": "subject-bmu0zf-unit-x8j5fn-036",
+              "type": "single",
+              "typeLabel": "单选题",
+              "difficulty": "easy",
+              "tags": [
+                "第三单元",
+                "单选题"
+              ],
+              "score": 5,
+              "question": "The award-winning chef says that since he was young, he ________ for Chinese food because of its rich ingredients and well-balanced nutrition.",
+              "options": [
+                {
+                  "key": "A",
+                  "keyLabel": "A",
+                  "text": "has had a passion for"
+                },
+                {
+                  "key": "B",
+                  "keyLabel": "B",
+                  "text": "has kept a positive mindset"
+                },
+                {
+                  "key": "C",
+                  "keyLabel": "C",
+                  "text": "has maintained positivity"
+                },
+                {
+                  "key": "D",
+                  "keyLabel": "D",
+                  "text": "has designed balanced"
+                }
+              ],
+              "answer": [
+                "A"
+              ],
+              "explanation": "暂无解析。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

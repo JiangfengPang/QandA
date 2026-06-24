@@ -1,0 +1,121 @@
+import { prisma } from '../db/prisma.js';
+import { normalizeJudgeAnswerArray, normalizeJudgeAnswerKey, judgeOptionTextByKey } from '../utils/judge.js';
+
+function normalizeAnswerArray(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map(String).map((item) => item.trim()).filter(Boolean);
+  if (value === null || value === undefined) return [];
+  return [String(value).trim()].filter(Boolean);
+}
+
+function questionAnswerArray(question: any) {
+  const raw = Array.isArray(question.answerJson) ? question.answerJson : [];
+  return question.type === 'judge' ? normalizeJudgeAnswerArray(raw) : raw;
+}
+
+function optionLabelDisplay(option: any, questionType?: string) {
+  const label = option?.label ?? option?.key ?? option?.keyLabel ?? '';
+  if (questionType === 'judge') return normalizeJudgeAnswerKey(label);
+  return String(label);
+}
+
+function optionContentDisplay(option: any, questionType?: string) {
+  const content = option?.content ?? option?.text ?? '';
+  if (questionType === 'judge') return judgeOptionTextByKey(optionLabelDisplay(option, questionType) || content);
+  return String(content);
+}
+
+function optionMatchesAnswer(option: any, answer: string, questionType?: string) {
+  if (questionType === 'judge') return optionLabelDisplay(option, questionType) === normalizeJudgeAnswerKey(answer);
+  return option.label === answer || option.key === answer || option.keyLabel === answer;
+}
+
+function answerTextByOptions(selected: unknown, options: any[], questionType?: string) {
+  const values = questionType === 'judge' ? normalizeJudgeAnswerArray(selected) : normalizeAnswerArray(selected);
+  if (!values.length) return '';
+  return values
+    .map((answer) => {
+      const option = (options || []).find((item: any) => optionMatchesAnswer(item, answer, questionType));
+      if (option) return `${optionLabelDisplay(option, questionType)}. ${optionContentDisplay(option, questionType)}`;
+      if (questionType === 'judge') return `${normalizeJudgeAnswerKey(answer)}. ${judgeOptionTextByKey(answer)}`;
+      return answer;
+    })
+    .join('，');
+}
+
+export function formatQuestion(question: any, userId?: string) {
+  const answer = questionAnswerArray(question);
+  const optionRows = question.options || [];
+  const latestAnswer = Array.isArray(question.answers) && question.answers.length ? question.answers[0] : null;
+  const bank = question.bank || null;
+  const subject = bank?.subject || null;
+  return {
+    id: question.id,
+    bankId: question.bankId,
+    bankName: bank?.name || undefined,
+    unitName: bank?.name || undefined,
+    unitSortOrder: typeof bank?.sortOrder === 'number' ? bank.sortOrder : undefined,
+    questionSortOrder: typeof question.sortOrder === 'number' ? question.sortOrder : undefined,
+    subjectId: bank?.subjectId || subject?.id || undefined,
+    subjectName: subject?.name || undefined,
+    legacyId: question.legacyId,
+    type: question.type,
+    typeLabel: question.typeLabel,
+    difficulty: question.difficulty,
+    score: question.score,
+    question: question.stem,
+    stem: question.stem,
+    answer,
+    tags: Array.isArray(question.tagsJson) ? question.tagsJson : [],
+    explanation: question.explanation,
+    options: optionRows.map((option: any) => ({
+      id: option.id,
+      key: optionLabelDisplay(option, question.type),
+      keyLabel: optionLabelDisplay(option, question.type),
+      text: optionContentDisplay(option, question.type),
+      isCorrect: answer.includes(optionLabelDisplay(option, question.type))
+    })),
+    favorite: userId ? Boolean(question.favorites?.length) : false,
+    wrongCount: userId && question.wrongs?.[0] ? question.wrongs[0].wrongCount : 0,
+    userAnswer: latestAnswer ? (question.type === 'judge' ? normalizeJudgeAnswerArray(latestAnswer.selectedJson) : normalizeAnswerArray(latestAnswer.selectedJson)) : undefined,
+    userAnswerText: latestAnswer ? answerTextByOptions(latestAnswer.selectedJson, optionRows, question.type) : undefined,
+    lastAnsweredAt: latestAnswer?.createdAt || undefined
+  };
+}
+
+export async function getBankQuestions(bankId: string, userId?: string) {
+  const questions = await prisma.question.findMany({
+    where: { bankId, isActive: true },
+    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+    include: {
+      bank: { include: { subject: true } },
+      options: { orderBy: { sortOrder: 'asc' } },
+      favorites: userId ? { where: { userId } } : false,
+      wrongs: userId ? { where: { userId } } : false,
+      answers: userId ? { where: { userId }, orderBy: { createdAt: 'desc' }, take: 1 } : false
+    }
+  });
+  return questions.map((item) => formatQuestion(item, userId));
+}
+
+export async function getSubjectQuestions(subjectId: string, userId?: string) {
+  const banks = await prisma.bank.findMany({
+    where: { subjectId, isActive: true },
+    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }, { id: 'asc' }],
+    include: {
+      subject: true,
+      questions: {
+        where: { isActive: true },
+        orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+        include: {
+          bank: { include: { subject: true } },
+          options: { orderBy: { sortOrder: 'asc' } },
+          favorites: userId ? { where: { userId } } : false,
+          wrongs: userId ? { where: { userId } } : false,
+          answers: userId ? { where: { userId }, orderBy: { createdAt: 'desc' }, take: 1 } : false
+        }
+      }
+    }
+  });
+
+  return banks.flatMap((bank) => bank.questions.map((question) => formatQuestion(question, userId)));
+}

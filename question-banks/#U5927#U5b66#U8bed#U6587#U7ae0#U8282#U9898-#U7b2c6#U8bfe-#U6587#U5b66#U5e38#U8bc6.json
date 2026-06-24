@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "source": "QandA 导出",
+  "subject": {
+    "id": "subject-36al8j",
+    "name": "大学语文章节题",
+    "description": "学习通章节里面的题（包括课前测验和文学常识测试）",
+    "color": "#5b8def"
+  },
+  "unit": {
+    "id": "unit-6-2",
+    "name": "第6课-文学常识",
+    "description": ""
+  },
+  "questions": [
+    {
+      "id": "subject-bmvcex-unit-6-literature-001",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "古代宫殿大门前成对的石狮一般都是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "左雌右雄"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "左雄右雌"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 左雄右雌。之所以选B，是因为古代宫殿门前石狮通常左边为雄狮、右边为雌狮，左雄右雌是传统摆放习惯。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-literature-002",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.6,
+      "question": "唐代诗人贾岛“二句三年得，一吟双泪流”的诗句是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "鸟宿池边树，僧敲月下门。"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "独行潭底影，数息树边身。"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 独行潭底影，数息树边身。。之所以选B，是因为“独行潭底影，数息树边身”是贾岛苦吟的代表句，体现其炼字炼句的特点。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-literature-003",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "“结发”在古时是指结婚时:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "妻子把头发束起来"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "丈夫把头发束起来"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "把夫妻头发束在一起"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "explanation": "正确答案：C. 把夫妻头发束在一起。之所以选C，是因为“结发”本义与成婚礼俗有关，指夫妻成婚时把头发束在一起，后来也代指原配夫妻。这正好解释了题干所问，所以应选C。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-literature-004",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "《西游记》中唐僧的原型是:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "鉴真"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "玄奘"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：B. 玄奘。之所以选B，是因为《西游记》中唐僧的历史原型是唐代高僧玄奘。这正好解释了题干所问，所以应选B。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-literature-005",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "“鄂尔多斯”在蒙古语中是什么意思:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "众多宫殿"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "大草原"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "盛产羊毛的地方"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "美丽的地方"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 众多宫殿。之所以选A，是因为“鄂尔多斯”在蒙古语中有“众多宫殿”的意思。这正好解释了题干所问，所以应选A。"
+    },
+    {
+      "id": "subject-bmvcex-unit-6-literature-006",
+      "type": "single",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "6-文学常识小测试",
+        "单选题"
+      ],
+      "score": 16.7,
+      "question": "我国传统表示次序的“天干”共有几个字:",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "十个"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "十二个"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：A. 十个。之所以选A，是因为天干共有十个：甲、乙、丙、丁、戊、己、庚、辛、壬、癸。这正好解释了题干所问，所以应选A。"
+    }
+  ]
+}

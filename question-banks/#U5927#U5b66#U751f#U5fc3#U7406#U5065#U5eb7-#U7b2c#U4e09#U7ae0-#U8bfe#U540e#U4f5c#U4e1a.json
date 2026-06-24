@@ -1,0 +1,280 @@
+{
+  "version": 1,
+  "source": "QandA 格式化",
+  "subject": {
+    "id": "subject-psych-health",
+    "name": "大学生心理健康",
+    "description": "",
+    "color": "#48cd23"
+  },
+  "unit": {
+    "id": "unit-psych-ch3-homework",
+    "name": "第三章-课后作业",
+    "description": "题量：8；满分：100；作答时间：04-07 11:16 至 06-25 11:17"
+  },
+  "questions": [
+    {
+      "id": "psych-ch3-hw-001",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "个体在每个发展阶段，都会出现一个特定的有待解决的发展危机。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。发展心理学认为，个体在不同年龄阶段会面临不同的发展任务和矛盾冲突。所谓发展危机，并不一定是灾难，而是该阶段必须处理好的核心问题；解决得好，有助于人格和能力继续发展，所以本题判断为对。"
+    },
+    {
+      "id": "psych-ch3-hw-002",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "人一出生就有自我意识。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。自我意识不是出生时就完整具备的，而是在成长过程中逐步形成的。婴幼儿会随着身体发育、语言发展、社会互动和他人反馈，慢慢形成“我是谁”“我和别人有什么不同”的认识，所以本题判断为错。"
+    },
+    {
+      "id": "psych-ch3-hw-003",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "学习导致的变化是永久性的。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。学习通常会带来相对持久的行为或心理变化，但不能说这种变化一定是永久性的。遗忘、缺少练习、环境改变等都可能使学习效果减弱或消退，所以“永久性”的说法过于绝对。"
+    },
+    {
+      "id": "psych-ch3-hw-004",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "婴儿到了一定阶段开始会走路，就是学习。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "explanation": "正确答案：错。婴儿到一定阶段会走路，主要与身体成熟、神经系统发育和动作能力发展有关。学习强调由经验、练习或训练引起的相对持久变化，单纯的成熟性发展不能直接等同于学习，所以本题判断为错。"
+    },
+    {
+      "id": "psych-ch3-hw-005",
+      "type": "judge",
+      "typeLabel": "判断题",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "判断题"
+      ],
+      "score": 12.5,
+      "question": "“杀一做百”蕴含的学习原理是观察学习。",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "正确"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "错误"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "explanation": "正确答案：对。“杀一做百”是通过惩罚一个人，让其他人看到后产生警戒，从而改变自己的行为。这种变化不是每个人都亲自受到惩罚，而是通过观察他人的后果来学习，因此体现了观察学习的原理。"
+    },
+    {
+      "id": "psych-ch3-hw-006",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "多选题"
+      ],
+      "score": 12.5,
+      "question": "个体自我认同发展的四种状态包括",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "自我认同延缓"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "自我认同扩散"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "自我认同早闭"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "自我认同获得"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": "正确答案：A、B、C、D。自我认同发展的四种状态通常包括认同扩散、认同早闭、认同延缓和认同获得。它们反映个体是否经历过探索，以及是否形成了承诺。因此四个选项都属于自我认同发展的状态。"
+    },
+    {
+      "id": "psych-ch3-hw-007",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "多选题"
+      ],
+      "score": 12.5,
+      "question": "婴儿与照料者之间的依恋关系类型包括",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "安全型依恋"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "焦虑—回避型依恋"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "焦虑—抗拒型依恋"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "混乱型依恋"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": "正确答案：A、B、C、D。婴儿与照料者之间的依恋关系可以表现为不同类型。安全型依恋体现稳定信任；焦虑—回避型、焦虑—抗拒型和混乱型依恋则反映不同形式的不安全依恋。因此四项都属于常见依恋关系类型。"
+    },
+    {
+      "id": "psych-ch3-hw-008",
+      "type": "multiple",
+      "typeLabel": "",
+      "difficulty": "easy",
+      "tags": [
+        "第三章-课后作业",
+        "多选题"
+      ],
+      "score": 12.5,
+      "question": "学习的影响因素包括",
+      "options": [
+        {
+          "key": "A",
+          "keyLabel": "A",
+          "text": "学习态度"
+        },
+        {
+          "key": "B",
+          "keyLabel": "B",
+          "text": "学习动机"
+        },
+        {
+          "key": "C",
+          "keyLabel": "C",
+          "text": "智力"
+        },
+        {
+          "key": "D",
+          "keyLabel": "D",
+          "text": "意志"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": "正确答案：A、B、C、D。学习效果会受到多方面因素影响。学习态度影响投入程度，学习动机影响主动性和持续性，智力会影响理解和加工效率，意志则关系到能否坚持完成学习任务。因此四个选项都会影响学习。"
+    }
+  ]
+}
