@@ -131,6 +131,15 @@
             <span class="qmine-select-pill">{{ fontSizeText }}</span>
           </button>
 
+          <button class="qmine-row" type="button" @click="openVoiceDialog">
+            <span class="qmine-row-icon" aria-hidden="true"><QxIcon name="speaker" tone="green" /></span>
+            <span>
+              <span class="qmine-row-title">发音音色</span>
+              <span class="qmine-row-desc">用于英文填空答案的浏览器发音</span>
+            </span>
+            <span class="qmine-select-pill qmine-voice-pill">{{ speechVoiceText }}</span>
+          </button>
+
           <button class="qmine-row" type="button" @click="togglePreference('showQuestionOverview')">
             <span class="qmine-row-icon" aria-hidden="true"><QxIcon name="overview" /></span>
             <span>
@@ -241,7 +250,7 @@
             class="qmine-password-field"
             v-model="passwordForm.newPassword"
             label="新密码"
-            placeholder="至少 12 位，至少包含三类字符"
+            placeholder="至少 8 位，至少包含三类字符"
             :type="showMineNewPassword ? 'text' : 'password'"
             autocomplete="new-password"
           >
@@ -278,6 +287,8 @@
       </div>
     </van-dialog>
 
+    <SpeechVoiceDialog v-model:show="showVoiceDialog" />
+
     <van-dialog v-model:show="showAbout" title="关于项目" confirm-button-text="知道了">
       <div class="qmine-dialog-body qmine-about-text">
         <p>QandA 是面向课程复习和题库训练的刷题系统，支持多用户登录、题库练习、错题复盘、收藏、学习统计和公告通知。</p>
@@ -293,7 +304,16 @@ import { useRouter } from 'vue-router';
 import { showConfirmDialog, showToast } from 'vant';
 import { api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
+import SpeechVoiceDialog from '../components/SpeechVoiceDialog.vue';
 import { useAuthStore, type UserPreferences } from '../stores/auth';
+import { isQqEmail } from '../utils/email';
+import { passwordPolicyMessage } from '../utils/passwordPolicy';
+import {
+  canUseSpeechSynthesis,
+  currentBrowserSpeechVoiceKey,
+  listBrowserSpeechVoiceOptions,
+  type SpeechVoiceOption
+} from '../utils/pronunciation';
 import '../styles/mine.css';
 
 const router = useRouter();
@@ -305,6 +325,7 @@ const showProfileDialog = ref(false);
 const showEmailDialog = ref(false);
 const showPasswordDialog = ref(false);
 const showFontDialog = ref(false);
+const showVoiceDialog = ref(false);
 const showAbout = ref(false);
 
 const profileForm = reactive({ nickname: '', avatarUrl: '' });
@@ -322,6 +343,7 @@ const passwordCodeLeft = ref(0);
 const currentEmailLeft = ref(0);
 const newEmailLeft = ref(0);
 const timers: number[] = [];
+const speechVoiceOptions = ref<SpeechVoiceOption[]>([]);
 
 const fontOptions: Array<{ value: UserPreferences['questionFontSize']; label: string; desc: string }> = [
   { value: 'small', label: '小', desc: '适合一屏显示更多内容' },
@@ -334,7 +356,8 @@ const preferences = computed(() => auth.user?.preferences || {
   autoAddWrong: true,
   autoAdvanceOnCorrect: true,
   questionFontSize: 'standard',
-  showQuestionOverview: true
+  showQuestionOverview: true,
+  speechVoiceKey: ''
 });
 
 const avatarText = computed(() => (auth.user?.nickname || 'Q').slice(0, 1).toUpperCase());
@@ -350,6 +373,14 @@ const profilePreviewAvatarSrc = computed(() => {
 const createdDate = computed(() => formatDate(auth.user?.createdAt));
 const maskedEmail = computed(() => maskEmail(auth.user?.email || ''));
 const fontSizeText = computed(() => fontOptions.find((item) => item.value === preferences.value.questionFontSize)?.label || '标准');
+const selectedSpeechVoice = computed(() => speechVoiceOptions.value.find((item) => item.key === preferences.value.speechVoiceKey));
+const speechVoiceText = computed(() => {
+  if (!canUseSpeechSynthesis()) return '浏览器不支持';
+  if (selectedSpeechVoice.value) return selectedSpeechVoice.value.name;
+  if (preferences.value.speechVoiceKey) return '当前设备不可用';
+  if (currentBrowserSpeechVoiceKey('en-US')) return '自动推荐';
+  return '自动推荐';
+});
 const displayAppVersion = computed(() => formatDisplayVersion(__QANDA_APP_VERSION__));
 const profileHeroStyle = computed(() => {
   const avatarUrl = mineAvatarSrc.value;
@@ -359,6 +390,10 @@ const profileHeroStyle = computed(() => {
 
 onMounted(() => {
   void auth.fetchMe(true).catch(() => undefined);
+  refreshSpeechVoices();
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.addEventListener('voiceschanged', refreshSpeechVoices);
+  }
 });
 
 watch(() => auth.user?.avatarUrl, () => {
@@ -371,6 +406,9 @@ watch(() => profileForm.avatarUrl, () => {
 
 onBeforeUnmount(() => {
   timers.forEach((timer) => window.clearInterval(timer));
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.removeEventListener('voiceschanged', refreshSpeechVoices);
+  }
 });
 
 function escapeCssUrl(value: string) {
@@ -395,17 +433,6 @@ function maskEmail(email: string) {
   if (!name || !domain) return email;
   const head = name.slice(0, 2);
   return `${head}${name.length > 2 ? '***' : '*'}@${domain}`;
-}
-
-function isQqEmail(value: string) {
-  return /^[1-9]\d{4,11}@qq\.com$/i.test(value.trim());
-}
-
-function passwordPolicyMessage(value: string) {
-  if (value.length < 12) return '新密码至少 12 位';
-  const types = [/[a-z]/.test(value), /[A-Z]/.test(value), /\d/.test(value), /[^A-Za-z0-9]/.test(value)].filter(Boolean).length;
-  if (types < 3) return '新密码需包含大写字母、小写字母、数字、特殊字符中的至少三类';
-  return '';
 }
 
 function startCountdown(target: typeof passwordCodeLeft, seconds = 60) {
@@ -628,7 +655,7 @@ async function beforePasswordClose(action: string) {
     showToast('请填写新密码');
     return false;
   }
-  const passwordMessage = passwordPolicyMessage(passwordForm.newPassword);
+  const passwordMessage = passwordPolicyMessage(passwordForm.newPassword, '新密码');
   if (passwordMessage) {
     showToast(passwordMessage);
     return false;
@@ -664,6 +691,15 @@ async function setFontSize(value: UserPreferences['questionFontSize']) {
   } catch (error) {
     showToast({ type: 'fail', message: error instanceof Error ? error.message : '字号保存失败' });
   }
+}
+
+function refreshSpeechVoices() {
+  speechVoiceOptions.value = listBrowserSpeechVoiceOptions('en-US');
+}
+
+function openVoiceDialog() {
+  refreshSpeechVoices();
+  showVoiceDialog.value = true;
 }
 
 async function handleLogout() {

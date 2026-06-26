@@ -85,6 +85,16 @@
               <div class="qrev-answer-row">
                 <span class="qrev-answer-label">正确答案：</span>
                 <strong>{{ answerDisplay(item) }}</strong>
+                <span v-if="speechItemsForQuestion(item).length" class="qrev-speech-actions">
+                  <SpeakButton
+                    v-for="speechItem in speechItemsForQuestion(item)"
+                    :key="speechItem.key"
+                    :text="speechItem.text"
+                    :lang="speechItem.lang"
+                    :label="speechItem.label"
+                    :explicit="speechItem.explicit"
+                  />
+                </span>
               </div>
 
               <div class="qrev-card-actions">
@@ -107,6 +117,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { showToast } from 'vant';
 import { judgeAnswerKey, judgeOptionDisplay, optionKeyDisplay } from '../utils/question';
 import { api } from '../api/request';
+import SpeakButton from '../components/SpeakButton.vue';
+import { speechItemsForQuestion } from '../utils/pronunciation';
 import '../styles/mobile-lists.css';
 import '../styles/review.css';
 

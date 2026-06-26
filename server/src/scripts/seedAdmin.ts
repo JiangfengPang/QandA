@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { UserRole, type UserRole as UserRoleType } from '../utils/roles.js';
 import { env } from '../config/env.js';
 import { prisma } from '../db/prisma.js';
+import { isQqEmail, normalizeEmail } from '../utils/email.js';
 import { validatePasswordStrength } from '../utils/passwordPolicy.js';
 
 async function main() {
@@ -11,7 +12,7 @@ async function main() {
     throw new Error(`管理员密码不符合生产安全要求：${passwordIssue}`);
   }
 
-  let adminEmail = env.adminEmail && /^[1-9]\d{4,11}@qq\.com$/i.test(env.adminEmail) ? env.adminEmail.toLowerCase() : null;
+  let adminEmail = env.adminEmail && isQqEmail(env.adminEmail) ? normalizeEmail(env.adminEmail) : null;
   if (adminEmail) {
     const emailOwner = await prisma.user.findUnique({ where: { email: adminEmail }, select: { username: true } });
     if (emailOwner && emailOwner.username !== username) {

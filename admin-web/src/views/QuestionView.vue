@@ -27,6 +27,7 @@
             <el-option label="单选" value="single" />
             <el-option label="多选" value="multiple" />
             <el-option label="判断" value="judge" />
+            <el-option label="填空" value="fill" />
             <el-option label="Python题" value="python" />
           </el-select>
         </el-form-item>
@@ -67,6 +68,24 @@
           </el-form-item>
         </template>
 
+        <template v-else-if="form.type === 'fill'">
+          <el-form-item label="填空模式">
+            <el-radio-group v-model="form.fillMode">
+              <el-radio-button label="single">单空</el-radio-button>
+              <el-radio-button label="multi">多空</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="正确答案">
+            <el-input
+              v-model="form.fillAnswerText"
+              type="textarea"
+              :rows="form.fillMode === 'multi' ? 6 : 4"
+              :placeholder="form.fillMode === 'multi' ? '每行一个空；同一空多个可接受答案用 / 分隔，例如：\naspiration\naspirational / ambitious' : '每行一个可接受答案，例如：\nadequately\nsufficiently'"
+            />
+          </el-form-item>
+          <el-form-item label="解析"><el-input v-model="form.explanation" type="textarea" :rows="3" /></el-form-item>
+        </template>
+
         <template v-else>
           <el-form-item label="选项">
             <div class="option-editor">
@@ -95,7 +114,7 @@ import { ElMessageBox } from 'element-plus/es/components/message-box/index';
 import { api } from '../api/request';
 import { decodeMarkdownCode, renderMarkdown } from '../utils/markdown';
 const rows=ref<any[]>([]), banks=ref<any[]>([]), visible=ref(false), bankId=ref(''), keyword=ref(''); const meta=reactive({page:1,pageSize:20,total:0});
-const form=reactive<any>({id:'',bankId:'',type:'single',stem:'',score:0,answer:[],explanation:'',options:[],pythonAnswerMarkdown:''});
+const form=reactive<any>({id:'',bankId:'',type:'single',stem:'',score:0,answer:[],fillAnswerText:'',fillMode:'single',explanation:'',options:[],pythonAnswerMarkdown:''});
 const renderedQuestionStem = computed(() => renderMarkdown(form.stem || ''));
 const renderedPythonAnswer = computed(() => renderMarkdown(form.pythonAnswerMarkdown || ''));
 async function loadBanks(){ banks.value=await api.get('/admin/banks'); }
@@ -116,22 +135,31 @@ async function handleMarkdownCopyClick(event: MouseEvent) {
 }
 
 function questionTypeLabel(type:string){ return ({single:'单选',multiple:'多选',judge:'判断',fill:'填空',python:'Python题'} as Record<string,string>)[type] || type || '题目'; }
-function answerSummary(row:any){ if(row.type==='python') return 'Markdown答案'; return Array.isArray(row.answerJson) ? row.answerJson.join('、') : ''; }
+function answerSummary(row:any){ if(row.type==='python') return 'Markdown答案'; if(Array.isArray(row.answerJson) && row.answerJson.some((item:any)=>Array.isArray(item))) return row.answerJson.map((item:any)=>Array.isArray(item)?item.join(' / '):String(item)).join('；'); return Array.isArray(row.answerJson) ? row.answerJson.join('、') : ''; }
 function applyJudgeOptions(){ form.options=[{label:'A',content:'正确'},{label:'B',content:'错误'}]; form.answer=form.answer.map((item:string)=>String(item).toLowerCase()==='true'||item==='正确'||item==='对'?'A':String(item).toLowerCase()==='false'||item==='错误'||item==='错'?'B':item).filter((item:string)=>item==='A'||item==='B').slice(0,1); }
 function ensureChoiceOptions(){ if(!Array.isArray(form.options) || form.options.length===0) form.options=[{label:'A',content:''},{label:'B',content:''}]; }
 function addOption(){ if(form.type==='judge') return applyJudgeOptions(); ensureChoiceOptions(); const label=String.fromCharCode(65+form.options.length); form.options.push({label,content:''}); }
 function resetPythonAnswer(){ if(!form.pythonAnswerMarkdown) form.pythonAnswerMarkdown='### 参考答案\n\n```python\n# 在这里填写正确答案代码\nprint("hello")\n```\n\n### 答案解析\n\n这里填写解题思路。'; }
-function openCreate(){ Object.assign(form,{id:'',bankId:bankId.value || banks.value[0]?.id || '',type:'single',stem:'',score:0,answer:[],explanation:'',options:[{label:'A',content:''},{label:'B',content:''}],pythonAnswerMarkdown:''}); visible.value=true; }
-function openEdit(row:any){ const answers=Array.isArray(row.answerJson)?row.answerJson:[]; Object.assign(form,{id:row.id,bankId:row.bankId,type:row.type,stem:row.stem,score:row.score,answer:answers,explanation:row.explanation||'',options:(row.options||[]).map((o:any)=>({label:o.label,content:o.content})),pythonAnswerMarkdown:row.type==='python'?String(answers[0]||''):''}); if(form.type==='judge') applyJudgeOptions(); visible.value=true; }
+function fillAnswerArray(){
+  const lines=String(form.fillAnswerText || '').split(/\r?\n/).map((item:string)=>item.trim()).filter(Boolean);
+  if(form.fillMode==='multi') return lines.map((line:string)=>line.split(/\s*(?:\/|｜|\||、)\s*/).map((item:string)=>item.trim()).filter(Boolean)).filter((group:string[])=>group.length);
+  return lines;
+}
+function fillAnswerTextFromValue(value:any){ if(Array.isArray(value) && value.some((item:any)=>Array.isArray(item))) return value.map((item:any)=>Array.isArray(item)?item.join(' / '):String(item)).join('\n'); return Array.isArray(value)?value.join('\n'):''; }
+function openCreate(){ Object.assign(form,{id:'',bankId:bankId.value || banks.value[0]?.id || '',type:'single',stem:'',score:0,answer:[],fillAnswerText:'',fillMode:'single',explanation:'',options:[{label:'A',content:''},{label:'B',content:''}],pythonAnswerMarkdown:''}); visible.value=true; }
+function openEdit(row:any){ const answers=Array.isArray(row.answerJson)?row.answerJson:[]; const multiFill=answers.some((item:any)=>Array.isArray(item)); Object.assign(form,{id:row.id,bankId:row.bankId,type:row.type,stem:row.stem,score:row.score,answer:answers,fillAnswerText:row.type==='fill'?fillAnswerTextFromValue(answers):'',fillMode:multiFill?'multi':'single',explanation:row.explanation||'',options:(row.options||[]).map((o:any)=>({label:o.label,content:o.content})),pythonAnswerMarkdown:row.type==='python'?String(answers[0]||''):''}); if(form.type==='judge') applyJudgeOptions(); visible.value=true; }
 async function save(){
   if(!form.bankId) return ElMessage.warning('请选择题库');
   if(!String(form.stem||'').trim()) return ElMessage.warning('请输入题干');
   if(form.type==='python' && !String(form.pythonAnswerMarkdown||'').trim()) return ElMessage.warning('请输入正确答案 Markdown');
+  if(form.type==='fill' && fillAnswerArray().length===0) return ElMessage.warning('请至少填写一个正确答案');
   const payload=form.type==='python'
     ? {bankId:form.bankId,type:form.type,stem:form.stem,score:form.score,answer:[form.pythonAnswerMarkdown],explanation:'',options:[]}
+    : form.type==='fill'
+      ? {bankId:form.bankId,type:form.type,stem:form.stem,score:form.score,answer:fillAnswerArray(),explanation:form.explanation,options:[]}
     : {bankId:form.bankId,type:form.type,stem:form.stem,score:form.score,answer:form.answer,explanation:form.explanation,options:form.options};
   form.id?await api.put(`/admin/questions/${form.id}`,payload):await api.post('/admin/questions',payload); ElMessage.success('已保存'); visible.value=false; load(); }
 async function remove(id:string){ await ElMessageBox.confirm('确认删除这道题？','危险操作'); await api.delete(`/admin/questions/${id}`); ElMessage.success('已删除'); load(); }
-watch(()=>form.type,(type)=>{ if(type==='judge') applyJudgeOptions(); if(type==='python') resetPythonAnswer(); if(type==='single'||type==='multiple') ensureChoiceOptions(); });
+watch(()=>form.type,(type)=>{ if(type==='judge') applyJudgeOptions(); if(type==='python') resetPythonAnswer(); if(type==='fill'){ form.options=[]; form.answer=[]; if(!form.fillMode) form.fillMode='single'; } if(type==='single'||type==='multiple') ensureChoiceOptions(); });
 onMounted(async()=>{ await loadBanks(); await load(); });
 </script>

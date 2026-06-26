@@ -584,6 +584,10 @@
   overflow: hidden;
 }
 
+.qx-home-pinned-announcement-dialog {
+  width: min(520px, calc(100vw - 32px));
+}
+
 .qx-announcement-dialog .van-dialog__header {
   padding: 18px 18px 10px;
   color: #142033;

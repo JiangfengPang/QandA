@@ -11,6 +11,7 @@ type VersionManifest = {
 const CHECK_INTERVAL_MS = 60_000;
 const PROMPT_SNOOZE_MS = 5 * 60_000;
 const CURRENT_BUILD_ID = __QANDA_BUILD_ID__;
+const APP_NAME = 'qanda-user-web';
 
 function versionUrl() {
   const base = import.meta.env.BASE_URL || '/';
@@ -31,6 +32,11 @@ async function fetchLatestVersion() {
   return await response.json() as VersionManifest;
 }
 
+function latestBuildId(latest: VersionManifest | null) {
+  if (latest?.app && latest.app !== APP_NAME) return '';
+  return String(latest?.buildId || '').trim();
+}
+
 function reloadForLatestVersion() {
   window.location.reload();
 }
@@ -43,19 +49,49 @@ export function startVersionUpdateChecker(router?: Router) {
   let promptOpen = false;
   let snoozedUntil = 0;
   let pendingLatest: VersionManifest | null = null;
+  let pendingBuildId = '';
   let removeRouteHook: (() => void) | undefined;
 
   function isPracticeRoute() {
     const route = router?.currentRoute.value;
-    return route?.name === 'practice' || window.location.pathname.startsWith('/practice/');
+    return route?.meta?.layout === 'practice'
+      || route?.name === 'practice'
+      || window.location.pathname.startsWith('/practice/')
+      || window.location.pathname.startsWith('/memorize/');
   }
 
   function canPromptForUpdate() {
     return document.visibilityState === 'visible' && !isPracticeRoute();
   }
 
+  function clearPendingUpdate() {
+    pendingLatest = null;
+    pendingBuildId = '';
+  }
+
+  function setPendingUpdate(latest: VersionManifest, buildId: string) {
+    pendingLatest = latest;
+    pendingBuildId = buildId;
+  }
+
+  async function confirmPendingUpdate() {
+    const expectedBuildId = pendingBuildId;
+    const latest = await fetchLatestVersion();
+    const confirmedBuildId = latestBuildId(latest);
+
+    if (!confirmedBuildId || confirmedBuildId === CURRENT_BUILD_ID) {
+      clearPendingUpdate();
+      return false;
+    }
+
+    setPendingUpdate(latest as VersionManifest, confirmedBuildId);
+    return confirmedBuildId === expectedBuildId;
+  }
+
   async function promptPendingUpdate() {
     if (!pendingLatest || promptOpen || Date.now() < snoozedUntil || !canPromptForUpdate()) return;
+    if (!await confirmPendingUpdate()) return;
+    if (promptOpen || Date.now() < snoozedUntil || !canPromptForUpdate()) return;
 
     promptOpen = true;
     try {
@@ -80,9 +116,12 @@ export function startVersionUpdateChecker(router?: Router) {
 
     try {
       const latest = await fetchLatestVersion();
-      const latestBuildId = String(latest?.buildId || '');
-      if (!latestBuildId || latestBuildId === CURRENT_BUILD_ID) return;
-      pendingLatest = latest;
+      const nextBuildId = latestBuildId(latest);
+      if (!nextBuildId || nextBuildId === CURRENT_BUILD_ID) {
+        clearPendingUpdate();
+        return;
+      }
+      setPendingUpdate(latest as VersionManifest, nextBuildId);
       await promptPendingUpdate();
     } catch {
       // 静默失败：网络恢复或下次唤醒页面时会再次检查。
@@ -100,6 +139,7 @@ export function startVersionUpdateChecker(router?: Router) {
   timer = window.setInterval(() => void checkForUpdate(), CHECK_INTERVAL_MS);
   window.setTimeout(() => void checkForUpdate(), 5_000);
   window.addEventListener('focus', checkWhenVisible);
+  window.addEventListener('pageshow', checkWhenVisible);
   document.addEventListener('visibilitychange', checkWhenVisible);
   removeRouteHook = router?.afterEach(() => {
     if (pendingLatest) void promptPendingUpdate();
@@ -109,6 +149,7 @@ export function startVersionUpdateChecker(router?: Router) {
     if (timer) window.clearInterval(timer);
     removeRouteHook?.();
     window.removeEventListener('focus', checkWhenVisible);
+    window.removeEventListener('pageshow', checkWhenVisible);
     document.removeEventListener('visibilitychange', checkWhenVisible);
   }, { once: true });
 }

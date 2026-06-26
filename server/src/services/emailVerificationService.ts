@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { prisma } from '../db/prisma.js';
+import { isQqEmail, normalizeEmail } from '../utils/email.js';
 import { HttpError } from '../utils/http.js';
 import { createVerificationCode } from '../utils/verificationCode.js';
 import { sendEmailVerificationCode } from './mailService.js';
@@ -16,14 +17,6 @@ const PURPOSE_SCENE: Record<EmailCodePurpose, string> = {
   EMAIL_CHANGE_OLD: '旧邮箱验证',
   EMAIL_CHANGE_NEW: '新邮箱验证'
 };
-
-function normalizeEmail(email: string) {
-  return String(email || '').trim().toLowerCase();
-}
-
-function isQqEmail(value: string) {
-  return /^[1-9]\d{4,11}@qq\.com$/i.test(value.trim());
-}
 
 export function assertQqEmail(email: string) {
   const value = normalizeEmail(email);

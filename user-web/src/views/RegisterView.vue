@@ -20,7 +20,7 @@
           v-model="password"
           name="password"
           label="密码"
-          placeholder="至少 12 位，至少包含三类字符"
+          placeholder="至少 8 位，至少包含三类字符"
           :type="showPassword ? 'text' : 'password'"
           autocomplete="new-password"
           :rules="[{ required: true, message: '请输入密码' }]"
@@ -62,6 +62,8 @@ import { showToast } from 'vant';
 import { api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
 import { useAuthStore } from '../stores/auth';
+import { isQqEmail } from '../utils/email';
+import { passwordPolicyMessage } from '../utils/passwordPolicy';
 
 const nickname = ref('');
 const email = ref('');
@@ -77,17 +79,6 @@ let timer: number | undefined;
 
 const router = useRouter();
 const auth = useAuthStore();
-
-function isQqEmail(value: string) {
-  return /^[1-9]\d{4,11}@qq\.com$/i.test(value.trim());
-}
-
-function passwordPolicyMessage(value: string) {
-  if (value.length < 12) return '密码至少 12 位';
-  const types = [/[a-z]/.test(value), /[A-Z]/.test(value), /\d/.test(value), /[^A-Za-z0-9]/.test(value)].filter(Boolean).length;
-  if (types < 3) return '密码需包含大写字母、小写字母、数字、特殊字符中的至少三类';
-  return '';
-}
 
 function startCountdown(seconds = 60) {
   codeLeft.value = seconds;

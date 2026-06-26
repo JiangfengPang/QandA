@@ -24,12 +24,13 @@ import { clearAuthCookies, getClientFromRequest, setAuthCookies } from '../utils
 import { accountLimiter, ipLimiter, passwordResetAccountLimiter } from '../middleware/rateLimit.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { recordAdminOperation } from '../services/adminAuditService.js';
+import { isQqEmail } from '../utils/email.js';
 
 const router = Router();
 
-const qqEmailSchema = z.string().email('请输入正确的邮箱格式').max(191).refine((value) => /^[1-9]\d{4,11}@qq\.com$/i.test(value.trim()), '当前仅支持 QQ 邮箱');
+const qqEmailSchema = z.string().email('请输入正确的邮箱格式').max(191).refine((value) => isQqEmail(value), '当前仅支持 QQ 邮箱');
 const passwordRule = z.string()
-  .min(12, '密码至少 12 位')
+  .min(8, '密码至少 8 位')
   .max(100, '密码不能超过 100 位')
   .refine((value) => !validatePasswordStrength(value), (value) => ({ message: validatePasswordStrength(value) || '密码强度不足' }));
 
@@ -67,7 +68,7 @@ const loginSchema = z.object({
     return;
   }
 
-  if (!/^[1-9]\d{4,11}@qq\.com$/i.test(value.email.trim())) {
+  if (!isQqEmail(value.email)) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, message: '当前仅支持 QQ 邮箱', path: ['email'] });
   }
 });
@@ -93,7 +94,8 @@ const preferencesSchema = z.object({
   autoAddWrong: z.boolean().optional(),
   autoAdvanceOnCorrect: z.boolean().optional(),
   questionFontSize: z.enum(['small', 'standard', 'large']).optional(),
-  showQuestionOverview: z.boolean().optional()
+  showQuestionOverview: z.boolean().optional(),
+  speechVoiceKey: z.string().max(220).optional()
 });
 const passwordResetRequestSchema = z.object({ account: qqEmailSchema });
 const passwordResetConfirmSchema = z.object({

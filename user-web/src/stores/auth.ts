@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { api, clearToken } from '../api/request';
+import { setPreferredSpeechVoiceKey } from '../utils/pronunciation';
 
 export type UserPreferences = {
   autoShowExplanation: boolean;
@@ -7,6 +8,7 @@ export type UserPreferences = {
   autoAdvanceOnCorrect: boolean;
   questionFontSize: 'small' | 'standard' | 'large';
   showQuestionOverview: boolean;
+  speechVoiceKey: string;
 };
 
 export type UserInfo = {
@@ -26,15 +28,18 @@ const defaultPreferences = (): UserPreferences => ({
   autoAddWrong: true,
   autoAdvanceOnCorrect: true,
   questionFontSize: 'standard',
-  showQuestionOverview: true
+  showQuestionOverview: true,
+  speechVoiceKey: ''
 });
 
 function normalizeUser(user: UserInfo): UserInfo {
+  const preferences = { ...defaultPreferences(), ...(user.preferences || {}) };
+  setPreferredSpeechVoiceKey(preferences.speechVoiceKey || '');
   return {
     ...user,
     email: user.email || '',
     avatarUrl: user.avatarUrl || '',
-    preferences: { ...defaultPreferences(), ...(user.preferences || {}) }
+    preferences
   };
 }
 

@@ -156,11 +156,45 @@
         </section>
       </div>
     </div>
+
+    <van-dialog
+      v-model:show="showPinnedAnnouncementDialog"
+      class-name="qx-announcement-dialog qx-home-pinned-announcement-dialog"
+      title="置顶公告"
+      confirm-button-text="我知道了"
+      :before-close="beforePinnedAnnouncementClose"
+      @closed="clearPinnedAnnouncementDialog"
+    >
+      <div
+        ref="pinnedAnnouncementScrollRef"
+        class="qx-announcement-dialog-scroll"
+        @touchstart.stop
+        @touchmove.stop
+        @wheel.stop
+      >
+        <article v-if="activePinnedAnnouncement" class="qx-announcement-detail qx-announcement-dialog-detail">
+          <div class="qx-announcement-detail-head">
+            <span class="qx-announcement-category">{{ activePinnedAnnouncement.category }}</span>
+            <span class="qx-announcement-pin-badge detail">已置顶</span>
+            <span class="qx-announcement-status">未读</span>
+          </div>
+          <h2>{{ activePinnedAnnouncement.title }}</h2>
+          <p class="qx-announcement-meta">
+            {{ activePinnedAnnouncement.publisher }} · {{ activePinnedAnnouncement.publishedAt }} · {{ activePinnedAnnouncement.readCount || 0 }} 人已读
+          </p>
+          <div
+            class="qx-announcement-content qx-announcement-markdown"
+            v-html="renderAnnouncementContent(activePinnedAnnouncement)"
+            @click="handlePinnedAnnouncementCopy"
+          ></div>
+        </article>
+      </div>
+    </van-dialog>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import { showToast } from 'vant';
 import { api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
@@ -168,6 +202,8 @@ import type { AnnouncementItem } from '../data/announcementMock';
 import { useAuthStore } from '../stores/auth';
 import type { StatsPayload } from '../types/stats';
 import { defaultStatsPayload } from '../types/stats';
+import { copyTextToClipboard } from '../utils/clipboard';
+import { decodeMarkdownCode, renderMarkdown } from '../utils/markdown';
 import { formatDuration } from '../utils/duration';
 import '../styles/announcements.css';
 import '../styles/home-time.css';
@@ -203,6 +239,9 @@ const stats = ref<StatsPayload>(defaultStatsPayload());
 const loading = ref(true);
 const currentHour = ref(new Date().getHours());
 const announcements = ref<AnnouncementItem[]>([]);
+const showPinnedAnnouncementDialog = ref(false);
+const activePinnedAnnouncement = ref<AnnouncementItem | null>(null);
+const pinnedAnnouncementScrollRef = ref<HTMLElement | null>(null);
 let hourTimer: number | undefined;
 
 const assetBase = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/assets/home-time`;
@@ -395,6 +434,9 @@ const totalQuestions = computed(() => Number(stats.value.totalQuestionCount || 0
 const studySecondsLabel = computed(() => formatDuration(Number(stats.value.totalDurationSeconds || 0)));
 const latestAnnouncement = computed(() => announcements.value[0] || null);
 const unreadAnnouncements = computed(() => announcements.value.filter((item) => !item.read));
+const pinnedUnreadAnnouncement = computed(() => announcements.value.find((item) => (
+  (item.pinned || item.isPinned) && !item.read
+)) || null);
 const hasUnreadAnnouncements = computed(() => unreadAnnouncements.value.length > 0);
 const hasFreshUnreadAnnouncement = computed(() => unreadAnnouncements.value.some((item) => isFreshAnnouncement(item)));
 
@@ -424,6 +466,68 @@ function isFreshAnnouncement(item?: AnnouncementItem | null) {
 const homeAnnouncementDate = computed(() => splitAnnouncementDateTime(latestAnnouncement.value?.publishedAt).date);
 const homeAnnouncementTime = computed(() => splitAnnouncementDateTime(latestAnnouncement.value?.publishedAt).time);
 
+function renderAnnouncementContent(item: AnnouncementItem) {
+  const content = item.content || [];
+  const markdown = content.length <= 1 ? (content[0] || '') : content.join('\n');
+  return renderMarkdown(markdown);
+}
+
+function showUnreadPinnedAnnouncementIfNeeded() {
+  if (!pinnedUnreadAnnouncement.value) return;
+  activePinnedAnnouncement.value = pinnedUnreadAnnouncement.value;
+  showPinnedAnnouncementDialog.value = true;
+  void nextTick(() => {
+    if (pinnedAnnouncementScrollRef.value) pinnedAnnouncementScrollRef.value.scrollTop = 0;
+  });
+}
+
+function clearPinnedAnnouncementDialog() {
+  activePinnedAnnouncement.value = null;
+}
+
+function updateAnnouncementReadState(id: string, readCount?: number) {
+  announcements.value = announcements.value.map((item) => (
+    item.id === id
+      ? {
+        ...item,
+        read: true,
+        readCount: typeof readCount === 'number' ? readCount : item.readCount
+      }
+      : item
+  ));
+}
+
+async function beforePinnedAnnouncementClose(action: string) {
+  if (action !== 'confirm') return false;
+  const announcement = activePinnedAnnouncement.value;
+  if (!announcement) return true;
+
+  try {
+    const result = await api.post<{ read: boolean; readCount?: number }>(`/announcements/${announcement.id}/read`);
+    updateAnnouncementReadState(announcement.id, result.readCount);
+    showToast('公告已读');
+    return true;
+  } catch (error) {
+    showToast({ type: 'fail', message: error instanceof Error ? error.message : '标记公告已读失败' });
+    return false;
+  }
+}
+
+async function handlePinnedAnnouncementCopy(event: MouseEvent) {
+  const target = event.target as HTMLElement | null;
+  const button = target?.closest<HTMLButtonElement>('[data-md-copy="code"]');
+  if (!button) return;
+
+  const code = decodeMarkdownCode(button.dataset.code || '');
+  if (!code) return;
+
+  if (await copyTextToClipboard(code)) {
+    showToast('代码已复制');
+    return;
+  }
+  showToast({ type: 'fail', message: '复制失败，请长按选择代码复制' });
+}
+
 onMounted(async () => {
   hourTimer = window.setInterval(() => {
     currentHour.value = new Date().getHours();
@@ -436,6 +540,7 @@ onMounted(async () => {
     ]);
     stats.value = statsPayload;
     announcements.value = announcementRows;
+    showUnreadPinnedAnnouncementIfNeeded();
   } catch (e) {
     showToast({ type: 'fail', message: e instanceof Error ? e.message : '首页数据加载失败' });
   } finally {

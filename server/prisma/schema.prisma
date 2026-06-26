@@ -26,6 +26,7 @@ model User {
   autoAdvanceOnCorrect Boolean         @default(true)
   questionFontSize     String          @default("standard") @db.VarChar(20)
   showQuestionOverview Boolean         @default(true)
+  speechVoiceKey       String          @default("") @db.VarChar(220)
   resetCodeHash        String?         @db.VarChar(191)
   resetCodeExpiresAt   DateTime?
   resetCodeAttempts    Int             @default(0)
@@ -36,6 +37,7 @@ model User {
   answers              UserAnswer[]
   favorites            UserFavorite[]
   wrongs               WrongQuestion[]
+  practiceSessions     UserPracticeSession[]
   announcementReads    AnnouncementRead[]
   adminOperationLogs   AdminOperationLog[]
 
@@ -157,6 +159,19 @@ model WrongQuestion {
 
   @@unique([userId, questionId])
   @@index([questionId])
+}
+
+model UserPracticeSession {
+  id          String   @id @default(cuid())
+  userId      String
+  sessionKey  String   @db.VarChar(191)
+  payloadJson Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sessionKey])
+  @@index([userId, updatedAt])
 }
 
 model Announcement {

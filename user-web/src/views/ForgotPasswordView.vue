@@ -19,7 +19,7 @@
           v-model="newPassword"
           name="newPassword"
           label="新密码"
-          placeholder="至少 12 位，至少包含三类字符"
+          placeholder="至少 8 位，至少包含三类字符"
           :type="showNewPassword ? 'text' : 'password'"
           autocomplete="new-password"
         >
@@ -60,6 +60,8 @@ import { useRouter } from 'vue-router';
 import { showToast } from 'vant';
 import { api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
+import { isQqEmail } from '../utils/email';
+import { passwordPolicyMessage } from '../utils/passwordPolicy';
 
 const router = useRouter();
 const email = ref('');
@@ -72,17 +74,6 @@ const loading = ref(false);
 const sending = ref(false);
 const codeLeft = ref(0);
 let timer: number | undefined;
-
-function isQqEmail(value: string) {
-  return /^[1-9]\d{4,11}@qq\.com$/i.test(value.trim());
-}
-
-function passwordPolicyMessage(value: string) {
-  if (value.length < 12) return '新密码至少 12 位';
-  const types = [/[a-z]/.test(value), /[A-Z]/.test(value), /\d/.test(value), /[^A-Za-z0-9]/.test(value)].filter(Boolean).length;
-  if (types < 3) return '新密码需包含大写字母、小写字母、数字、特殊字符中的至少三类';
-  return '';
-}
 
 function startCountdown(seconds = 60) {
   codeLeft.value = seconds;
@@ -121,7 +112,7 @@ async function submitReset() {
   if (!isQqEmail(emailValue)) return showToast('请输入正确的 QQ 邮箱');
   if (!code.value.trim()) return showToast('请输入验证码');
 
-  const passwordMessage = passwordPolicyMessage(newPassword.value);
+  const passwordMessage = passwordPolicyMessage(newPassword.value, '新密码');
   if (passwordMessage) return showToast(passwordMessage);
   if (newPassword.value !== confirmPassword.value) return showToast('两次输入的新密码不一致');
 

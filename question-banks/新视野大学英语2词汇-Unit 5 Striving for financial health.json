@@ -1,0 +1,697 @@
+{
+  "version": 1,
+  "source": "新视野2_Unit1-5_PPT候选词汇总_背诵版.docx",
+  "subject": {
+    "id": "subject-new-horizon-2-vocab",
+    "name": "新视野大学英语2词汇",
+    "description": "Unit 1-5 PPT 候选词汇填空刷词题。",
+    "color": "#2f80ed"
+  },
+  "unit": {
+    "id": "subject-new-horizon-2-vocab-unit-5",
+    "name": "Unit 5 Striving for financial health",
+    "description": "由 Word 词汇表自动转换为填空刷词题。"
+  },
+  "questions": [
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-001-budget",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "预算\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "budget"
+      ],
+      "explanation": "正确词汇：budget\n中文记忆：预算\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-002-defy",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "违抗；违反\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "defy"
+      ],
+      "explanation": "正确词汇：defy\n中文记忆：违抗；违反\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-003-dilemma",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "困境；两难\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "dilemma"
+      ],
+      "explanation": "正确词汇：dilemma\n中文记忆：困境；两难\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-004-diverse",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "多种多样的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "diverse"
+      ],
+      "explanation": "正确词汇：diverse\n中文记忆：多种多样的\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-005-loyalty",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "忠诚\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "loyalty"
+      ],
+      "explanation": "正确词汇：loyalty\n中文记忆：忠诚\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-006-manipulate",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "操纵；控制\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "manipulate"
+      ],
+      "explanation": "正确词汇：manipulate\n中文记忆：操纵；控制\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-007-objective",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "目标；客观的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "objective"
+      ],
+      "explanation": "正确词汇：objective\n中文记忆：目标；客观的\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-008-perspective",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "观点；视角\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "perspective"
+      ],
+      "explanation": "正确词汇：perspective\n中文记忆：观点；视角\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-009-tackle",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "处理；解决\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "tackle"
+      ],
+      "explanation": "正确词汇：tackle\n中文记忆：处理；解决\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-words-in-use-010-urge",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "敦促；强烈要求\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "urge"
+      ],
+      "explanation": "正确词汇：urge\n中文记忆：敦促；强烈要求\n来源：Unit 5 Striving for financial health · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-word-building-011-climatic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "气候的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "climatic"
+      ],
+      "explanation": "正确词汇：climatic\n中文记忆：气候的\n来源：Unit 5 Striving for financial health · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-word-building-012-confirmation",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "确认；证实\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "confirmation"
+      ],
+      "explanation": "正确词汇：confirmation\n中文记忆：确认；证实\n来源：Unit 5 Striving for financial health · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-word-building-013-emphatic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "强调的；有力的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "emphatic"
+      ],
+      "explanation": "正确词汇：emphatic\n中文记忆：强调的；有力的\n来源：Unit 5 Striving for financial health · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-word-building-014-fascination",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "迷恋；强烈兴趣\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "fascination"
+      ],
+      "explanation": "正确词汇：fascination\n中文记忆：迷恋；强烈兴趣\n来源：Unit 5 Striving for financial health · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-word-building-015-installation",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "安装；设施\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "installation"
+      ],
+      "explanation": "正确词汇：installation\n中文记忆：安装；设施\n来源：Unit 5 Striving for financial health · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-word-building-016-metallic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "金属的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "metallic"
+      ],
+      "explanation": "正确词汇：metallic\n中文记忆：金属的\n来源：Unit 5 Striving for financial health · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-word-building-017-photographic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "摄影的；照片的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "photographic"
+      ],
+      "explanation": "正确词汇：photographic\n中文记忆：摄影的；照片的\n来源：Unit 5 Striving for financial health · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-018-appetites",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "欲望；胃口\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "appetites"
+      ],
+      "explanation": "正确词汇：appetites\n中文记忆：欲望；胃口\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-019-dilemma",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "困境；两难\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "dilemma"
+      ],
+      "explanation": "正确词汇：dilemma\n中文记忆：困境；两难\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-020-engage",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "参与；从事\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "engage"
+      ],
+      "explanation": "正确词汇：engage\n中文记忆：参与；从事\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-021-explicit",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "明确的；清楚的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "explicit"
+      ],
+      "explanation": "正确词汇：explicit\n中文记忆：明确的；清楚的\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-022-explosive",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "爆炸性的；急剧的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "explosive"
+      ],
+      "explanation": "正确词汇：explosive\n中文记忆：爆炸性的；急剧的\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-023-manage",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "管理；设法做到\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "manage"
+      ],
+      "explanation": "正确词汇：manage\n中文记忆：管理；设法做到\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-024-manipulated",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "被操纵的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "manipulated"
+      ],
+      "explanation": "正确词汇：manipulated\n中文记忆：被操纵的\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-025-objectives",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "目标\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "objectives"
+      ],
+      "explanation": "正确词汇：objectives\n中文记忆：目标\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-026-particular",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "特定的；特别的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "particular"
+      ],
+      "explanation": "正确词汇：particular\n中文记忆：特定的；特别的\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-027-perspectives",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "观点；视角\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "perspectives"
+      ],
+      "explanation": "正确词汇：perspectives\n中文记忆：观点；视角\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-028-regulated",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "受监管的；有规则的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "regulated"
+      ],
+      "explanation": "正确词汇：regulated\n中文记忆：受监管的；有规则的\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-029-retain",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "保留；保持\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "retain"
+      ],
+      "explanation": "正确词汇：retain\n中文记忆：保留；保持\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-030-suspend",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "暂停；推迟\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "suspend"
+      ],
+      "explanation": "正确词汇：suspend\n中文记忆：暂停；推迟\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-031-sustain",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "维持；支撑\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "sustain"
+      ],
+      "explanation": "正确词汇：sustain\n中文记忆：维持；支撑\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-banked-cloze-032-urgent",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "紧急的；急迫的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "urgent"
+      ],
+      "explanation": "正确词汇：urgent\n中文记忆：紧急的；急迫的\n来源：Unit 5 Striving for financial health · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-033-at-odds-with",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "与……不一致；相矛盾\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "at odds with"
+      ],
+      "explanation": "正确词汇：at odds with\n中文记忆：与……不一致；相矛盾\n来源：Unit 5 Striving for financial health · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-034-do-one-s-utmost",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "尽某人最大努力\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "do one’s utmost"
+      ],
+      "explanation": "正确词汇：do one’s utmost\n中文记忆：尽某人最大努力\n来源：Unit 5 Striving for financial health · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-035-put-off",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "推迟\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "put … off"
+      ],
+      "explanation": "正确词汇：put … off\n中文记忆：推迟\n来源：Unit 5 Striving for financial health · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-036-retain-control-over",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "保持对……的控制\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "retain control over"
+      ],
+      "explanation": "正确词汇：retain control over\n中文记忆：保持对……的控制\n来源：Unit 5 Striving for financial health · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-037-spin-out-of-control",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "失去控制\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "spin out of control"
+      ],
+      "explanation": "正确词汇：spin out of control\n中文记忆：失去控制\n来源：Unit 5 Striving for financial health · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-038-stay-on-track",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "保持正轨\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "stay on track"
+      ],
+      "explanation": "正确词汇：stay on track\n中文记忆：保持正轨\n来源：Unit 5 Striving for financial health · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-039-take-in",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "理解；吸收\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "take in"
+      ],
+      "explanation": "正确词汇：take in\n中文记忆：理解；吸收\n来源：Unit 5 Striving for financial health · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-5-expressions-in-use-040-take-stock-of",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 5 Striving for financial health",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "审视；评估\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "take stock of"
+      ],
+      "explanation": "正确词汇：take stock of\n中文记忆：审视；评估\n来源：Unit 5 Striving for financial health · Expressions in use"
+    }
+  ]
+}

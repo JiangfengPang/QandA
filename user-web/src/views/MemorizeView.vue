@@ -82,6 +82,16 @@
                   <span>正确答案</span>
                 </div>
                 <PythonMarkdown class="qx-memorize-answer-body" :markdown="answerDisplay(currentQuestion)" />
+                <div v-if="currentAnswerSpeechItems.length" class="qx-answer-speech-actions qx-memorize-speech-actions">
+                  <SpeakButton
+                    v-for="item in currentAnswerSpeechItems"
+                    :key="item.key"
+                    :text="item.text"
+                    :lang="item.lang"
+                    :label="item.label"
+                    :explicit="item.explicit"
+                  />
+                </div>
               </section>
             </article>
           </div>
@@ -134,20 +144,39 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { showToast } from 'vant';
 import { api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
+import SpeakButton from '../components/SpeakButton.vue';
 import { useVisualViewportHeight } from '../composables/useVisualViewportHeight';
+import { useAuthStore } from '../stores/auth';
 import { judgeAnswerKey, judgeOptionDisplay, normalizeOptions, optionKeyDisplay, questionTypeText } from '../utils/question';
 import { canGoToPreviousQuestion, practiceProgressNumber, practiceProgressPercent } from '../utils/practiceProgress';
+import { speechItemsForQuestion } from '../utils/pronunciation';
+import {
+  buildPracticeResumeKey,
+  clearPracticeResume,
+  newerPracticeResume,
+  practiceResumeUpdatedAt,
+  readPracticeResume,
+  resolvePracticeResumeSnapshotIndex,
+  savePracticeResume,
+  writePracticeResumeSnapshot
+} from '../utils/practiceResume';
+import {
+  clearRemotePracticeResume,
+  fetchRemotePracticeResume,
+  saveRemotePracticeResume
+} from '../utils/practiceResumeRemote';
 import '../styles/practice.css';
 
 const PythonMarkdown = defineAsyncComponent(() => import('../components/PythonMarkdown.vue'));
 
 const route = useRoute();
 const router = useRouter();
+const auth = useAuthStore();
 const bank = ref<any>(null);
 const questions = ref<any[]>([]);
 const currentIndex = ref(0);
@@ -157,8 +186,11 @@ const memorizeMainRef = ref<HTMLElement | null>(null);
 const touchStartX = ref(0);
 const touchStartY = ref(0);
 const touchStartTime = ref(0);
+let remoteMemorizeResumeSaveTimer: ReturnType<typeof setTimeout> | null = null;
+let memorizeResumeReady = false;
 
 const currentQuestion = computed(() => questions.value[currentIndex.value] || null);
+const currentAnswerSpeechItems = computed(() => speechItemsForQuestion(currentQuestion.value));
 const currentNumber = computed(() => practiceProgressNumber(currentIndex.value, questions.value.length));
 const progress = computed(() => practiceProgressPercent(currentIndex.value, questions.value.length));
 const canGoPrevious = computed(() => canGoToPreviousQuestion(currentIndex.value));
@@ -166,6 +198,10 @@ const isLastQuestion = computed(() => currentIndex.value >= questions.value.leng
 const currentUnitName = computed(() => String(currentQuestion.value?.unitName || currentQuestion.value?.bankName || '全部单元'));
 const desktopTitle = computed(() => [bank.value?.subjectName, '背题模式'].filter(Boolean).join(' · '));
 const mobileTitle = computed(() => [bank.value?.subjectName, '背题'].filter(Boolean).join(' - '));
+const memorizeResumeKey = computed(() => buildPracticeResumeKey(
+  auth.user?.id || auth.user?.email || auth.user?.username || 'anonymous',
+  ['memorize', 'subject', route.params.subjectId || '']
+));
 const currentQuestionTypeBadge = computed(() => {
   const label = questionTypeText(currentQuestion.value);
   if (label.endsWith('题') || label === '题目') return label;
@@ -195,13 +231,16 @@ useVisualViewportHeight();
 
 onMounted(async () => {
   window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('pagehide', handleMemorizePageHide);
   try {
     const subjectId = String(route.params.subjectId || '').trim();
     const data = await api.get<{ bank: any; questions: any[] }>(`/subjects/${subjectId}/questions`);
     bank.value = data.bank;
     questions.value = Array.isArray(data.questions) ? data.questions : [];
+    await restoreSavedMemorizeResume();
   } catch (error) {
     showToast({ type: 'fail', message: error instanceof Error ? error.message : '背题内容加载失败' });
+    memorizeResumeReady = true;
   } finally {
     loading.value = false;
   }
@@ -209,6 +248,12 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('pagehide', handleMemorizePageHide);
+  flushRemoteMemorizeResumeSync();
+});
+
+watch(() => [currentIndex.value, currentQuestion.value?.id, questions.value.length, memorizeResumeKey.value], () => {
+  persistCurrentMemorizeResume();
 });
 
 function returnToLibrary() {
@@ -216,8 +261,9 @@ function returnToLibrary() {
   router.push({ name: 'library', query: subjectId ? { subjectId } : {} });
 }
 
-function nextQuestion() {
+async function nextQuestion() {
   if (isLastQuestion.value) {
+    await clearCurrentMemorizeResume();
     returnToLibrary();
     return;
   }
@@ -235,6 +281,82 @@ function jumpToQuestion(index: number) {
   currentIndex.value = Math.max(0, Math.min(index, questions.value.length - 1));
   overviewOpen.value = false;
   resetMainScroll();
+}
+
+async function restoreSavedMemorizeResume() {
+  const key = memorizeResumeKey.value;
+  const localSnapshot = readPracticeResume(key);
+  const remoteSnapshot = await loadRemoteMemorizeResumeSnapshot(key);
+  const selectedSnapshot = newerPracticeResume(localSnapshot, remoteSnapshot);
+
+  if (selectedSnapshot) writePracticeResumeSnapshot(key, selectedSnapshot);
+
+  const savedIndex = resolvePracticeResumeSnapshotIndex(selectedSnapshot, questions.value);
+  if (savedIndex !== null) currentIndex.value = savedIndex;
+  memorizeResumeReady = true;
+  persistCurrentMemorizeResume();
+}
+
+function persistCurrentMemorizeResume() {
+  if (!memorizeResumeReady) return;
+  const snapshot = savePracticeResume(memorizeResumeKey.value, questions.value, currentIndex.value);
+  if (snapshot) scheduleRemoteMemorizeResumeSync();
+}
+
+async function clearCurrentMemorizeResume() {
+  const key = memorizeResumeKey.value;
+  clearRemoteMemorizeResumeSaveTimer();
+  clearPracticeResume(key);
+  try {
+    await clearRemotePracticeResume(key);
+  } catch {
+    // 本地清理已完成；远程删除失败不影响返回题库。
+  }
+}
+
+async function loadRemoteMemorizeResumeSnapshot(key: string) {
+  try {
+    return await fetchRemotePracticeResume(key);
+  } catch {
+    return null;
+  }
+}
+
+function clearRemoteMemorizeResumeSaveTimer() {
+  if (!remoteMemorizeResumeSaveTimer) return;
+  clearTimeout(remoteMemorizeResumeSaveTimer);
+  remoteMemorizeResumeSaveTimer = null;
+}
+
+function scheduleRemoteMemorizeResumeSync() {
+  if (!memorizeResumeReady || !memorizeResumeKey.value) return;
+  clearRemoteMemorizeResumeSaveTimer();
+  remoteMemorizeResumeSaveTimer = setTimeout(() => {
+    remoteMemorizeResumeSaveTimer = null;
+    void syncRemoteMemorizeResume();
+  }, 300);
+}
+
+function flushRemoteMemorizeResumeSync(options: { keepalive?: boolean } = {}) {
+  clearRemoteMemorizeResumeSaveTimer();
+  void syncRemoteMemorizeResume(options);
+}
+
+async function syncRemoteMemorizeResume(options: { keepalive?: boolean } = {}) {
+  const key = memorizeResumeKey.value;
+  const snapshot = readPracticeResume(key);
+  if (!key || !snapshot) return;
+
+  const sentUpdatedAt = practiceResumeUpdatedAt(snapshot);
+  try {
+    const savedSnapshot = await saveRemotePracticeResume(key, snapshot, options.keepalive ? { keepalive: true } : {});
+    const currentSnapshot = readPracticeResume(key);
+    if (savedSnapshot && practiceResumeUpdatedAt(currentSnapshot) <= sentUpdatedAt) {
+      writePracticeResumeSnapshot(key, savedSnapshot);
+    }
+  } catch {
+    // 离线时保留本地快照，下次切题会再次尝试。
+  }
 }
 
 function toggleOverview() {
@@ -268,6 +390,10 @@ function handleTouchEnd(event: TouchEvent) {
   if (elapsed > 520 || Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
   if (dx < 0) nextQuestion();
   else prevQuestion();
+}
+
+function handleMemorizePageHide() {
+  flushRemoteMemorizeResumeSync({ keepalive: true });
 }
 
 function questionStem(question: any) {

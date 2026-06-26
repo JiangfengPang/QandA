@@ -349,6 +349,12 @@
   white-space: nowrap;
 }
 
+.qmine-voice-pill {
+  max-width: 156px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .qmine-danger-row .qmine-row-icon {
   background: linear-gradient(145deg, #fff8fa, #fff1f4);
   color: var(--qx-red);
@@ -741,7 +747,7 @@
 
 /* Email dialog two-step layout */
 .qmine-email-dialog {
-  width: min(390px, calc(100vw - 32px));
+  width: min(430px, calc(100vw - 32px));
   border-radius: 18px;
   overflow: hidden;
 }
@@ -754,7 +760,7 @@
 }
 
 .qmine-email-dialog-body {
-  padding: 14px 22px 20px;
+  padding: 16px 24px 22px;
 }
 
 .qmine-email-current-card {
@@ -791,8 +797,8 @@
 }
 
 .qmine-email-dialog-body .van-cell {
-  padding: 10px 0;
-  align-items: flex-start;
+  display: block;
+  padding: 11px 0;
 }
 
 .qmine-email-dialog-body .van-cell::after {
@@ -801,17 +807,23 @@
 }
 
 .qmine-email-dialog-body .van-field__label {
-  width: 70px;
-  flex: 0 0 70px;
-  margin-right: 12px;
+  width: auto;
+  margin: 0 0 7px;
   color: #475569;
   font-size: 13px;
-  line-height: 34px;
+  line-height: 1.35;
   font-weight: 850;
   white-space: nowrap;
 }
 
+.qmine-email-dialog-body .van-field__value {
+  min-width: 0;
+}
+
 .qmine-email-dialog-body .van-field__body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   min-height: 34px;
 }
 
@@ -829,11 +841,12 @@
 }
 
 .qmine-email-dialog-body .van-field__button {
-  padding-left: 10px;
+  flex: 0 0 auto;
+  padding-left: 0;
 }
 
 .qmine-email-dialog-body .van-button--small {
-  min-width: 78px;
+  min-width: 84px;
   height: 30px;
   padding: 0 10px;
   border-radius: 8px;
@@ -852,15 +865,20 @@
 }
 
 @media (max-width: 430px) {
+  .qmine-email-dialog {
+    width: calc(100vw - 24px);
+  }
+
   .qmine-email-dialog-body {
-    padding: 12px 18px 18px;
+    padding: 14px 18px 18px;
   }
 
   .qmine-email-dialog-body .van-field__label {
-    width: 64px;
-    flex-basis: 64px;
-    margin-right: 10px;
     font-size: 12px;
+  }
+
+  .qmine-email-dialog-body .van-field__body {
+    gap: 8px;
   }
 
   .qmine-email-current-card strong {
@@ -868,7 +886,7 @@
   }
 
   .qmine-email-dialog-body .van-button--small {
-    min-width: 70px;
+    min-width: 76px;
     padding: 0 8px;
   }
 }

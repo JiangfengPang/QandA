@@ -42,6 +42,7 @@ import { useRouter } from 'vue-router';
 import { showToast } from 'vant';
 import QxIcon from '../components/QxIcon.vue';
 import { useAuthStore } from '../stores/auth';
+import { isQqEmail } from '../utils/email';
 
 const email = ref('');
 const password = ref('');
@@ -49,10 +50,6 @@ const showPassword = ref(false);
 const loading = ref(false);
 const router = useRouter();
 const auth = useAuthStore();
-
-function isQqEmail(value: string) {
-  return /^[1-9]\d{4,11}@qq\.com$/i.test(value.trim());
-}
 
 async function submit() {
   const emailValue = email.value.trim();

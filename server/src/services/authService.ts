@@ -18,6 +18,7 @@ export type UserPreferences = {
   autoAdvanceOnCorrect: boolean;
   questionFontSize: 'small' | 'standard' | 'large';
   showQuestionOverview: boolean;
+  speechVoiceKey: string;
 };
 
 const questionFontSizes = ['small', 'standard', 'large'] as const;
@@ -59,6 +60,7 @@ function normalizePreferences(input: Partial<UserPreferences>): Partial<UserPref
   if (typeof input.autoAdvanceOnCorrect === 'boolean') data.autoAdvanceOnCorrect = input.autoAdvanceOnCorrect;
   if (typeof input.showQuestionOverview === 'boolean') data.showQuestionOverview = input.showQuestionOverview;
   if (input.questionFontSize && questionFontSizes.includes(input.questionFontSize)) data.questionFontSize = input.questionFontSize;
+  if (typeof input.speechVoiceKey === 'string') data.speechVoiceKey = input.speechVoiceKey.trim().slice(0, 220);
   return data;
 }
 
@@ -328,6 +330,7 @@ export function publicUser(user: {
   autoAdvanceOnCorrect?: boolean;
   questionFontSize?: string;
   showQuestionOverview?: boolean;
+  speechVoiceKey?: string;
   createdAt: Date;
 }) {
   return {
@@ -346,7 +349,8 @@ export function publicUser(user: {
       questionFontSize: questionFontSizes.includes(user.questionFontSize as UserPreferences['questionFontSize'])
         ? user.questionFontSize
         : 'standard',
-      showQuestionOverview: user.showQuestionOverview ?? true
+      showQuestionOverview: user.showQuestionOverview ?? true,
+      speechVoiceKey: user.speechVoiceKey || ''
     }
   };
 }

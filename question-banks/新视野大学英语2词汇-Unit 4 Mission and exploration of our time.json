@@ -1,0 +1,697 @@
+{
+  "version": 1,
+  "source": "新视野2_Unit1-5_PPT候选词汇总_背诵版.docx",
+  "subject": {
+    "id": "subject-new-horizon-2-vocab",
+    "name": "新视野大学英语2词汇",
+    "description": "Unit 1-5 PPT 候选词汇填空刷词题。",
+    "color": "#2f80ed"
+  },
+  "unit": {
+    "id": "subject-new-horizon-2-vocab-unit-4",
+    "name": "Unit 4 Mission and exploration of our time",
+    "description": "由 Word 词汇表自动转换为填空刷词题。"
+  },
+  "questions": [
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-001-chase",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "追逐；追求\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "chase"
+      ],
+      "explanation": "正确词汇：chase\n中文记忆：追逐；追求\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-002-exceptional",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "杰出的；异常的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "exceptional"
+      ],
+      "explanation": "正确词汇：exceptional\n中文记忆：杰出的；异常的\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-003-explicit",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "明确的；清楚的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "explicit"
+      ],
+      "explanation": "正确词汇：explicit\n中文记忆：明确的；清楚的\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-004-fulfill",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "实现；履行\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "fulfill"
+      ],
+      "explanation": "正确词汇：fulfill\n中文记忆：实现；履行\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-005-maximize",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "最大化；充分利用\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "maximize"
+      ],
+      "explanation": "正确词汇：maximize\n中文记忆：最大化；充分利用\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-006-random",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "随机的；随意的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "random"
+      ],
+      "explanation": "正确词汇：random\n中文记忆：随机的；随意的\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-007-resolutely",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "坚决地；果断地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "resolutely"
+      ],
+      "explanation": "正确词汇：resolutely\n中文记忆：坚决地；果断地\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-008-strategic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "战略的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "strategic"
+      ],
+      "explanation": "正确词汇：strategic\n中文记忆：战略的\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-009-survey",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "调查；勘测\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "survey"
+      ],
+      "explanation": "正确词汇：survey\n中文记忆：调查；勘测\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-words-in-use-010-typically",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "通常；典型地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "typically"
+      ],
+      "explanation": "正确词汇：typically\n中文记忆：通常；典型地\n来源：Unit 4 Mission and exploration of our time · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-word-building-011-browser",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "浏览器；浏览者\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "browser"
+      ],
+      "explanation": "正确词汇：browser\n中文记忆：浏览器；浏览者\n来源：Unit 4 Mission and exploration of our time · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-word-building-012-civilize",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "使文明；教化\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "civilize"
+      ],
+      "explanation": "正确词汇：civilize\n中文记忆：使文明；教化\n来源：Unit 4 Mission and exploration of our time · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-word-building-013-materialize",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "实现；出现\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "materialize"
+      ],
+      "explanation": "正确词汇：materialize\n中文记忆：实现；出现\n来源：Unit 4 Mission and exploration of our time · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-word-building-014-punctuality",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "准时\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "punctuality"
+      ],
+      "explanation": "正确词汇：punctuality\n中文记忆：准时\n来源：Unit 4 Mission and exploration of our time · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-word-building-015-purity",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "纯洁；纯度\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "purity"
+      ],
+      "explanation": "正确词汇：purity\n中文记忆：纯洁；纯度\n来源：Unit 4 Mission and exploration of our time · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-word-building-016-regularity",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "规律性；规则性\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "regularity"
+      ],
+      "explanation": "正确词汇：regularity\n中文记忆：规律性；规则性\n来源：Unit 4 Mission and exploration of our time · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-word-building-017-transmitter",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "发射器；传播者\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "transmitter"
+      ],
+      "explanation": "正确词汇：transmitter\n中文记忆：发射器；传播者\n来源：Unit 4 Mission and exploration of our time · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-018-absolutely",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "绝对地；完全地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "absolutely"
+      ],
+      "explanation": "正确词汇：absolutely\n中文记忆：绝对地；完全地\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-019-adequately",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "充分地；足够地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "adequately"
+      ],
+      "explanation": "正确词汇：adequately\n中文记忆：充分地；足够地\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-020-aspirations",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "抱负；志向\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "aspirations"
+      ],
+      "explanation": "正确词汇：aspirations\n中文记忆：抱负；志向\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-021-compelling",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "引人注目的；令人信服的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "compelling"
+      ],
+      "explanation": "正确词汇：compelling\n中文记忆：引人注目的；令人信服的\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-022-detect",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "探测；发现\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "detect"
+      ],
+      "explanation": "正确词汇：detect\n中文记忆：探测；发现\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-023-dictate",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "决定；支配；口述\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "dictate"
+      ],
+      "explanation": "正确词汇：dictate\n中文记忆：决定；支配；口述\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-024-geophysics",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "地球物理学\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "geophysics"
+      ],
+      "explanation": "正确词汇：geophysics\n中文记忆：地球物理学\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-025-imaginary",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "想象中的；虚构的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "imaginary"
+      ],
+      "explanation": "正确词汇：imaginary\n中文记忆：想象中的；虚构的\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-026-inspirations",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "灵感；鼓舞\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "inspirations"
+      ],
+      "explanation": "正确词汇：inspirations\n中文记忆：灵感；鼓舞\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-027-platforms",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "平台\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "platforms"
+      ],
+      "explanation": "正确词汇：platforms\n中文记忆：平台\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-028-process",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "处理；过程\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "process"
+      ],
+      "explanation": "正确词汇：process\n中文记忆：处理；过程\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-029-prosperous",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "繁荣的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "prosperous"
+      ],
+      "explanation": "正确词汇：prosperous\n中文记忆：繁荣的\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-030-rejuvenate",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "使复兴；使恢复活力\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "rejuvenate"
+      ],
+      "explanation": "正确词汇：rejuvenate\n中文记忆：使复兴；使恢复活力\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-031-significant",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "重要的；显著的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "significant"
+      ],
+      "explanation": "正确词汇：significant\n中文记忆：重要的；显著的\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-banked-cloze-032-tedious",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "冗长乏味的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "tedious"
+      ],
+      "explanation": "正确词汇：tedious\n中文记忆：冗长乏味的\n来源：Unit 4 Mission and exploration of our time · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-033-catch-one-s-eye",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "吸引某人的注意\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "catch one’s eye"
+      ],
+      "explanation": "正确词汇：catch one’s eye\n中文记忆：吸引某人的注意\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-034-be-entrusted-to",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "被委托做；受命做\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "be entrusted to"
+      ],
+      "explanation": "正确词汇：be entrusted to\n中文记忆：被委托做；受命做\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-035-hole-up",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "躲藏；窝在某处\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "hole up"
+      ],
+      "explanation": "正确词汇：hole up\n中文记忆：躲藏；窝在某处\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-036-remain-committed-to",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "仍然致力于；忠于\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "remain committed to"
+      ],
+      "explanation": "正确词汇：remain committed to\n中文记忆：仍然致力于；忠于\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-037-pay-off",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "取得成功；得到回报\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "pay off"
+      ],
+      "explanation": "正确词汇：pay off\n中文记忆：取得成功；得到回报\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-038-stay-on",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "继续留下来\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "stay on"
+      ],
+      "explanation": "正确词汇：stay on\n中文记忆：继续留下来\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-039-pass-down",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "传承；传给后人\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "pass down"
+      ],
+      "explanation": "正确词汇：pass down\n中文记忆：传承；传给后人\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-4-expressions-in-use-040-in-urgent-need-of",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 4 Mission and exploration of our time",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "急需\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "in urgent need of"
+      ],
+      "explanation": "正确词汇：in urgent need of\n中文记忆：急需\n来源：Unit 4 Mission and exploration of our time · Expressions in use"
+    }
+  ]
+}

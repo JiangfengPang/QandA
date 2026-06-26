@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-06-25",
   "subjects": [
     {
       "id": "subject-bmvcex",
@@ -329,6 +329,56 @@
           "description": "",
           "file": "大学语文章节题-第11课-文学常识.json",
           "questionCount": 6
+        }
+      ]
+    },
+    {
+      "id": "subject-new-horizon-2-vocab",
+      "name": "新视野大学英语2词汇",
+      "description": "Unit 1-5 PPT 候选词汇填空刷词题。",
+      "color": "#2f80ed",
+      "units": [
+        {
+          "id": "subject-new-horizon-2-vocab-unit-1",
+          "name": "Unit 1 Language in mission",
+          "description": "由 Word 词汇表自动转换为填空刷词题。",
+          "file": "新视野大学英语2词汇-Unit 1 Language in mission.json",
+          "questionCount": 42
+        },
+        {
+          "id": "subject-new-horizon-2-vocab-unit-2",
+          "name": "Unit 2 Exploring college majors",
+          "description": "由 Word 词汇表自动转换为填空刷词题。",
+          "file": "新视野大学英语2词汇-Unit 2 Exploring college majors.json",
+          "questionCount": 40
+        },
+        {
+          "id": "subject-new-horizon-2-vocab-unit-3",
+          "name": "Unit 3 The young generation: making a difference",
+          "description": "由 Word 词汇表自动转换为填空刷词题。",
+          "file": "新视野大学英语2词汇-Unit 3 The young generation- making a difference.json",
+          "questionCount": 40
+        },
+        {
+          "id": "subject-new-horizon-2-vocab-unit-4",
+          "name": "Unit 4 Mission and exploration of our time",
+          "description": "由 Word 词汇表自动转换为填空刷词题。",
+          "file": "新视野大学英语2词汇-Unit 4 Mission and exploration of our time.json",
+          "questionCount": 40
+        },
+        {
+          "id": "subject-new-horizon-2-vocab-unit-5",
+          "name": "Unit 5 Striving for financial health",
+          "description": "由 Word 词汇表自动转换为填空刷词题。",
+          "file": "新视野大学英语2词汇-Unit 5 Striving for financial health.json",
+          "questionCount": 40
+        },
+        {
+          "id": "subject-new-horizon-2-vocab-high-frequency",
+          "name": "高频重复候选词（优先复习）",
+          "description": "由 Word 词汇表自动转换为填空刷词题。",
+          "file": "新视野大学英语2词汇-高频重复候选词（优先复习）.json",
+          "questionCount": 8
         }
       ]
     }

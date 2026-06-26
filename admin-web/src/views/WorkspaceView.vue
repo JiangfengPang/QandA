@@ -170,7 +170,8 @@
                 </div>
               </template>
               <el-alert
-                title="导入规则：优先导入到左侧当前题库；未选题库时，按 JSON 内 subject.name 与 unit.name 自动定位。相同题目 ID 会覆盖更新。"
+                title="支持单空/多空填空：answer 表示单空可接受答案，blanks 表示逐空答案；解析 explanation 支持 Markdown；pronunciation 为可选发音配置。"
+                description="非词汇类填空无需 pronunciation；系统只会自动给英文词/短语显示发音按钮，或按 JSON 中显式 pronunciation 发音。导入目标仍优先使用左侧当前题库，未选题库时按 JSON 内 subject.name 与 unit.name 自动定位。"
                 type="info"
                 show-icon
                 class="mb"
@@ -198,7 +199,7 @@
                 v-model="jsonText"
                 type="textarea"
                 :rows="16"
-                placeholder='粘贴 JSON，例如 { "version": 1, "subject": {"name":"大学语文"}, "unit": {"name":"1-序二篇"}, "questions": [] }'
+                placeholder='粘贴 JSON；单空填空用 "answer": ["答案1", "答案2"]，多空填空用 "blanks": [{ "label": "1", "answer": ["答案"] }]。'
               />
               <div class="toolbar bottom">
                 <el-button @click="fillSample">填入示例</el-button>
@@ -240,6 +241,7 @@
                     <el-option label="单选" value="single" />
                     <el-option label="多选" value="multiple" />
                     <el-option label="判断" value="judge" />
+                    <el-option label="填空" value="fill" />
                     <el-option label="Python题" value="python" />
                   </el-select>
                   <el-button @click="loadQuestions">搜索/刷新</el-button>
@@ -305,6 +307,7 @@
             <el-option label="单选" value="single" />
             <el-option label="多选" value="multiple" />
             <el-option label="判断" value="judge" />
+            <el-option label="填空" value="fill" />
             <el-option label="Python题" value="python" />
           </el-select>
         </el-form-item>
@@ -337,6 +340,23 @@
               </div>
             </div>
           </el-form-item>
+        </template>
+        <template v-else-if="questionForm.type === 'fill'">
+          <el-form-item label="填空模式">
+            <el-radio-group v-model="questionForm.fillMode">
+              <el-radio-button label="single">单空</el-radio-button>
+              <el-radio-button label="multi">多空</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="正确答案">
+            <el-input
+              v-model="questionForm.fillAnswerText"
+              type="textarea"
+              :rows="questionForm.fillMode === 'multi' ? 6 : 4"
+              :placeholder="questionForm.fillMode === 'multi' ? '每行一个空；同一空多个可接受答案用 / 分隔，例如：\naspiration\naspirational / ambitious' : '每行一个可接受答案，例如：\nadequately\nsufficiently'"
+            />
+          </el-form-item>
+          <el-form-item label="解析"><el-input v-model="questionForm.explanation" type="textarea" :rows="3" /></el-form-item>
         </template>
         <template v-else>
           <el-form-item label="选项">
@@ -446,7 +466,7 @@ const questionKeyword = ref('');
 const questionType = ref('');
 const questionMeta = reactive({ page: 1, pageSize: 20, total: 0 });
 const questionDialog = ref(false);
-const questionForm = reactive<any>({ id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], explanation: '', options: [], pythonAnswerMarkdown: '' });
+const questionForm = reactive<any>({ id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], fillAnswerText: '', fillMode: 'single', explanation: '', options: [], pythonAnswerMarkdown: '' });
 const renderedPythonAnswer = computed(() => renderMarkdown(questionForm.pythonAnswerMarkdown || ''));
 const status = ref<any>({});
 
@@ -833,18 +853,33 @@ function fillSample() {
     version: 1,
     source: 'QandA 导出',
     subject: { id: 'demo-subject', name: '演示科目', description: '', color: '#5b8def' },
-    unit: { id: 'demo-unit', name: '演示题库', description: '' },
+    unit: { id: 'demo-unit', name: '填空题示例', description: '' },
     questions: [
       {
-        id: 'demo-001',
-        type: 'single',
+        id: 'demo-vocab-001',
+        type: 'fill',
+        typeLabel: '词汇填空',
         difficulty: 'easy',
-        tags: ['演示'],
-        score: 5,
-        question: '这是一个演示单选题？',
-        options: [{ key: 'A', text: '正确选项' }, { key: 'B', text: '错误选项' }],
-        answer: ['A'],
-        explanation: '这里是答案解析。'
+        tags: ['演示', '词汇'],
+        score: 1,
+        question: '充分地；足够地\n\n请写出对应的英文候选词 / 短语。',
+        answer: ['adequately'],
+        pronunciation: { text: 'adequately', lang: 'en-US' },
+        explanation: '正确词汇：adequately\n中文记忆：充分地；足够地'
+      },
+      {
+        id: 'demo-science-001',
+        type: 'fill',
+        typeLabel: '多空填空',
+        difficulty: 'medium',
+        tags: ['演示', '通用学科'],
+        score: 2,
+        question: '水的化学式是____，标准大气压下沸点约为____摄氏度。',
+        blanks: [
+          { label: '1', prompt: '化学式', answer: ['H2O', 'H₂O'] },
+          { label: '2', prompt: '温度', answer: ['100', '一百'] }
+        ],
+        explanation: '解析支持 **Markdown**：水分子由 2 个氢原子和 1 个氧原子组成；标准大气压下沸点约为 100 摄氏度。'
       }
     ]
   }, null, 2);
@@ -923,6 +958,9 @@ function questionTypeLabel(questionOrType: any) {
 
 function questionAnswerSummary(row: any) {
   if (row.type === 'python') return 'Markdown答案';
+  if (Array.isArray(row.answerJson) && row.answerJson.some((item: any) => Array.isArray(item))) {
+    return row.answerJson.map((item: any) => Array.isArray(item) ? item.join(' / ') : String(item)).join('；');
+  }
   return Array.isArray(row.answerJson) ? row.answerJson.join('、') : '';
 }
 
@@ -938,6 +976,23 @@ function normalizedQuestionTypeLabel() {
   return label === 'Python题' ? '' : label;
 }
 
+function fillQuestionAnswerArray() {
+  const lines = String(questionForm.fillAnswerText || '').split(/\r?\n/).map((item: string) => item.trim()).filter(Boolean);
+  if (questionForm.fillMode === 'multi') {
+    return lines
+      .map((line: string) => line.split(/\s*(?:\/|｜|\||、)\s*/).map((item: string) => item.trim()).filter(Boolean))
+      .filter((group: string[]) => group.length);
+  }
+  return lines;
+}
+
+function fillQuestionAnswerText(value: any) {
+  if (Array.isArray(value) && value.some((item: any) => Array.isArray(item))) {
+    return value.map((item: any) => Array.isArray(item) ? item.join(' / ') : String(item)).join('\n');
+  }
+  return Array.isArray(value) ? value.join('\n') : '';
+}
+
 async function loadQuestions() {
   if (!selectedBank.value) return;
   const qs = new URLSearchParams({ page: String(questionMeta.page), pageSize: String(questionMeta.pageSize), bankId: selectedBank.value.id });
@@ -950,12 +1005,13 @@ async function loadQuestions() {
 
 function openQuestionCreate() {
   if (!selectedBank.value) return ElMessage.warning('请先选择题库');
-  Object.assign(questionForm, { id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], explanation: '', options: [{ label: 'A', content: '' }, { label: 'B', content: '' }], pythonAnswerMarkdown: '' });
+  Object.assign(questionForm, { id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], fillAnswerText: '', fillMode: 'single', explanation: '', options: [{ label: 'A', content: '' }, { label: 'B', content: '' }], pythonAnswerMarkdown: '' });
   questionDialog.value = true;
 }
 
 function openQuestionEdit(row: any) {
   const rowAnswer = Array.isArray(row.answerJson) ? row.answerJson : [];
+  const multiFill = rowAnswer.some((item: any) => Array.isArray(item));
   Object.assign(questionForm, {
     id: row.id,
     type: row.type,
@@ -963,6 +1019,8 @@ function openQuestionEdit(row: any) {
     stem: row.stem,
     score: row.score,
     answer: rowAnswer,
+    fillAnswerText: row.type === 'fill' ? fillQuestionAnswerText(rowAnswer) : '',
+    fillMode: multiFill ? 'multi' : 'single',
     explanation: row.explanation || '',
     options: (row.options || []).map((option: any) => ({ label: option.label, content: option.content })),
     pythonAnswerMarkdown: row.type === 'python' ? String(rowAnswer[0] || '') : ''
@@ -1001,6 +1059,7 @@ async function saveQuestion() {
   if (!selectedBank.value) return ElMessage.warning('请先选择题库');
   if (!questionForm.stem.trim()) return ElMessage.warning('请输入题干');
   if (questionForm.type === 'python' && !String(questionForm.pythonAnswerMarkdown || '').trim()) return ElMessage.warning('请输入正确答案 Markdown');
+  if (questionForm.type === 'fill' && fillQuestionAnswerArray().length === 0) return ElMessage.warning('请至少填写一个正确答案');
   const payload = questionForm.type === 'python'
     ? {
         bankId: selectedBank.value.id,
@@ -1012,6 +1071,17 @@ async function saveQuestion() {
         explanation: '',
         options: []
       }
+    : questionForm.type === 'fill'
+      ? {
+          bankId: selectedBank.value.id,
+          type: questionForm.type,
+          typeLabel: '',
+          stem: questionForm.stem,
+          score: Number(questionForm.score || 0),
+          answer: fillQuestionAnswerArray(),
+          explanation: questionForm.explanation,
+          options: []
+        }
     : {
         bankId: selectedBank.value.id,
         type: questionForm.type,
@@ -1069,6 +1139,11 @@ watch(() => questionForm.type, (type) => {
     if (!String(questionForm.typeLabel || '').trim()) questionForm.typeLabel = 'Python题';
   } else {
     questionForm.typeLabel = '';
+  }
+  if (type === 'fill') {
+    questionForm.options = [];
+    questionForm.answer = [];
+    if (!questionForm.fillMode) questionForm.fillMode = 'single';
   }
   if (type === 'single' || type === 'multiple') ensureQuestionChoiceOptions();
 });

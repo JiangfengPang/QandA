@@ -1,0 +1,731 @@
+{
+  "version": 1,
+  "source": "新视野2_Unit1-5_PPT候选词汇总_背诵版.docx",
+  "subject": {
+    "id": "subject-new-horizon-2-vocab",
+    "name": "新视野大学英语2词汇",
+    "description": "Unit 1-5 PPT 候选词汇填空刷词题。",
+    "color": "#2f80ed"
+  },
+  "unit": {
+    "id": "subject-new-horizon-2-vocab-unit-1",
+    "name": "Unit 1 Language in mission",
+    "description": "由 Word 词汇表自动转换为填空刷词题。"
+  },
+  "questions": [
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-001-adequately",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "充分地；足够地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "adequately"
+      ],
+      "explanation": "正确词汇：adequately\n中文记忆：充分地；足够地\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-002-adjust",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "调整；适应\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "adjust"
+      ],
+      "explanation": "正确词汇：adjust\n中文记忆：调整；适应\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-003-asset",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "优点；有价值的人或物；资产\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "asset"
+      ],
+      "explanation": "正确词汇：asset\n中文记忆：优点；有价值的人或物；资产\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-004-competent",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有能力的；胜任的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "competent"
+      ],
+      "explanation": "正确词汇：competent\n中文记忆：有能力的；胜任的\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-005-condense",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "压缩；浓缩\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "condense"
+      ],
+      "explanation": "正确词汇：condense\n中文记忆：压缩；浓缩\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-006-deficit",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "不足；缺乏；赤字\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "deficit"
+      ],
+      "explanation": "正确词汇：deficit\n中文记忆：不足；缺乏；赤字\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-007-distinguish",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "区分；辨别\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "distinguish"
+      ],
+      "explanation": "正确词汇：distinguish\n中文记忆：区分；辨别\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-008-exceed",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "超过；超出\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "exceed"
+      ],
+      "explanation": "正确词汇：exceed\n中文记忆：超过；超出\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-009-precise",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "精确的；准确的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "precise"
+      ],
+      "explanation": "正确词汇：precise\n中文记忆：精确的；准确的\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-words-in-use-010-proficiency",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "熟练；精通\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "proficiency"
+      ],
+      "explanation": "正确词汇：proficiency\n中文记忆：熟练；精通\n来源：Unit 1 Language in mission · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-011-editorial",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "编辑的；社论的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "editorial"
+      ],
+      "explanation": "正确词汇：editorial\n中文记忆：编辑的；社论的\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-012-managerial",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "管理的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "managerial"
+      ],
+      "explanation": "正确词汇：managerial\n中文记忆：管理的\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-013-mastery",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "掌握；精通\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "mastery"
+      ],
+      "explanation": "正确词汇：mastery\n中文记忆：掌握；精通\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-014-ministry",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "部；部门\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "ministry"
+      ],
+      "explanation": "正确词汇：ministry\n中文记忆：部；部门\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-015-provincial",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "省级的；地方的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "provincial"
+      ],
+      "explanation": "正确词汇：provincial\n中文记忆：省级的；地方的\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-016-recovery",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "恢复；复苏\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "recovery"
+      ],
+      "explanation": "正确词汇：recovery\n中文记忆：恢复；复苏\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-017-secretarial",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "秘书的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "secretarial"
+      ],
+      "explanation": "正确词汇：secretarial\n中文记忆：秘书的\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-word-building-018-treasury",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "财政部；金库\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "treasury"
+      ],
+      "explanation": "正确词汇：treasury\n中文记忆：财政部；金库\n来源：Unit 1 Language in mission · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-019-absorbed",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "专心的；全神贯注的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "absorbed"
+      ],
+      "explanation": "正确词汇：absorbed\n中文记忆：专心的；全神贯注的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-020-abundant",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "大量的；充足的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "abundant"
+      ],
+      "explanation": "正确词汇：abundant\n中文记忆：大量的；充足的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-021-accurate",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "准确的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "accurate"
+      ],
+      "explanation": "正确词汇：accurate\n中文记忆：准确的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-022-adjusted",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "调整过的；适应的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "adjusted"
+      ],
+      "explanation": "正确词汇：adjusted\n中文记忆：调整过的；适应的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-023-beneficial",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有益的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "beneficial"
+      ],
+      "explanation": "正确词汇：beneficial\n中文记忆：有益的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-024-bulk",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "大部分；主体\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "bulk"
+      ],
+      "explanation": "正确词汇：bulk\n中文记忆：大部分；主体\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-025-distress",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "痛苦；忧虑\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "distress"
+      ],
+      "explanation": "正确词汇：distress\n中文记忆：痛苦；忧虑\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-026-efficiently",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "高效地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "efficiently"
+      ],
+      "explanation": "正确词汇：efficiently\n中文记忆：高效地\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-027-evidently",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "明显地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "evidently"
+      ],
+      "explanation": "正确词汇：evidently\n中文记忆：明显地\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-028-fictions",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "小说；虚构作品\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "fictions"
+      ],
+      "explanation": "正确词汇：fictions\n中文记忆：小说；虚构作品\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-029-functions",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "功能；作用\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "functions"
+      ],
+      "explanation": "正确词汇：functions\n中文记忆：功能；作用\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-030-hidden",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "隐藏的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "hidden"
+      ],
+      "explanation": "正确词汇：hidden\n中文记忆：隐藏的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-031-obliged",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有义务的；不得不的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "obliged"
+      ],
+      "explanation": "正确词汇：obliged\n中文记忆：有义务的；不得不的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-032-official",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "官方的；正式的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "official"
+      ],
+      "explanation": "正确词汇：official\n中文记忆：官方的；正式的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-banked-cloze-033-written",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "书面的；写成的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "written"
+      ],
+      "explanation": "正确词汇：written\n中文记忆：书面的；写成的\n来源：Unit 1 Language in mission · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-034-be-allergic-to",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "对……反感；对……过敏\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "be allergic to"
+      ],
+      "explanation": "正确词汇：be allergic to\n中文记忆：对……反感；对……过敏\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-035-be-obliged-to",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有义务做；不得不做\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "be obliged to"
+      ],
+      "explanation": "正确词汇：be obliged to\n中文记忆：有义务做；不得不做\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-036-become-attracted-to",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "开始被……吸引\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "become attracted to"
+      ],
+      "explanation": "正确词汇：become attracted to\n中文记忆：开始被……吸引\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-037-distinguish-between",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "区分；辨别\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "distinguish between"
+      ],
+      "explanation": "正确词汇：distinguish between\n中文记忆：区分；辨别\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-038-fresh-from",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "刚从……来的；刚经历……的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "fresh from"
+      ],
+      "explanation": "正确词汇：fresh from\n中文记忆：刚从……来的；刚经历……的\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-039-get-lost",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "迷路；困惑\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "get lost"
+      ],
+      "explanation": "正确词汇：get lost\n中文记忆：迷路；困惑\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-040-get-serious-about",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "开始认真对待\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "get serious about"
+      ],
+      "explanation": "正确词汇：get serious about\n中文记忆：开始认真对待\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-041-look-upon-as",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "把……看作\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "look upon … as"
+      ],
+      "explanation": "正确词汇：look upon … as\n中文记忆：把……看作\n来源：Unit 1 Language in mission · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-1-expressions-in-use-042-run-into",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 1 Language in mission",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "偶然遇见；遇到\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "run into"
+      ],
+      "explanation": "正确词汇：run into\n中文记忆：偶然遇见；遇到\n来源：Unit 1 Language in mission · Expressions in use"
+    }
+  ]
+}

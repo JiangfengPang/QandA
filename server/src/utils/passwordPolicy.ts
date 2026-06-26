@@ -1,6 +1,6 @@
 export function validatePasswordStrength(password: string) {
   const value = String(password || '');
-  if (value.length < 12) return '密码至少 12 位';
+  if (value.length < 8) return '密码至少 8 位';
   if (value.length > 100) return '密码不能超过 100 位';
 
   const categories = [

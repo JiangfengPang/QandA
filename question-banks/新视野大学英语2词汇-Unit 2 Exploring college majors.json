@@ -1,0 +1,697 @@
+{
+  "version": 1,
+  "source": "新视野2_Unit1-5_PPT候选词汇总_背诵版.docx",
+  "subject": {
+    "id": "subject-new-horizon-2-vocab",
+    "name": "新视野大学英语2词汇",
+    "description": "Unit 1-5 PPT 候选词汇填空刷词题。",
+    "color": "#2f80ed"
+  },
+  "unit": {
+    "id": "subject-new-horizon-2-vocab-unit-2",
+    "name": "Unit 2 Exploring college majors",
+    "description": "由 Word 词汇表自动转换为填空刷词题。"
+  },
+  "questions": [
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-001-artistic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "艺术的；有艺术天赋的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "artistic"
+      ],
+      "explanation": "正确词汇：artistic\n中文记忆：艺术的；有艺术天赋的\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-002-aspiration",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "抱负；志向\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "aspiration"
+      ],
+      "explanation": "正确词汇：aspiration\n中文记忆：抱负；志向\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-003-browse",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "浏览\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "browse"
+      ],
+      "explanation": "正确词汇：browse\n中文记忆：浏览\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-004-confirm",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "证实；确认\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "confirm"
+      ],
+      "explanation": "正确词汇：confirm\n中文记忆：证实；确认\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-005-magnificence",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "宏伟；壮丽\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "magnificence"
+      ],
+      "explanation": "正确词汇：magnificence\n中文记忆：宏伟；壮丽\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-006-option",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "选择；选项\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "option"
+      ],
+      "explanation": "正确词汇：option\n中文记忆：选择；选项\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-007-prolonged",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "长时间的；延长的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "prolonged"
+      ],
+      "explanation": "正确词汇：prolonged\n中文记忆：长时间的；延长的\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-008-provoke",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "激起；引发\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "provoke"
+      ],
+      "explanation": "正确词汇：provoke\n中文记忆：激起；引发\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-009-release",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "释放；发布\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "release"
+      ],
+      "explanation": "正确词汇：release\n中文记忆：释放；发布\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-words-in-use-010-reputable",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有声望的；信誉好的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "reputable"
+      ],
+      "explanation": "正确词汇：reputable\n中文记忆：有声望的；信誉好的\n来源：Unit 2 Exploring college majors · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-word-building-011-bearing",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "关系；影响；举止\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "bearing"
+      ],
+      "explanation": "正确词汇：bearing\n中文记忆：关系；影响；举止\n来源：Unit 2 Exploring college majors · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-word-building-012-conclusive",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "决定性的；确凿的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "conclusive"
+      ],
+      "explanation": "正确词汇：conclusive\n中文记忆：决定性的；确凿的\n来源：Unit 2 Exploring college majors · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-word-building-013-dressing",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "调料；敷料；穿衣\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "dressing"
+      ],
+      "explanation": "正确词汇：dressing\n中文记忆：调料；敷料；穿衣\n来源：Unit 2 Exploring college majors · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-word-building-014-elective",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "选修的；选修课\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "elective"
+      ],
+      "explanation": "正确词汇：elective\n中文记忆：选修的；选修课\n来源：Unit 2 Exploring college majors · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-word-building-015-filling",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "馅；填充物\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "filling"
+      ],
+      "explanation": "正确词汇：filling\n中文记忆：馅；填充物\n来源：Unit 2 Exploring college majors · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-word-building-016-lasting",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "持久的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "lasting"
+      ],
+      "explanation": "正确词汇：lasting\n中文记忆：持久的\n来源：Unit 2 Exploring college majors · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-word-building-017-restrictive",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "限制性的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "restrictive"
+      ],
+      "explanation": "正确词汇：restrictive\n中文记忆：限制性的\n来源：Unit 2 Exploring college majors · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-018-abilities",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "能力\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "abilities"
+      ],
+      "explanation": "正确词汇：abilities\n中文记忆：能力\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-019-absorbed",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "专心的；全神贯注的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "absorbed"
+      ],
+      "explanation": "正确词汇：absorbed\n中文记忆：专心的；全神贯注的\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-020-competent",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有能力的；胜任的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "competent"
+      ],
+      "explanation": "正确词汇：competent\n中文记忆：有能力的；胜任的\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-021-confine",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "限制；使局限\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "confine"
+      ],
+      "explanation": "正确词汇：confine\n中文记忆：限制；使局限\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-022-confirm",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "证实；确认\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "confirm"
+      ],
+      "explanation": "正确词汇：confirm\n中文记忆：证实；确认\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-023-fortunate",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "幸运的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "fortunate"
+      ],
+      "explanation": "正确词汇：fortunate\n中文记忆：幸运的\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-024-gain",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "获得；收获\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "gain"
+      ],
+      "explanation": "正确词汇：gain\n中文记忆：获得；收获\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-025-generally",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "通常；一般地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "generally"
+      ],
+      "explanation": "正确词汇：generally\n中文记忆：通常；一般地\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-026-inevitably",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "不可避免地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "inevitably"
+      ],
+      "explanation": "正确词汇：inevitably\n中文记忆：不可避免地\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-027-obsessed",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "着迷的；痴迷的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "obsessed"
+      ],
+      "explanation": "正确词汇：obsessed\n中文记忆：着迷的；痴迷的\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-028-options",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "选择；选项\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "options"
+      ],
+      "explanation": "正确词汇：options\n中文记忆：选择；选项\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-029-passionate",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "热情的；酷爱的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "passionate"
+      ],
+      "explanation": "正确词汇：passionate\n中文记忆：热情的；酷爱的\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-030-portions",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "部分；份额\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "portions"
+      ],
+      "explanation": "正确词汇：portions\n中文记忆：部分；份额\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-031-reputable",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有声望的；信誉好的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "reputable"
+      ],
+      "explanation": "正确词汇：reputable\n中文记忆：有声望的；信誉好的\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-banked-cloze-032-resort",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "求助；诉诸；度假胜地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "resort"
+      ],
+      "explanation": "正确词汇：resort\n中文记忆：求助；诉诸；度假胜地\n来源：Unit 2 Exploring college majors · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-033-in-awe",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "敬畏地；惊叹地\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "in awe"
+      ],
+      "explanation": "正确词汇：in awe\n中文记忆：敬畏地；惊叹地\n来源：Unit 2 Exploring college majors · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-034-let-sb-down",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "使某人失望\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "let sb. down"
+      ],
+      "explanation": "正确词汇：let sb. down\n中文记忆：使某人失望\n来源：Unit 2 Exploring college majors · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-035-not-up-to-par",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "达不到标准\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "not up to par"
+      ],
+      "explanation": "正确词汇：not up to par\n中文记忆：达不到标准\n来源：Unit 2 Exploring college majors · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-036-obsessed-with",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "痴迷于\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "obsessed with"
+      ],
+      "explanation": "正确词汇：obsessed with\n中文记忆：痴迷于\n来源：Unit 2 Exploring college majors · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-037-passionate-about",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "热衷于\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "passionate about"
+      ],
+      "explanation": "正确词汇：passionate about\n中文记忆：热衷于\n来源：Unit 2 Exploring college majors · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-038-pick-one-s-brains",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "请教某人；向某人讨主意\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "pick one’s brains"
+      ],
+      "explanation": "正确词汇：pick one’s brains\n中文记忆：请教某人；向某人讨主意\n来源：Unit 2 Exploring college majors · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-039-throw-out",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "提出；抛出；扔掉\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "throw … out"
+      ],
+      "explanation": "正确词汇：throw … out\n中文记忆：提出；抛出；扔掉\n来源：Unit 2 Exploring college majors · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-2-expressions-in-use-040-turn-out",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 2 Exploring college majors",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "结果是；最终成为\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "turn out"
+      ],
+      "explanation": "正确词汇：turn out\n中文记忆：结果是；最终成为\n来源：Unit 2 Exploring college majors · Expressions in use"
+    }
+  ]
+}

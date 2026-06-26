@@ -43,6 +43,8 @@ type LegacyQuestion = {
   choices?: Array<{ key?: string; keyLabel?: string; text?: string; label?: string; content?: string; value?: string }>;
   answer?: unknown;
   correctAnswer?: unknown;
+  pronunciation?: unknown;
+  blanks?: Array<{ id?: string; label?: string; prompt?: string; answer?: unknown; answers?: unknown; correctAnswer?: unknown; pronunciation?: unknown }>;
   explanation?: string;
   analysis?: string;
 };
@@ -75,9 +77,10 @@ async function readJsonFile<T>(dir: string, fileName: string): Promise<T> {
 
 function normalizeType(type?: string) {
   const value = (type || 'single').toLowerCase();
-  if (['single', 'multiple', 'judge', 'python'].includes(value)) return value;
+  if (['single', 'multiple', 'judge', 'fill', 'python'].includes(value)) return value;
   if (value.includes('multi') || value.includes('多')) return 'multiple';
   if (value.includes('judge') || value.includes('true') || value.includes('判断')) return 'judge';
+  if (value.includes('fill') || value.includes('blank') || value.includes('填空') || value.includes('词汇') || value.includes('单词') || value.includes('vocab')) return 'fill';
   if (value.includes('python') || value.includes('代码') || value.includes('编程')) return 'python';
   return 'single';
 }
@@ -88,17 +91,62 @@ function normalizeAnswer(answer: unknown): string[] {
   return [String(answer).trim()].filter(Boolean);
 }
 
+function normalizeAnswerGroups(answer: unknown): string[][] {
+  if (!Array.isArray(answer) || !answer.some((item) => Array.isArray(item))) return [];
+  return answer
+    .map((item) => normalizeAnswer(item))
+    .filter((group) => group.length > 0);
+}
+
+function normalizeFillBlanks(question: LegacyQuestion) {
+  if (Array.isArray(question.blanks)) {
+    return question.blanks
+      .map((blank, index) => {
+        const answer = normalizeAnswer(blank.answer ?? blank.answers ?? blank.correctAnswer);
+        return {
+          id: String(blank.id || `blank-${index + 1}`),
+          label: String(blank.label || index + 1),
+          prompt: blank.prompt ? String(blank.prompt) : '',
+          answer,
+          ...(blank.pronunciation ? { pronunciation: blank.pronunciation } : {})
+        };
+      })
+      .filter((blank) => blank.answer.length > 0);
+  }
+
+  return normalizeAnswerGroups(question.answer ?? question.correctAnswer).map((answer, index) => ({
+    id: `blank-${index + 1}`,
+    label: String(index + 1),
+    prompt: '',
+    answer
+  }));
+}
+
+function normalizeFillAnswer(question: LegacyQuestion) {
+  const blanks = normalizeFillBlanks(question);
+  if (blanks.length > 1) return blanks.map((blank) => blank.answer);
+  if (blanks.length === 1) return blanks[0].answer;
+  return normalizeAnswer(question.answer ?? question.correctAnswer);
+}
+
 function getStem(question: LegacyQuestion) {
   return question.question || question.stem || question.title || question.content || '未命名题目';
 }
 
 async function upsertQuestion(bankId: string, question: LegacyQuestion, sortOrder: number): Promise<QuestionImportStatus> {
   const type = normalizeType(question.type);
-  const answer = type === 'judge' ? normalizeJudgeAnswerArray(question.answer ?? question.correctAnswer) : normalizeAnswer(question.answer ?? question.correctAnswer);
+  const fillBlanks = type === 'fill' ? normalizeFillBlanks(question) : [];
+  const answer = type === 'judge'
+    ? normalizeJudgeAnswerArray(question.answer ?? question.correctAnswer)
+    : type === 'fill'
+      ? normalizeFillAnswer(question)
+      : normalizeAnswer(question.answer ?? question.correctAnswer);
   const stem = getStem(question);
   const normalizedRawQuestion = type === 'judge'
     ? { ...question, type: 'judge', options: [{ key: 'A', keyLabel: 'A', text: '正确' }, { key: 'B', keyLabel: 'B', text: '错误' }], answer }
-    : question;
+    : type === 'fill'
+      ? { ...question, type: 'fill', answer, ...(fillBlanks.length ? { blanks: fillBlanks } : {}) }
+      : question;
 
   const data = {
     bankId,
@@ -121,6 +169,7 @@ async function upsertQuestion(bankId: string, question: LegacyQuestion, sortOrde
     label: String(option.key || option.keyLabel || option.label || String.fromCharCode(65 + index)).trim(),
     content: String(option.text ?? option.content ?? option.value ?? '')
   }));
+  const optionAnswerLabels = Array.isArray(answer) ? answer.filter((item): item is string => typeof item === 'string') : [];
 
   return prisma.$transaction(async (tx) => {
     const existing = question.id
@@ -137,7 +186,7 @@ async function upsertQuestion(bankId: string, question: LegacyQuestion, sortOrde
           questionId: saved.id,
           label: option.label,
           content: option.content,
-          isCorrect: answer.includes(option.label),
+          isCorrect: optionAnswerLabels.includes(option.label),
           sortOrder: index
         }))
       });

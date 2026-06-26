@@ -1,0 +1,697 @@
+{
+  "version": 1,
+  "source": "新视野2_Unit1-5_PPT候选词汇总_背诵版.docx",
+  "subject": {
+    "id": "subject-new-horizon-2-vocab",
+    "name": "新视野大学英语2词汇",
+    "description": "Unit 1-5 PPT 候选词汇填空刷词题。",
+    "color": "#2f80ed"
+  },
+  "unit": {
+    "id": "subject-new-horizon-2-vocab-unit-3",
+    "name": "Unit 3 The young generation: making a difference",
+    "description": "由 Word 词汇表自动转换为填空刷词题。"
+  },
+  "questions": [
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-001-assign",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "分配；指派\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "assign"
+      ],
+      "explanation": "正确词汇：assign\n中文记忆：分配；指派\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-002-endure",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "忍受；承受\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "endure"
+      ],
+      "explanation": "正确词汇：endure\n中文记忆：忍受；承受\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-003-exhibit",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "展示；表现出\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "exhibit"
+      ],
+      "explanation": "正确词汇：exhibit\n中文记忆：展示；表现出\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-004-flexible",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "灵活的；可变通的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "flexible"
+      ],
+      "explanation": "正确词汇：flexible\n中文记忆：灵活的；可变通的\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-005-internal",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "内部的；内心的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "internal"
+      ],
+      "explanation": "正确词汇：internal\n中文记忆：内部的；内心的\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-006-parallel",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "与……相似；平行的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "parallel"
+      ],
+      "explanation": "正确词汇：parallel\n中文记忆：与……相似；平行的\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-007-persistence",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "坚持；执着\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "persistence"
+      ],
+      "explanation": "正确词汇：persistence\n中文记忆：坚持；执着\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-008-recruit",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "招聘；招募\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "recruit"
+      ],
+      "explanation": "正确词汇：recruit\n中文记忆：招聘；招募\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-009-stunning",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "令人震惊的；极好的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "stunning"
+      ],
+      "explanation": "正确词汇：stunning\n中文记忆：令人震惊的；极好的\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-words-in-use-010-vigorous",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Words in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "精力充沛的；有力的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "vigorous"
+      ],
+      "explanation": "正确词汇：vigorous\n中文记忆：精力充沛的；有力的\n来源：Unit 3 The young generation: making a difference · Words in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-word-building-011-assumption",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "假设；设想\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "assumption"
+      ],
+      "explanation": "正确词汇：assumption\n中文记忆：假设；设想\n来源：Unit 3 The young generation: making a difference · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-word-building-012-biologist",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "生物学家\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "biologist"
+      ],
+      "explanation": "正确词汇：biologist\n中文记忆：生物学家\n来源：Unit 3 The young generation: making a difference · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-word-building-013-classification",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "分类\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "classification"
+      ],
+      "explanation": "正确词汇：classification\n中文记忆：分类\n来源：Unit 3 The young generation: making a difference · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-word-building-014-detection",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "探测；发现\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "detection"
+      ],
+      "explanation": "正确词汇：detection\n中文记忆：探测；发现\n来源：Unit 3 The young generation: making a difference · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-word-building-015-geometric",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "几何的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "geometric"
+      ],
+      "explanation": "正确词汇：geometric\n中文记忆：几何的\n来源：Unit 3 The young generation: making a difference · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-word-building-016-oceanic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "海洋的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "oceanic"
+      ],
+      "explanation": "正确词汇：oceanic\n中文记忆：海洋的\n来源：Unit 3 The young generation: making a difference · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-word-building-017-poetic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Word building",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "诗的；诗意的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "poetic"
+      ],
+      "explanation": "正确词汇：poetic\n中文记忆：诗的；诗意的\n来源：Unit 3 The young generation: making a difference · Word building"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-018-academic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "学术的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "academic"
+      ],
+      "explanation": "正确词汇：academic\n中文记忆：学术的\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-019-asserting",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "坚持主张；维护\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "asserting"
+      ],
+      "explanation": "正确词汇：asserting\n中文记忆：坚持主张；维护\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-020-assuming",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "假定；认为\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "assuming"
+      ],
+      "explanation": "正确词汇：assuming\n中文记忆：假定；认为\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-021-dynamic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "有活力的；动态的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "dynamic"
+      ],
+      "explanation": "正确词汇：dynamic\n中文记忆：有活力的；动态的\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-022-emerged",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "出现；显现\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "emerged"
+      ],
+      "explanation": "正确词汇：emerged\n中文记忆：出现；显现\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-023-ethic",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "伦理；道德准则\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "ethic"
+      ],
+      "explanation": "正确词汇：ethic\n中文记忆：伦理；道德准则\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-024-innovated",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "创新\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "innovated"
+      ],
+      "explanation": "正确词汇：innovated\n中文记忆：创新\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-025-motivated",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "激励；使有动力\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "motivated"
+      ],
+      "explanation": "正确词汇：motivated\n中文记忆：激励；使有动力\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-026-obey",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "服从；遵守\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "obey"
+      ],
+      "explanation": "正确词汇：obey\n中文记忆：服从；遵守\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-027-obsess",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "使着迷\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "obsess"
+      ],
+      "explanation": "正确词汇：obsess\n中文记忆：使着迷\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-028-persevering",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "坚持不懈的\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "persevering"
+      ],
+      "explanation": "正确词汇：persevering\n中文记忆：坚持不懈的\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-029-platform",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "平台\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "platform"
+      ],
+      "explanation": "正确词汇：platform\n中文记忆：平台\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-030-released",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "发布；释放\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "released"
+      ],
+      "explanation": "正确词汇：released\n中文记忆：发布；释放\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-031-remained",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "保持；留下\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "remained"
+      ],
+      "explanation": "正确词汇：remained\n中文记忆：保持；留下\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-banked-cloze-032-retain",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Banked cloze",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "保留；留住\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "retain"
+      ],
+      "explanation": "正确词汇：retain\n中文记忆：保留；留住\n来源：Unit 3 The young generation: making a difference · Banked cloze"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-033-be-accustomed-to",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "习惯于\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "be accustomed to"
+      ],
+      "explanation": "正确词汇：be accustomed to\n中文记忆：习惯于\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-034-be-based-on",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "以……为基础\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "be based on"
+      ],
+      "explanation": "正确词汇：be based on\n中文记忆：以……为基础\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-035-for-the-sake-of",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "为了；为了……的利益\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "for the sake of"
+      ],
+      "explanation": "正确词汇：for the sake of\n中文记忆：为了；为了……的利益\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-036-have-a-passion-for",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "热爱；酷爱\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "have a passion for"
+      ],
+      "explanation": "正确词汇：have a passion for\n中文记忆：热爱；酷爱\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-037-no-exaggeration",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "毫不夸张\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "no exaggeration"
+      ],
+      "explanation": "正确词汇：no exaggeration\n中文记忆：毫不夸张\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-038-strive-for",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "努力争取\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "strive for"
+      ],
+      "explanation": "正确词汇：strive for\n中文记忆：努力争取\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-039-take-it-for-granted-that",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "想当然地认为\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "take it for granted that"
+      ],
+      "explanation": "正确词汇：take it for granted that\n中文记忆：想当然地认为\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    },
+    {
+      "id": "subject-new-horizon-2-vocab-unit-3-expressions-in-use-040-tap-into",
+      "type": "fill",
+      "typeLabel": "词汇填空",
+      "difficulty": "easy",
+      "tags": [
+        "Unit 3 The young generation: making a difference",
+        "Expressions in use",
+        "词汇"
+      ],
+      "score": 1,
+      "question": "利用；开发\n\n请写出对应的英文候选词 / 短语。",
+      "answer": [
+        "tap into"
+      ],
+      "explanation": "正确词汇：tap into\n中文记忆：利用；开发\n来源：Unit 3 The young generation: making a difference · Expressions in use"
+    }
+  ]
+}

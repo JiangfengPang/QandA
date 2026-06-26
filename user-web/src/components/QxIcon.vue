@@ -149,6 +149,11 @@ const icons: Record<string, IconLayer[]> = {
     { d: 'M8.2 13.9 9.4 19h2.8l-1.6-4.3', fill: 'none', stroke: 'ink', strokeWidth: 1.55 },
     { d: 'M18.4 9.1c.9.8 1.4 1.8 1.4 2.9s-.5 2.1-1.4 2.9', fill: 'none', stroke: 'main', strokeWidth: 1.65 }
   ],
+  speaker: [
+    { d: 'M5 10.1h3.2l5.5-4.2v12.2l-5.5-4.2H5v-3.8Z', fill: 'soft', stroke: 'main', strokeWidth: 1.55 },
+    { d: 'M16.5 9.2c.7.7 1.1 1.7 1.1 2.8s-.4 2.1-1.1 2.8', fill: 'none', stroke: 'ink', strokeWidth: 1.6 },
+    { d: 'M18.7 6.8c1.4 1.3 2.1 3.1 2.1 5.2s-.7 3.9-2.1 5.2', fill: 'none', stroke: 'main', strokeWidth: 1.55 }
+  ],
   logout: [
     { d: 'M5.3 5.2h7.4v13.6H5.3V5.2Z', fill: 'soft', stroke: 'main', strokeWidth: 1.55 },
     { d: 'M12.8 12h6.6M16.8 8.6 20.2 12l-3.4 3.4', fill: 'none', stroke: 'main', strokeWidth: 1.9 },

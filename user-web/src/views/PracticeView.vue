@@ -7,7 +7,7 @@
     <div v-else-if="!currentQuestion" class="empty-state qx-empty-state">
       <h2>这个题库暂无题目</h2>
       <p>返回题库选择其他单元继续练习。</p>
-      <button class="qx-action-btn primary" @click="finishQuiz">返回题库</button>
+      <button class="qx-action-btn primary" @click="finishQuiz()">返回题库</button>
     </div>
 
     <div v-else class="qx-quiz-screen">
@@ -19,7 +19,7 @@
             </div>
             <div class="qx-quiz-header-side">
               <div class="qx-quiz-header-actions">
-                <button class="qx-quiz-pill-btn solid" @click="finishQuiz">结束练习</button>
+                <button class="qx-quiz-pill-btn solid" @click="finishQuiz()">结束练习</button>
                 <button v-if="showQuestionOverviewFeature" class="qx-quiz-pill-btn" @click="toggleQuizOverview">答题卡</button>
               </div>
             </div>
@@ -28,7 +28,7 @@
 
         <div class="qx-practice-mobile-header" aria-label="移动端答题顶部栏">
           <div class="qx-mobile-nav-row">
-            <button class="qx-mobile-back-btn" type="button" aria-label="返回题库" @click="finishQuiz">
+            <button class="qx-mobile-back-btn" type="button" aria-label="返回题库" @click="finishQuiz()">
               <QxIcon name="chevron-left" />
             </button>
             <h1 class="qx-mobile-quiz-title">{{ mobileQuizTitle }}</h1>
@@ -86,11 +86,11 @@
                   <span class="pill qx-question-type-badge">{{ currentQuestionTypeBadge }}</span>
                   <span class="qx-question-inline-count">{{ currentProgressNumber }}/{{ questions.length }}、</span>
                   <PythonMarkdown
-                    v-if="isPythonQuestion && pythonStemMarkdown"
+                    v-if="isPythonQuestion && questionStemText"
                     class="qx-question-title qx-question-title-markdown qx-markdown-answer"
-                    :markdown="pythonStemMarkdown"
+                    :markdown="questionStemText"
                   />
-                  <h2 v-else class="qx-question-title">{{ currentQuestion.question || currentQuestion.stem }}</h2>
+                  <h2 v-else class="qx-question-title">{{ questionStemText }}</h2>
                 </div>
               </div>
             </div>
@@ -104,15 +104,34 @@
             </div>
 
             <div v-else-if="currentQuestion.type === 'fill'" class="fill-box qx-fill-box">
-              <label for="fillAnswer">你的答案</label>
-              <input
-                id="fillAnswer"
-                v-model="textAnswer"
-                :disabled="submitted"
-                autocomplete="off"
-                placeholder="输入答案，按回车确认"
-                @keyup.enter="submitAnswer"
-              />
+              <template v-if="isMultiFillQuestion">
+                <div
+                  v-for="(blank, index) in currentFillBlanks"
+                  :key="blank.id || index"
+                  class="qx-fill-blank-row"
+                >
+                  <label :for="fillInputId(index)">{{ fillBlankLabel(blank, index) }}</label>
+                  <input
+                    :id="fillInputId(index)"
+                    v-model="fillAnswers[index]"
+                    :disabled="submitted"
+                    autocomplete="off"
+                    :placeholder="blank.prompt || '输入答案'"
+                    @keyup.enter="handleFillEnter(index)"
+                  />
+                </div>
+              </template>
+              <template v-else>
+                <label for="fillAnswer">你的答案</label>
+                <input
+                  id="fillAnswer"
+                  v-model="textAnswer"
+                  :disabled="submitted"
+                  autocomplete="off"
+                  placeholder="输入答案，按回车确认"
+                  @keyup.enter="submitAnswer"
+                />
+              </template>
             </div>
 
             <div v-else class="option-list qx-option-list">
@@ -131,8 +150,20 @@
 
             <div v-if="submitted && !isPythonQuestion && isCompactPracticeViewport" class="result-box qx-result-box" :class="{ correct: lastResult && lastResult.correct }">
               <div class="qx-result-answer-row">
-                <span>正确答案 <b class="qx-result-answer-correct">{{ currentOfficialAnswerSummary }}</b></span>
-                <span>您选择 <b :class="lastResult && lastResult.correct ? 'qx-result-answer-correct' : 'qx-result-answer-wrong'">{{ currentUserAnswerSummary }}</b></span>
+                <span class="qx-answer-with-speech">
+                  正确答案 <b class="qx-result-answer-correct">{{ currentOfficialAnswerSummary }}</b>
+                  <span v-if="currentAnswerSpeechItems.length" class="qx-answer-speech-actions">
+                    <SpeakButton
+                      v-for="item in currentAnswerSpeechItems"
+                      :key="item.key"
+                      :text="item.text"
+                      :lang="item.lang"
+                      :label="item.label"
+                      :explicit="item.explicit"
+                    />
+                  </span>
+                </span>
+                <span>{{ currentUserAnswerLabel }} <b :class="lastResult && lastResult.correct ? 'qx-result-answer-correct' : 'qx-result-answer-wrong'">{{ currentUserAnswerSummary }}</b></span>
                 <QxIcon
                   class="qx-result-judge-icon"
                   :name="lastResult && lastResult.correct ? 'check-circle' : 'x-circle'"
@@ -176,8 +207,20 @@
 
           <div v-if="submitted && !isPythonQuestion && !isCompactPracticeViewport" class="result-box qx-result-box" :class="{ correct: lastResult && lastResult.correct }">
             <div class="qx-result-answer-row">
-              <span>正确答案 <b class="qx-result-answer-correct">{{ currentOfficialAnswerSummary }}</b></span>
-              <span>您选择 <b :class="lastResult && lastResult.correct ? 'qx-result-answer-correct' : 'qx-result-answer-wrong'">{{ currentUserAnswerSummary }}</b></span>
+              <span class="qx-answer-with-speech">
+                正确答案 <b class="qx-result-answer-correct">{{ currentOfficialAnswerSummary }}</b>
+                <span v-if="currentAnswerSpeechItems.length" class="qx-answer-speech-actions">
+                  <SpeakButton
+                    v-for="item in currentAnswerSpeechItems"
+                    :key="item.key"
+                    :text="item.text"
+                    :lang="item.lang"
+                    :label="item.label"
+                    :explicit="item.explicit"
+                  />
+                </span>
+              </span>
+              <span>{{ currentUserAnswerLabel }} <b :class="lastResult && lastResult.correct ? 'qx-result-answer-correct' : 'qx-result-answer-wrong'">{{ currentUserAnswerSummary }}</b></span>
               <QxIcon
                 class="qx-result-judge-icon"
                 :name="lastResult && lastResult.correct ? 'check-circle' : 'x-circle'"
@@ -285,9 +328,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { showConfirmDialog, showToast } from 'vant';
 import { ApiError, api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
+import SpeakButton from '../components/SpeakButton.vue';
 import { useAuthStore } from '../stores/auth';
 import { useVisualViewportHeight } from '../composables/useVisualViewportHeight';
-import { isAnswerCorrect } from '../utils/answer';
+import { isAnswerCorrect, isFillAnswerCorrect } from '../utils/answer';
 import { judgeAnswerKey, judgeOptionDisplay, normalizeOptions, optionKeyDisplay, questionTypeText } from '../utils/question';
 import {
   canGoToPreviousQuestion,
@@ -296,6 +340,25 @@ import {
   practiceProgressPercent
 } from '../utils/practiceProgress';
 import { buildPracticeOverviewGroups } from '../utils/practiceOverview';
+import { speechItemsForQuestion } from '../utils/pronunciation';
+import {
+  applyPracticeResumeSnapshotQuestionOrder,
+  applySavedPracticeQuestionOrder,
+  buildPracticeResumeKey,
+  clearPracticeResume,
+  newerPracticeResume,
+  practiceResumeSessionRecordsFromSnapshot,
+  practiceResumeUpdatedAt,
+  readPracticeResume,
+  resolvePracticeResumeSnapshotIndex,
+  savePracticeResume,
+  writePracticeResumeSnapshot
+} from '../utils/practiceResume';
+import {
+  clearRemotePracticeResume,
+  fetchRemotePracticeResume,
+  saveRemotePracticeResume
+} from '../utils/practiceResumeRemote';
 import {
   enqueuePendingAnswer,
   nextPendingRetryDelayMs,
@@ -312,6 +375,13 @@ import '../styles/practice-feedback.css';
 
 const PythonMarkdown = defineAsyncComponent(() => import('../components/PythonMarkdown.vue'));
 
+type FillBlankDefinition = {
+  id: string;
+  label: string;
+  prompt: string;
+  answer: string[];
+};
+
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
@@ -322,6 +392,7 @@ const loading = ref(true);
 const submitted = ref(false);
 const selectedAnswers = ref<string[]>([]);
 const textAnswer = ref('');
+const fillAnswers = ref<string[]>([]);
 const answer = ref<string[]>([]);
 const explanation = ref('');
 const answerTip = ref('');
@@ -352,7 +423,9 @@ let practiceViewportMediaQuery: MediaQueryList | null = null;
 let pendingAnswerSyncRunning = false;
 let pendingAnswerRetryTimer: ReturnType<typeof setTimeout> | null = null;
 let correctAnswerAutoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
+let remotePracticeResumeSaveTimer: ReturnType<typeof setTimeout> | null = null;
 let questionScrollResetFrame: number | undefined;
+let practiceResumeReady = false;
 
 const currentQuestion = computed(() => questions.value[currentIndex.value] || null);
 const currentOptions = computed(() => normalizeOptions(currentQuestion.value?.options || []));
@@ -364,7 +437,9 @@ const currentQuestionTypeBadge = computed(() => {
 });
 const isFillQuestion = computed(() => currentQuestion.value?.type === 'fill');
 const isPythonQuestion = computed(() => currentQuestion.value?.type === 'python');
-const pythonStemMarkdown = computed(() => String(currentQuestion.value?.question || currentQuestion.value?.stem || '').trim());
+const questionStemText = computed(() => String(currentQuestion.value?.question || currentQuestion.value?.stem || '').trim());
+const currentFillBlanks = computed(() => fillBlankDefinitions(currentQuestion.value));
+const isMultiFillQuestion = computed(() => currentFillBlanks.value.length > 1);
 const pythonAnswerMarkdown = computed(() => {
   const raw = Array.isArray(currentQuestion.value?.answer) ? currentQuestion.value.answer[0] : '';
   return String(raw || currentQuestion.value?.pythonAnswer || '').trim();
@@ -380,7 +455,7 @@ const primaryActionDisplayText = computed(() => {
 });
 const primaryActionDisabled = computed(() => {
   if (!needsManualConfirm.value) return false;
-  if (isFillQuestion.value) return !String(textAnswer.value || '').trim();
+  if (isFillQuestion.value) return !fillUserAnswerValues(currentQuestion.value).every((item) => String(item || '').trim());
   return selectedAnswers.value.length === 0;
 });
 const currentProgressNumber = computed(() => practiceProgressNumber(currentIndex.value, questions.value.length));
@@ -397,10 +472,12 @@ const sessionAccuracyText = computed(() => {
   return `${((sessionCorrectCount.value / total) * 100).toFixed(2)}%`;
 });
 const currentOfficialAnswerSummary = computed(() => answerKeySummary(currentQuestion.value, getOfficialAnswer(currentQuestion.value)));
+const currentAnswerSpeechItems = computed(() => submitted.value ? speechItemsForQuestion(currentQuestion.value) : []);
+const currentUserAnswerLabel = computed(() => currentQuestion.value?.type === 'fill' ? '您输入' : '您选择');
 const currentUserAnswerSummary = computed(() => {
   const question = currentQuestion.value;
   if (!question) return '-';
-  const values = question.type === 'fill' ? [textAnswer.value] : selectedAnswers.value;
+  const values = question.type === 'fill' ? fillUserAnswerValues(question) : selectedAnswers.value;
   return answerKeySummary(question, values);
 });
 const practiceQuestionId = computed(() => String(route.query.questionId || route.query.qid || '').trim());
@@ -424,6 +501,30 @@ const practiceReturnRoute = computed(() => {
 const quizTitle = computed(() => [bank.value?.subjectName, bank.value?.name].filter(Boolean).join(' '));
 const mobileQuizTitle = computed(() => [bank.value?.subjectName, bank.value?.name].filter(Boolean).join(' - '));
 const pendingAnswerUserKey = computed(() => auth.user?.id || auth.user?.email || auth.user?.username || '');
+const practiceResumeKey = computed(() => {
+  if (practiceQuestionId.value) return '';
+
+  const userKey = pendingAnswerUserKey.value || 'anonymous';
+  if (reviewPracticeMode.value) {
+    return buildPracticeResumeKey(userKey, [
+      'practice',
+      'review',
+      reviewPracticeMode.value,
+      reviewPracticeSubjectId.value || 'all'
+    ]);
+  }
+
+  if (isSubjectPractice.value) {
+    return buildPracticeResumeKey(userKey, [
+      'practice',
+      'subject',
+      route.query.subjectId || route.params.bankId || '',
+      practiceOrder.value || 'sequence'
+    ]);
+  }
+
+  return buildPracticeResumeKey(userKey, ['practice', 'bank', route.params.bankId || '']);
+});
 
 const preferences = computed(() => auth.user?.preferences || {
   autoShowExplanation: true,
@@ -540,15 +641,20 @@ useVisualViewportHeight();
 onMounted(async () => {
   setupPracticeViewportQuery();
   document.addEventListener('visibilitychange', handleVisibilityChange);
-  if (typeof window !== 'undefined') window.addEventListener('online', handlePendingAnswerOnline);
+  if (typeof window !== 'undefined') {
+    window.addEventListener('online', handlePendingAnswerOnline);
+    window.addEventListener('pagehide', handlePracticePageHide);
+  }
   try {
     if (reviewPracticeMode.value) {
       await loadReviewPracticeQuestions();
     } else {
       await loadBankPracticeQuestions();
     }
+    await restoreSavedPracticeResume();
   } catch (e) {
     showToast({ type: 'fail', message: e instanceof Error ? e.message : '题目加载失败' });
+    practiceResumeReady = true;
   } finally {
     loading.value = false;
     void nextTick(() => maybeShowAutoAdvanceHint());
@@ -558,12 +664,16 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('visibilitychange', handleVisibilityChange);
-  if (typeof window !== 'undefined') window.removeEventListener('online', handlePendingAnswerOnline);
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('online', handlePendingAnswerOnline);
+    window.removeEventListener('pagehide', handlePracticePageHide);
+  }
   if (typeof window !== 'undefined' && questionScrollResetFrame !== undefined) {
     window.cancelAnimationFrame(questionScrollResetFrame);
   }
   clearCorrectAnswerAutoAdvanceTimer();
   clearPendingAnswerRetryTimer();
+  flushRemotePracticeResumeSync();
   teardownPracticeViewportQuery();
 });
 
@@ -573,6 +683,10 @@ watch(() => currentQuestion.value?.id, () => {
   resetQuestionTimer();
   resetQuestionScrollPosition();
 }, { immediate: true });
+
+watch(() => [currentIndex.value, currentQuestion.value?.id, questions.value.length, practiceResumeKey.value], () => {
+  persistCurrentPracticeResume();
+});
 
 watch(() => pendingAnswerUserKey.value, () => {
   void syncPendingAnswers('auth-change', { resetAuthFailures: true });
@@ -649,6 +763,11 @@ function handleVisibilityChange() {
   }
 }
 
+function handlePracticePageHide() {
+  pauseQuestionTimer();
+  flushRemotePracticeResumeSync({ keepalive: true });
+}
+
 function currentQuestionDurationSeconds() {
   const visibleElapsed = questionVisibleStartedAt.value ? Math.max(Date.now() - questionVisibleStartedAt.value, 0) : 0;
   const seconds = Math.round((questionActiveElapsedMs.value + visibleElapsed) / 1000);
@@ -658,6 +777,8 @@ function currentQuestionDurationSeconds() {
 function preparePracticeQuestions(rows: any[]) {
   const resolved = resolvePracticeQuestions(rows);
   if (practiceQuestionId.value || practiceOrder.value !== 'random') return resolved;
+  const savedOrder = applySavedPracticeQuestionOrder(practiceResumeKey.value, resolved);
+  if (savedOrder) return savedOrder;
   return shuffleQuestions(resolved);
 }
 
@@ -684,14 +805,178 @@ function resolvePracticeQuestions(rows: any[]) {
   return [matched];
 }
 
-function getOfficialAnswer(question: any) {
-  const source = answer.value.length ? answer.value : Array.isArray(question?.answer) ? question.answer : [];
+async function restoreSavedPracticeResume() {
+  const key = practiceResumeKey.value;
+  const localSnapshot = readPracticeResume(key);
+  const remoteSnapshot = await loadRemotePracticeResumeSnapshot(key);
+  const selectedSnapshot = newerPracticeResume(localSnapshot, remoteSnapshot);
+
+  if (selectedSnapshot) {
+    writePracticeResumeSnapshot(key, selectedSnapshot);
+    const orderedQuestions = applyPracticeResumeSnapshotQuestionOrder(selectedSnapshot, questions.value);
+    if (orderedQuestions) questions.value = orderedQuestions;
+  }
+
+  quizSessionRecords.value = practiceResumeSessionRecordsFromSnapshot(selectedSnapshot, questions.value);
+  enqueueResumedPendingAnswers();
+  const savedIndex = resolvePracticeResumeSnapshotIndex(selectedSnapshot, questions.value);
+  if (savedIndex !== null) currentIndex.value = savedIndex;
+  practiceResumeReady = true;
+  restoreQuestionState();
+  persistCurrentPracticeResume();
+}
+
+function persistCurrentPracticeResume() {
+  if (!practiceResumeReady) return;
+  const snapshot = savePracticeResume(practiceResumeKey.value, questions.value, currentIndex.value, quizSessionRecords.value);
+  if (snapshot) scheduleRemotePracticeResumeSync();
+}
+
+async function clearCurrentPracticeResume() {
+  const key = practiceResumeKey.value;
+  clearRemotePracticeResumeSaveTimer();
+  clearPracticeResume(key);
+  try {
+    await clearRemotePracticeResume(key);
+  } catch {
+    // 本地清理已完成；远程删除失败时，下次完成练习会再次尝试覆盖/清理。
+  }
+}
+
+async function loadRemotePracticeResumeSnapshot(key: string) {
+  try {
+    return await fetchRemotePracticeResume(key);
+  } catch {
+    return null;
+  }
+}
+
+function clearRemotePracticeResumeSaveTimer() {
+  if (!remotePracticeResumeSaveTimer) return;
+  clearTimeout(remotePracticeResumeSaveTimer);
+  remotePracticeResumeSaveTimer = null;
+}
+
+function scheduleRemotePracticeResumeSync() {
+  if (!practiceResumeReady || !practiceResumeKey.value) return;
+  clearRemotePracticeResumeSaveTimer();
+  remotePracticeResumeSaveTimer = setTimeout(() => {
+    remotePracticeResumeSaveTimer = null;
+    void syncRemotePracticeResume();
+  }, 300);
+}
+
+function flushRemotePracticeResumeSync(options: { keepalive?: boolean } = {}) {
+  clearRemotePracticeResumeSaveTimer();
+  void syncRemotePracticeResume(options);
+}
+
+async function syncRemotePracticeResume(options: { keepalive?: boolean } = {}) {
+  const key = practiceResumeKey.value;
+  const snapshot = readPracticeResume(key);
+  if (!key || !snapshot) return;
+
+  const sentUpdatedAt = practiceResumeUpdatedAt(snapshot);
+  try {
+    const savedSnapshot = await saveRemotePracticeResume(key, snapshot, options.keepalive ? { keepalive: true } : {});
+    const currentSnapshot = readPracticeResume(key);
+    if (savedSnapshot && practiceResumeUpdatedAt(currentSnapshot) <= sentUpdatedAt) {
+      writePracticeResumeSnapshot(key, savedSnapshot);
+    }
+  } catch {
+    // 网络不可用时保留本地快照，后续切题/答题会再次尝试同步。
+  }
+}
+
+function enqueueResumedPendingAnswers() {
+  const userKey = pendingAnswerUserKey.value;
+  if (!userKey) return;
+
+  Object.entries(quizSessionRecords.value).forEach(([questionId, record]) => {
+    if (!record.clientAnswerId || record.syncStatus === 'synced') return;
+    enqueuePendingAnswer(userKey, {
+      clientAnswerId: record.clientAnswerId,
+      questionId,
+      selectedAnswer: record.userAnswer,
+      isCorrect: record.correct,
+      answeredAt: new Date().toISOString(),
+      retryCount: 0,
+      lastTriedAt: '',
+      status: 'pending',
+      durationSeconds: 0
+    });
+  });
+}
+
+function normalizeStringArray(value: unknown) {
+  return Array.isArray(value) ? value.map((item) => String(item).trim()).filter(Boolean) : [];
+}
+
+function fillBlankDefinitions(question: any): FillBlankDefinition[] {
+  if (question?.type !== 'fill') return [];
+  const blanks = Array.isArray(question.fillBlanks) ? question.fillBlanks : [];
+  if (blanks.length) {
+    return blanks
+      .map((blank: any, index: number) => ({
+        id: String(blank?.id || `blank-${index + 1}`),
+        label: String(blank?.label || index + 1),
+        prompt: String(blank?.prompt || ''),
+        answer: normalizeStringArray(blank?.answer)
+      }))
+      .filter((blank: any) => blank.answer.length > 0);
+  }
+  const answerValues = normalizeStringArray(question.answer);
+  return answerValues.length ? [{ id: 'blank-1', label: '1', prompt: '', answer: answerValues }] : [];
+}
+
+function fillBlankLabel(blank: FillBlankDefinition | undefined, index: number) {
+  const label = String(blank?.label || index + 1).trim();
+  return `第 ${label} 空`;
+}
+
+function fillInputId(index: number) {
+  return `fillAnswer-${index + 1}`;
+}
+
+function fillUserAnswerValues(question: any): string[] {
+  if (question?.type !== 'fill') return [];
+  const blanks = fillBlankDefinitions(question);
+  if (blanks.length > 1) return blanks.map((_blank: FillBlankDefinition, index: number) => String(fillAnswers.value[index] || ''));
+  return [String(textAnswer.value || '')];
+}
+
+function fillAnswerGroupsForCheck(question: any): string[] | string[][] {
+  const blanks = fillBlankDefinitions(question);
+  if (blanks.length > 1) return blanks.map((blank: FillBlankDefinition) => blank.answer);
+  return blanks[0]?.answer || normalizeStringArray(question?.answer);
+}
+
+function fillOfficialAnswerValues(question: any): string[] {
+  const blanks = fillBlankDefinitions(question);
+  if (blanks.length > 1) return blanks.map((blank: FillBlankDefinition) => blank.answer.join(' / '));
+  return blanks[0]?.answer || normalizeStringArray(question?.answer);
+}
+
+function getOfficialAnswer(question: any): string[] {
+  const source = answer.value.length
+    ? answer.value
+    : question?.type === 'fill'
+      ? fillOfficialAnswerValues(question)
+      : Array.isArray(question?.answer)
+        ? question.answer
+        : [];
   return source.map((item: unknown) => String(item));
 }
 
 function answerDisplay(question: any) {
   const official = getOfficialAnswer(question);
-  if (question.type === 'fill') return official.join(' / ');
+  if (question.type === 'fill') {
+    const blanks = fillBlankDefinitions(question);
+    if (blanks.length > 1) {
+      return official.map((item: string, index: number) => `${fillBlankLabel(blanks[index], index)}：${item}`).join('\n');
+    }
+    return official.join(' / ');
+  }
   return official
     .map((item: string) => {
       const option = normalizeOptions(question.options || []).find((candidate) => {
@@ -709,7 +994,15 @@ function answerKeySummary(question: any, values: string[]) {
   if (!question || !values.length) return '-';
   const normalizedValues = values.map((item) => String(item || '').trim()).filter(Boolean);
   if (!normalizedValues.length) return '-';
-  if (question.type === 'fill') return normalizedValues.join(' / ');
+  if (question.type === 'fill') {
+    const blanks = fillBlankDefinitions(question);
+    if (blanks.length > 1) {
+      return blanks
+        .map((blank: any, index: number) => `${fillBlankLabel(blank, index)}：${String(values[index] || '').trim() || '-'}`)
+        .join('；');
+    }
+    return normalizedValues.join(' / ');
+  }
 
   const options = normalizeOptions(question.options || []);
   return normalizedValues
@@ -732,6 +1025,7 @@ function restoreQuestionState() {
   if (!question) {
     selectedAnswers.value = [];
     textAnswer.value = '';
+    fillAnswers.value = [];
     submitted.value = false;
     lastResult.value = null;
     answer.value = [];
@@ -743,6 +1037,7 @@ function restoreQuestionState() {
   if (!record) {
     selectedAnswers.value = [];
     textAnswer.value = '';
+    fillAnswers.value = [];
     submitted.value = false;
     lastResult.value = null;
     answer.value = [];
@@ -752,6 +1047,7 @@ function restoreQuestionState() {
 
   selectedAnswers.value = question.type === 'fill' ? [] : [...record.userAnswer];
   textAnswer.value = question.type === 'fill' ? record.userAnswer[0] || '' : '';
+  fillAnswers.value = question.type === 'fill' ? [...record.userAnswer] : [];
   submitted.value = true;
   lastResult.value = { correct: record.correct };
   answer.value = [...record.answer];
@@ -770,6 +1066,19 @@ function confirmOption(key: string) {
   }
 
   selectedAnswers.value = [key];
+  void submitAnswer();
+}
+
+function handleFillEnter(index: number) {
+  if (!isMultiFillQuestion.value) {
+    void submitAnswer();
+    return;
+  }
+  const nextIndex = index + 1;
+  if (nextIndex < currentFillBlanks.value.length) {
+    document.getElementById(fillInputId(nextIndex))?.focus();
+    return;
+  }
   void submitAnswer();
 }
 
@@ -801,6 +1110,7 @@ function createClientAnswerId(questionId: string) {
 
 function setPracticeRecord(questionId: string, record: PracticeSessionRecord) {
   quizSessionRecords.value[questionId] = record;
+  persistCurrentPracticeResume();
 }
 
 function applyAnswerResult(
@@ -826,6 +1136,7 @@ function applyAnswerResult(
   if (currentQuestion.value?.id === question.id) {
     selectedAnswers.value = question.type === 'fill' ? [] : [...record.userAnswer];
     textAnswer.value = question.type === 'fill' ? record.userAnswer[0] || '' : textAnswer.value;
+    fillAnswers.value = question.type === 'fill' ? [...record.userAnswer] : [];
     answer.value = [...record.answer];
     explanation.value = record.explanation;
     submitted.value = true;
@@ -992,16 +1303,20 @@ async function syncPendingAnswers(_reason: string, options: { resetAuthFailures?
 function submitAnswer() {
   const question = currentQuestion.value;
   if (!question || submitted.value) return;
-  const userAnswer = (question.type === 'fill' ? [textAnswer.value] : selectedAnswers.value).map((item) => String(item));
-  if (!userAnswer.map((item) => String(item).trim()).some(Boolean)) {
+  const userAnswer = (question.type === 'fill' ? fillUserAnswerValues(question) : selectedAnswers.value).map((item) => String(item));
+  const answeredValues = userAnswer.map((item) => String(item).trim());
+  if (!answeredValues.some(Boolean) || (question.type === 'fill' && !answeredValues.every(Boolean))) {
     answerTip.value = '请选择或填写答案';
     return;
   }
 
   const officialAnswer = getOfficialAnswer(question);
+  const answerForCheck = question.type === 'fill' ? fillAnswerGroupsForCheck(question) : officialAnswer;
   const clientAnswerId = createClientAnswerId(String(question.id));
   const durationSeconds = currentQuestionDurationSeconds();
-  const correct = isAnswerCorrect(userAnswer, officialAnswer);
+  const correct = question.type === 'fill'
+    ? isFillAnswerCorrect(userAnswer, answerForCheck)
+    : isAnswerCorrect(userAnswer, officialAnswer);
   applyAnswerResult(question, userAnswer, {
     correct,
     answer: officialAnswer,
@@ -1059,7 +1374,7 @@ function prevQuestion() {
 function nextQuestion() {
   clearCorrectAnswerAutoAdvanceTimer();
   if (currentIndex.value >= questions.value.length - 1) {
-    finishQuiz();
+    finishQuiz({ clearResume: true });
     return;
   }
   currentIndex.value += 1;
@@ -1141,7 +1456,7 @@ function isHorizontalScrollGestureTarget(target: EventTarget | null) {
   return scrollTarget.scrollWidth > scrollTarget.clientWidth + 1;
 }
 
-async function finishQuiz() {
+async function finishQuiz(options: { clearResume?: boolean } = {}) {
   clearCorrectAnswerAutoAdvanceTimer();
   if (unansweredQuestionCount.value > 0) {
     try {
@@ -1155,6 +1470,8 @@ async function finishQuiz() {
       return;
     }
   }
+
+  if (options.clearResume) await clearCurrentPracticeResume();
 
   const returnRoute = practiceReturnRoute.value;
   if (returnRoute) {

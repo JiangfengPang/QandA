@@ -2,17 +2,68 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import type { NextFunction, Request, Response } from 'express';
-import { isAnswerCorrect, normalizeAnswer } from './answer.js';
+import { isAnswerCorrect, isFillAnswerCorrect, normalizeAnswer, normalizeFillAnswerGroups } from './answer.js';
 import { asyncHandler } from './asyncHandler.js';
 import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
 import { createVerificationCode } from './verificationCode.js';
 import { summarizeBankProgress, summarizeLatestAnswers } from '../services/progressService.js';
+import { formatQuestion } from '../services/questionService.js';
 
 test('answer comparison normalizes case, order and duplicates', () => {
   assert.deepEqual(normalizeAnswer(['b', ' A ', 'a']), ['A', 'B']);
   assert.equal(isAnswerCorrect(['b', 'a'], ['A', 'B']), true);
   assert.equal(isAnswerCorrect(['A'], ['A', 'B']), false);
+  assert.equal(isAnswerCorrect([' Adequately '], ['adequately']), true);
+  assert.equal(isAnswerCorrect(['look upon ... as'], ['look upon … as']), true);
+});
+
+test('fill answer comparison accepts any configured answer variant', () => {
+  assert.equal(isFillAnswerCorrect([' Colour '], ['color', 'colour']), true);
+  assert.equal(isFillAnswerCorrect(['color'], ['color', 'colour']), true);
+  assert.equal(isFillAnswerCorrect(['colours'], ['color', 'colour']), false);
+  assert.equal(isAnswerCorrect(['color'], ['color', 'colour']), false);
+});
+
+test('multi blank fill comparison preserves blank order and per-blank variants', () => {
+  const answer = [['aspiration'], ['aspirational', 'ambitious']];
+  assert.deepEqual(normalizeFillAnswerGroups(answer), [['aspiration'], ['ambitious', 'aspirational']]);
+  assert.equal(isFillAnswerCorrect([' aspiration ', 'Ambitious'], answer), true);
+  assert.equal(isFillAnswerCorrect(['ambitious', 'aspiration'], answer), false);
+  assert.equal(isFillAnswerCorrect(['aspiration'], answer), false);
+  assert.equal(isFillAnswerCorrect(['aspiration', 'aspirational', 'extra'], answer), false);
+});
+
+test('formatted multi blank fill questions expose blank definitions and display answers', () => {
+  const formatted = formatQuestion({
+    id: 'q-multi-fill',
+    bankId: 'bank-a',
+    type: 'fill',
+    typeLabel: '多空填空',
+    difficulty: 'medium',
+    score: 2,
+    stem: 'The noun is ____, and the adjective form is ____.',
+    answerJson: [['aspiration'], ['aspirational', 'ambitious']],
+    tagsJson: [],
+    explanation: '解析',
+    rawJson: {
+      blanks: [
+        { label: '1', prompt: '名词', answer: ['aspiration'] },
+        { label: '2', prompt: '形容词', answer: ['aspirational', 'ambitious'] }
+      ]
+    },
+    options: []
+  }) as any;
+
+  assert.deepEqual(formatted.answer, ['aspiration', 'aspirational / ambitious']);
+  assert.equal(formatted.fillBlanks.length, 2);
+  assert.deepEqual(formatted.fillBlanks[1], {
+    id: 'blank-2',
+    label: '2',
+    prompt: '形容词',
+    answer: ['aspirational', 'ambitious'],
+    pronunciation: undefined
+  });
 });
 
 test('verification codes are six numeric digits', () => {
@@ -96,4 +147,19 @@ test('practice answer idempotency keeps database and service safeguards', () => 
   assert.match(schema, /@@unique\(\[userId,\s*clientAnswerId\]\)/);
   assert.match(service, /userId_clientAnswerId:\s*\{\s*userId,\s*clientAnswerId:\s*safeClientAnswerId\s*\}/);
   assert.match(service, /code\?:\s*string\s*\}\)\.code === 'P2002'/);
+});
+
+test('practice resume sessions have account-scoped persistence safeguards', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/practiceSessionService.ts', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260625000100_add_user_practice_sessions/migration.sql', import.meta.url), 'utf8');
+
+  assert.match(schema, /model UserPracticeSession/);
+  assert.match(schema, /@@unique\(\[userId,\s*sessionKey\]\)/);
+  assert.match(migration, /CREATE TABLE `UserPracticeSession`/);
+  assert.match(route, /router\.get\('\/sessions'/);
+  assert.match(route, /router\.put\('\/sessions'/);
+  assert.match(route, /router\.delete\('\/sessions'/);
+  assert.match(service, /userId_sessionKey:\s*\{\s*userId,\s*sessionKey\s*\}/);
 });

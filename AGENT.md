@@ -3,7 +3,7 @@
 ## 发布与版本更新规则
 
 - 答题端会在生产环境轮询 `/version.json`，并在发现 `buildId` 变化时提示用户刷新。这个文件由 `user-web/vite.config.ts` 在 `npm run build --workspace user-web` 时自动生成。
-- 每次发布用户端前都必须重新构建 `user-web`，不要复用旧的 `user-web/dist`。默认 `buildId` 包含当前时间；如果发布流程需要可追踪版本，请设置唯一的 `QANDA_BUILD_ID`，例如提交号或 `20260621-001`。
+- 每次发布用户端前都必须重新构建 `user-web`，不要复用旧的 `user-web/dist`。默认 `buildId` 来自用户端源码、静态资源和直接前端依赖的内容指纹；如果发布流程需要可追踪版本，请设置唯一的 `QANDA_BUILD_ID`，例如提交号或 `20260621-001`。
 - 部署时必须把新的 `user-web/dist/version.json` 和其他静态资源一起上传。Nginx 中 `/version.json` 必须保持 `no-store` / `no-cache`，`index.html` 也不要长期缓存，带哈希的 `assets/*` 可以长期缓存。
 - 如果只更新题库或公告数据，不一定需要改前端版本号；如果改了答题端代码、样式、路由、接口契约或静态资源，就必须重新构建并发布新的 `version.json`。
 - 发布前运行 `npm run check`。如果因为环境问题无法完整运行，至少分别跑受影响工作区的测试和构建，并在发布记录里说明缺口。

@@ -204,7 +204,7 @@ router.put('/password', asyncHandler(async (req, res) => {
   try {
     const schema = z.object({
       oldPassword: z.string().min(1, '请输入当前密码'),
-      newPassword: z.string().min(12, '新密码至少 12 位').max(100)
+      newPassword: z.string().min(8, '新密码至少 8 位').max(100)
     });
     const input = schema.parse(req.body);
     const issue = validatePasswordStrength(input.newPassword);
@@ -440,39 +440,80 @@ router.get('/questions', asyncHandler(async (req, res) => {
 
 function normalizeQuestionInput<T extends {
   type?: string;
-  answer?: string[];
+  answer?: string[] | string[][];
   options?: Array<{ label: string; content: string }>;
 }>(input: T) {
-  if (input.type !== 'judge') return input;
+  if (input.type === 'fill') {
+    return {
+      ...input,
+      answer: normalizeFillQuestionAnswer(input.answer || []),
+      options: []
+    };
+  }
+  if (input.type !== 'judge') {
+    if (input.type === 'python') return input;
+    return {
+      ...input,
+      answer: choiceAnswerList(input.answer || [])
+    };
+  }
   return {
     ...input,
-    answer: normalizeJudgeAnswerArray(input.answer || []),
+    answer: normalizeJudgeAnswerArray(choiceAnswerList(input.answer || [])),
     options: normalizeJudgeOptionsForStorage()
   };
 }
 
-const questionTypeSchema = z.enum(['single', 'multiple', 'judge', 'python']);
+const questionTypeSchema = z.enum(['single', 'multiple', 'judge', 'fill', 'python']);
 const questionTypeLabelSchema = z.string().trim().max(40, '题型标签不能超过 40 个字符').optional();
 const questionOptionSchema = z.object({
   label: z.string().trim().min(1, '选项标识不能为空').max(20, '选项标识不能超过 20 个字符'),
   content: z.string().max(100000, '选项内容过长')
 });
 const answerListSchema = z.array(z.string().trim().max(100000)).max(20, '答案项不能超过 20 个');
+const fillAnswerSchema = z.union([
+  answerListSchema,
+  z.array(answerListSchema).max(20, '填空数量不能超过 20 个')
+]);
+
+function normalizeFillQuestionAnswer(answer: unknown): string[] | string[][] {
+  if (Array.isArray(answer) && answer.some((item) => Array.isArray(item))) {
+    return answer
+      .map((item) => Array.isArray(item) ? item.map((value) => String(value).trim()).filter(Boolean) : [])
+      .filter((group) => group.length > 0);
+  }
+  return Array.isArray(answer) ? answer.map((item) => String(item).trim()).filter(Boolean) : [];
+}
+
+function hasFillQuestionAnswer(answer: string[] | string[][]) {
+  return Array.isArray(answer) && answer.length > 0 && answer.every((item) => (
+    Array.isArray(item) ? item.length > 0 : Boolean(String(item || '').trim())
+  ));
+}
+
+function choiceAnswerList(answer: string[] | string[][]): string[] {
+  return Array.isArray(answer) ? answer.filter((item): item is string => typeof item === 'string') : [];
+}
 
 function validateQuestionDefinition(input: {
   type: string;
-  answer: string[];
+  answer: string[] | string[][];
   options: Array<{ label: string; content: string }>;
 }) {
   if (input.type === 'python') return;
+  if (input.type === 'fill') {
+    if (!hasFillQuestionAnswer(input.answer)) throw new HttpError('请设置填空题正确答案', 400);
+    return;
+  }
+  const answer = choiceAnswerList(input.answer);
   const labels = input.options.map((option) => option.label);
   if (!labels.length) throw new HttpError('选择题必须至少包含一个选项', 400);
   if (new Set(labels).size !== labels.length) throw new HttpError('选项标识不能重复', 400);
-  if (!input.answer.length) throw new HttpError('请设置正确答案', 400);
-  if (input.answer.some((answer) => !labels.includes(answer))) {
+  if (!answer.length) throw new HttpError('请设置正确答案', 400);
+  if (answer.some((item) => !labels.includes(item))) {
     throw new HttpError('正确答案必须对应已有选项', 400);
   }
-  if (['single', 'judge'].includes(input.type) && input.answer.length !== 1) {
+  if (['single', 'judge'].includes(input.type) && answer.length !== 1) {
     throw new HttpError('单选题和判断题只能设置一个正确答案', 400);
   }
 }
@@ -481,7 +522,7 @@ router.post('/questions', asyncHandler(async (req, res) => {
   const schema = z.object({
     bankId: z.string().trim().min(1), type: questionTypeSchema.default('single'), typeLabel: questionTypeLabelSchema, stem: z.string().trim().min(1),
     score: z.number().min(0).max(10000).optional(), difficulty: z.string().max(30).optional(), explanation: z.string().max(500000).optional(),
-    answer: answerListSchema.default([]), tags: z.array(z.string().max(100)).max(50).default([]),
+    answer: fillAnswerSchema.default([]), tags: z.array(z.string().max(100)).max(50).default([]),
     options: z.array(questionOptionSchema).max(100).default([])
   });
   const input = normalizeQuestionInput(schema.parse(req.body));
@@ -497,7 +538,9 @@ router.post('/questions', asyncHandler(async (req, res) => {
       explanation: input.explanation,
       answerJson: input.answer,
       tagsJson: input.tags,
-      options: { create: input.options.map((option, index) => ({ label: option.label, content: option.content, isCorrect: input.answer.includes(option.label), sortOrder: index })) }
+      options: input.type === 'python' || input.type === 'fill'
+        ? undefined
+        : { create: input.options.map((option, index) => ({ label: option.label, content: option.content, isCorrect: choiceAnswerList(input.answer).includes(option.label), sortOrder: index })) }
     },
     include: { options: true }
   });
@@ -509,7 +552,7 @@ router.put('/questions/:id', asyncHandler(async (req, res) => {
     bankId: z.string().trim().min(1).optional(), type: questionTypeSchema.optional(), typeLabel: questionTypeLabelSchema, stem: z.string().trim().min(1).optional(),
     score: z.number().min(0).max(10000).optional(), difficulty: z.string().max(30).optional(),
     explanation: z.string().max(500000).optional(), isActive: z.boolean().optional(),
-    answer: answerListSchema.optional(), tags: z.array(z.string().max(100)).max(50).optional(),
+    answer: fillAnswerSchema.optional(), tags: z.array(z.string().max(100)).max(50).optional(),
     options: z.array(questionOptionSchema).max(100).optional()
   });
   const parsed = schema.parse(req.body);
@@ -523,7 +566,7 @@ router.put('/questions/:id', asyncHandler(async (req, res) => {
     const merged = normalizeQuestionInput({
       ...parsed,
       type: parsed.type ?? current.type,
-      answer: parsed.answer ?? (Array.isArray(current.answerJson) ? current.answerJson.map(String) : []),
+      answer: parsed.answer ?? (Array.isArray(current.answerJson) ? current.answerJson as string[] | string[][] : []),
       options: parsed.options ?? current.options.map((option) => ({ label: option.label, content: option.content }))
     });
     validateQuestionDefinition(merged);
@@ -545,13 +588,13 @@ router.put('/questions/:id', asyncHandler(async (req, res) => {
       }
     });
 
-    if (options || merged.type === 'judge') {
+    if (options || merged.type === 'judge' || merged.type === 'fill' || merged.type === 'python') {
       await tx.questionOption.deleteMany({ where: { questionId: saved.id } });
       const optionData = merged.options.map((option, index) => ({
         questionId: saved.id,
         label: option.label,
         content: option.content,
-        isCorrect: merged.answer.includes(option.label),
+        isCorrect: choiceAnswerList(merged.answer).includes(option.label),
         sortOrder: index
       }));
       if (optionData.length) await tx.questionOption.createMany({ data: optionData });
@@ -563,7 +606,7 @@ router.put('/questions/:id', asyncHandler(async (req, res) => {
       for (const option of optionRows) {
         await tx.questionOption.update({
           where: { id: option.id },
-          data: { isCorrect: merged.answer.includes(option.label) }
+          data: { isCorrect: choiceAnswerList(merged.answer).includes(option.label) }
         });
       }
     }

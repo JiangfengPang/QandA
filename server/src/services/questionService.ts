@@ -7,8 +7,79 @@ function normalizeAnswerArray(value: unknown): string[] {
   return [String(value).trim()].filter(Boolean);
 }
 
+function normalizeAnswerGroups(value: unknown): string[][] {
+  if (!Array.isArray(value) || !value.some((item) => Array.isArray(item))) return [];
+  return value
+    .map((item) => normalizeAnswerArray(item))
+    .filter((group) => group.length > 0);
+}
+
+function normalizePronunciationConfig(value: unknown, fallbackText = '') {
+  if (typeof value === 'string') {
+    const text = value.trim();
+    return text ? { text, lang: 'en-US' } : undefined;
+  }
+  if (!value || typeof value !== 'object') {
+    return undefined;
+  }
+
+  const raw = value as Record<string, unknown>;
+  const text = String(raw.text ?? raw.word ?? raw.value ?? raw.speakText ?? fallbackText ?? '').trim();
+  if (!text) return undefined;
+  return {
+    text,
+    lang: String(raw.lang || raw.language || 'en-US').trim() || 'en-US',
+    phonetic: raw.phonetic ? String(raw.phonetic) : undefined
+  };
+}
+
+function rawQuestionBlanks(question: any) {
+  const raw = question.rawJson && typeof question.rawJson === 'object' ? question.rawJson : {};
+  return Array.isArray(raw.blanks) ? raw.blanks : [];
+}
+
+function fillBlankDefinitions(question: any) {
+  if (question.type !== 'fill') return [];
+  const rawBlanks = rawQuestionBlanks(question);
+  const answerGroups = normalizeAnswerGroups(question.answerJson);
+  if (rawBlanks.length) {
+    return rawBlanks
+      .map((blank: any, index: number) => {
+        const answer = normalizeAnswerArray(blank.answer ?? blank.answers ?? blank.correctAnswer ?? answerGroups[index]);
+        return {
+          id: String(blank.id || `blank-${index + 1}`),
+          label: String(blank.label || index + 1),
+          prompt: blank.prompt ? String(blank.prompt) : '',
+          answer,
+          pronunciation: normalizePronunciationConfig(blank.pronunciation, answer[0])
+        };
+      })
+      .filter((blank: any) => blank.answer.length > 0);
+  }
+
+  if (answerGroups.length > 1) {
+    return answerGroups.map((answer, index) => ({
+      id: `blank-${index + 1}`,
+      label: String(index + 1),
+      prompt: '',
+      answer,
+      pronunciation: undefined
+    }));
+  }
+
+  const singleAnswer = normalizeAnswerArray(question.answerJson);
+  return singleAnswer.length ? [{ id: 'blank-1', label: '1', prompt: '', answer: singleAnswer, pronunciation: undefined }] : [];
+}
+
+function fillAnswerDisplayArray(question: any) {
+  const blanks = fillBlankDefinitions(question);
+  if (blanks.length > 1) return blanks.map((blank) => blank.answer.join(' / '));
+  return blanks[0]?.answer || [];
+}
+
 function questionAnswerArray(question: any) {
   const raw = Array.isArray(question.answerJson) ? question.answerJson : [];
+  if (question.type === 'fill') return fillAnswerDisplayArray(question);
   return question.type === 'judge' ? normalizeJudgeAnswerArray(raw) : raw;
 }
 
@@ -44,6 +115,9 @@ function answerTextByOptions(selected: unknown, options: any[], questionType?: s
 
 export function formatQuestion(question: any, userId?: string) {
   const answer = questionAnswerArray(question);
+  const fillBlanks = fillBlankDefinitions(question);
+  const rawJson = question.rawJson && typeof question.rawJson === 'object' ? question.rawJson : {};
+  const pronunciation = normalizePronunciationConfig(rawJson.pronunciation, answer[0]);
   const optionRows = question.options || [];
   const latestAnswer = Array.isArray(question.answers) && question.answers.length ? question.answers[0] : null;
   const bank = question.bank || null;
@@ -65,6 +139,8 @@ export function formatQuestion(question: any, userId?: string) {
     question: question.stem,
     stem: question.stem,
     answer,
+    pronunciation,
+    fillBlanks: question.type === 'fill' ? fillBlanks : undefined,
     tags: Array.isArray(question.tagsJson) ? question.tagsJson : [],
     explanation: question.explanation,
     options: optionRows.map((option: any) => ({

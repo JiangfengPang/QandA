@@ -276,6 +276,9 @@
 .qrev-answer-row {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   min-width: 0;
   color: #526174;
   font-size: 12px;
@@ -286,7 +289,19 @@
   text-overflow: ellipsis;
 }
 .qrev-answer-label { color: #64748b; font-weight: 900; }
-.qrev-answer-row strong { color: #07975d; font-weight: 950; }
+.qrev-answer-row strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #07975d;
+  font-weight: 950;
+  text-overflow: ellipsis;
+}
+.qrev-speech-actions {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 3px;
+}
 
 .qrev-card-actions {
   position: absolute;

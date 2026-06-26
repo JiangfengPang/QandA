@@ -2,8 +2,8 @@
   <section>
     <el-card>
       <template #header><strong>JSON 题库导入</strong></template>
-      <el-alert title="当前版本先支持标准 QandA JSON 导入；学习通文本解析下一步再做。" type="info" show-icon class="mb" />
-      <el-input v-model="jsonText" type="textarea" :rows="18" placeholder='粘贴 JSON，例如 { "subject": {"name":"大学语文"}, "unit": {"name":"第1课"}, "questions": [] }' />
+      <el-alert title="支持标准 QandA JSON 导入；填空题可使用 fill 类型，单空用 answer，多空用 blanks；解析支持 Markdown，可选 pronunciation 配置发音。" type="info" show-icon class="mb" />
+      <el-input v-model="jsonText" type="textarea" :rows="18" placeholder='粘贴 JSON；单空填空用 "answer": ["答案1", "答案2"]，多空填空用 "blanks": [{ "label": "1", "answer": ["答案"] }]。' />
       <div class="toolbar bottom"><el-button @click="fillSample">填入示例</el-button><el-button type="primary" :loading="loading" @click="submit">开始导入</el-button></div>
     </el-card>
   </section>
@@ -13,6 +13,52 @@ import { ref } from 'vue';
 import { ElMessage } from 'element-plus/es/components/message/index';
 import { api } from '../api/request';
 const jsonText=ref(''); const loading=ref(false);
-function fillSample(){ jsonText.value=JSON.stringify({version:1,subject:{id:'demo-subject',name:'演示科目',color:'#5b8def'},unit:{id:'demo-bank',name:'演示题库'},questions:[{id:'demo-001',type:'single',score:5,question:'这是一个演示单选题？',options:[{key:'A',text:'正确选项'},{key:'B',text:'错误选项'}],answer:['A'],explanation:'这里是答案解析。'}]},null,2); }
+function fillSample(){
+  jsonText.value=JSON.stringify({
+    version:1,
+    subject:{id:'demo-subject',name:'填空题示例',color:'#5b8def'},
+    unit:{id:'demo-bank',name:'单空与多空'},
+    questions:[
+      {
+        id:'demo-vocab-001',
+        type:'fill',
+        typeLabel:'词汇填空',
+        difficulty:'easy',
+        tags:['Unit 1','Words in use'],
+        score:1,
+        question:'充分地；足够地\\n\\n请写出对应的英文候选词 / 短语。',
+        answer:['adequately','sufficiently'],
+        pronunciation:{text:'adequately',lang:'en-US'},
+        explanation:'**正确词汇：** adequately\\n\\n中文记忆：充分地；足够地\\n\\n同义可接受答案：sufficiently'
+      },
+      {
+        id:'demo-fill-multi-001',
+        type:'fill',
+        typeLabel:'多空填空',
+        difficulty:'medium',
+        score:2,
+        question:'The noun is ____, and the adjective form is ____.',
+        blanks:[
+          {label:'1',prompt:'名词',answer:['aspiration'],pronunciation:{text:'aspiration',lang:'en-US'}},
+          {label:'2',prompt:'形容词',answer:['aspirational','ambitious'],pronunciation:{text:'aspirational',lang:'en-US'}}
+        ],
+        explanation:'**解析：**\\n\\n第 1 空填 aspiration。\\n\\n第 2 空可填 aspirational，也可接受 ambitious。'
+      },
+      {
+        id:'demo-general-fill-001',
+        type:'fill',
+        typeLabel:'通用填空',
+        difficulty:'medium',
+        score:2,
+        question:'水的化学式是____，标准大气压下沸点约为____摄氏度。',
+        blanks:[
+          {label:'1',prompt:'化学式',answer:['H2O','H₂O']},
+          {label:'2',prompt:'温度',answer:['100','一百']}
+        ],
+        explanation:'**解析：** 非英语词汇类填空通常不需要 pronunciation。'
+      }
+    ]
+  },null,2);
+}
 async function submit(){ loading.value=true; try{ const payload=JSON.parse(jsonText.value); const result=await api.post<any>('/admin/import/json',payload); ElMessage.success(`导入成功：${result.questionCount} 道题`); }catch(e){ ElMessage.error(e instanceof Error?e.message:'导入失败'); }finally{ loading.value=false; } }
 </script>

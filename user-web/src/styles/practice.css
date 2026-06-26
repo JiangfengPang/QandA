@@ -289,6 +289,34 @@
   font-weight: 600;
 }
 
+.app-frame.is-practice-frame .qx-fill-blank-row {
+  display: grid;
+  gap: 6px;
+}
+
+.app-frame.is-practice-frame .qx-fill-blank-row + .qx-fill-blank-row {
+  margin-top: 10px;
+}
+
+.app-frame.is-practice-frame .qx-fill-blank-row label {
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.app-frame.is-practice-frame .qx-answer-with-speech,
+.app-frame.is-practice-frame .qx-answer-speech-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-memorize-speech-actions {
+  margin-top: 10px;
+}
+
 @media (min-width: 981px) {
   .app-frame.is-practice-frame .qx-quiz-overview {
     position: static;

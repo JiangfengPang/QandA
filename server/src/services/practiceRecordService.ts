@@ -1,6 +1,6 @@
 import { prisma } from '../db/prisma.js';
 import { formatQuestion } from './questionService.js';
-import { isAnswerCorrect } from '../utils/answer.js';
+import { isAnswerCorrect, isFillAnswerCorrect } from '../utils/answer.js';
 import { normalizeJudgeAnswerArray } from '../utils/judge.js';
 import { HttpError } from '../utils/http.js';
 
@@ -27,6 +27,21 @@ function normalizeClientAnswerId(value?: string) {
   return text || undefined;
 }
 
+function normalizeAnswerArray(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map(String).map((item) => item.trim()).filter(Boolean);
+  if (value === null || value === undefined) return [];
+  return [String(value).trim()].filter(Boolean);
+}
+
+function fillAnswerDisplayArray(answer: unknown): string[] {
+  if (Array.isArray(answer) && answer.some((item) => Array.isArray(item))) {
+    return answer
+      .map((item) => normalizeAnswerArray(item).join(' / '))
+      .filter(Boolean);
+  }
+  return normalizeAnswerArray(answer);
+}
+
 export async function submitPracticeAnswer(userId: string, questionId: string, selected: string[], durationSeconds = 0, clientAnswerId?: string) {
   const safeClientAnswerId = normalizeClientAnswerId(clientAnswerId);
   const [question, user] = await Promise.all([
@@ -46,7 +61,9 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
     }
   }
   const answerForCheck = question.type === 'judge' ? normalizeJudgeAnswerArray(question.answerJson) : question.answerJson;
-  const correct = isAnswerCorrect(selectedForStorage, answerForCheck);
+  const correct = question.type === 'fill'
+    ? isFillAnswerCorrect(selectedForStorage, answerForCheck)
+    : isAnswerCorrect(selectedForStorage, answerForCheck);
   let writeResult: { recorded: boolean; correct: boolean };
   try {
     writeResult = await prisma.$transaction(async (tx) => {
@@ -103,7 +120,12 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
     }
   }
 
-  return { correct: writeResult.correct, answer: answerForCheck, explanation: question.explanation, recorded: writeResult.recorded };
+  return {
+    correct: writeResult.correct,
+    answer: question.type === 'fill' ? fillAnswerDisplayArray(answerForCheck) : answerForCheck,
+    explanation: question.explanation,
+    recorded: writeResult.recorded
+  };
 }
 
 export async function toggleFavoriteQuestion(userId: string, questionId: string) {
