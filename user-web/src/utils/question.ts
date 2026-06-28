@@ -46,7 +46,7 @@ export function optionKeyDisplay(option: Partial<NormalizedQuestionOption> | Que
 export function questionTypeText(questionOrType: any) {
   const type = typeof questionOrType === 'object' && questionOrType !== null ? questionOrType.type : questionOrType;
   const label = typeof questionOrType === 'object' && questionOrType !== null ? questionOrType.typeLabel : '';
-  return label || ({ single: '单选', multiple: '多选', judge: '判断', fill: '填空', python: 'Python题' } as Record<string, string>)[type] || '题目';
+  return label || ({ single: '单选', multiple: '多选', judge: '判断', fill: '填空', python: 'Python题', reading: '阅读理解' } as Record<string, string>)[type] || '题目';
 }
 
 export function difficultyText(difficulty: string) {

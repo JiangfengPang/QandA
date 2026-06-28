@@ -1,35 +1,16 @@
 import { prisma } from '../db/prisma.js';
 import { addDays, dayKey, dayLabel, dayStart, sumRecordedDurationSeconds } from '../utils/date.js';
-import { summarizeLatestAnswers } from './progressService.js';
+import { effectiveQuestionCount, effectiveQuestionCountsByBank, summarizeEffectiveAnswers } from './progressService.js';
 
 type ScopedQuestionFilter = {
   isActive?: boolean;
   bank?: { subjectId?: string; isActive?: boolean; subject?: { isActive?: boolean } };
 };
 
-type LatestAnswerRecord = {
-  questionId: string;
-  isCorrect: boolean;
-  durationSeconds?: number | null;
-  createdAt: Date;
-  question: { bank: { subjectId: string } };
-};
-
 function buildQuestionFilter(subjectId?: string): ScopedQuestionFilter {
   return subjectId
     ? { isActive: true, bank: { subjectId, isActive: true, subject: { isActive: true } } }
     : { isActive: true, bank: { isActive: true, subject: { isActive: true } } };
-}
-
-function latestAnswerMap(records: LatestAnswerRecord[]) {
-  const map = new Map<string, LatestAnswerRecord>();
-  for (const record of records) {
-    const current = map.get(record.questionId);
-    if (!current || record.createdAt.getTime() > current.createdAt.getTime()) {
-      map.set(record.questionId, record);
-    }
-  }
-  return map;
 }
 
 function buildDailyTrend(records: Array<{ createdAt: Date; isCorrect: boolean }>) {
@@ -78,8 +59,12 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
         ? { subjectId, isActive: true, subject: { isActive: true } }
         : { isActive: true, subject: { isActive: true } },
       select: {
+        id: true,
         subjectId: true,
-        _count: { select: { questions: { where: { isActive: true } } } }
+        questions: {
+          where: { isActive: true },
+          select: { id: true, bankId: true, type: true, rawJson: true }
+        }
       }
     }),
     prisma.userFavorite.findMany({
@@ -88,7 +73,7 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
     }),
     prisma.wrongQuestion.findMany({
       where: { userId, question: questionFilter },
-      select: { question: { select: { bank: { select: { subjectId: true } } } } }
+      select: { questionId: true, question: { select: { bank: { select: { subjectId: true } } } } }
     }),
     prisma.userAnswer.findMany({
       where: { userId, question: questionFilter },
@@ -128,18 +113,17 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
     })
   ]);
 
-  const latest = latestAnswerMap(answerRecords);
-  const summary = summarizeLatestAnswers(Array.from(latest.values()));
+  const effectiveQuestions = banks.flatMap((bank) => bank.questions.map((question) => ({
+    ...question,
+    subjectId: bank.subjectId
+  })));
+  const effectiveCountsByBank = effectiveQuestionCountsByBank(effectiveQuestions);
+  const summary = summarizeEffectiveAnswers(effectiveQuestions, answerRecords, wrongRecords);
   const totalBySubject = new Map<string, number>();
-  const wrongBySubject = new Map<string, number>();
   const favoriteBySubject = new Map<string, number>();
 
   for (const bank of banks) {
-    totalBySubject.set(bank.subjectId, (totalBySubject.get(bank.subjectId) || 0) + bank._count.questions);
-  }
-  for (const record of wrongRecords) {
-    const id = record.question.bank.subjectId;
-    wrongBySubject.set(id, (wrongBySubject.get(id) || 0) + 1);
+    totalBySubject.set(bank.subjectId, (totalBySubject.get(bank.subjectId) || 0) + effectiveQuestionCount(bank.questions));
   }
   for (const record of favoriteRecords) {
     const id = record.question.bank.subjectId;
@@ -147,8 +131,12 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
   }
 
   const subjectStats = subjects.map((subject) => {
-    const latestRows = Array.from(latest.values()).filter((record) => record.question.bank.subjectId === subject.id);
-    const latestSummary = summarizeLatestAnswers(latestRows);
+    const subjectQuestions = effectiveQuestions.filter((question) => question.subjectId === subject.id);
+    const latestSummary = summarizeEffectiveAnswers(
+      subjectQuestions,
+      answerRecords.filter((record) => record.question.bank.subjectId === subject.id),
+      wrongRecords.filter((record) => record.question.bank.subjectId === subject.id)
+    );
 
     return {
       id: subject.id,
@@ -158,7 +146,7 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
       correctCount: latestSummary.correctCount,
       wrongCount: latestSummary.wrongCount,
       accuracy: latestSummary.accuracy,
-      wrongQuestionCount: wrongBySubject.get(subject.id) || 0,
+      wrongQuestionCount: latestSummary.wrongQuestionCount,
       favoriteCount: favoriteBySubject.get(subject.id) || 0
     };
   });
@@ -187,7 +175,7 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
         subjectId: recentAnswer.question.bank.subjectId,
         subjectName: recentAnswer.question.bank.subject.name,
         name: recentAnswer.question.bank.name,
-        questionCount: recentAnswer.question.bank._count.questions,
+        questionCount: effectiveCountsByBank.get(recentAnswer.question.bank.id) || 0,
         lastAnsweredAt: recentAnswer.createdAt
       }
     : null;
@@ -199,8 +187,8 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
     wrongCount: summary.wrongCount,
     accuracy: summary.accuracy,
     favoriteCount: favoriteRecords.length,
-    wrongQuestionCount: wrongRecords.length,
-    totalQuestionCount: banks.reduce((sum, bank) => sum + bank._count.questions, 0),
+    wrongQuestionCount: summary.wrongQuestionCount,
+    totalQuestionCount: banks.reduce((sum, bank) => sum + effectiveQuestionCount(bank.questions), 0),
     subjectCount: subjects.length,
     bankCount: banks.length,
     totalDurationSeconds: sumRecordedDurationSeconds(answerRecords),

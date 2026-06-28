@@ -2,8 +2,8 @@
   <section>
     <el-card>
       <template #header><strong>JSON 题库导入</strong></template>
-      <el-alert title="支持标准 QandA JSON 导入；填空题可使用 fill 类型，单空用 answer，多空用 blanks；解析支持 Markdown，可选 pronunciation 配置发音。" type="info" show-icon class="mb" />
-      <el-input v-model="jsonText" type="textarea" :rows="18" placeholder='粘贴 JSON；单空填空用 "answer": ["答案1", "答案2"]，多空填空用 "blanks": [{ "label": "1", "answer": ["答案"] }]。' />
+      <el-alert title="填空题统一使用 fill + blanks；单空也写 blanks 里 1 个空，每个空只用 answer 数组。" type="info" show-icon class="mb" />
+      <el-input v-model="jsonText" type="textarea" :rows="18" placeholder='粘贴 JSON；填空题统一用 "blanks": [{ "label": "1", "answer": ["答案1", "答案2"] }]。' />
       <div class="toolbar bottom"><el-button @click="fillSample">填入示例</el-button><el-button type="primary" :loading="loading" @click="submit">开始导入</el-button></div>
     </el-card>
   </section>
@@ -27,8 +27,9 @@ function fillSample(){
         tags:['Unit 1','Words in use'],
         score:1,
         question:'充分地；足够地\\n\\n请写出对应的英文候选词 / 短语。',
-        answer:['adequately','sufficiently'],
-        pronunciation:{text:'adequately',lang:'en-US'},
+        blanks:[
+          {label:'1',answer:['adequately','sufficiently'],pronunciation:{text:'adequately',lang:'en-US'}}
+        ],
         explanation:'**正确词汇：** adequately\\n\\n中文记忆：充分地；足够地\\n\\n同义可接受答案：sufficiently'
       },
       {

@@ -55,6 +55,24 @@ function describeAdminOperation(method: string, path: string, body: unknown): Au
   let targetId: string | undefined;
 
   if (normalizedMethod === 'PATCH' && (targetId = pathTarget(path, /\/admin\/users\/([^/]+)$/))) {
+    if (targetId === 'batch') {
+      const payload = body && typeof body === 'object' && !Array.isArray(body) ? body as Record<string, unknown> : {};
+      const ids = Array.isArray(payload.ids) ? payload.ids : [];
+      const action = String(payload.action || '');
+      const count = ids.length;
+      const label = action === 'enable'
+        ? '批量启用答题用户'
+        : action === 'disable'
+          ? '批量停用答题用户'
+          : action === 'resetNickname'
+            ? '批量重置答题用户昵称'
+            : '批量修改答题用户';
+      return {
+        action: 'UPDATE_STUDENT',
+        summary: count ? `${label}：${count} 人` : label,
+        targetType: 'student-batch'
+      };
+    }
     const enabled = typeof body === 'object' && body !== null ? (body as Record<string, unknown>).isActive : undefined;
     return {
       action: 'UPDATE_STUDENT',

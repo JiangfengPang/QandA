@@ -165,47 +165,112 @@
             <el-card shadow="never" class="panel-card">
               <template #header>
                 <div class="card-head">
-                  <div class="card-title">JSON 导入</div>
-                  <span class="muted">支持 QandA 标准导出格式</span>
+                  <div class="card-title">题目导入</div>
+                  <span class="muted">支持阅读理解快捷导入与 QandA 标准 JSON</span>
                 </div>
               </template>
-              <el-alert
-                title="支持单空/多空填空：answer 表示单空可接受答案，blanks 表示逐空答案；解析 explanation 支持 Markdown；pronunciation 为可选发音配置。"
-                description="非词汇类填空无需 pronunciation；系统只会自动给英文词/短语显示发音按钮，或按 JSON 中显式 pronunciation 发音。导入目标仍优先使用左侧当前题库，未选题库时按 JSON 内 subject.name 与 unit.name 自动定位。"
-                type="info"
-                show-icon
-                class="mb"
-              />
               <div class="import-target">
                 <el-tag type="success" v-if="selectedBank">目标：{{ selectedSubject?.name }} / {{ selectedBank.name }}</el-tag>
                 <el-tag type="warning" v-else-if="selectedSubject">已选科目：{{ selectedSubject.name }}；JSON 内需包含 unit.name，或先新建/选择题库</el-tag>
                 <el-tag type="info" v-else>未选择目标，将按 JSON 内 subject.name 与 unit.name 自动导入</el-tag>
               </div>
 
-              <el-upload
-                ref="uploadRef"
-                class="mb"
-                drag
-                accept=".json,application/json"
-                :auto-upload="false"
-                :show-file-list="false"
-                :before-upload="handleFile"
-                :on-change="handleFileChange"
-              >
-                <div class="upload-inner">把 JSON 文件拖到这里，或点击选择文件</div>
-              </el-upload>
+              <el-tabs v-model="importMode" class="import-mode-tabs">
+                <el-tab-pane label="阅读理解快捷导入" name="reading">
+                  <el-alert
+                    title="一篇原文可以一次导入多道阅读理解小题"
+                    description="把原文粘到“阅读原文”，把小题按 1. 题干 答案 / A. 选项 的格式粘到“小题与选项”。解析可写在每题选项后：解析：……"
+                    type="success"
+                    show-icon
+                    class="mb"
+                  />
+                  <el-form label-width="96px" class="reading-import-form">
+                    <el-row :gutter="14">
+                      <el-col v-if="!selectedSubject" :xs="24" :md="12">
+                        <el-form-item label="科目名称">
+                          <el-input v-model="readingImport.subjectName" placeholder="例如：大学英语阅读理解" />
+                        </el-form-item>
+                      </el-col>
+                      <el-col v-if="!selectedBank" :xs="24" :md="12">
+                        <el-form-item label="题库名称">
+                          <el-input v-model="readingImport.bankName" placeholder="例如：四级阅读 Passage One" />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="14">
+                      <el-col :xs="24" :md="18">
+                        <el-form-item label="总题干">
+                          <el-input v-model="readingImport.stem" placeholder="Read the passage and choose the best answer." />
+                        </el-form-item>
+                      </el-col>
+                      <el-col :xs="24" :md="6">
+                        <el-form-item label="分值">
+                          <el-input-number v-model="readingImport.score" :min="0" :step="0.5" controls-position="right" style="width:100%" />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-form-item label="阅读原文">
+                      <el-input
+                        v-model="readingImport.passage"
+                        class="reading-import-textarea"
+                        type="textarea"
+                        :rows="10"
+                        placeholder="粘贴阅读理解原文。支持 Markdown，段落之间可保留空行。"
+                      />
+                    </el-form-item>
+                    <el-form-item label="小题与选项">
+                      <el-input
+                        v-model="readingImport.questionsText"
+                        class="reading-import-textarea"
+                        type="textarea"
+                        :rows="12"
+                        placeholder="1. What do we learn from the passage? D&#10;A. Option text&#10;B. Option text&#10;C. Option text&#10;D. Option text&#10;解析：可选解析&#10;&#10;2. Next question? A&#10;A. ..."
+                      />
+                    </el-form-item>
+                  </el-form>
+                  <div class="reading-import-actions">
+                    <el-button @click="fillReadingSample">填入阅读示例</el-button>
+                    <el-button @click="generateReadingJson">生成到 JSON</el-button>
+                    <el-button type="primary" :loading="importing" @click="submitReadingImport">直接导入阅读理解</el-button>
+                  </div>
+                </el-tab-pane>
 
-              <el-input
-                v-model="jsonText"
-                type="textarea"
-                :rows="16"
-                placeholder='粘贴 JSON；单空填空用 "answer": ["答案1", "答案2"]，多空填空用 "blanks": [{ "label": "1", "answer": ["答案"] }]。'
-              />
-              <div class="toolbar bottom">
-                <el-button @click="fillSample">填入示例</el-button>
-                <el-button @click="clearImport">清空</el-button>
-                <el-button type="primary" :loading="importing" @click="submitImport">开始导入</el-button>
-              </div>
+                <el-tab-pane label="JSON 原始导入" name="json">
+                  <el-alert
+                    title="填空题统一使用 blanks：单空也写 blanks 里 1 个空，每个空只用 answer 数组。"
+                    description='阅读理解题统一使用 type/passageId/question/readingPassage/readingQuestion/options[{ key, text }]/answer/explanation。同一篇短文下的小题必须共用 passageId。'
+                    type="info"
+                    show-icon
+                    class="mb"
+                  />
+
+                  <el-upload
+                    ref="uploadRef"
+                    class="mb"
+                    drag
+                    accept=".json,application/json"
+                    :auto-upload="false"
+                    :show-file-list="false"
+                    :before-upload="handleFile"
+                    :on-change="handleFileChange"
+                  >
+                    <div class="upload-inner">把 JSON 文件拖到这里，或点击选择文件</div>
+                  </el-upload>
+
+                  <el-input
+                    v-model="jsonText"
+                    type="textarea"
+                    :rows="16"
+                    placeholder='粘贴 JSON；阅读理解必须使用 "type": "reading"，并填写 passageId / question / readingPassage / readingQuestion / options[{ "key": "A", "text": "..." }] / answer。'
+                  />
+                  <div class="toolbar bottom">
+                    <el-button @click="fillSample">填入示例</el-button>
+                    <el-button @click="clearImport">清空</el-button>
+                    <el-button type="primary" :loading="importing" @click="submitImport">开始导入</el-button>
+                  </div>
+                </el-tab-pane>
+              </el-tabs>
+
               <el-result v-if="lastImport" icon="success" title="导入成功" :sub-title="importSummary">
                 <template #extra>
                   <el-button type="primary" @click="afterImportViewQuestions">查看导入题目</el-button>
@@ -243,6 +308,7 @@
                     <el-option label="判断" value="judge" />
                     <el-option label="填空" value="fill" />
                     <el-option label="Python题" value="python" />
+                    <el-option label="阅读理解" value="reading" />
                   </el-select>
                   <el-button @click="loadQuestions">搜索/刷新</el-button>
                 </div>
@@ -309,6 +375,7 @@
             <el-option label="判断" value="judge" />
             <el-option label="填空" value="fill" />
             <el-option label="Python题" value="python" />
+            <el-option label="阅读理解" value="reading" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="questionForm.type === 'python'" label="题型标签">
@@ -319,8 +386,8 @@
             placeholder="默认：Python题；例如：Python基础、编程题"
           />
         </el-form-item>
-        <el-form-item label="题干">
-          <el-input v-model="questionForm.stem" type="textarea" :rows="4" placeholder="请输入题目内容，Python题可使用 Markdown" />
+        <el-form-item :label="questionForm.type === 'reading' ? '总题干' : '题干'">
+          <el-input v-model="questionForm.stem" type="textarea" :rows="4" :placeholder="questionForm.type === 'reading' ? 'Read the passage and choose the best answer.' : '题目内容'" />
         </el-form-item>
         <template v-if="questionForm.type === 'python'">
           <el-form-item label="正确答案">
@@ -341,20 +408,76 @@
             </div>
           </el-form-item>
         </template>
-        <template v-else-if="questionForm.type === 'fill'">
-          <el-form-item label="填空模式">
-            <el-radio-group v-model="questionForm.fillMode">
-              <el-radio-button label="single">单空</el-radio-button>
-              <el-radio-button label="multi">多空</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="正确答案">
+        <template v-else-if="questionForm.type === 'reading'">
+          <div class="reading-question-editor">
+            <div class="reading-section-head">
+              <span>短文信息</span>
+            </div>
+          <el-form-item label="阅读原文">
             <el-input
-              v-model="questionForm.fillAnswerText"
+              v-model="questionForm.readingPassage"
               type="textarea"
-              :rows="questionForm.fillMode === 'multi' ? 6 : 4"
-              :placeholder="questionForm.fillMode === 'multi' ? '每行一个空；同一空多个可接受答案用 / 分隔，例如：\naspiration\naspirational / ambitious' : '每行一个可接受答案，例如：\nadequately\nsufficiently'"
+              :rows="10"
+              placeholder="阅读原文"
             />
+          </el-form-item>
+            <div class="reading-section-head">
+              <span>阅读小题</span>
+              <el-button type="primary" plain @click="addReadingQuestionItem">添加小题</el-button>
+            </div>
+            <el-tabs
+              v-model="questionForm.activeReadingItemId"
+              type="card"
+              class="reading-question-tabs"
+            >
+              <el-tab-pane
+                v-for="(item, itemIndex) in questionForm.readingItems"
+                :key="item.localId"
+                :label="`小题 ${itemIndex + 1}`"
+                :name="item.localId"
+              >
+                <section class="reading-question-block">
+                <div class="reading-question-block-head">
+                  <strong>小题 {{ itemIndex + 1 }}</strong>
+                  <div>
+                    <el-button size="small" @click="duplicateReadingQuestionItem(itemIndex)">复制</el-button>
+                    <el-button size="small" type="danger" plain :disabled="questionForm.readingItems.length <= 1" @click="removeReadingQuestionItem(itemIndex)">删除</el-button>
+                  </div>
+                </div>
+                <el-form-item label="题干">
+                  <el-input
+                    v-model="item.readingQuestion"
+                    type="textarea"
+                    :rows="2"
+                    placeholder="题干"
+                  />
+                </el-form-item>
+                <el-form-item label="选项">
+                  <div class="option-editor">
+                    <div v-for="(option, optionIndex) in item.options" :key="optionIndex" class="option-line">
+                      <el-input v-model="option.label" style="width:80px" placeholder="A" />
+                      <el-input v-model="option.content" placeholder="选项内容" />
+                      <el-button type="danger" plain :disabled="item.options.length <= 2" @click="item.options.splice(optionIndex, 1)">删除</el-button>
+                    </div>
+                    <el-button @click="addReadingQuestionOption(item)">添加选项</el-button>
+                  </div>
+                </el-form-item>
+                <el-form-item label="答案">
+                  <el-select v-model="item.answer" style="width:100%" placeholder="正确答案">
+                    <el-option v-for="option in item.options" :key="option.label" :label="option.label" :value="option.label" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="解析">
+                  <el-input v-model="item.explanation" type="textarea" :rows="3" placeholder="解析" />
+                </el-form-item>
+              </section>
+              </el-tab-pane>
+            </el-tabs>
+              </div>
+        </template>
+        <template v-else-if="questionForm.type === 'fill'">
+          <el-form-item label="填空答案">
+            <FillAnswerEditor v-model:mode="questionForm.fillMode" v-model:answer="questionForm.fillAnswerValue" />
           </el-form-item>
           <el-form-item label="解析"><el-input v-model="questionForm.explanation" type="textarea" :rows="3" /></el-form-item>
         </template>
@@ -409,6 +532,8 @@ import { ElTabPane, ElTabs } from 'element-plus/es/components/tabs/index';
 import { ElTag } from 'element-plus/es/components/tag/index';
 import { ElUpload } from 'element-plus/es/components/upload/index';
 import { api } from '../api/request';
+import FillAnswerEditor from '../components/FillAnswerEditor.vue';
+import { isMultiFillAnswer, normalizeFillAnswerPayload } from '../utils/fillAnswers';
 import { decodeMarkdownCode, renderMarkdown } from '../utils/markdown';
 
 type BankNode = {
@@ -456,17 +581,26 @@ const bankMode = ref<'edit' | 'create'>('create');
 const subjectForm = reactive({ id: '', name: '', description: '', color: '#5b8def', isActive: true });
 const bankForm = reactive({ id: '', name: '', description: '', isActive: true });
 
+const importMode = ref<'reading' | 'json'>('reading');
 const jsonText = ref('');
 const importing = ref(false);
 const lastImport = ref<any>(null);
 const uploadRef = ref<any>();
+const readingImport = reactive({
+  subjectName: '大学英语阅读理解',
+  bankName: '阅读理解导入',
+  stem: 'Read the passage and choose the best answer.',
+  score: 2,
+  passage: '',
+  questionsText: ''
+});
 
 const questions = ref<any[]>([]);
 const questionKeyword = ref('');
 const questionType = ref('');
 const questionMeta = reactive({ page: 1, pageSize: 20, total: 0 });
 const questionDialog = ref(false);
-const questionForm = reactive<any>({ id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], fillAnswerText: '', fillMode: 'single', explanation: '', options: [], pythonAnswerMarkdown: '' });
+const questionForm = reactive<any>({ id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], fillAnswerValue: [], fillMode: 'single', explanation: '', options: [], pythonAnswerMarkdown: '', passageId: '', readingPassage: '', activeReadingItemId: '', readingItems: [] as ReadingQuestionFormItem[] });
 const renderedPythonAnswer = computed(() => renderMarkdown(questionForm.pythonAnswerMarkdown || ''));
 const status = ref<any>({});
 
@@ -522,6 +656,23 @@ const importSummary = computed(() => {
   const bank = lastImport.value.bank?.name || '-';
   return `科目：${subject}；题库：${bank}；新增：${lastImport.value.createdCount ?? 0}；更新：${lastImport.value.updatedCount ?? 0}；共处理：${lastImport.value.questionCount ?? 0}`;
 });
+
+type ReadingOptionDraft = { label: string; text: string };
+type ReadingQuestionDraft = {
+  number: string;
+  question: string;
+  answer: string;
+  options: ReadingOptionDraft[];
+  explanation: string;
+};
+type ReadingQuestionFormItem = {
+  id: string;
+  localId: string;
+  readingQuestion: string;
+  answer: string;
+  options: Array<{ label: string; content: string }>;
+  explanation: string;
+};
 
 async function loadTree() {
   tree.value = await api.get<SubjectNode[]>('/admin/tree');
@@ -848,6 +999,216 @@ async function deleteBank() {
   await loadTree();
 }
 
+function fillReadingSample() {
+  readingImport.subjectName = selectedSubject.value?.name || '大学英语阅读理解';
+  readingImport.bankName = selectedBank.value?.name || 'Passage One 阅读理解';
+  readingImport.stem = 'Passage One. Read the passage and choose the best answer.';
+  readingImport.score = 2;
+  readingImport.passage = `Passage One
+
+New research suggests that pandas may be at risk of dying out because they are too comfortable. Experts say too much happiness can stop the bears from searching for new mates.
+
+Environmentalists have long believed that building roads or homes near the bears may threaten their survival by “reducing or fragmenting their natural habitats”. But the new research suggests that a modest degree of discomfort and fragmentation may actually help preserve panda populations.`;
+  readingImport.questionsText = `1. What do we learn from new research about pandas? D
+A. They are losing habitat due to the building of roads and houses.
+B. They have stopped seeking new mates for reproduction.
+C. They may not adapt to the fragmentation of their habitat.
+D. They may cease to exist as a result of enjoying too good a life.
+解析：The opening paragraph says pandas may risk dying out because they are too comfortable.
+
+2. What can we conclude from the new research? A
+A. Environmentalists’ long-time belief regarding panda conservation may be misleading.
+B. Housing development near pandas’ homes may threaten their survival.
+C. Pandas’ natural habitats are becoming less suitable for reproduction.
+D. The increased panda population is attributed to the fragmentation of their habitat.
+解析：The passage contrasts the old belief with the new finding that modest fragmentation may help.`;
+}
+
+function extractReadingAnswer(text: string) {
+  const match = text.match(/\s+(?:(?:答案|正确答案|Answer|Correct answer)\s*[:：]?\s*)?([A-Ha-h])\s*$/);
+  if (!match || match.index === undefined) return { text: text.trim(), answer: '' };
+  return {
+    text: text.slice(0, match.index).trim(),
+    answer: match[1].toUpperCase()
+  };
+}
+
+function parseReadingQuestionsText(input: string): ReadingQuestionDraft[] {
+  const lines = input.replace(/\r\n?/g, '\n').split('\n');
+  const items: ReadingQuestionDraft[] = [];
+  let current: ReadingQuestionDraft | null = null;
+  let activeOption: ReadingOptionDraft | null = null;
+  let readingExplanation = false;
+
+  function pushCurrent() {
+    if (!current) return;
+    current.question = current.question.replace(/\s+/g, ' ').trim();
+    current.explanation = current.explanation.trim();
+    current.options = current.options.map((option) => ({
+      label: option.label,
+      text: option.text.replace(/\s+/g, ' ').trim()
+    }));
+    const title = `第 ${current.number} 题`;
+    if (!current.question) throw new Error(`${title} 缺少小题题干`);
+    if (current.options.length < 2) throw new Error(`${title} 至少需要 2 个选项`);
+    if (!current.answer) throw new Error(`${title} 缺少正确答案，请写在题干末尾或单独写“答案：A”`);
+    if (!current.options.some((option) => option.label === current!.answer)) {
+      throw new Error(`${title} 的正确答案 ${current.answer} 没有对应选项`);
+    }
+    items.push(current);
+  }
+
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line) return;
+
+    const questionMatch = line.match(/^(\d+)[\.．、\)]\s*(.+)$/);
+    if (questionMatch) {
+      pushCurrent();
+      const extracted = extractReadingAnswer(questionMatch[2]);
+      current = {
+        number: questionMatch[1],
+        question: extracted.text,
+        answer: extracted.answer,
+        options: [],
+        explanation: ''
+      };
+      activeOption = null;
+      readingExplanation = false;
+      return;
+    }
+
+    if (!current) {
+      throw new Error('小题文本需要从“1. 题干 答案”开始');
+    }
+
+    const answerMatch = line.match(/^(?:答案|正确答案|Answer|Correct answer)\s*[:：]?\s*([A-Ha-h])\s*$/);
+    if (answerMatch) {
+      current.answer = answerMatch[1].toUpperCase();
+      activeOption = null;
+      readingExplanation = false;
+      return;
+    }
+
+    const explanationMatch = line.match(/^(?:解析|Explanation|Analysis)\s*[:：]\s*(.*)$/i);
+    if (explanationMatch) {
+      current.explanation = [current.explanation, explanationMatch[1].trim()].filter(Boolean).join('\n');
+      activeOption = null;
+      readingExplanation = true;
+      return;
+    }
+
+    const optionMatch = line.match(/^([A-Ha-h])[\.\)．、]\s*(.+)$/);
+    if (optionMatch) {
+      const option = { label: optionMatch[1].toUpperCase(), text: optionMatch[2].trim() };
+      current.options.push(option);
+      activeOption = option;
+      readingExplanation = false;
+      return;
+    }
+
+    if (readingExplanation) {
+      current.explanation = [current.explanation, line].filter(Boolean).join('\n');
+    } else if (activeOption) {
+      activeOption.text = `${activeOption.text} ${line}`.trim();
+    } else {
+      current.question = `${current.question} ${line}`.trim();
+    }
+  });
+
+  pushCurrent();
+  if (!items.length) throw new Error('没有解析到阅读理解小题');
+  return items;
+}
+
+function safeLegacyId(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+}
+
+function buildReadingImportPayload() {
+  const passage = readingImport.passage.trim();
+  if (!passage) throw new Error('请先填写阅读原文');
+
+  const subjectName = selectedSubject.value?.name || readingImport.subjectName.trim();
+  const bankName = selectedBank.value?.name || readingImport.bankName.trim();
+  if (!selectedSubject.value && !subjectName) throw new Error('未选择科目时，需要填写科目名称');
+  if (!selectedBank.value && !bankName) throw new Error('未选择题库时，需要填写题库名称');
+
+  const items = parseReadingQuestionsText(readingImport.questionsText);
+  const stem = readingImport.stem.trim() || 'Read the passage and choose the best answer.';
+  const idPrefix = safeLegacyId(`${bankName}-${Date.now().toString(36)}`) || `reading-${Date.now().toString(36)}`;
+  const passageId = idPrefix;
+
+  return {
+    version: 1,
+    source: '阅读理解快捷导入',
+    subject: {
+      id: selectedSubject.value?.legacyId || safeLegacyId(subjectName),
+      name: subjectName,
+      color: selectedSubject.value?.color || '#5b8def'
+    },
+    unit: {
+      id: selectedBank.value?.legacyId || safeLegacyId(bankName),
+      name: bankName,
+      description: '阅读理解快捷导入'
+    },
+    questions: items.map((item, index) => ({
+      id: `${idPrefix}-${String(index + 1).padStart(3, '0')}`,
+      type: 'reading',
+      typeLabel: '阅读理解',
+      score: Number(readingImport.score || 0),
+      passageId,
+      question: stem,
+      readingPassage: passage,
+      readingQuestion: item.question,
+      options: item.options.map((option) => ({ key: option.label, text: option.text })),
+      answer: item.answer,
+      explanation: item.explanation
+    }))
+  };
+}
+
+function generateReadingJson() {
+  try {
+    jsonText.value = JSON.stringify(buildReadingImportPayload(), null, 2);
+    importMode.value = 'json';
+    ElMessage.success('已生成阅读理解 JSON，可检查后导入');
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '生成失败');
+  }
+}
+
+async function finishImport(result: any) {
+  lastImport.value = result;
+  ElMessage.success(`导入成功：新增 ${result.createdCount ?? 0}，更新 ${result.updatedCount ?? 0}`);
+  await loadTree();
+  const subject = tree.value.find((item) => item.id === result.subject?.id);
+  const bank = subject?.banks.find((item) => item.id === result.bank?.id);
+  if (subject && bank) selectBank(subject, bank, false);
+}
+
+async function submitReadingImport() {
+  importing.value = true;
+  try {
+    const payload = buildReadingImportPayload();
+    const result = await api.post<any>('/admin/import/json', {
+      payload,
+      subjectId: selectedSubject.value?.id,
+      bankId: selectedBank.value?.id
+    });
+    await finishImport(result);
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '导入失败');
+  } finally {
+    importing.value = false;
+  }
+}
+
 function fillSample() {
   jsonText.value = JSON.stringify({
     version: 1,
@@ -863,8 +1224,9 @@ function fillSample() {
         tags: ['演示', '词汇'],
         score: 1,
         question: '充分地；足够地\n\n请写出对应的英文候选词 / 短语。',
-        answer: ['adequately'],
-        pronunciation: { text: 'adequately', lang: 'en-US' },
+        blanks: [
+          { label: '1', answer: ['adequately'], pronunciation: { text: 'adequately', lang: 'en-US' } }
+        ],
         explanation: '正确词汇：adequately\n中文记忆：充分地；足够地'
       },
       {
@@ -916,12 +1278,7 @@ async function submitImport() {
       subjectId: selectedSubject.value?.id,
       bankId: selectedBank.value?.id
     });
-    lastImport.value = result;
-    ElMessage.success(`导入成功：新增 ${result.createdCount ?? 0}，更新 ${result.updatedCount ?? 0}`);
-    await loadTree();
-    const subject = tree.value.find((item) => item.id === result.subject?.id);
-    const bank = subject?.banks.find((item) => item.id === result.bank?.id);
-    if (subject && bank) selectBank(subject, bank, false);
+    await finishImport(result);
   } catch (error) {
     ElMessage.error(error instanceof Error ? error.message : '导入失败');
   } finally {
@@ -953,7 +1310,7 @@ function questionTypeLabel(questionOrType: any) {
   const type = typeof questionOrType === 'object' && questionOrType !== null ? questionOrType.type : questionOrType;
   const customLabel = typeof questionOrType === 'object' && questionOrType !== null ? String(questionOrType.typeLabel || '').trim() : '';
   if (customLabel) return customLabel;
-  return ({ single: '单选', multiple: '多选', judge: '判断', fill: '填空', python: 'Python题' } as Record<string, string>)[type] || type || '题目';
+  return ({ single: '单选', multiple: '多选', judge: '判断', fill: '填空', python: 'Python题', reading: '阅读理解' } as Record<string, string>)[type] || type || '题目';
 }
 
 function questionAnswerSummary(row: any) {
@@ -977,20 +1334,103 @@ function normalizedQuestionTypeLabel() {
 }
 
 function fillQuestionAnswerArray() {
-  const lines = String(questionForm.fillAnswerText || '').split(/\r?\n/).map((item: string) => item.trim()).filter(Boolean);
-  if (questionForm.fillMode === 'multi') {
-    return lines
-      .map((line: string) => line.split(/\s*(?:\/|｜|\||、)\s*/).map((item: string) => item.trim()).filter(Boolean))
-      .filter((group: string[]) => group.length);
-  }
-  return lines;
+  return normalizeFillAnswerPayload(questionForm.fillAnswerValue, questionForm.fillMode);
 }
 
-function fillQuestionAnswerText(value: any) {
-  if (Array.isArray(value) && value.some((item: any) => Array.isArray(item))) {
-    return value.map((item: any) => Array.isArray(item) ? item.join(' / ') : String(item)).join('\n');
+function nextReadingLocalId() {
+  return `reading-item-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function defaultReadingOptions() {
+  return ['A', 'B', 'C', 'D'].map((label) => ({ label, content: '' }));
+}
+
+function createReadingQuestionItem(partial: Partial<ReadingQuestionFormItem> = {}): ReadingQuestionFormItem {
+  return {
+    id: partial.id || '',
+    localId: partial.localId || nextReadingLocalId(),
+    readingQuestion: partial.readingQuestion || '',
+    answer: partial.answer || '',
+    options: (partial.options && partial.options.length ? partial.options : defaultReadingOptions())
+      .map((option) => ({ label: String(option.label || '').trim(), content: String(option.content || '') })),
+    explanation: partial.explanation || ''
+  };
+}
+
+function generateReadingPassageId() {
+  const base = safeLegacyId([
+    selectedBank.value?.legacyId || selectedBank.value?.name || 'reading',
+    Date.now().toString(36)
+  ].filter(Boolean).join('-'));
+  return base || `reading-${Date.now().toString(36)}`;
+}
+
+function ensureReadingQuestionItems() {
+  if (!Array.isArray(questionForm.readingItems) || questionForm.readingItems.length === 0) {
+    const item = createReadingQuestionItem();
+    questionForm.readingItems = [item];
+    questionForm.activeReadingItemId = item.localId;
+  } else if (!questionForm.readingItems.some((item: ReadingQuestionFormItem) => item.localId === questionForm.activeReadingItemId)) {
+    questionForm.activeReadingItemId = questionForm.readingItems[0].localId;
   }
-  return Array.isArray(value) ? value.join('\n') : '';
+}
+
+function addReadingQuestionItem() {
+  ensureReadingQuestionItems();
+  const item = createReadingQuestionItem();
+  questionForm.readingItems.push(item);
+  questionForm.activeReadingItemId = item.localId;
+}
+
+function duplicateReadingQuestionItem(index: number) {
+  const source = questionForm.readingItems[index];
+  if (!source) return;
+  const item = createReadingQuestionItem({
+    readingQuestion: source.readingQuestion,
+    answer: source.answer,
+    options: source.options.map((option: any) => ({ label: option.label, content: option.content })),
+    explanation: source.explanation
+  });
+  questionForm.readingItems.splice(index + 1, 0, item);
+  questionForm.activeReadingItemId = item.localId;
+}
+
+function removeReadingQuestionItem(index: number) {
+  if (questionForm.readingItems.length <= 1) return;
+  const removed = questionForm.readingItems[index];
+  questionForm.readingItems.splice(index, 1);
+  if (removed?.localId === questionForm.activeReadingItemId) {
+    const next = questionForm.readingItems[Math.min(index, questionForm.readingItems.length - 1)];
+    questionForm.activeReadingItemId = next?.localId || '';
+  }
+}
+
+function addReadingQuestionOption(item: ReadingQuestionFormItem) {
+  const label = String.fromCharCode(65 + item.options.length);
+  item.options.push({ label, content: '' });
+}
+
+function normalizedReadingQuestionItems() {
+  ensureReadingQuestionItems();
+  return questionForm.readingItems.map((item: ReadingQuestionFormItem, index: number) => {
+    const readingQuestion = String(item.readingQuestion || '').trim();
+    const options = (item.options || [])
+      .map((option) => ({ label: String(option.label || '').trim(), content: String(option.content || '') }))
+      .filter((option) => option.label && option.content.trim());
+    const answer = String(item.answer || '').trim();
+    if (!readingQuestion) throw new Error(`第 ${index + 1} 道小题缺少题干`);
+    if (options.length < 2) throw new Error(`第 ${index + 1} 道小题至少需要 2 个选项`);
+    if (new Set(options.map((option) => option.label)).size !== options.length) throw new Error(`第 ${index + 1} 道小题选项标识不能重复`);
+    if (!answer) throw new Error(`第 ${index + 1} 道小题缺少正确答案`);
+    if (!options.some((option) => option.label === answer)) throw new Error(`第 ${index + 1} 道小题正确答案必须对应已有选项`);
+    return {
+      id: item.id || undefined,
+      readingQuestion,
+      options,
+      answer,
+      explanation: String(item.explanation || '')
+    };
+  });
 }
 
 async function loadQuestions() {
@@ -1005,13 +1445,53 @@ async function loadQuestions() {
 
 function openQuestionCreate() {
   if (!selectedBank.value) return ElMessage.warning('请先选择题库');
-  Object.assign(questionForm, { id: '', type: 'single', typeLabel: '', stem: '', score: 0, answer: [], fillAnswerText: '', fillMode: 'single', explanation: '', options: [{ label: 'A', content: '' }, { label: 'B', content: '' }], pythonAnswerMarkdown: '' });
+  const readingItem = createReadingQuestionItem();
+  Object.assign(questionForm, {
+    id: '',
+    type: 'single',
+    typeLabel: '',
+    stem: '',
+    score: 0,
+    answer: [],
+    fillAnswerValue: [],
+    fillMode: 'single',
+    explanation: '',
+    options: [{ label: 'A', content: '' }, { label: 'B', content: '' }],
+    pythonAnswerMarkdown: '',
+    passageId: '',
+    readingPassage: '',
+    activeReadingItemId: readingItem.localId,
+    readingItems: [readingItem]
+  });
   questionDialog.value = true;
 }
 
-function openQuestionEdit(row: any) {
+async function openQuestionEdit(row: any) {
   const rowAnswer = Array.isArray(row.answerJson) ? row.answerJson : [];
-  const multiFill = rowAnswer.some((item: any) => Array.isArray(item));
+  const multiFill = isMultiFillAnswer(rowAnswer);
+  const raw = row.rawJson && typeof row.rawJson === 'object' ? row.rawJson : {};
+  let readingRows = row.type === 'reading' ? [row] : [];
+  if (row.type === 'reading' && raw.passageId && row.bankId) {
+    try {
+      readingRows = await api.get<any[]>(`/admin/reading-passages/${encodeURIComponent(String(raw.passageId))}?bankId=${encodeURIComponent(row.bankId)}`);
+    } catch (error) {
+      ElMessage.error(error instanceof Error ? error.message : '阅读理解短文读取失败');
+      return;
+    }
+  }
+  const readingItems = row.type === 'reading'
+    ? readingRows.map((item: any) => {
+        const itemRaw = item.rawJson && typeof item.rawJson === 'object' ? item.rawJson : {};
+        const itemAnswer = Array.isArray(item.answerJson) ? item.answerJson : [];
+        return createReadingQuestionItem({
+          id: item.id,
+          readingQuestion: String(itemRaw.readingQuestion || ''),
+          answer: String(itemAnswer[0] || ''),
+          options: (item.options || []).map((option: any) => ({ label: option.label, content: option.content })),
+          explanation: item.explanation || ''
+        });
+      })
+    : [createReadingQuestionItem()];
   Object.assign(questionForm, {
     id: row.id,
     type: row.type,
@@ -1019,11 +1499,15 @@ function openQuestionEdit(row: any) {
     stem: row.stem,
     score: row.score,
     answer: rowAnswer,
-    fillAnswerText: row.type === 'fill' ? fillQuestionAnswerText(rowAnswer) : '',
+    fillAnswerValue: row.type === 'fill' ? normalizeFillAnswerPayload(rowAnswer, multiFill ? 'multi' : 'single') : [],
     fillMode: multiFill ? 'multi' : 'single',
     explanation: row.explanation || '',
     options: (row.options || []).map((option: any) => ({ label: option.label, content: option.content })),
-    pythonAnswerMarkdown: row.type === 'python' ? String(rowAnswer[0] || '') : ''
+    pythonAnswerMarkdown: row.type === 'python' ? String(rowAnswer[0] || '') : '',
+    passageId: row.type === 'reading' ? String(raw.passageId || '') : '',
+    readingPassage: row.type === 'reading' ? String(raw.readingPassage || '') : '',
+    activeReadingItemId: readingItems[0]?.localId || '',
+    readingItems
   });
   if (questionForm.type === 'judge') applyJudgeQuestionOptions();
   questionDialog.value = true;
@@ -1059,7 +1543,28 @@ async function saveQuestion() {
   if (!selectedBank.value) return ElMessage.warning('请先选择题库');
   if (!questionForm.stem.trim()) return ElMessage.warning('请输入题干');
   if (questionForm.type === 'python' && !String(questionForm.pythonAnswerMarkdown || '').trim()) return ElMessage.warning('请输入正确答案 Markdown');
+  if (questionForm.type === 'reading' && !String(questionForm.readingPassage || '').trim()) return ElMessage.warning('请输入阅读理解原文');
   if (questionForm.type === 'fill' && fillQuestionAnswerArray().length === 0) return ElMessage.warning('请至少填写一个正确答案');
+  if (questionForm.type === 'reading') {
+    try {
+      if (!String(questionForm.passageId || '').trim()) questionForm.passageId = generateReadingPassageId();
+      await api.post('/admin/reading-passages', {
+        bankId: selectedBank.value.id,
+        stem: questionForm.stem,
+        score: Number(questionForm.score || 0),
+        passageId: questionForm.passageId,
+        readingPassage: questionForm.readingPassage,
+        questions: normalizedReadingQuestionItems()
+      });
+      ElMessage.success('阅读理解已保存');
+      questionDialog.value = false;
+      await loadQuestions();
+      await loadTree();
+    } catch (error) {
+      ElMessage.error(error instanceof Error ? error.message : '保存失败');
+    }
+    return;
+  }
   const payload = questionForm.type === 'python'
     ? {
         bankId: selectedBank.value.id,
@@ -1146,6 +1651,12 @@ watch(() => questionForm.type, (type) => {
     if (!questionForm.fillMode) questionForm.fillMode = 'single';
   }
   if (type === 'single' || type === 'multiple') ensureQuestionChoiceOptions();
+  if (type === 'reading') {
+    questionForm.options = [];
+    questionForm.answer = [];
+    if (!String(questionForm.passageId || '').trim()) questionForm.passageId = generateReadingPassageId();
+    ensureReadingQuestionItems();
+  }
 });
 
 onMounted(async () => {

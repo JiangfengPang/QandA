@@ -313,11 +313,459 @@
   min-width: 0;
 }
 
+.app-frame.is-practice-frame .qx-result-answer-label {
+  flex: 0 0 auto;
+}
+
+.app-frame.is-practice-frame .qx-result-answer-parts {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-result-answer-part {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-result-answer-separator {
+  color: #16a37a;
+  font-weight: 800;
+}
+
 .app-frame.is-practice-frame .qx-memorize-speech-actions {
   margin-top: 10px;
 }
 
+.app-frame.is-practice-frame .qx-reading-layout {
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage {
+  min-width: 0;
+  padding: 4px 0 12px;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage-kicker {
+  width: fit-content;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #b45309;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage-text,
+.app-frame.is-practice-frame .qx-reading-passage-empty {
+  margin-top: 12px;
+  padding-left: 16px;
+  border-left: 3px solid #fdba74;
+  color: #1f2937;
+  font-size: var(--practice-question-font-size, 17px);
+  line-height: 1.86;
+  font-weight: 400;
+  letter-spacing: 0;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage-empty {
+  color: #94a3b8;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown {
+  padding: 0 0 0 16px;
+  white-space: normal;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown p {
+  margin: 0 0 18px;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown p:last-child,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown ul:last-child,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown ol:last-child,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown blockquote:last-child,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown table:last-child {
+  margin-bottom: 0;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h1,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h2,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h3,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h4,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h5,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h6 {
+  margin: 22px 0 12px;
+  color: #111827;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h1:first-child,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h2:first-child,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h3:first-child,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown h4:first-child {
+  margin-top: 0;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown ul,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown ol {
+  margin: 0 0 18px 22px;
+  padding: 0;
+  color: inherit;
+  line-height: inherit;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown li + li {
+  margin-top: 6px;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown blockquote {
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border-left: 4px solid #fdba74;
+  border-radius: 8px;
+  background: #fff7ed;
+  color: #374151;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown table {
+  width: 100%;
+  margin: 0 0 18px;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 8px;
+  font-size: .92em;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown th,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown th {
+  background: #f8fafc;
+  color: #111827;
+  font-weight: 700;
+}
+
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown p code,
+.app-frame.is-practice-frame .qx-reading-passage .qx-reading-passage-markdown li code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #0f5fc6;
+  font-size: .9em;
+}
+
+.app-frame.is-practice-frame .qx-reading-sheet {
+  position: sticky;
+  bottom: 0;
+  z-index: 12;
+  min-width: 0;
+  margin-top: 4px;
+  padding: 8px 14px 16px;
+  border: 1px solid rgba(203, 213, 225, .9);
+  border-radius: 18px 18px 12px 12px;
+  background: rgba(255, 255, 255, .98);
+  box-shadow: 0 -8px 30px rgba(15, 23, 42, .12);
+  backdrop-filter: blur(14px);
+}
+
+.app-frame.is-practice-frame .qx-reading-sheet.is-collapsed {
+  padding-bottom: 8px;
+}
+
+.app-frame.is-practice-frame .qx-reading-sheet-handle {
+  width: 100%;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #94a3b8;
+}
+
+.app-frame.is-practice-frame .qx-reading-sheet-handle span {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: #cbd5e1;
+}
+
+.app-frame.is-practice-frame .qx-reading-sheet-body {
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-reading-question-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 2px 0 8px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.app-frame.is-practice-frame .qx-reading-question-head span {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #eef6ff;
+  color: #1d4ed8;
+}
+
+.app-frame.is-practice-frame .qx-reading-question-head strong {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.app-frame.is-practice-frame .qx-reading-question-title {
+  margin: 0 0 12px;
+  color: #111827;
+  font-size: 16px;
+  line-height: 1.58;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.app-frame.is-practice-frame .qx-reading-option-list {
+  padding: 0;
+}
+
+.app-frame.is-practice-frame .qx-reading-result-box {
+  margin-top: 12px !important;
+  padding: 12px 13px !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.app-frame.is-practice-frame .qx-reading-float-label {
+  display: none;
+}
+
+.app-frame.is-practice-frame .qx-reading-desktop-actions {
+  display: none !important;
+}
+
 @media (min-width: 981px) {
+  .app-frame.is-practice-frame .qx-quiz-content.is-reading-content > .qx-quiz-action-bar {
+    display: none;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-content.is-reading-content {
+    grid-template-rows: minmax(0, 1fr);
+    align-content: stretch;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-content.is-reading-content .qx-quiz-main {
+    min-height: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question {
+    height: calc(100vh - 148px);
+    min-height: min(520px, calc(100vh - 148px));
+    max-height: calc(100vh - 148px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-question-card-head {
+    flex: 0 0 auto;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-layout {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: block;
+    overflow: hidden;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-passage {
+    height: 100%;
+    min-height: 0;
+    overflow: auto;
+    padding: 4px 12px 26px 0;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-layout.is-sheet-expanded .qx-reading-passage {
+    padding-bottom: clamp(300px, 52vh, 500px);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-layout.is-sheet-collapsed .qx-reading-passage {
+    padding-bottom: 26px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-passage::-webkit-scrollbar,
+  .app-frame.is-practice-frame .qx-reading-sheet::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-passage::-webkit-scrollbar-thumb,
+  .app-frame.is-practice-frame .qx-reading-sheet::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(148, 163, 184, .36);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 18;
+    max-height: min(520px, calc(100% - 20px));
+    margin: 0;
+    overflow: auto;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    z-index: 380;
+    width: auto;
+    min-width: 118px;
+    min-height: 42px;
+    margin: 0;
+    padding: 0;
+    border-radius: 999px;
+    overflow: visible;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, .18);
+    cursor: grab;
+    user-select: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed:active {
+    cursor: grabbing;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-sheet-body {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-sheet-handle {
+    width: auto;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 15px;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-sheet-handle span {
+    width: 26px;
+    height: 4px;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-float-label {
+    display: block;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-desktop-actions {
+    width: auto;
+    max-width: 100%;
+    display: flex !important;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 14px;
+    margin: 14px 0 0;
+    padding: 0;
+    position: static;
+    z-index: auto;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-desktop-actions .qx-action-btn {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 112px;
+    min-height: 36px;
+    height: 36px;
+    padding: 0 16px;
+    border: 1px solid #1881ff;
+    border-radius: 4px;
+    background: #fff;
+    color: #1881ff;
+    box-shadow: none;
+    font-size: 14.5px;
+    line-height: 1;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-desktop-actions .qx-action-btn.primary,
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-desktop-actions .qx-action-btn.ghost {
+    background: #fff;
+    color: #1881ff;
+    box-shadow: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-desktop-actions .qx-action-btn.primary:disabled,
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-desktop-actions .qx-action-btn.ghost:disabled {
+    border-color: #d7dce3;
+    background: #fff !important;
+    color: #9aa3ad !important;
+    box-shadow: none !important;
+  }
+
+  @media (max-height: 720px) {
+    .app-frame.is-practice-frame .qx-question-card.is-reading-question {
+      height: calc(100vh - 116px);
+      min-height: 0;
+      max-height: calc(100vh - 116px);
+      padding: 12px 24px 18px;
+    }
+
+    .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-question-card-head {
+      margin-bottom: 12px;
+    }
+
+    .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet {
+      max-height: min(430px, calc(100% - 12px));
+    }
+
+    .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-layout.is-sheet-expanded .qx-reading-passage {
+      padding-bottom: clamp(260px, 50vh, 390px);
+    }
+  }
+
   .app-frame.is-practice-frame .qx-quiz-overview {
     position: static;
     top: auto;
@@ -653,6 +1101,106 @@
     border-radius: clamp(6px, 2vw, 8px);
   }
 
+  .app-frame.is-practice-frame .qx-reading-layout {
+    gap: clamp(12px, 3.5vw, 16px);
+    padding-bottom: clamp(4px, 1.5vw, 8px);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-passage {
+    padding: clamp(2px, 1vw, 4px) 0 clamp(9px, 2.8vw, 12px);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-passage-kicker {
+    min-height: clamp(24px, 7vw, 28px);
+    padding: 0 clamp(8px, 2.6vw, 10px);
+    font-size: clamp(10.5px, 3vw, 12px);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-passage-text,
+  .app-frame.is-practice-frame .qx-reading-passage-empty {
+    margin-top: clamp(9px, 2.8vw, 12px);
+    padding-left: clamp(11px, 3.2vw, 14px);
+    font-size: var(--practice-q-font);
+    line-height: 1.78;
+  }
+
+  .app-frame.is-practice-frame .qx-reading-sheet {
+    bottom: 0;
+    padding: clamp(5px, 1.8vw, 7px) clamp(10px, 3vw, 12px) clamp(12px, 3.4vw, 15px);
+    border-radius: 16px 16px 10px 10px;
+    box-shadow: 0 -8px 26px rgba(15, 23, 42, .13);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-layout.is-sheet-collapsed {
+    padding-bottom: calc(clamp(42px, 11vw, 48px) + 12px);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-sheet.is-collapsed {
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom));
+    z-index: 318;
+    width: min(calc(100vw - (var(--practice-pad-x) * 2)), calc(var(--practice-max-w) - (var(--practice-pad-x) * 2)));
+    min-height: clamp(42px, 11vw, 48px);
+    height: clamp(42px, 11vw, 48px);
+    margin: 0 auto !important;
+    padding: 0 clamp(10px, 3vw, 12px) !important;
+    display: grid;
+    align-items: center;
+    border-radius: 16px 16px 0 0;
+    border-bottom: 0;
+    background: rgba(255, 255, 255, .98);
+    box-shadow: 0 -10px 24px rgba(15, 23, 42, .12);
+    transform: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-reading-sheet.is-collapsed .qx-reading-sheet-body {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-reading-sheet.is-collapsed .qx-reading-sheet-handle {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 0;
+  }
+
+  .app-frame.is-practice-frame .qx-reading-sheet.is-collapsed .qx-reading-sheet-handle span {
+    width: clamp(48px, 13vw, 56px);
+    height: 4px;
+  }
+
+  .app-frame.is-practice-frame .qx-reading-sheet-handle {
+    height: clamp(17px, 5vw, 20px);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-sheet-handle span {
+    width: clamp(38px, 12vw, 44px);
+    height: 4px;
+  }
+
+  .app-frame.is-practice-frame .qx-reading-question-head {
+    margin-bottom: clamp(7px, 2.2vw, 9px);
+    font-size: clamp(10.5px, 3vw, 12px);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-question-head span {
+    min-height: clamp(21px, 6.4vw, 24px);
+    padding: 0 clamp(7px, 2.2vw, 9px);
+  }
+
+  .app-frame.is-practice-frame .qx-reading-question-title {
+    margin-bottom: clamp(9px, 2.8vw, 12px);
+    font-size: var(--practice-option-font);
+    line-height: 1.52;
+  }
+
+  .app-frame.is-practice-frame .qx-reading-result-box {
+    margin-top: clamp(9px, 2.8vw, 12px) !important;
+  }
+
   .app-frame.is-practice-frame .qx-result-box {
     margin-top: clamp(10px, 3vw, 14px) !important;
     padding: clamp(10px, 3vw, 12px) clamp(11px, 3vw, 13px) !important;
@@ -738,6 +1286,16 @@
     font-size: var(--practice-btn-font) !important;
     line-height: 1;
     letter-spacing: .02em;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-desktop-actions {
+    display: none !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
   }
 
   .app-frame.is-practice-frame .qx-mobile-favorite-btn {
@@ -1521,6 +2079,40 @@
   font-weight: 850;
 }
 
+.app-frame.is-practice-frame .qx-overview-reading-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px 0 11px;
+  border-bottom: 1px solid #e5eaf2;
+}
+
+.app-frame.is-practice-frame .qx-overview-reading-card + .qx-overview-reading-card {
+  margin-top: 0;
+}
+
+.app-frame.is-practice-frame .qx-overview-reading-card:last-child {
+  border-bottom: 0;
+}
+
+.app-frame.is-practice-frame .qx-overview-reading-stem {
+  min-width: 0;
+}
+
+.app-frame.is-practice-frame .qx-overview-reading-stem strong {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: #0f172a;
+  font-size: 12px;
+  line-height: 1.42;
+  font-weight: 700;
+}
+
+.app-frame.is-practice-frame .qx-reading-question-index-grid {
+  padding-top: 1px;
+}
+
 /* Desktop practice refresh: match the cleaner white-card exam layout. */
 @media (min-width: 981px) {
   .app-frame.is-practice-frame {
@@ -1673,18 +2265,21 @@
   }
 
   .app-frame.is-practice-frame .qx-favorite-btn {
-    min-height: 26px;
-    padding: 0;
-    border-radius: 0;
-    background: transparent;
+    min-height: 30px;
+    padding: 0 12px;
+    border: 1px solid #d7dce3;
+    border-radius: 4px;
+    background: #fff;
     color: #6f7680;
     font-size: 13px;
     font-weight: 400;
+    box-shadow: none;
   }
 
   .app-frame.is-practice-frame .qx-favorite-btn.active {
-    background: transparent;
-    color: #565d66;
+    border-color: rgba(246, 194, 68, .72);
+    background: #fffaf0;
+    color: #b77900;
   }
 
   .app-frame.is-practice-frame .qx-favorite-icon {
@@ -2084,6 +2679,17 @@
     height: 15px;
     border-color: #fff;
   }
+
+  .app-frame.is-practice-frame .qx-overview-reading-card {
+    padding: 9px 0 10px;
+    border-bottom-color: #edf0f4;
+  }
+
+  .app-frame.is-practice-frame .qx-overview-reading-stem strong {
+    color: #333;
+    font-size: 12px;
+    font-weight: 600;
+  }
 }
 
 
@@ -2319,6 +2925,135 @@
   }
 }
 
+@media (max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px) {
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-layout {
+    padding-bottom: 0 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-layout.is-sheet-expanded {
+    padding-bottom: 0 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-layout.is-sheet-collapsed {
+    padding-bottom: clamp(58px, 15vw, 68px) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet:not(.is-collapsed) {
+    --reading-sheet-gap-top: clamp(8px, 2.8vw, 12px);
+    position: fixed !important;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom));
+    z-index: 319;
+    width: min(calc(100vw - (var(--practice-pad-x) * 2)), calc(var(--practice-max-w) - (var(--practice-pad-x) * 2)));
+    max-height: calc(
+      var(--practice-vvh, 100dvh)
+      - var(--practice-top-h)
+      - var(--practice-bottom-h)
+      - env(safe-area-inset-top)
+      - env(safe-area-inset-bottom)
+      - var(--reading-sheet-gap-top)
+    );
+    min-height: 0;
+    margin: 0 auto !important;
+    padding: clamp(6px, 1.8vw, 8px) clamp(12px, 3.4vw, 14px) clamp(14px, 4vw, 18px) !important;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(188, 211, 239, .95);
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+    overflow: hidden;
+    background: rgba(255, 255, 255, .98);
+    box-shadow: 0 -18px 34px rgba(15, 23, 42, .14);
+    transform: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet:not(.is-collapsed) .qx-reading-sheet-body {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 2px 2px 0;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet:not(.is-collapsed) .qx-reading-sheet-handle {
+    flex: 0 0 auto;
+    cursor: pointer;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-content.is-reading-content > .qx-quiz-action-bar {
+    border-top-color: rgba(188, 211, 239, .95);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed {
+    position: fixed !important;
+    left: 50%;
+    right: auto;
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom) + clamp(10px, 3vw, 14px));
+    z-index: 321;
+    width: auto;
+    min-width: clamp(116px, 31vw, 134px);
+    height: clamp(42px, 11vw, 48px);
+    min-height: clamp(42px, 11vw, 48px);
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(188, 211, 239, .95);
+    border-radius: 999px;
+    overflow: visible;
+    background: rgba(255, 255, 255, .98);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, .18);
+    transform: translateX(-50%) !important;
+    backdrop-filter: blur(14px);
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-sheet-body {
+    display: none !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-sheet-handle {
+    width: 100%;
+    height: 100%;
+    padding: 0 clamp(15px, 4.2vw, 18px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 2.4vw, 10px);
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-sheet-handle::before {
+    content: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-sheet-handle span {
+    flex: 0 0 auto;
+    width: clamp(26px, 7.5vw, 32px);
+    height: 4px;
+    margin: 0;
+    border: 0;
+    border-radius: 999px;
+    background: #cbd5e1;
+    transform: none;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed .qx-reading-float-label {
+    display: block !important;
+    color: #334155;
+    font-size: clamp(12.5px, 3.4vw, 14px);
+    line-height: 1;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+}
+
 .qx-auto-advance-hint {
   display: grid;
   gap: 18px;
@@ -2357,4 +3092,38 @@
 .qx-auto-advance-hint-dialog .van-dialog__header {
   color: #0f172a;
   font-weight: 950;
+}
+
+@media (max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px) {
+  :root {
+    --practice-bottom-h: clamp(86px, 22vw, 96px);
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-main {
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom)) !important;
+    padding-bottom: 0 !important;
+  }
+
+  .app-frame.is-practice-frame .qx-quiz-action-bar {
+    height: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom)) !important;
+    padding-top: clamp(10px, 2.8vw, 12px) !important;
+    padding-bottom: calc(clamp(10px, 2.8vw, 12px) + env(safe-area-inset-bottom)) !important;
+    align-items: center;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet:not(.is-collapsed) {
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom)) !important;
+    max-height: calc(
+      var(--practice-vvh, 100dvh)
+      - var(--practice-top-h)
+      - var(--practice-bottom-h)
+      - env(safe-area-inset-top)
+      - env(safe-area-inset-bottom)
+      - var(--reading-sheet-gap-top, clamp(8px, 2.8vw, 12px))
+    ) !important;
+  }
+
+  .app-frame.is-practice-frame .qx-question-card.is-reading-question .qx-reading-sheet.is-collapsed {
+    bottom: calc(var(--practice-bottom-h) + env(safe-area-inset-bottom) + clamp(10px, 3vw, 14px)) !important;
+  }
 }

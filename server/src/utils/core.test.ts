@@ -7,7 +7,9 @@ import { asyncHandler } from './asyncHandler.js';
 import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
 import { createVerificationCode } from './verificationCode.js';
-import { summarizeBankProgress, summarizeLatestAnswers } from '../services/progressService.js';
+import { buildDailyActivityTrend } from '../services/adminAnalyticsService.js';
+import { assertStandardReadingQuestionImport } from '../services/importService.js';
+import { effectiveQuestionCount, summarizeBankProgress, summarizeEffectiveAnswers, summarizeLatestAnswers } from '../services/progressService.js';
 import { formatQuestion } from '../services/questionService.js';
 
 test('answer comparison normalizes case, order and duplicates', () => {
@@ -124,6 +126,70 @@ test('bank progress aggregation keeps only the latest answer per question', () =
   assert.equal(result.get('bank-b')?.answerCount, 0);
 });
 
+test('reading passage counts as one effective question group', () => {
+  const answeredAt = new Date('2026-06-01T09:00:00.000Z');
+  const questions = [
+    { id: 'r1', bankId: 'bank-a', type: 'reading', stem: 'Read the passage.', rawJson: { passageId: 'passage-one', readingPassage: 'Passage One\nSame text.' } },
+    { id: 'r2', bankId: 'bank-a', type: 'reading', stem: 'Read the passage.', rawJson: { passageId: 'passage-one', readingPassage: 'Passage One\nSame text with spacing noise.' } },
+    { id: 'q1', bankId: 'bank-a', type: 'single', stem: 'A normal question.', rawJson: null }
+  ];
+
+  const summary = summarizeEffectiveAnswers(questions, [
+    { questionId: 'r1', isCorrect: true, createdAt: answeredAt },
+    { questionId: 'r2', isCorrect: true, createdAt: answeredAt },
+    { questionId: 'q1', isCorrect: false, createdAt: answeredAt }
+  ]);
+
+  assert.equal(effectiveQuestionCount(questions), 2);
+  assert.equal(summary.answerCount, 2);
+  assert.equal(summary.correctCount, 1);
+  assert.equal(summary.accuracy, 50);
+});
+
+test('reading JSON import accepts only the standard field names', () => {
+  const standardReadingQuestion = {
+    id: 'passage-one-q1',
+    type: 'reading',
+    question: 'Passage One. Read the passage and choose the best answer.',
+    passageId: 'passage-one',
+    readingPassage: 'Passage One\n\nNew research suggests pandas may be too comfortable.',
+    readingQuestion: 'What do we learn from new research about pandas?',
+    options: [
+      { key: 'A', text: 'They are losing habitat.' },
+      { key: 'B', text: 'They have stopped seeking new mates.' },
+      { key: 'C', text: 'They may not adapt.' },
+      { key: 'D', text: 'They may cease to exist because life is too good.' }
+    ],
+    answer: 'D',
+    explanation: 'The opening sentence says this directly.'
+  };
+
+  assert.doesNotThrow(() => assertStandardReadingQuestionImport(standardReadingQuestion));
+  assert.throws(
+    () => assertStandardReadingQuestionImport({ ...standardReadingQuestion, passage: standardReadingQuestion.readingPassage }),
+    /不要使用 passage，请使用 readingPassage/
+  );
+  assert.throws(
+    () => assertStandardReadingQuestionImport({
+      ...standardReadingQuestion,
+      options: [
+        { label: 'A', content: 'Old option shape.' },
+        { label: 'B', content: 'Old option shape.' }
+      ]
+    }),
+    /必须使用 \{ "key": "A", "text": "\.\.\." \}/
+  );
+});
+
+test('admin generic question writes reject reading questions', () => {
+  const route = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+
+  assert.match(route, /function rejectReadingQuestionWrite/);
+  assert.match(route, /阅读理解请使用阅读短文与小题的统一保存入口/);
+  assert.match(route, /rejectReadingQuestionWrite\(parsed\.type\)/);
+  assert.match(route, /rejectReadingQuestionWrite\(current\.type\)/);
+});
+
 test('latest answer summary ignores duplicate historical records for the same question', () => {
   const older = new Date('2026-06-01T08:00:00.000Z');
   const newer = new Date('2026-06-01T09:00:00.000Z');
@@ -162,4 +228,29 @@ test('practice resume sessions have account-scoped persistence safeguards', () =
   assert.match(route, /router\.put\('\/sessions'/);
   assert.match(route, /router\.delete\('\/sessions'/);
   assert.match(service, /userId_sessionKey:\s*\{\s*userId,\s*sessionKey\s*\}/);
+});
+
+test('admin activity trend uses application day buckets and distinct active users', () => {
+  const trendStart = new Date(2026, 5, 26);
+  const trend = buildDailyActivityTrend([
+    { userId: 'u-before', createdAt: new Date(2026, 5, 25, 23, 59), isCorrect: true },
+    { userId: 'u1', createdAt: new Date(2026, 5, 26, 23, 59), isCorrect: true },
+    { userId: 'u1', createdAt: new Date(2026, 5, 27, 0, 1), isCorrect: false },
+    { userId: 'u2', createdAt: new Date(2026, 5, 27, 8, 30), isCorrect: true },
+    { userId: 'u2', createdAt: new Date(2026, 5, 27, 9, 0), isCorrect: true }
+  ], trendStart, 2);
+
+  assert.deepEqual(
+    trend.map((row) => ({
+      date: row.date,
+      answerCount: row.answerCount,
+      activeUserCount: row.activeUserCount,
+      correctCount: row.correctCount,
+      accuracy: row.accuracy
+    })),
+    [
+      { date: '2026-06-26', answerCount: 1, activeUserCount: 1, correctCount: 1, accuracy: 100 },
+      { date: '2026-06-27', answerCount: 3, activeUserCount: 2, correctCount: 2, accuracy: 67 }
+    ]
+  );
 });

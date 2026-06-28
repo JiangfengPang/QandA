@@ -2,6 +2,7 @@ type ResumeStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
 export type PracticeResumeQuestion = {
   id?: unknown;
+  type?: unknown;
 };
 
 export type PracticeResumeSessionRecord = {
@@ -180,6 +181,10 @@ export function clearPracticeResume(key: string, storage: ResumeStorage | null =
   }
 }
 
+export function shouldClearPracticeResumeOnExit(questionCount: number, unansweredQuestionCount: number) {
+  return questionCount > 0 && unansweredQuestionCount <= 0;
+}
+
 export function resolvePracticeResumeIndex(
   key: string,
   questions: PracticeResumeQuestion[],
@@ -209,6 +214,31 @@ export function resolvePracticeResumeSnapshotIndex(
   }
 
   return null;
+}
+
+export function resolvePracticeResumeFirstUnansweredIndex<T extends PracticeResumeQuestion>(
+  snapshot: PracticeResumeSnapshot | null,
+  questions: T[],
+  isAutoAnswered: (question: T) => boolean = () => false
+) {
+  if (!snapshot || !questions.length) return null;
+
+  const records = practiceResumeSessionRecordsFromSnapshot(snapshot, questions);
+  const index = questions.findIndex((question) => {
+    const id = questionId(question);
+    return !isAutoAnswered(question) && (!id || !records[id]);
+  });
+
+  return index >= 0 ? index : null;
+}
+
+export function isPracticeResumeSnapshotComplete<T extends PracticeResumeQuestion>(
+  snapshot: PracticeResumeSnapshot | null,
+  questions: T[],
+  isAutoAnswered: (question: T) => boolean = () => false
+) {
+  if (!snapshot || !questions.length) return false;
+  return resolvePracticeResumeFirstUnansweredIndex(snapshot, questions, isAutoAnswered) === null;
 }
 
 export function readPracticeResumeSessionRecords(

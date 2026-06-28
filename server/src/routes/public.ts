@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { prisma } from '../db/prisma.js';
 import { authRequired } from '../middleware/auth.js';
 import { getBankQuestions, getSubjectQuestions } from '../services/questionService.js';
-import { getBanksProgress } from '../services/progressService.js';
+import { effectiveQuestionCount, getBanksProgress } from '../services/progressService.js';
 import { ok, fail } from '../utils/http.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import {
@@ -77,7 +77,12 @@ router.get('/subjects/:subjectId/banks', authRequired, asyncHandler(async (req, 
   const banks = await prisma.bank.findMany({
     where: { subjectId: req.params.subjectId, isActive: true },
     orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }, { id: 'asc' }],
-    include: { _count: { select: { questions: { where: { isActive: true } } } } }
+    include: {
+      questions: {
+        where: { isActive: true },
+        select: { id: true, bankId: true, type: true, rawJson: true }
+      }
+    }
   });
 
   const progressByBank = await getBanksProgress(userId, banks.map((bank) => bank.id));
@@ -94,7 +99,7 @@ router.get('/subjects/:subjectId/banks', authRequired, asyncHandler(async (req, 
       subjectId: bank.subjectId,
       name: bank.name,
       description: bank.description,
-      questionCount: bank._count.questions,
+      questionCount: effectiveQuestionCount(bank.questions),
       answeredCount,
       correctCount,
       accuracy,

@@ -29,10 +29,11 @@
             <el-option label="判断" value="judge" />
             <el-option label="填空" value="fill" />
             <el-option label="Python题" value="python" />
+            <el-option label="阅读理解" value="reading" />
           </el-select>
         </el-form-item>
         <el-form-item label="题干">
-          <el-input v-model="form.stem" type="textarea" :rows="4" placeholder="请输入题目内容，Python题可使用 Markdown" />
+          <el-input v-model="form.stem" type="textarea" :rows="4" :placeholder="form.type === 'reading' ? '请输入阅读理解总题干，例如 Read the passage and choose the best answer.' : '请输入题目内容，Python题可使用 Markdown'" />
         </el-form-item>
         <el-form-item v-if="form.type === 'python'" label="题干预览">
           <div class="markdown-preview-box admin-markdown-body" v-html="renderedQuestionStem" @click="handleMarkdownCopyClick"></div>
@@ -68,20 +69,44 @@
           </el-form-item>
         </template>
 
-        <template v-else-if="form.type === 'fill'">
-          <el-form-item label="填空模式">
-            <el-radio-group v-model="form.fillMode">
-              <el-radio-button label="single">单空</el-radio-button>
-              <el-radio-button label="multi">多空</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="正确答案">
+        <template v-else-if="form.type === 'reading'">
+          <el-form-item label="阅读原文">
             <el-input
-              v-model="form.fillAnswerText"
+              v-model="form.readingPassage"
               type="textarea"
-              :rows="form.fillMode === 'multi' ? 6 : 4"
-              :placeholder="form.fillMode === 'multi' ? '每行一个空；同一空多个可接受答案用 / 分隔，例如：\naspiration\naspirational / ambitious' : '每行一个可接受答案，例如：\nadequately\nsufficiently'"
+              :rows="10"
+              placeholder="请输入阅读理解原文，段落之间可用空行分隔"
             />
+          </el-form-item>
+          <el-form-item label="小题题干">
+            <el-input
+              v-model="form.readingQuestion"
+              type="textarea"
+              :rows="3"
+              placeholder="请输入原文下方浮窗中的小题题干"
+            />
+          </el-form-item>
+          <el-form-item label="选项">
+            <div class="option-editor">
+              <div v-for="(option,index) in form.options" :key="index" class="option-line">
+                <el-input v-model="option.label" style="width:80px" placeholder="A" />
+                <el-input v-model="option.content" placeholder="选项内容" />
+                <el-button type="danger" @click="form.options.splice(index,1)">删除</el-button>
+              </div>
+              <el-button @click="addOption">添加选项</el-button>
+            </div>
+          </el-form-item>
+          <el-form-item label="答案">
+            <el-select v-model="form.answer" multiple :multiple-limit="1" style="width:100%" placeholder="请选择一个正确答案">
+              <el-option v-for="o in form.options" :key="o.label" :label="o.label" :value="o.label" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="解析"><el-input v-model="form.explanation" type="textarea" :rows="3" /></el-form-item>
+        </template>
+
+        <template v-else-if="form.type === 'fill'">
+          <el-form-item label="填空答案">
+            <FillAnswerEditor v-model:mode="form.fillMode" v-model:answer="form.fillAnswerValue" />
           </el-form-item>
           <el-form-item label="解析"><el-input v-model="form.explanation" type="textarea" :rows="3" /></el-form-item>
         </template>
@@ -112,9 +137,11 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { ElMessage } from 'element-plus/es/components/message/index';
 import { ElMessageBox } from 'element-plus/es/components/message-box/index';
 import { api } from '../api/request';
+import FillAnswerEditor from '../components/FillAnswerEditor.vue';
+import { isMultiFillAnswer, normalizeFillAnswerPayload } from '../utils/fillAnswers';
 import { decodeMarkdownCode, renderMarkdown } from '../utils/markdown';
 const rows=ref<any[]>([]), banks=ref<any[]>([]), visible=ref(false), bankId=ref(''), keyword=ref(''); const meta=reactive({page:1,pageSize:20,total:0});
-const form=reactive<any>({id:'',bankId:'',type:'single',stem:'',score:0,answer:[],fillAnswerText:'',fillMode:'single',explanation:'',options:[],pythonAnswerMarkdown:''});
+const form=reactive<any>({id:'',bankId:'',type:'single',stem:'',score:0,answer:[],fillAnswerValue:[],fillMode:'single',explanation:'',options:[],pythonAnswerMarkdown:'',readingPassage:'',readingQuestion:''});
 const renderedQuestionStem = computed(() => renderMarkdown(form.stem || ''));
 const renderedPythonAnswer = computed(() => renderMarkdown(form.pythonAnswerMarkdown || ''));
 async function loadBanks(){ banks.value=await api.get('/admin/banks'); }
@@ -134,32 +161,34 @@ async function handleMarkdownCopyClick(event: MouseEvent) {
   }
 }
 
-function questionTypeLabel(type:string){ return ({single:'单选',multiple:'多选',judge:'判断',fill:'填空',python:'Python题'} as Record<string,string>)[type] || type || '题目'; }
+function questionTypeLabel(type:string){ return ({single:'单选',multiple:'多选',judge:'判断',fill:'填空',python:'Python题',reading:'阅读理解'} as Record<string,string>)[type] || type || '题目'; }
 function answerSummary(row:any){ if(row.type==='python') return 'Markdown答案'; if(Array.isArray(row.answerJson) && row.answerJson.some((item:any)=>Array.isArray(item))) return row.answerJson.map((item:any)=>Array.isArray(item)?item.join(' / '):String(item)).join('；'); return Array.isArray(row.answerJson) ? row.answerJson.join('、') : ''; }
 function applyJudgeOptions(){ form.options=[{label:'A',content:'正确'},{label:'B',content:'错误'}]; form.answer=form.answer.map((item:string)=>String(item).toLowerCase()==='true'||item==='正确'||item==='对'?'A':String(item).toLowerCase()==='false'||item==='错误'||item==='错'?'B':item).filter((item:string)=>item==='A'||item==='B').slice(0,1); }
 function ensureChoiceOptions(){ if(!Array.isArray(form.options) || form.options.length===0) form.options=[{label:'A',content:''},{label:'B',content:''}]; }
 function addOption(){ if(form.type==='judge') return applyJudgeOptions(); ensureChoiceOptions(); const label=String.fromCharCode(65+form.options.length); form.options.push({label,content:''}); }
 function resetPythonAnswer(){ if(!form.pythonAnswerMarkdown) form.pythonAnswerMarkdown='### 参考答案\n\n```python\n# 在这里填写正确答案代码\nprint("hello")\n```\n\n### 答案解析\n\n这里填写解题思路。'; }
 function fillAnswerArray(){
-  const lines=String(form.fillAnswerText || '').split(/\r?\n/).map((item:string)=>item.trim()).filter(Boolean);
-  if(form.fillMode==='multi') return lines.map((line:string)=>line.split(/\s*(?:\/|｜|\||、)\s*/).map((item:string)=>item.trim()).filter(Boolean)).filter((group:string[])=>group.length);
-  return lines;
+  return normalizeFillAnswerPayload(form.fillAnswerValue, form.fillMode);
 }
-function fillAnswerTextFromValue(value:any){ if(Array.isArray(value) && value.some((item:any)=>Array.isArray(item))) return value.map((item:any)=>Array.isArray(item)?item.join(' / '):String(item)).join('\n'); return Array.isArray(value)?value.join('\n'):''; }
-function openCreate(){ Object.assign(form,{id:'',bankId:bankId.value || banks.value[0]?.id || '',type:'single',stem:'',score:0,answer:[],fillAnswerText:'',fillMode:'single',explanation:'',options:[{label:'A',content:''},{label:'B',content:''}],pythonAnswerMarkdown:''}); visible.value=true; }
-function openEdit(row:any){ const answers=Array.isArray(row.answerJson)?row.answerJson:[]; const multiFill=answers.some((item:any)=>Array.isArray(item)); Object.assign(form,{id:row.id,bankId:row.bankId,type:row.type,stem:row.stem,score:row.score,answer:answers,fillAnswerText:row.type==='fill'?fillAnswerTextFromValue(answers):'',fillMode:multiFill?'multi':'single',explanation:row.explanation||'',options:(row.options||[]).map((o:any)=>({label:o.label,content:o.content})),pythonAnswerMarkdown:row.type==='python'?String(answers[0]||''):''}); if(form.type==='judge') applyJudgeOptions(); visible.value=true; }
+function openCreate(){ Object.assign(form,{id:'',bankId:bankId.value || banks.value[0]?.id || '',type:'single',stem:'',score:0,answer:[],fillAnswerValue:[],fillMode:'single',explanation:'',options:[{label:'A',content:''},{label:'B',content:''}],pythonAnswerMarkdown:'',readingPassage:'',readingQuestion:''}); visible.value=true; }
+function openEdit(row:any){ const answers=Array.isArray(row.answerJson)?row.answerJson:[]; const multiFill=isMultiFillAnswer(answers); const raw=row.rawJson && typeof row.rawJson==='object' ? row.rawJson : {}; Object.assign(form,{id:row.id,bankId:row.bankId,type:row.type,stem:row.stem,score:row.score,answer:answers,fillAnswerValue:row.type==='fill'?normalizeFillAnswerPayload(answers,multiFill?'multi':'single'):[],fillMode:multiFill?'multi':'single',explanation:row.explanation||'',options:(row.options||[]).map((o:any)=>({label:o.label,content:o.content})),pythonAnswerMarkdown:row.type==='python'?String(answers[0]||''):'',readingPassage:row.type==='reading'?String(raw.readingPassage||''):'',readingQuestion:row.type==='reading'?String(raw.readingQuestion||''):''}); if(form.type==='judge') applyJudgeOptions(); visible.value=true; }
 async function save(){
   if(!form.bankId) return ElMessage.warning('请选择题库');
   if(!String(form.stem||'').trim()) return ElMessage.warning('请输入题干');
   if(form.type==='python' && !String(form.pythonAnswerMarkdown||'').trim()) return ElMessage.warning('请输入正确答案 Markdown');
+  if(form.type==='reading' && !String(form.readingPassage||'').trim()) return ElMessage.warning('请输入阅读理解原文');
+  if(form.type==='reading' && !String(form.readingQuestion||'').trim()) return ElMessage.warning('请输入阅读理解小题题干');
+  if(form.type==='reading' && (!Array.isArray(form.answer) || form.answer.length!==1)) return ElMessage.warning('请选择一个正确答案');
   if(form.type==='fill' && fillAnswerArray().length===0) return ElMessage.warning('请至少填写一个正确答案');
   const payload=form.type==='python'
     ? {bankId:form.bankId,type:form.type,stem:form.stem,score:form.score,answer:[form.pythonAnswerMarkdown],explanation:'',options:[]}
+    : form.type==='reading'
+      ? {bankId:form.bankId,type:form.type,stem:form.stem,score:form.score,answer:form.answer.slice(0,1),explanation:form.explanation,options:form.options,readingPassage:form.readingPassage,readingQuestion:form.readingQuestion}
     : form.type==='fill'
       ? {bankId:form.bankId,type:form.type,stem:form.stem,score:form.score,answer:fillAnswerArray(),explanation:form.explanation,options:[]}
     : {bankId:form.bankId,type:form.type,stem:form.stem,score:form.score,answer:form.answer,explanation:form.explanation,options:form.options};
   form.id?await api.put(`/admin/questions/${form.id}`,payload):await api.post('/admin/questions',payload); ElMessage.success('已保存'); visible.value=false; load(); }
 async function remove(id:string){ await ElMessageBox.confirm('确认删除这道题？','危险操作'); await api.delete(`/admin/questions/${id}`); ElMessage.success('已删除'); load(); }
-watch(()=>form.type,(type)=>{ if(type==='judge') applyJudgeOptions(); if(type==='python') resetPythonAnswer(); if(type==='fill'){ form.options=[]; form.answer=[]; if(!form.fillMode) form.fillMode='single'; } if(type==='single'||type==='multiple') ensureChoiceOptions(); });
+watch(()=>form.type,(type)=>{ if(type==='judge') applyJudgeOptions(); if(type==='python') resetPythonAnswer(); if(type==='fill'){ form.options=[]; form.answer=[]; if(!form.fillMode) form.fillMode='single'; } if(type==='single'||type==='multiple'||type==='reading') ensureChoiceOptions(); if(type==='reading') form.answer=form.answer.slice(0,1); });
 onMounted(async()=>{ await loadBanks(); await load(); });
 </script>

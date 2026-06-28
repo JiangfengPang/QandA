@@ -36,7 +36,7 @@
           </div>
 
           <div class="qx-mobile-progress-row">
-            <span class="qx-mobile-question-count"><strong>{{ currentProgressNumber }}</strong>/{{ questions.length }}</span>
+            <span class="qx-mobile-question-count"><strong>{{ currentProgressNumber }}</strong>/{{ totalProgressCount }}</span>
             <div class="progress-line qx-mobile-progress-line" aria-label="答题进度">
               <span :style="{ width: progress + '%' }"></span>
             </div>
@@ -55,11 +55,11 @@
       </header>
 
       <div class="qx-quiz-layout">
-        <div class="qx-quiz-content">
+        <div class="qx-quiz-content" :class="{ 'is-reading-content': isReadingQuestion }">
           <div ref="quizMainRef" class="qx-quiz-main" @touchstart.passive="handleTouchStart" @touchend.passive="handleTouchEnd">
             <article
               class="qx-question-card"
-              :class="[questionFontClass, { 'is-multiple-question': isMultipleQuestion }]"
+              :class="[questionFontClass, { 'is-multiple-question': isMultipleQuestion, 'is-reading-question': isReadingQuestion }]"
             >
             <div class="qx-question-card-head">
               <div class="qx-question-head-main">
@@ -84,7 +84,7 @@
 
                 <div class="qx-question-title-row">
                   <span class="pill qx-question-type-badge">{{ currentQuestionTypeBadge }}</span>
-                  <span class="qx-question-inline-count">{{ currentProgressNumber }}/{{ questions.length }}、</span>
+                  <span class="qx-question-inline-count">{{ currentProgressNumber }}/{{ totalProgressCount }}、</span>
                   <PythonMarkdown
                     v-if="isPythonQuestion && questionStemText"
                     class="qx-question-title qx-question-title-markdown qx-markdown-answer"
@@ -134,6 +134,113 @@
               </template>
             </div>
 
+            <div
+              v-else-if="isReadingQuestion"
+              class="qx-reading-layout"
+              :class="{ 'is-sheet-collapsed': !readingSheetExpanded, 'is-sheet-expanded': readingSheetExpanded }"
+            >
+              <section class="qx-reading-passage" aria-label="阅读理解原文">
+                <div class="qx-reading-passage-kicker">阅读原文</div>
+                <PythonMarkdown
+                  v-if="readingPassageText"
+                  class="qx-reading-passage-text qx-reading-passage-markdown"
+                  :markdown="readingPassageText"
+                />
+                <div v-else class="qx-reading-passage-empty">本题暂未录入阅读原文。</div>
+              </section>
+
+              <section
+                class="qx-reading-sheet"
+                :class="{ 'is-collapsed': !readingSheetExpanded, 'is-submitted': submitted }"
+                :style="readingSheetStyle"
+                aria-label="阅读理解小题"
+              >
+                <button
+                  class="qx-reading-sheet-handle"
+                  type="button"
+                  :aria-expanded="readingSheetExpanded"
+                  :aria-label="readingSheetExpanded ? '收起阅读理解小题' : '展开阅读理解小题'"
+                  @pointerdown.stop="handleReadingSheetPointerDown"
+                  @click.stop="toggleReadingSheet"
+                >
+                  <span aria-hidden="true"></span>
+                  <strong class="qx-reading-float-label">小题</strong>
+                </button>
+                <div class="qx-reading-sheet-body" v-show="readingSheetExpanded">
+                  <div class="qx-reading-question-head">
+                    <span>小题</span>
+                    <strong>{{ readingSubQuestionProgress.current }}/{{ readingSubQuestionProgress.total }}</strong>
+                  </div>
+                  <h3 class="qx-reading-question-title">{{ readingQuestionText }}</h3>
+
+                  <div class="option-list qx-option-list qx-reading-option-list">
+                    <button
+                      v-for="option in currentOptions"
+                      :key="option.key"
+                      class="option-button qx-option-button"
+                      :class="optionClass(option.key)"
+                      :disabled="submitted"
+                      @click="confirmOption(option.key)"
+                    >
+                      <span class="option-key">{{ optionKeyDisplay(option, currentQuestion.type) }}</span>
+                      <span class="option-text">{{ option.text }}</span>
+                    </button>
+                  </div>
+
+                  <div class="qx-reading-desktop-actions">
+                    <button class="qx-action-btn ghost" :disabled="!canGoPrevious" @click="prevQuestion">← 上一题</button>
+                    <button
+                      class="qx-action-btn primary"
+                      :disabled="primaryActionDisabled"
+                      @click="handlePrimaryQuizAction"
+                    >
+                      {{ primaryActionDisplayText }}
+                    </button>
+                  </div>
+
+                  <div v-if="submitted" class="result-box qx-result-box qx-reading-result-box" :class="{ correct: lastResult && lastResult.correct }">
+                    <div class="qx-result-answer-row">
+                      <span class="qx-answer-with-speech">
+                        <span class="qx-result-answer-label">正确答案</span>
+                        <span class="qx-result-answer-parts">
+                          <template v-for="(part, index) in currentOfficialAnswerParts" :key="part.key">
+                            <span class="qx-result-answer-part">
+                              <b class="qx-result-answer-correct">{{ part.prefix }}{{ part.value }}</b>
+                              <SpeakButton
+                                v-for="item in part.speechItems"
+                                :key="item.key"
+                                :text="item.text"
+                                :lang="item.lang"
+                                :label="item.label"
+                                :explicit="item.explicit"
+                              />
+                            </span>
+                            <span v-if="index < currentOfficialAnswerParts.length - 1" class="qx-result-answer-separator">；</span>
+                          </template>
+                        </span>
+                      </span>
+                      <span>{{ currentUserAnswerLabel }} <b :class="lastResult && lastResult.correct ? 'qx-result-answer-correct' : 'qx-result-answer-wrong'">{{ currentUserAnswerSummary }}</b></span>
+                      <QxIcon
+                        class="qx-result-judge-icon"
+                        :name="lastResult && lastResult.correct ? 'check-circle' : 'x-circle'"
+                        :tone="lastResult && lastResult.correct ? 'green' : 'red'"
+                      />
+                    </div>
+                    <div v-if="showAnswerDetail" class="qx-simple-answer">
+                      <strong class="qx-analysis-title">解析</strong>
+                      <PythonMarkdown
+                        v-if="explanation"
+                        class="qx-explanation-text qx-explanation-markdown"
+                        :markdown="explanation"
+                      />
+                      <p v-else class="qx-explanation-text">本题暂无解析。</p>
+                    </div>
+                    <button v-else class="qx-reveal-answer-btn" type="button" @click="explanationRevealed = true">查看解析</button>
+                  </div>
+                </div>
+              </section>
+            </div>
+
             <div v-else class="option-list qx-option-list">
               <button
                 v-for="option in currentOptions"
@@ -148,19 +255,25 @@
               </button>
             </div>
 
-            <div v-if="submitted && !isPythonQuestion && isCompactPracticeViewport" class="result-box qx-result-box" :class="{ correct: lastResult && lastResult.correct }">
+            <div v-if="submitted && !isPythonQuestion && !isReadingQuestion && isCompactPracticeViewport" class="result-box qx-result-box" :class="{ correct: lastResult && lastResult.correct }">
               <div class="qx-result-answer-row">
                 <span class="qx-answer-with-speech">
-                  正确答案 <b class="qx-result-answer-correct">{{ currentOfficialAnswerSummary }}</b>
-                  <span v-if="currentAnswerSpeechItems.length" class="qx-answer-speech-actions">
-                    <SpeakButton
-                      v-for="item in currentAnswerSpeechItems"
-                      :key="item.key"
-                      :text="item.text"
-                      :lang="item.lang"
-                      :label="item.label"
-                      :explicit="item.explicit"
-                    />
+                  <span class="qx-result-answer-label">正确答案</span>
+                  <span class="qx-result-answer-parts">
+                    <template v-for="(part, index) in currentOfficialAnswerParts" :key="part.key">
+                      <span class="qx-result-answer-part">
+                        <b class="qx-result-answer-correct">{{ part.prefix }}{{ part.value }}</b>
+                        <SpeakButton
+                          v-for="item in part.speechItems"
+                          :key="item.key"
+                          :text="item.text"
+                          :lang="item.lang"
+                          :label="item.label"
+                          :explicit="item.explicit"
+                        />
+                      </span>
+                      <span v-if="index < currentOfficialAnswerParts.length - 1" class="qx-result-answer-separator">；</span>
+                    </template>
                   </span>
                 </span>
                 <span>{{ currentUserAnswerLabel }} <b :class="lastResult && lastResult.correct ? 'qx-result-answer-correct' : 'qx-result-answer-wrong'">{{ currentUserAnswerSummary }}</b></span>
@@ -205,19 +318,25 @@
             </button>
           </div>
 
-          <div v-if="submitted && !isPythonQuestion && !isCompactPracticeViewport" class="result-box qx-result-box" :class="{ correct: lastResult && lastResult.correct }">
+          <div v-if="submitted && !isPythonQuestion && !isReadingQuestion && !isCompactPracticeViewport" class="result-box qx-result-box" :class="{ correct: lastResult && lastResult.correct }">
             <div class="qx-result-answer-row">
               <span class="qx-answer-with-speech">
-                正确答案 <b class="qx-result-answer-correct">{{ currentOfficialAnswerSummary }}</b>
-                <span v-if="currentAnswerSpeechItems.length" class="qx-answer-speech-actions">
-                  <SpeakButton
-                    v-for="item in currentAnswerSpeechItems"
-                    :key="item.key"
-                    :text="item.text"
-                    :lang="item.lang"
-                    :label="item.label"
-                    :explicit="item.explicit"
-                  />
+                <span class="qx-result-answer-label">正确答案</span>
+                <span class="qx-result-answer-parts">
+                  <template v-for="(part, index) in currentOfficialAnswerParts" :key="part.key">
+                    <span class="qx-result-answer-part">
+                      <b class="qx-result-answer-correct">{{ part.prefix }}{{ part.value }}</b>
+                      <SpeakButton
+                        v-for="item in part.speechItems"
+                        :key="item.key"
+                        :text="item.text"
+                        :lang="item.lang"
+                        :label="item.label"
+                        :explicit="item.explicit"
+                      />
+                    </span>
+                    <span v-if="index < currentOfficialAnswerParts.length - 1" class="qx-result-answer-separator">；</span>
+                  </template>
                 </span>
               </span>
               <span>{{ currentUserAnswerLabel }} <b :class="lastResult && lastResult.correct ? 'qx-result-answer-correct' : 'qx-result-answer-wrong'">{{ currentUserAnswerSummary }}</b></span>
@@ -256,7 +375,7 @@
           <div class="qx-overview-head">
             <div>
               <h2>答题卡</h2>
-              <p>{{ currentProgressNumber }}/{{ questions.length }} 题</p>
+              <p>{{ currentProgressNumber }}/{{ totalProgressCount }} 题</p>
             </div>
             <button class="qx-overview-close" aria-label="关闭答题卡" @click="toggleQuizOverview">
               <QxIcon name="close" />
@@ -282,14 +401,40 @@
                 <h4 v-if="!typeGroup.hideLabel && (group.typeGroups.length > 1 || isSubjectPractice)">
                   {{ typeGroup.label }} <span>{{ typeGroup.items.length }} 题</span>
                 </h4>
-                <div class="question-index-grid qx-question-index-grid">
+                <template v-if="isReadingOverviewTypeGroup(typeGroup)">
+                  <section
+                    v-for="readingGroup in readingOverviewPassageGroups(typeGroup.items)"
+                    :key="readingGroup.key"
+                    class="qx-overview-reading-card"
+                  >
+                    <div class="qx-overview-reading-stem">
+                      <strong>{{ readingGroup.title }}</strong>
+                    </div>
+                    <div class="question-index-grid qx-question-index-grid qx-reading-question-index-grid">
+                      <button
+                        v-for="item in readingGroup.items"
+                        :key="item.index"
+                        class="qx-overview-index-btn"
+                        :class="overviewItemClass(item)"
+                        :aria-label="overviewItemLabel(item)"
+                        @click="jumpToQuestion(item.targetIndex ?? item.index)"
+                      >
+                        <span class="qx-overview-number">{{ item.number }}</span>
+                        <span v-if="item.favorite" class="qx-overview-favorite-mark" aria-hidden="true">
+                          <QxIcon name="star" tone="gold" />
+                        </span>
+                      </button>
+                    </div>
+                  </section>
+                </template>
+                <div v-else class="question-index-grid qx-question-index-grid">
                   <button
                     v-for="item in typeGroup.items"
                     :key="item.index"
                     class="qx-overview-index-btn"
                     :class="overviewItemClass(item)"
                     :aria-label="overviewItemLabel(item)"
-                    @click="jumpToQuestion(item.index)"
+                    @click="jumpToQuestion(item.targetIndex ?? item.index)"
                   >
                     <span class="qx-overview-number">{{ item.number }}</span>
                     <span v-if="item.favorite" class="qx-overview-favorite-mark" aria-hidden="true">
@@ -335,23 +480,29 @@ import { isAnswerCorrect, isFillAnswerCorrect } from '../utils/answer';
 import { judgeAnswerKey, judgeOptionDisplay, normalizeOptions, optionKeyDisplay, questionTypeText } from '../utils/question';
 import {
   canGoToPreviousQuestion,
+  getQuestionDisplayGroups,
+  getQuestionDisplayProgress,
+  getQuestionDisplayProgressPercent,
+  getReadingSubQuestionProgress,
   getUnitQueueProgress,
-  practiceProgressNumber,
-  practiceProgressPercent
 } from '../utils/practiceProgress';
-import { buildPracticeOverviewGroups } from '../utils/practiceOverview';
-import { speechItemsForQuestion } from '../utils/pronunciation';
+import { buildPracticeOverviewGroups, buildReadingOverviewPassageGroups, isReadingOverviewItem } from '../utils/practiceOverview';
+import { canAutoAdvanceAfterCorrectAnswer, needsManualAnswerConfirm, shouldSubmitChoiceImmediately } from '../utils/practiceInteraction';
+import { speechItemsForQuestion, type SpeechItem } from '../utils/pronunciation';
 import {
   applyPracticeResumeSnapshotQuestionOrder,
   applySavedPracticeQuestionOrder,
   buildPracticeResumeKey,
   clearPracticeResume,
+  isPracticeResumeSnapshotComplete,
   newerPracticeResume,
   practiceResumeSessionRecordsFromSnapshot,
   practiceResumeUpdatedAt,
   readPracticeResume,
+  resolvePracticeResumeFirstUnansweredIndex,
   resolvePracticeResumeSnapshotIndex,
   savePracticeResume,
+  shouldClearPracticeResumeOnExit,
   writePracticeResumeSnapshot
 } from '../utils/practiceResume';
 import {
@@ -382,6 +533,13 @@ type FillBlankDefinition = {
   answer: string[];
 };
 
+type AnswerSpeechPart = {
+  key: string;
+  prefix: string;
+  value: string;
+  speechItems: SpeechItem[];
+};
+
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
@@ -401,6 +559,9 @@ const quizOverviewOpen = ref(false);
 const quizOverviewRef = ref<HTMLElement | null>(null);
 const quizMainRef = ref<HTMLElement | null>(null);
 const explanationRevealed = ref(false);
+const readingSheetExpanded = ref(true);
+const readingFloatPosition = ref({ x: 32, y: 220 });
+const readingFloatJustDragged = ref(false);
 const showAutoAdvanceHintDialog = ref(false);
 const dontShowAutoAdvanceHint = ref(false);
 const COMPACT_PRACTICE_VIEWPORT_QUERY = '(max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px)';
@@ -426,6 +587,15 @@ let correctAnswerAutoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
 let remotePracticeResumeSaveTimer: ReturnType<typeof setTimeout> | null = null;
 let questionScrollResetFrame: number | undefined;
 let practiceResumeReady = false;
+let readingFloatDragState: {
+  active: boolean;
+  pointerId: number;
+  startX: number;
+  startY: number;
+  originX: number;
+  originY: number;
+  moved: boolean;
+} | null = null;
 
 const currentQuestion = computed(() => questions.value[currentIndex.value] || null);
 const currentOptions = computed(() => normalizeOptions(currentQuestion.value?.options || []));
@@ -437,14 +607,23 @@ const currentQuestionTypeBadge = computed(() => {
 });
 const isFillQuestion = computed(() => currentQuestion.value?.type === 'fill');
 const isPythonQuestion = computed(() => currentQuestion.value?.type === 'python');
+const isReadingQuestion = computed(() => currentQuestion.value?.type === 'reading');
 const questionStemText = computed(() => String(currentQuestion.value?.question || currentQuestion.value?.stem || '').trim());
+const readingPassageText = computed(() => String(currentQuestion.value?.readingPassage || '').trim());
+const readingQuestionText = computed(() => String(currentQuestion.value?.readingQuestion || '').trim());
+const readingSheetStyle = computed(() => {
+  if (!isReadingQuestion.value || readingSheetExpanded.value || isCompactPracticeViewport.value) return {};
+  return {
+    transform: `translate3d(${readingFloatPosition.value.x}px, ${readingFloatPosition.value.y}px, 0)`
+  };
+});
 const currentFillBlanks = computed(() => fillBlankDefinitions(currentQuestion.value));
 const isMultiFillQuestion = computed(() => currentFillBlanks.value.length > 1);
 const pythonAnswerMarkdown = computed(() => {
   const raw = Array.isArray(currentQuestion.value?.answer) ? currentQuestion.value.answer[0] : '';
   return String(raw || currentQuestion.value?.pythonAnswer || '').trim();
 });
-const needsManualConfirm = computed(() => (isMultipleQuestion.value || isFillQuestion.value) && !submitted.value);
+const needsManualConfirm = computed(() => needsManualAnswerConfirm(currentQuestion.value?.type, submitted.value));
 const primaryActionText = computed(() => {
   if (needsManualConfirm.value) return '确认答案';
   return currentIndex.value === questions.value.length - 1 ? '完成练习' : '下一题';
@@ -458,8 +637,11 @@ const primaryActionDisabled = computed(() => {
   if (isFillQuestion.value) return !fillUserAnswerValues(currentQuestion.value).every((item) => String(item || '').trim());
   return selectedAnswers.value.length === 0;
 });
-const currentProgressNumber = computed(() => practiceProgressNumber(currentIndex.value, questions.value.length));
-const progress = computed(() => practiceProgressPercent(currentIndex.value, questions.value.length));
+const displayProgress = computed(() => getQuestionDisplayProgress(questions.value, currentIndex.value));
+const currentProgressNumber = computed(() => displayProgress.value.current);
+const totalProgressCount = computed(() => displayProgress.value.total);
+const progress = computed(() => getQuestionDisplayProgressPercent(questions.value, currentIndex.value));
+const readingSubQuestionProgress = computed(() => getReadingSubQuestionProgress(questions.value, currentIndex.value));
 const canGoPrevious = computed(() => canGoToPreviousQuestion(currentIndex.value));
 const currentUnitProgress = computed(() => getUnitQueueProgress(questions.value, currentIndex.value));
 const answeredQuestionCount = computed(() => questions.value.filter((question) => question.type === 'python' || quizSessionRecords.value[question.id]).length);
@@ -473,6 +655,7 @@ const sessionAccuracyText = computed(() => {
 });
 const currentOfficialAnswerSummary = computed(() => answerKeySummary(currentQuestion.value, getOfficialAnswer(currentQuestion.value)));
 const currentAnswerSpeechItems = computed(() => submitted.value ? speechItemsForQuestion(currentQuestion.value) : []);
+const currentOfficialAnswerParts = computed(() => officialAnswerSpeechParts(currentQuestion.value, currentOfficialAnswerSummary.value, currentAnswerSpeechItems.value));
 const currentUserAnswerLabel = computed(() => currentQuestion.value?.type === 'fill' ? '您输入' : '您选择');
 const currentUserAnswerSummary = computed(() => {
   const question = currentQuestion.value;
@@ -545,25 +728,22 @@ const shouldRenderQuizOverview = computed(() => (
 
 const overviewItems = computed(() => {
   if (!shouldRenderQuizOverview.value) return [];
-  return questions.value.map((question, index) => {
-    const record = quizSessionRecords.value[question.id];
-    const answered = question.type === 'python' || Boolean(record);
-    const status = !answered
-      ? 'unanswered'
-      : record?.correct === true
-        ? 'correct'
-        : record?.correct === false
-          ? 'wrong'
-          : 'answered';
-
+  return getQuestionDisplayGroups(questions.value).map((group) => {
+    const subItems = group.indices.map((questionIndex, subIndex) => (
+      buildOverviewQuestionItem(questions.value[questionIndex], questionIndex, subIndex + 1)
+    ));
+    const groupStatus = overviewGroupStatus(subItems);
     return {
-      index,
-      number: index + 1,
-      question,
-      answered,
-      correct: record?.correct,
-      status,
-      favorite: Boolean(question.favorite)
+      index: group.firstIndex,
+      targetIndex: group.firstIndex,
+      indices: [...group.indices],
+      number: group.number,
+      question: group.question,
+      answered: subItems.every((item) => item.answered),
+      correct: groupStatus === 'correct' ? true : groupStatus === 'wrong' ? false : undefined,
+      status: groupStatus,
+      favorite: subItems.some((item) => item.favorite),
+      subItems
     };
   });
 });
@@ -578,23 +758,69 @@ const quizGroups = computed(() => {
 });
 
 const desktopQuestionProgressText = computed(() => {
-  if (!isSubjectPractice.value) return `第 ${currentProgressNumber.value} / ${questions.value.length} 题`;
+  if (!isSubjectPractice.value) return `第 ${currentProgressNumber.value} / ${totalProgressCount.value} 题`;
 
   const unitProgress = currentUnitProgress.value;
-  if (!unitProgress) return `总进度 ${currentProgressNumber.value} / ${questions.value.length}`;
+  if (!unitProgress) return `总进度 ${currentProgressNumber.value} / ${totalProgressCount.value}`;
 
-  return `本单元第 ${unitProgress.current} / ${unitProgress.total} 题 · 总进度 ${currentProgressNumber.value} / ${questions.value.length}`;
+  return `本单元第 ${unitProgress.current} / ${unitProgress.total} 题 · 总进度 ${currentProgressNumber.value} / ${totalProgressCount.value}`;
 });
 
 function overviewItemClass(item: any) {
   return {
-    active: currentIndex.value === item.index,
+    active: Array.isArray(item.indices) ? item.indices.includes(currentIndex.value) : currentIndex.value === item.index,
     unanswered: item.status === 'unanswered',
     answered: item.status === 'answered',
     correct: item.status === 'correct',
     wrong: item.status === 'wrong',
     favorite: item.favorite
   };
+}
+
+function isReadingOverviewTypeGroup(typeGroup: any) {
+  return Array.isArray(typeGroup?.items) && typeGroup.items.length > 0 && typeGroup.items.every((item: any) => isReadingOverviewItem(item));
+}
+
+function readingOverviewPassageGroups(items: any[]) {
+  return buildReadingOverviewPassageGroups(items);
+}
+
+function overviewQuestionStatus(question: any) {
+  const record = quizSessionRecords.value[question?.id];
+  const answered = question?.type === 'python' || Boolean(record);
+  const status = !answered
+    ? 'unanswered'
+    : record?.correct === true
+      ? 'correct'
+      : record?.correct === false
+        ? 'wrong'
+        : 'answered';
+
+  return {
+    answered,
+    correct: status === 'correct' ? true : status === 'wrong' ? false : undefined,
+    status
+  };
+}
+
+function buildOverviewQuestionItem(question: any, index: number, number: number) {
+  const status = overviewQuestionStatus(question);
+  return {
+    index,
+    targetIndex: index,
+    indices: [index],
+    number,
+    question,
+    ...status,
+    favorite: Boolean(question?.favorite)
+  };
+}
+
+function overviewGroupStatus(items: Array<{ answered?: boolean; status?: string }>) {
+  if (!items.length || items.every((item) => !item.answered)) return 'unanswered';
+  if (items.every((item) => item.status === 'correct')) return 'correct';
+  if (items.some((item) => item.status === 'wrong')) return 'wrong';
+  return 'answered';
 }
 
 function overviewItemLabel(item: any) {
@@ -604,10 +830,12 @@ function overviewItemLabel(item: any) {
     correct: '答对',
     wrong: '答错'
   } as Record<string, string>)[item.status] || '未答';
-  const currentText = currentIndex.value === item.index ? '，当前题' : '';
+  const isCurrent = Array.isArray(item.indices) ? item.indices.includes(currentIndex.value) : currentIndex.value === item.index;
+  const currentText = isCurrent ? '，当前题' : '';
   const favoriteText = item.favorite ? '，已收藏' : '';
   const unitText = isSubjectPractice.value && (item.question?.unitName || item.question?.bankName) ? `${item.question.unitName || item.question.bankName}，` : '';
-  return `${unitText}${questionTypeText(item.question)}，第 ${item.number} 题，${statusText}${currentText}${favoriteText}`;
+  const ordinalText = isReadingOverviewItem(item) ? `第 ${item.number} 小题` : `第 ${item.number} 题`;
+  return `${unitText}${questionTypeText(item.question)}，${ordinalText}，${statusText}${currentText}${favoriteText}`;
 }
 
 function updatePracticeViewportMode() {
@@ -634,6 +862,85 @@ function teardownPracticeViewportQuery() {
     practiceViewportMediaQuery.removeListener(updatePracticeViewportMode);
   }
   practiceViewportMediaQuery = null;
+}
+
+function clampReadingFloatPosition(x: number, y: number) {
+  if (typeof window === 'undefined') return { x, y };
+  const maxX = Math.max(window.innerWidth - 170, 12);
+  const maxY = Math.max(window.innerHeight - 78, 88);
+  return {
+    x: Math.min(Math.max(x, 12), maxX),
+    y: Math.min(Math.max(y, 88), maxY)
+  };
+}
+
+function ensureReadingFloatPosition() {
+  if (typeof window === 'undefined') return;
+  const current = readingFloatPosition.value;
+  const untouched = current.x === 32 && current.y === 220;
+  const next = untouched
+    ? {
+        x: Math.max(24, Math.min(window.innerWidth - 190, 42)),
+        y: Math.max(120, Math.min(window.innerHeight - 110, Math.round(window.innerHeight * 0.42)))
+      }
+    : current;
+  readingFloatPosition.value = clampReadingFloatPosition(next.x, next.y);
+}
+
+function toggleReadingSheet() {
+  if (readingFloatJustDragged.value) {
+    readingFloatJustDragged.value = false;
+    return;
+  }
+  readingSheetExpanded.value = !readingSheetExpanded.value;
+  if (!readingSheetExpanded.value) ensureReadingFloatPosition();
+}
+
+function handleReadingSheetPointerDown(event: PointerEvent) {
+  if (readingSheetExpanded.value || isCompactPracticeViewport.value) return;
+  const target = event.currentTarget;
+  if (!(target instanceof HTMLElement)) return;
+  readingFloatDragState = {
+    active: true,
+    pointerId: event.pointerId,
+    startX: event.clientX,
+    startY: event.clientY,
+    originX: readingFloatPosition.value.x,
+    originY: readingFloatPosition.value.y,
+    moved: false
+  };
+  target.setPointerCapture?.(event.pointerId);
+  window.addEventListener('pointermove', handleReadingFloatPointerMove);
+  window.addEventListener('pointerup', finishReadingFloatDrag);
+  window.addEventListener('pointercancel', finishReadingFloatDrag);
+}
+
+function handleReadingFloatPointerMove(event: PointerEvent) {
+  const state = readingFloatDragState;
+  if (!state?.active || event.pointerId !== state.pointerId) return;
+  const dx = event.clientX - state.startX;
+  const dy = event.clientY - state.startY;
+  if (Math.abs(dx) + Math.abs(dy) > 5) state.moved = true;
+  readingFloatPosition.value = clampReadingFloatPosition(state.originX + dx, state.originY + dy);
+}
+
+function removeReadingFloatDragListeners() {
+  if (typeof window === 'undefined') return;
+  window.removeEventListener('pointermove', handleReadingFloatPointerMove);
+  window.removeEventListener('pointerup', finishReadingFloatDrag);
+  window.removeEventListener('pointercancel', finishReadingFloatDrag);
+}
+
+function finishReadingFloatDrag(event?: PointerEvent) {
+  const state = readingFloatDragState;
+  if (state?.moved && (!event || event.pointerId === state.pointerId)) {
+    readingFloatJustDragged.value = true;
+    window.setTimeout(() => {
+      readingFloatJustDragged.value = false;
+    }, 0);
+  }
+  readingFloatDragState = null;
+  removeReadingFloatDragListeners();
 }
 
 useVisualViewportHeight();
@@ -673,12 +980,15 @@ onBeforeUnmount(() => {
   }
   clearCorrectAnswerAutoAdvanceTimer();
   clearPendingAnswerRetryTimer();
+  removeReadingFloatDragListeners();
   flushRemotePracticeResumeSync();
   teardownPracticeViewportQuery();
 });
 
 watch(() => currentQuestion.value?.id, () => {
   clearCorrectAnswerAutoAdvanceTimer();
+  readingSheetExpanded.value = true;
+  readingFloatJustDragged.value = false;
   restoreQuestionState();
   resetQuestionTimer();
   resetQuestionScrollPosition();
@@ -805,6 +1115,10 @@ function resolvePracticeQuestions(rows: any[]) {
   return [matched];
 }
 
+function isAutoAnsweredPracticeQuestion(question: any) {
+  return question?.type === 'python';
+}
+
 async function restoreSavedPracticeResume() {
   const key = practiceResumeKey.value;
   const localSnapshot = readPracticeResume(key);
@@ -819,7 +1133,18 @@ async function restoreSavedPracticeResume() {
 
   quizSessionRecords.value = practiceResumeSessionRecordsFromSnapshot(selectedSnapshot, questions.value);
   enqueueResumedPendingAnswers();
-  const savedIndex = resolvePracticeResumeSnapshotIndex(selectedSnapshot, questions.value);
+
+  if (selectedSnapshot && isPracticeResumeSnapshotComplete(selectedSnapshot, questions.value, isAutoAnsweredPracticeQuestion)) {
+    quizSessionRecords.value = {};
+    currentIndex.value = 0;
+    practiceResumeReady = true;
+    restoreQuestionState();
+    await clearCurrentPracticeResume();
+    return;
+  }
+
+  const firstUnansweredIndex = resolvePracticeResumeFirstUnansweredIndex(selectedSnapshot, questions.value, isAutoAnsweredPracticeQuestion);
+  const savedIndex = firstUnansweredIndex ?? resolvePracticeResumeSnapshotIndex(selectedSnapshot, questions.value);
   if (savedIndex !== null) currentIndex.value = savedIndex;
   practiceResumeReady = true;
   restoreQuestionState();
@@ -1018,6 +1343,33 @@ function answerKeySummary(question: any, values: string[]) {
     .join('、');
 }
 
+function officialAnswerSpeechParts(question: any, fallbackText: string, speechItems: SpeechItem[]): AnswerSpeechPart[] {
+  if (question?.type === 'fill') {
+    const blanks = fillBlankDefinitions(question);
+    if (blanks.length > 1) {
+      const official = fillOfficialAnswerValues(question);
+      return blanks.map((blank: FillBlankDefinition, index: number) => {
+        const label = fillBlankLabel(blank, index);
+        const matchedSpeech = speechItems.find((item) => item.key === blank.id || item.label === label)
+          || (speechItems.length === blanks.length ? speechItems[index] : null);
+        return {
+          key: blank.id || `blank-${index + 1}`,
+          prefix: `${label}：`,
+          value: String(official[index] || '-').trim() || '-',
+          speechItems: matchedSpeech ? [matchedSpeech] : []
+        };
+      });
+    }
+  }
+
+  return [{
+    key: 'answer',
+    prefix: '',
+    value: fallbackText || '-',
+    speechItems
+  }];
+}
+
 function restoreQuestionState() {
   const question = currentQuestion.value;
   answerTip.value = '';
@@ -1057,6 +1409,12 @@ function restoreQuestionState() {
 function confirmOption(key: string) {
   answerTip.value = '';
   if (!currentQuestion.value || submitted.value) return;
+
+  if (shouldSubmitChoiceImmediately(currentQuestion.value.type)) {
+    selectedAnswers.value = [key];
+    void submitAnswer();
+    return;
+  }
 
   if (currentQuestion.value.type === 'multiple') {
     selectedAnswers.value = selectedAnswers.value.includes(key)
@@ -1175,8 +1533,12 @@ function clearCorrectAnswerAutoAdvanceTimer() {
 
 function scheduleCorrectAnswerAutoAdvance(question: any) {
   clearCorrectAnswerAutoAdvanceTimer();
-  if (!autoAdvanceOnCorrectFeature.value) return;
-  if (!question || currentIndex.value >= questions.value.length - 1) return;
+  if (!question) return;
+  if (!canAutoAdvanceAfterCorrectAnswer({
+    autoAdvanceOnCorrect: autoAdvanceOnCorrectFeature.value,
+    currentIndex: currentIndex.value,
+    questionCount: questions.value.length
+  })) return;
 
   const expectedQuestionId = String(question.id);
   const expectedIndex = currentIndex.value;
@@ -1374,7 +1736,7 @@ function prevQuestion() {
 function nextQuestion() {
   clearCorrectAnswerAutoAdvanceTimer();
   if (currentIndex.value >= questions.value.length - 1) {
-    finishQuiz({ clearResume: true });
+    finishQuiz();
     return;
   }
   currentIndex.value += 1;
@@ -1456,9 +1818,10 @@ function isHorizontalScrollGestureTarget(target: EventTarget | null) {
   return scrollTarget.scrollWidth > scrollTarget.clientWidth + 1;
 }
 
-async function finishQuiz(options: { clearResume?: boolean } = {}) {
+async function finishQuiz() {
   clearCorrectAnswerAutoAdvanceTimer();
-  if (unansweredQuestionCount.value > 0) {
+  const hasUnansweredQuestions = unansweredQuestionCount.value > 0;
+  if (hasUnansweredQuestions) {
     try {
       await showConfirmDialog({
         title: '确认提交练习？',
@@ -1471,7 +1834,8 @@ async function finishQuiz(options: { clearResume?: boolean } = {}) {
     }
   }
 
-  if (options.clearResume) await clearCurrentPracticeResume();
+  const shouldClearResume = shouldClearPracticeResumeOnExit(questions.value.length, unansweredQuestionCount.value);
+  if (shouldClearResume) await clearCurrentPracticeResume();
 
   const returnRoute = practiceReturnRoute.value;
   if (returnRoute) {

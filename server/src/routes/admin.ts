@@ -1,6 +1,7 @@
-import { Router } from 'express';
+import { Router, type Request } from 'express';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import type { Prisma } from '@prisma/client';
 import { UserRole, type UserRole as UserRoleType } from '../utils/roles.js';
 import { prisma } from '../db/prisma.js';
 import { adminRequired, authRequired } from '../middleware/auth.js';
@@ -13,6 +14,7 @@ import { setAuthCookies } from '../utils/cookie.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { adminAuditMiddleware, getAdminActionOptions } from '../services/adminAuditService.js';
 import { getAdminActivityStats } from '../services/adminAnalyticsService.js';
+import { getAdminReadingPassage, saveAdminReadingPassage } from '../services/adminReadingPassageService.js';
 import { assertAllowedNickname, hasForbiddenNickname } from '../utils/nicknamePolicy.js';
 import {
   createAnnouncement,
@@ -25,15 +27,99 @@ const router = Router();
 router.use(authRequired, adminRequired);
 router.use(adminAuditMiddleware);
 
+function parseOptionalDate(value: unknown) {
+  const text = String(value || '').trim();
+  if (!text) return null;
+  const date = new Date(text);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function recentActiveWhere(value: string): Prisma.UserWhereInput {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const daysAgo = (days: number) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() - days);
+    return date;
+  };
+
+  if (value === 'today') return { lastActiveAt: { gte: today } };
+  if (value === '7d') return { lastActiveAt: { gte: daysAgo(6) } };
+  if (value === '30d') return { lastActiveAt: { gte: daysAgo(29) } };
+  if (value === 'inactive30') return { OR: [{ lastActiveAt: null }, { lastActiveAt: { lt: daysAgo(29) } }] };
+  if (value === 'never') return { lastActiveAt: null };
+  return {};
+}
+
+function userBaseWhere(req: Request) {
+  const keyword = String(req.query.keyword || '').trim();
+  const status = String(req.query.status || '').trim();
+  const recentActive = String(req.query.recentActive || '').trim();
+  const registeredStartAt = parseOptionalDate(req.query.registeredStartAt);
+  const registeredEndAt = parseOptionalDate(req.query.registeredEndAt);
+  const createdAt: Prisma.DateTimeFilter = {};
+  if (registeredStartAt) createdAt.gte = registeredStartAt;
+  if (registeredEndAt) createdAt.lte = registeredEndAt;
+
+  return {
+    role: UserRole.STUDENT,
+    ...(status === 'active' ? { isActive: true } : {}),
+    ...(status === 'inactive' ? { isActive: false } : {}),
+    ...recentActiveWhere(recentActive),
+    ...(Object.keys(createdAt).length ? { createdAt } : {}),
+    ...(keyword ? { OR: [{ email: { contains: keyword } }, { nickname: { contains: keyword } }] } : {})
+  } satisfies Prisma.UserWhereInput;
+}
+
+async function userWhereWithNicknameStatus(baseWhere: Prisma.UserWhereInput, nicknameStatus: string) {
+  if (nicknameStatus !== 'normal' && nicknameStatus !== 'violation') return baseWhere;
+  const candidates = await prisma.user.findMany({
+    where: baseWhere,
+    select: { id: true, nickname: true }
+  });
+  const ids = candidates
+    .filter((item) => hasForbiddenNickname(item.nickname) === (nicknameStatus === 'violation'))
+    .map((item) => item.id);
+  return { ...baseWhere, id: { in: ids.length ? ids : ['__none__'] } } satisfies Prisma.UserWhereInput;
+}
+
+function percentage(correctCount: number, answerCount: number) {
+  return answerCount ? Math.round((correctCount / answerCount) * 100) : 0;
+}
+
 router.get('/dashboard', asyncHandler(async (_req, res) => {
-  const [userCount, subjectCount, bankCount, questionCount, answerCount] = await Promise.all([
+  const [userCount, subjectCount, bankCount, questionCount, answerCount, questionTypeRows] = await Promise.all([
     prisma.user.count(),
     prisma.subject.count(),
     prisma.bank.count(),
     prisma.question.count(),
-    prisma.userAnswer.count()
+    prisma.userAnswer.count(),
+    prisma.question.groupBy({
+      by: ['type'],
+      _count: { _all: true },
+      orderBy: { type: 'asc' }
+    })
   ]);
-  return ok(res, { userCount, subjectCount, bankCount, questionCount, answerCount });
+  const typeLabels: Record<string, string> = {
+    single: '单选题',
+    multiple: '多选题',
+    judge: '判断题',
+    fill: '填空题',
+    python: 'Python题',
+    reading: '阅读理解'
+  };
+  return ok(res, {
+    userCount,
+    subjectCount,
+    bankCount,
+    questionCount,
+    answerCount,
+    questionTypeCounts: questionTypeRows.map((row) => ({
+      type: row.type,
+      label: typeLabels[row.type] || row.type || '其他题型',
+      count: row._count._all
+    }))
+  });
 }));
 
 router.get('/activity', asyncHandler(async (req, res) => {
@@ -118,25 +204,204 @@ router.get('/audit-logs', asyncHandler(async (req, res) => {
 router.get('/users', asyncHandler(async (req, res) => {
   const page = toInt(req.query.page, 1);
   const pageSize = Math.min(toInt(req.query.pageSize, 20), 100);
-  const keyword = String(req.query.keyword || '').trim();
-  const where = {
-    role: UserRole.STUDENT,
-    ...(keyword ? { OR: [{ email: { contains: keyword } }, { nickname: { contains: keyword } }] } : {})
-  };
-  const [total, rows] = await Promise.all([
-    prisma.user.count({ where }),
+  const nicknameStatus = String(req.query.nicknameStatus || '').trim();
+  const baseWhere = userBaseWhere(req);
+  const where = await userWhereWithNicknameStatus(baseWhere, nicknameStatus);
+
+  const [summaryRows, rows] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      select: { id: true, nickname: true, isActive: true, lastActiveAt: true }
+    }),
     prisma.user.findMany({
       where,
       orderBy: { createdAt: 'desc' },
       skip: (page - 1) * pageSize,
       take: pageSize,
-      select: { id: true, email: true, nickname: true, role: true, isActive: true, createdAt: true }
+      select: {
+        id: true,
+        email: true,
+        nickname: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+        lastActiveAt: true
+      }
     })
   ]);
+
+  const userIds = rows.map((row) => row.id);
+  const [answerStats, correctStats, wrongStats, favoriteStats] = userIds.length ? await Promise.all([
+    prisma.userAnswer.groupBy({
+      by: ['userId'],
+      where: { userId: { in: userIds } },
+      _count: { _all: true },
+      _sum: { durationSeconds: true },
+      _max: { createdAt: true }
+    }),
+    prisma.userAnswer.groupBy({
+      by: ['userId'],
+      where: { userId: { in: userIds }, isCorrect: true },
+      _count: { _all: true }
+    }),
+    prisma.wrongQuestion.groupBy({
+      by: ['userId'],
+      where: { userId: { in: userIds } },
+      _count: { _all: true }
+    }),
+    prisma.userFavorite.groupBy({
+      by: ['userId'],
+      where: { userId: { in: userIds } },
+      _count: { _all: true }
+    })
+  ]) : [[], [], [], []];
+
+  const answerByUser = new Map(answerStats.map((item) => [item.userId, item]));
+  const correctByUser = new Map(correctStats.map((item) => [item.userId, item._count._all]));
+  const wrongByUser = new Map(wrongStats.map((item) => [item.userId, item._count._all]));
+  const favoriteByUser = new Map(favoriteStats.map((item) => [item.userId, item._count._all]));
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+  const thirtyDaysAgo = new Date(today);
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
+
   return ok(res, {
-    rows: rows.map((row) => ({ ...row, nicknameViolation: hasForbiddenNickname(row.nickname) })),
-    meta: pageMeta(page, pageSize, total)
+    summary: {
+      total: summaryRows.length,
+      activeCount: summaryRows.filter((row) => row.isActive).length,
+      inactiveCount: summaryRows.filter((row) => !row.isActive).length,
+      nicknameViolationCount: summaryRows.filter((row) => hasForbiddenNickname(row.nickname)).length,
+      activeToday: summaryRows.filter((row) => row.lastActiveAt && row.lastActiveAt >= today).length,
+      activeSevenDays: summaryRows.filter((row) => row.lastActiveAt && row.lastActiveAt >= sevenDaysAgo).length,
+      inactiveThirtyDays: summaryRows.filter((row) => !row.lastActiveAt || row.lastActiveAt < thirtyDaysAgo).length
+    },
+    rows: rows.map((row) => {
+      const answers = answerByUser.get(row.id);
+      const answerCount = answers?._count._all || 0;
+      const correctCount = correctByUser.get(row.id) || 0;
+      return {
+        ...row,
+        nicknameViolation: hasForbiddenNickname(row.nickname),
+        answerCount,
+        correctCount,
+        accuracy: percentage(correctCount, answerCount),
+        wrongCount: wrongByUser.get(row.id) || 0,
+        favoriteCount: favoriteByUser.get(row.id) || 0,
+        durationSeconds: answers?._sum.durationSeconds || 0,
+        lastAnsweredAt: answers?._max.createdAt || null
+      };
+    }),
+    meta: pageMeta(page, pageSize, summaryRows.length)
   });
+}));
+
+router.get('/users/:id', asyncHandler(async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { id: req.params.id },
+    select: {
+      id: true,
+      email: true,
+      nickname: true,
+      role: true,
+      isActive: true,
+      createdAt: true,
+      lastActiveAt: true
+    }
+  });
+  if (!user || user.role !== UserRole.STUDENT) return fail(res, '答题用户不存在', 404);
+
+  const [answerCount, correctCount, duration, lastAnswer, wrongCount, favoriteCount, recentAnswers] = await Promise.all([
+    prisma.userAnswer.count({ where: { userId: user.id } }),
+    prisma.userAnswer.count({ where: { userId: user.id, isCorrect: true } }),
+    prisma.userAnswer.aggregate({ where: { userId: user.id }, _sum: { durationSeconds: true } }),
+    prisma.userAnswer.findFirst({ where: { userId: user.id }, orderBy: { createdAt: 'desc' }, select: { createdAt: true } }),
+    prisma.wrongQuestion.count({ where: { userId: user.id } }),
+    prisma.userFavorite.count({ where: { userId: user.id } }),
+    prisma.userAnswer.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+      select: {
+        id: true,
+        questionId: true,
+        selectedJson: true,
+        isCorrect: true,
+        durationSeconds: true,
+        createdAt: true,
+        question: {
+          select: {
+            type: true,
+            typeLabel: true,
+            stem: true,
+            bank: {
+              select: {
+                name: true,
+                subject: { select: { name: true } }
+              }
+            }
+          }
+        }
+      }
+    })
+  ]);
+
+  return ok(res, {
+    user: { ...user, nicknameViolation: hasForbiddenNickname(user.nickname) },
+    stats: {
+      answerCount,
+      correctCount,
+      accuracy: percentage(correctCount, answerCount),
+      wrongCount,
+      favoriteCount,
+      durationSeconds: duration._sum.durationSeconds || 0,
+      lastAnsweredAt: lastAnswer?.createdAt || null
+    },
+    recentAnswers: recentAnswers.map((answer) => ({
+      id: answer.id,
+      questionId: answer.questionId,
+      selected: answer.selectedJson,
+      isCorrect: answer.isCorrect,
+      durationSeconds: answer.durationSeconds,
+      createdAt: answer.createdAt,
+      questionType: answer.question.type,
+      questionTypeLabel: answer.question.typeLabel,
+      questionStem: answer.question.stem,
+      bankName: answer.question.bank.name,
+      subjectName: answer.question.bank.subject.name
+    }))
+  });
+}));
+
+router.patch('/users/batch', asyncHandler(async (req, res) => {
+  const schema = z.object({
+    ids: z.array(z.string().trim().min(1)).min(1, '请选择用户').max(100, '单次最多处理 100 个用户'),
+    action: z.enum(['enable', 'disable', 'resetNickname'])
+  });
+  const input = schema.parse(req.body);
+  const ids = Array.from(new Set(input.ids));
+  const targets = await prisma.user.findMany({
+    where: { id: { in: ids }, role: UserRole.STUDENT },
+    select: { id: true }
+  });
+  if (targets.length !== ids.length) return fail(res, '只能批量处理答题端用户', 400);
+
+  if (input.action === 'enable' || input.action === 'disable') {
+    await prisma.user.updateMany({
+      where: { id: { in: ids }, role: UserRole.STUDENT },
+      data: { isActive: input.action === 'enable' }
+    });
+    return ok(res, { count: ids.length });
+  }
+
+  await prisma.$transaction(ids.map((id) => (
+    prisma.user.update({
+      where: { id },
+      data: { nickname: assertAllowedNickname(`用户${id.slice(-6)}`, { emptyMessage: '昵称不能为空' }) }
+    })
+  )));
+  return ok(res, { count: ids.length });
 }));
 
 router.patch('/users/:id', asyncHandler(async (req, res) => {
@@ -152,7 +417,7 @@ router.patch('/users/:id', asyncHandler(async (req, res) => {
   const user = await prisma.user.update({
     where: { id: req.params.id },
     data,
-    select: { id: true, email: true, nickname: true, role: true, isActive: true }
+    select: { id: true, email: true, nickname: true, role: true, isActive: true, createdAt: true, lastActiveAt: true }
   });
   return ok(res, { ...user, nicknameViolation: hasForbiddenNickname(user.nickname) });
 }));
@@ -464,7 +729,7 @@ function normalizeQuestionInput<T extends {
   };
 }
 
-const questionTypeSchema = z.enum(['single', 'multiple', 'judge', 'fill', 'python']);
+const questionTypeSchema = z.enum(['single', 'multiple', 'judge', 'fill', 'python', 'reading']);
 const questionTypeLabelSchema = z.string().trim().max(40, '题型标签不能超过 40 个字符').optional();
 const questionOptionSchema = z.object({
   label: z.string().trim().min(1, '选项标识不能为空').max(20, '选项标识不能超过 20 个字符'),
@@ -495,6 +760,12 @@ function choiceAnswerList(answer: string[] | string[][]): string[] {
   return Array.isArray(answer) ? answer.filter((item): item is string => typeof item === 'string') : [];
 }
 
+function rejectReadingQuestionWrite(type?: string) {
+  if (type === 'reading') {
+    throw new HttpError('阅读理解请使用阅读短文与小题的统一保存入口', 400);
+  }
+}
+
 function validateQuestionDefinition(input: {
   type: string;
   answer: string[] | string[][];
@@ -518,6 +789,16 @@ function validateQuestionDefinition(input: {
   }
 }
 
+router.get('/reading-passages/:passageId', asyncHandler(async (req, res) => {
+  const bankId = String(req.query.bankId || '').trim();
+  const passageId = String(req.params.passageId || '').trim();
+  return ok(res, await getAdminReadingPassage(bankId, passageId));
+}));
+
+router.post('/reading-passages', asyncHandler(async (req, res) => {
+  return ok(res, await saveAdminReadingPassage(req.body), '保存成功');
+}));
+
 router.post('/questions', asyncHandler(async (req, res) => {
   const schema = z.object({
     bankId: z.string().trim().min(1), type: questionTypeSchema.default('single'), typeLabel: questionTypeLabelSchema, stem: z.string().trim().min(1),
@@ -525,7 +806,9 @@ router.post('/questions', asyncHandler(async (req, res) => {
     answer: fillAnswerSchema.default([]), tags: z.array(z.string().max(100)).max(50).default([]),
     options: z.array(questionOptionSchema).max(100).default([])
   });
-  const input = normalizeQuestionInput(schema.parse(req.body));
+  const parsed = schema.parse(req.body);
+  rejectReadingQuestionWrite(parsed.type);
+  const input = normalizeQuestionInput(parsed);
   validateQuestionDefinition(input);
   const question = await prisma.question.create({
     data: {
@@ -556,12 +839,14 @@ router.put('/questions/:id', asyncHandler(async (req, res) => {
     options: z.array(questionOptionSchema).max(100).optional()
   });
   const parsed = schema.parse(req.body);
+  rejectReadingQuestionWrite(parsed.type);
   const question = await prisma.$transaction(async (tx) => {
     const current = await tx.question.findUnique({
       where: { id: req.params.id },
       include: { options: { orderBy: { sortOrder: 'asc' } } }
     });
     if (!current) throw new HttpError('题目不存在', 404);
+    rejectReadingQuestionWrite(current.type);
 
     const merged = normalizeQuestionInput({
       ...parsed,
@@ -577,15 +862,16 @@ router.put('/questions/:id', asyncHandler(async (req, res) => {
       : parsed.type && merged.type !== 'python'
         ? null
         : undefined;
+    const questionUpdateData: any = {
+      ...rest,
+      type: merged.type,
+      ...(typeof nextTypeLabel !== 'undefined' ? { typeLabel: nextTypeLabel } : {}),
+      answerJson: merged.answer,
+      ...(tags ? { tagsJson: tags } : {})
+    };
     const saved = await tx.question.update({
       where: { id: current.id },
-      data: {
-        ...rest,
-        type: merged.type,
-        ...(typeof nextTypeLabel !== 'undefined' ? { typeLabel: nextTypeLabel } : {}),
-        answerJson: merged.answer,
-        ...(tags ? { tagsJson: tags } : {})
-      }
+      data: questionUpdateData
     });
 
     if (options || merged.type === 'judge' || merged.type === 'fill' || merged.type === 'python') {

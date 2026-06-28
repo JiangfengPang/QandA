@@ -54,7 +54,7 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
   if (!question) throw new HttpError('题目不存在或已停用', 404);
 
   const selectedForStorage = question.type === 'judge' ? normalizeJudgeAnswerArray(selected) : selected;
-  if (['single', 'multiple', 'judge'].includes(question.type)) {
+  if (['single', 'multiple', 'judge', 'reading'].includes(question.type)) {
     const allowedLabels = new Set(question.options.map((option) => option.label));
     if (selectedForStorage.some((item) => !allowedLabels.has(item))) {
       throw new HttpError('答案包含无效选项', 400);

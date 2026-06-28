@@ -1,17 +1,25 @@
 type OverviewItem = {
   index: number;
+  targetIndex?: number;
+  indices?: number[];
   number: number;
   answered?: boolean;
   correct?: boolean;
   status?: string;
   favorite?: boolean;
+  subItems?: OverviewItem[];
   question: {
-    type?: string;
+    id?: unknown;
+    type?: unknown;
     bankId?: unknown;
     unitId?: unknown;
     bankName?: unknown;
     unitName?: unknown;
     unitSortOrder?: unknown;
+    question?: unknown;
+    stem?: unknown;
+    passageId?: unknown;
+    readingPassage?: unknown;
   };
 };
 
@@ -24,6 +32,12 @@ type OverviewTypeGroup = {
 
 type OverviewGroup = OverviewTypeGroup & {
   typeGroups: OverviewTypeGroup[];
+};
+
+type ReadingOverviewGroup = {
+  key: string;
+  title: string;
+  items: OverviewItem[];
 };
 
 function questionUnitKey(question: OverviewItem['question']) {
@@ -45,7 +59,7 @@ function buildTypeGroups(
   [...items]
     .sort((left, right) => left.index - right.index)
     .forEach((item) => {
-      const questionType = item.question.type || 'single';
+      const questionType = String(item.question.type || 'single');
       const label = questionTypeLabel(item.question);
       const groupKey = `${questionType}:${label}`;
 
@@ -63,8 +77,37 @@ function buildTypeGroups(
   return Array.from(groups.values());
 }
 
+function orderedOverviewItems(items: OverviewItem[]) {
+  return [...items].sort((left, right) => left.index - right.index);
+}
+
+function isConsecutiveNumberRun(items: OverviewItem[]) {
+  if (items.length <= 1) return true;
+  const numbers = items.map((item) => Number(item.number));
+  if (numbers.some((number) => !Number.isFinite(number))) return false;
+
+  return numbers.every((number, index) => index === 0 || number === numbers[index - 1] + 1);
+}
+
+function buildStableTypeGroups(
+  items: OverviewItem[],
+  questionTypeLabel: (question: OverviewItem['question']) => string
+) {
+  const typeGroups = buildTypeGroups(items, questionTypeLabel);
+  const hasSkippedVisibleNumbers = typeGroups.some((group) => !isConsecutiveNumberRun(group.items));
+
+  if (!hasSkippedVisibleNumbers) return typeGroups;
+
+  return [{
+    type: 'queue-order:all',
+    label: '全部题目',
+    items: orderedOverviewItems(items),
+    hideLabel: true
+  }];
+}
+
 function buildQueueOrderGroup(items: OverviewItem[]): OverviewGroup[] {
-  const orderedItems = [...items].sort((left, right) => left.index - right.index);
+  const orderedItems = orderedOverviewItems(items);
   const typeGroup = {
     type: 'queue-order:all',
     label: '全部题目',
@@ -80,6 +123,55 @@ function buildQueueOrderGroup(items: OverviewItem[]): OverviewGroup[] {
   }];
 }
 
+function normalizeOverviewText(value: unknown) {
+  return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+export function isReadingOverviewItem(item: OverviewItem) {
+  return String(item.question?.type || '').toLowerCase() === 'reading';
+}
+
+export function readingOverviewStemText(question: OverviewItem['question']) {
+  return normalizeOverviewText(question?.question || question?.stem || question?.readingPassage || '阅读理解');
+}
+
+function readingOverviewGroupKey(item: OverviewItem) {
+  const question = item.question || {};
+  const unitKey = questionUnitKey(question);
+  const passageId = normalizeOverviewText(question.passageId);
+  if (passageId) return `reading:${unitKey}:${passageId}`;
+
+  const stem = readingOverviewStemText(question);
+  const indices = Array.isArray(item.indices) ? item.indices.join(',') : '';
+  if (indices && item.indices!.length > 1) return `reading:${unitKey}:${stem}:${indices}`;
+
+  const passage = normalizeOverviewText(question.readingPassage);
+  const fallback = normalizeOverviewText(question.id) || item.index;
+  if (passage) return `reading:${unitKey}:${stem}:${passage}`;
+  return `reading:${unitKey}:${stem || fallback}`;
+}
+
+export function buildReadingOverviewPassageGroups(items: OverviewItem[]): ReadingOverviewGroup[] {
+  const groups = new Map<string, ReadingOverviewGroup>();
+
+  [...items]
+    .sort((left, right) => left.index - right.index)
+    .forEach((item) => {
+      const key = readingOverviewGroupKey(item);
+      if (!groups.has(key)) {
+        groups.set(key, {
+          key,
+          title: readingOverviewStemText(item.question),
+          items: []
+        });
+      }
+      const questionItems = Array.isArray(item.subItems) && item.subItems.length ? item.subItems : [item];
+      groups.get(key)!.items.push(...questionItems);
+    });
+
+  return Array.from(groups.values());
+}
+
 export function buildPracticeOverviewGroups(
   items: OverviewItem[],
   options: {
@@ -89,10 +181,13 @@ export function buildPracticeOverviewGroups(
   }
 ): OverviewGroup[] {
   if (!options.isSubjectPractice) {
-    return buildTypeGroups(items, options.questionTypeLabel).map((group) => ({
-      ...group,
-      typeGroups: [{ ...group }]
-    }));
+    const orderedItems = orderedOverviewItems(items);
+    return [{
+      type: 'practice',
+      label: '答题顺序',
+      items: orderedItems,
+      typeGroups: buildStableTypeGroups(orderedItems, options.questionTypeLabel)
+    }];
   }
 
   if (options.isRandomOrder) {
@@ -143,7 +238,7 @@ export function buildPracticeOverviewGroups(
       return {
         ...group,
         items: unitItems,
-        typeGroups: buildTypeGroups(unitItems, options.questionTypeLabel)
+        typeGroups: buildStableTypeGroups(unitItems, options.questionTypeLabel)
       };
     });
 }

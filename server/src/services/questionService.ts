@@ -45,7 +45,7 @@ function fillBlankDefinitions(question: any) {
   if (rawBlanks.length) {
     return rawBlanks
       .map((blank: any, index: number) => {
-        const answer = normalizeAnswerArray(blank.answer ?? blank.answers ?? blank.correctAnswer ?? answerGroups[index]);
+        const answer = normalizeAnswerArray(blank.answer ?? answerGroups[index]);
         return {
           id: String(blank.id || `blank-${index + 1}`),
           label: String(blank.label || index + 1),
@@ -113,6 +113,18 @@ function answerTextByOptions(selected: unknown, options: any[], questionType?: s
     .join('，');
 }
 
+function readingPayload(question: any) {
+  if (question.type !== 'reading') return {};
+  const raw = question.rawJson && typeof question.rawJson === 'object' && !Array.isArray(question.rawJson)
+    ? question.rawJson
+    : {};
+  return {
+    passageId: String(raw.passageId || ''),
+    readingPassage: String(raw.readingPassage || ''),
+    readingQuestion: String(raw.readingQuestion || '')
+  };
+}
+
 export function formatQuestion(question: any, userId?: string) {
   const answer = questionAnswerArray(question);
   const fillBlanks = fillBlankDefinitions(question);
@@ -138,6 +150,7 @@ export function formatQuestion(question: any, userId?: string) {
     score: question.score,
     question: question.stem,
     stem: question.stem,
+    ...readingPayload(question),
     answer,
     pronunciation,
     fillBlanks: question.type === 'fill' ? fillBlanks : undefined,

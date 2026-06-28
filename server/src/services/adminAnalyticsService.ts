@@ -6,10 +6,9 @@ import { UserRole } from '../utils/roles.js';
 const ONLINE_WINDOW_MS = 5 * 60 * 1000;
 
 type DailyActivityRow = {
-  dayKey: string;
-  answerCount: bigint | number;
-  activeUserCount: bigint | number;
-  correctCount: bigint | number;
+  userId: string;
+  createdAt: Date;
+  isCorrect: boolean;
 };
 
 type ActiveUserRow = {
@@ -25,10 +24,49 @@ function toNumber(value: bigint | number | null | undefined) {
   return Number(value || 0);
 }
 
+function studentAnswerWhere(createdAt: { gte: Date; lt: Date }) {
+  return {
+    createdAt,
+    user: { role: UserRole.STUDENT, isActive: true }
+  };
+}
+
+export function buildDailyActivityTrend(records: DailyActivityRow[], trendStart: Date, days: number) {
+  const trendMap = new Map<string, { answerCount: number; correctCount: number; activeUserIds: Set<string> }>();
+  for (let index = 0; index < days; index += 1) {
+    const date = addDays(trendStart, index);
+    trendMap.set(dayKey(date), { answerCount: 0, correctCount: 0, activeUserIds: new Set() });
+  }
+
+  for (const answer of records) {
+    const key = dayKey(answer.createdAt);
+    const row = trendMap.get(key);
+    if (!row) continue;
+    row.answerCount += 1;
+    if (answer.isCorrect) row.correctCount += 1;
+    row.activeUserIds.add(answer.userId);
+  }
+
+  return Array.from({ length: days }, (_, index) => {
+    const date = addDays(trendStart, index);
+    const key = dayKey(date);
+    const row = trendMap.get(key) || { answerCount: 0, correctCount: 0, activeUserIds: new Set<string>() };
+    return {
+      date: key,
+      label: dayLabel(date),
+      answerCount: row.answerCount,
+      activeUserCount: row.activeUserIds.size,
+      correctCount: row.correctCount,
+      accuracy: row.answerCount ? Math.round((row.correctCount / row.answerCount) * 100) : 0
+    };
+  });
+}
+
 export async function getAdminActivityStats(trendDays = 14) {
   const days = Math.min(Math.max(Math.round(trendDays), 7), 30);
   const now = new Date();
   const today = dayStart(now);
+  const tomorrow = addDays(today, 1);
   const sevenDayStart = addDays(today, -6);
   const trendStart = addDays(today, -(days - 1));
   const onlineSince = new Date(now.getTime() - ONLINE_WINDOW_MS);
@@ -42,7 +80,7 @@ export async function getAdminActivityStats(trendDays = 14) {
     answersSevenDays,
     correctSevenDays,
     durationSevenDays,
-    dailyRows,
+    trendAnswers,
     activeUserRows
   ] = await Promise.all([
     prisma.user.count({ where: { role: UserRole.STUDENT, isActive: true } }),
@@ -54,30 +92,23 @@ export async function getAdminActivityStats(trendDays = 14) {
     }),
     prisma.userAnswer.groupBy({
       by: ['userId'],
-      where: { createdAt: { gte: today } }
+      where: studentAnswerWhere({ gte: today, lt: tomorrow })
     }),
     prisma.userAnswer.groupBy({
       by: ['userId'],
-      where: { createdAt: { gte: sevenDayStart } }
+      where: studentAnswerWhere({ gte: sevenDayStart, lt: tomorrow })
     }),
-    prisma.userAnswer.count({ where: { createdAt: { gte: today } } }),
-    prisma.userAnswer.count({ where: { createdAt: { gte: sevenDayStart } } }),
-    prisma.userAnswer.count({ where: { createdAt: { gte: sevenDayStart }, isCorrect: true } }),
+    prisma.userAnswer.count({ where: studentAnswerWhere({ gte: today, lt: tomorrow }) }),
+    prisma.userAnswer.count({ where: studentAnswerWhere({ gte: sevenDayStart, lt: tomorrow }) }),
+    prisma.userAnswer.count({ where: { ...studentAnswerWhere({ gte: sevenDayStart, lt: tomorrow }), isCorrect: true } }),
     prisma.userAnswer.aggregate({
-      where: { createdAt: { gte: sevenDayStart } },
+      where: studentAnswerWhere({ gte: sevenDayStart, lt: tomorrow }),
       _sum: { durationSeconds: true }
     }),
-    prisma.$queryRaw<DailyActivityRow[]>(Prisma.sql`
-      SELECT
-        DATE_FORMAT(\`createdAt\`, '%Y-%m-%d') AS \`dayKey\`,
-        COUNT(*) AS \`answerCount\`,
-        COUNT(DISTINCT \`userId\`) AS \`activeUserCount\`,
-        SUM(CASE WHEN \`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`
-      FROM \`UserAnswer\`
-      WHERE \`createdAt\` >= ${trendStart}
-      GROUP BY DATE_FORMAT(\`createdAt\`, '%Y-%m-%d')
-      ORDER BY \`dayKey\` ASC
-    `),
+    prisma.userAnswer.findMany({
+      where: studentAnswerWhere({ gte: trendStart, lt: tomorrow }),
+      select: { userId: true, createdAt: true, isCorrect: true }
+    }),
     prisma.$queryRaw<ActiveUserRow[]>(Prisma.sql`
       SELECT
         u.\`id\`,
@@ -89,29 +120,16 @@ export async function getAdminActivityStats(trendDays = 14) {
       FROM \`UserAnswer\` a
       INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
       WHERE a.\`createdAt\` >= ${sevenDayStart}
+        AND a.\`createdAt\` < ${tomorrow}
         AND u.\`role\` = 'STUDENT'
+        AND u.\`isActive\` = 1
       GROUP BY u.\`id\`, u.\`nickname\`, u.\`email\`
       ORDER BY \`answerCount\` DESC, \`correctCount\` DESC
       LIMIT 10
     `)
   ]);
 
-  const rowMap = new Map(dailyRows.map((row) => [String(row.dayKey), row]));
-  const trend = Array.from({ length: days }, (_, index) => {
-    const date = addDays(trendStart, index);
-    const key = dayKey(date);
-    const row = rowMap.get(key);
-    const answerCount = toNumber(row?.answerCount);
-    const correctCount = toNumber(row?.correctCount);
-    return {
-      date: key,
-      label: dayLabel(date),
-      answerCount,
-      activeUserCount: toNumber(row?.activeUserCount),
-      correctCount,
-      accuracy: answerCount ? Math.round((correctCount / answerCount) * 100) : 0
-    };
-  });
+  const trend = buildDailyActivityTrend(trendAnswers, trendStart, days);
 
   return {
     onlineWindowMinutes: ONLINE_WINDOW_MS / 60_000,

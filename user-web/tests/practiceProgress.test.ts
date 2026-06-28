@@ -2,7 +2,11 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   canGoToPreviousQuestion,
+  getQuestionDisplayGroups,
+  getQuestionDisplayProgress,
+  getReadingSubQuestionProgress,
   getUnitQueueProgress,
+  questionDisplayKey,
   practiceProgressNumber,
   practiceProgressPercent
 } from '../src/utils/practiceProgress';
@@ -46,4 +50,72 @@ test('progress percentage is based on all loaded questions', () => {
   assert.equal(practiceProgressPercent(34, 61), 57);
   assert.equal(practiceProgressPercent(60, 61), 100);
   assert.equal(practiceProgressPercent(0, 0), 0);
+});
+
+test('reading display groups use the shared passage when passageId is missing', () => {
+  const readingQuestions = [
+    {
+      id: 'q1',
+      bankId: 'reading-bank',
+      type: 'reading',
+      question: 'Passage One. Read the passage and choose the best answer.',
+      readingPassage: 'Shared passage body',
+      readingQuestion: 'Question 1'
+    },
+    {
+      id: 'q2',
+      bankId: 'reading-bank',
+      type: 'reading',
+      question: 'Passage One. Read the passage and choose the best answer.',
+      readingPassage: 'Shared passage body',
+      readingQuestion: 'Question 2'
+    },
+    {
+      id: 'q3',
+      bankId: 'reading-bank',
+      type: 'reading',
+      question: 'Passage Two. Read the passage and choose the best answer.',
+      readingPassage: 'Another passage body',
+      readingQuestion: 'Question 1'
+    }
+  ];
+
+  assert.equal(questionDisplayKey(readingQuestions[0], 0), questionDisplayKey(readingQuestions[1], 1));
+  assert.notEqual(questionDisplayKey(readingQuestions[0], 0), questionDisplayKey(readingQuestions[2], 2));
+
+  const groups = getQuestionDisplayGroups(readingQuestions);
+  assert.equal(groups.length, 2);
+  assert.deepEqual(groups[0].indices, [0, 1]);
+  assert.deepEqual(groups[1].indices, [2]);
+  assert.deepEqual(getQuestionDisplayProgress(readingQuestions, 1), {
+    current: 1,
+    total: 2,
+    group: groups[0]
+  });
+  assert.deepEqual(getReadingSubQuestionProgress(readingQuestions, 1), { current: 2, total: 2 });
+});
+
+test('reading display groups can distinguish same stems with different passage bodies', () => {
+  const readingQuestions = [
+    {
+      id: 'a1',
+      bankId: 'reading-bank',
+      type: 'reading',
+      question: 'Read the passage and choose the best answer.',
+      readingPassage: 'Passage A',
+      readingQuestion: 'Question 1'
+    },
+    {
+      id: 'b1',
+      bankId: 'reading-bank',
+      type: 'reading',
+      question: 'Read the passage and choose the best answer.',
+      readingPassage: 'Passage B',
+      readingQuestion: 'Question 1'
+    }
+  ];
+
+  const groups = getQuestionDisplayGroups(readingQuestions);
+  assert.equal(groups.length, 2);
+  assert.deepEqual(groups.map((group) => group.number), [1, 2]);
 });

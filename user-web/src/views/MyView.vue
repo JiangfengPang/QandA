@@ -22,7 +22,6 @@
         <div class="qmine-panel-head">
           <div>
             <h2>系统信息</h2>
-            <p>页面版本与项目说明。</p>
           </div>
         </div>
 
@@ -49,7 +48,6 @@
         <div class="qmine-panel-head">
           <div>
             <h2>账号安全</h2>
-            <p>管理登录密码、邮箱绑定和当前登录状态。</p>
           </div>
           <span class="qmine-tag">安全中心</span>
         </div>
@@ -89,7 +87,6 @@
         <div class="qmine-panel-head">
           <div>
             <h2>使用偏好</h2>
-            <p>只保留影响刷题体验的个人设置。</p>
           </div>
           <span class="qmine-tag">个人设置</span>
         </div>

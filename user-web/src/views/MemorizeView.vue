@@ -21,7 +21,7 @@
             <div class="qx-quiz-header-side">
               <div class="qx-quiz-header-actions">
                 <button class="qx-quiz-pill-btn solid" @click="returnToLibrary">返回题库</button>
-                <button class="qx-quiz-pill-btn" @click="toggleOverview">题目列表</button>
+                <button class="qx-quiz-pill-btn" @click="toggleOverview">答题卡</button>
               </div>
             </div>
           </div>
@@ -37,11 +37,11 @@
           </div>
 
           <div class="qx-mobile-progress-row">
-            <span class="qx-mobile-question-count"><strong>{{ currentNumber }}</strong>/{{ questions.length }}</span>
+            <span class="qx-mobile-question-count"><strong>{{ currentNumber }}</strong>/{{ totalProgressCount }}</span>
             <div class="progress-line qx-mobile-progress-line" aria-label="背题进度">
               <span :style="{ width: progress + '%' }"></span>
             </div>
-            <button class="qx-mobile-overview-btn" type="button" aria-label="题目列表" @click="toggleOverview">
+            <button class="qx-mobile-overview-btn" type="button" aria-label="答题卡" @click="toggleOverview">
               <QxIcon name="grid" />
             </button>
           </div>
@@ -49,14 +49,17 @@
       </header>
 
       <div class="qx-quiz-layout qx-memorize-layout">
-        <div class="qx-quiz-content">
+        <div class="qx-quiz-content" :class="{ 'is-reading-content': isReadingQuestion }">
           <div ref="memorizeMainRef" class="qx-quiz-main" @touchstart.passive="handleTouchStart" @touchend.passive="handleTouchEnd">
-            <article class="qx-question-card qx-memorize-question-card is-font-standard" :class="{ 'is-multiple-question': currentQuestion.type === 'multiple' }">
+            <article
+              class="qx-question-card qx-memorize-question-card is-font-standard"
+              :class="{ 'is-multiple-question': currentQuestion.type === 'multiple', 'is-reading-question': isReadingQuestion }"
+            >
               <div class="qx-question-card-head">
                 <div class="qx-question-head-main">
                   <div class="qx-question-progress qx-desktop-question-progress">
                     <div class="qx-desktop-progress-row">
-                      <span class="qx-desktop-question-count">{{ currentNumber }}/{{ questions.length }} · {{ currentUnitName }}</span>
+                      <span class="qx-desktop-question-count">{{ currentNumber }}/{{ totalProgressCount }} · {{ currentUnitName }}</span>
                       <div class="progress-line">
                         <span :style="{ width: progress + '%' }"></span>
                       </div>
@@ -66,7 +69,7 @@
 
                   <div class="qx-question-title-row">
                     <span class="pill qx-question-type-badge">{{ currentQuestionTypeBadge }}</span>
-                    <span class="qx-question-inline-count">{{ currentNumber }}/{{ questions.length }}、</span>
+                    <span class="qx-question-inline-count">{{ currentNumber }}/{{ totalProgressCount }}、</span>
                     <PythonMarkdown
                       v-if="isMarkdownStem"
                       class="qx-question-title qx-question-title-markdown qx-markdown-answer"
@@ -77,7 +80,70 @@
                 </div>
               </div>
 
-              <section class="qx-memorize-answer-card">
+              <div
+                v-if="isReadingQuestion"
+                class="qx-reading-layout is-sheet-expanded"
+              >
+                <section class="qx-reading-passage" aria-label="阅读理解原文">
+                  <div class="qx-reading-passage-kicker">阅读原文</div>
+                  <PythonMarkdown
+                    v-if="readingPassageText"
+                    class="qx-reading-passage-text qx-reading-passage-markdown"
+                    :markdown="readingPassageText"
+                  />
+                  <div v-else class="qx-reading-passage-empty">本题暂未录入阅读原文。</div>
+                </section>
+
+                <section class="qx-reading-sheet is-submitted" aria-label="阅读理解小题">
+                  <button class="qx-reading-sheet-handle" type="button" aria-label="阅读理解小题">
+                    <span aria-hidden="true"></span>
+                    <strong class="qx-reading-float-label">小题</strong>
+                  </button>
+                  <div class="qx-reading-sheet-body">
+                    <div class="qx-reading-question-head">
+                      <span>小题</span>
+                      <strong>{{ readingSubQuestionProgress.current }}/{{ readingSubQuestionProgress.total }}</strong>
+                    </div>
+                    <h3 class="qx-reading-question-title">{{ readingQuestionText }}</h3>
+
+                    <div class="option-list qx-option-list qx-reading-option-list">
+                      <button
+                        v-for="option in currentOptions"
+                        :key="option.key"
+                        class="option-button qx-option-button"
+                        :class="{ correct: isCorrectReadingOption(option) }"
+                        disabled
+                      >
+                        <span class="option-key">{{ optionKeyDisplay(option, currentQuestion.type) }}</span>
+                        <span class="option-text">{{ option.text }}</span>
+                      </button>
+                    </div>
+
+                    <div class="qx-reading-desktop-actions">
+                      <button class="qx-action-btn ghost" :disabled="!canGoPrevious" @click="prevQuestion">← 上一题</button>
+                      <button class="qx-action-btn primary" @click="nextQuestion">{{ isLastQuestion ? '完成背题' : '下一题 →' }}</button>
+                    </div>
+
+                    <div class="result-box qx-result-box qx-reading-result-box correct">
+                      <div class="qx-result-answer-row">
+                        <span>正确答案 <b class="qx-result-answer-correct">{{ answerDisplay(currentQuestion) }}</b></span>
+                        <QxIcon class="qx-result-judge-icon" name="check-circle" tone="green" />
+                      </div>
+                      <div class="qx-simple-answer">
+                        <strong class="qx-analysis-title">解析</strong>
+                        <PythonMarkdown
+                          v-if="explanationText"
+                          class="qx-explanation-text qx-explanation-markdown"
+                          :markdown="explanationText"
+                        />
+                        <p v-else class="qx-explanation-text">本题暂无解析。</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <section v-else class="qx-memorize-answer-card">
                 <div class="qx-memorize-answer-head">
                   <span>正确答案</span>
                 </div>
@@ -105,17 +171,17 @@
         <button
           v-if="overviewOpen"
           class="overview-backdrop qx-overview-backdrop"
-          aria-label="关闭题目列表"
+          aria-label="关闭答题卡"
           @click="toggleOverview"
         ></button>
 
         <aside class="quiz-overview qx-quiz-overview qx-memorize-overview" :class="{ open: overviewOpen }">
           <div class="qx-overview-head">
             <div>
-              <h2>题目列表</h2>
-              <p>{{ currentNumber }}/{{ questions.length }} 题</p>
+              <h2>答题卡</h2>
+              <p>{{ currentNumber }}/{{ totalProgressCount }} 题</p>
             </div>
-            <button class="qx-overview-close" aria-label="关闭题目列表" @click="toggleOverview">
+            <button class="qx-overview-close" aria-label="关闭答题卡" @click="toggleOverview">
               <QxIcon name="close" />
             </button>
           </div>
@@ -128,9 +194,9 @@
                   v-for="item in group.items"
                   :key="item.index"
                   class="qx-overview-index-btn answered"
-                  :class="{ active: item.index === currentIndex }"
+                  :class="{ active: item.indices.includes(currentIndex) }"
                   :aria-label="`${item.unit}，第 ${item.number} 题`"
-                  @click="jumpToQuestion(item.index)"
+                  @click="jumpToQuestion(item.targetIndex)"
                 >
                   <span class="qx-overview-number">{{ item.number }}</span>
                 </button>
@@ -153,7 +219,13 @@ import SpeakButton from '../components/SpeakButton.vue';
 import { useVisualViewportHeight } from '../composables/useVisualViewportHeight';
 import { useAuthStore } from '../stores/auth';
 import { judgeAnswerKey, judgeOptionDisplay, normalizeOptions, optionKeyDisplay, questionTypeText } from '../utils/question';
-import { canGoToPreviousQuestion, practiceProgressNumber, practiceProgressPercent } from '../utils/practiceProgress';
+import {
+  canGoToPreviousQuestion,
+  getQuestionDisplayGroups,
+  getQuestionDisplayProgress,
+  getQuestionDisplayProgressPercent,
+  getReadingSubQuestionProgress
+} from '../utils/practiceProgress';
 import { speechItemsForQuestion } from '../utils/pronunciation';
 import {
   buildPracticeResumeKey,
@@ -171,6 +243,7 @@ import {
   saveRemotePracticeResume
 } from '../utils/practiceResumeRemote';
 import '../styles/practice.css';
+import '../styles/practice-feedback.css';
 
 const PythonMarkdown = defineAsyncComponent(() => import('../components/PythonMarkdown.vue'));
 
@@ -191,8 +264,16 @@ let memorizeResumeReady = false;
 
 const currentQuestion = computed(() => questions.value[currentIndex.value] || null);
 const currentAnswerSpeechItems = computed(() => speechItemsForQuestion(currentQuestion.value));
-const currentNumber = computed(() => practiceProgressNumber(currentIndex.value, questions.value.length));
-const progress = computed(() => practiceProgressPercent(currentIndex.value, questions.value.length));
+const isReadingQuestion = computed(() => currentQuestion.value?.type === 'reading');
+const currentOptions = computed(() => normalizeOptions(currentQuestion.value?.options || []));
+const readingPassageText = computed(() => String(currentQuestion.value?.readingPassage || '').trim());
+const readingQuestionText = computed(() => String(currentQuestion.value?.readingQuestion || '').trim());
+const explanationText = computed(() => String(currentQuestion.value?.explanation || '').trim());
+const displayProgress = computed(() => getQuestionDisplayProgress(questions.value, currentIndex.value));
+const currentNumber = computed(() => displayProgress.value.current);
+const totalProgressCount = computed(() => displayProgress.value.total);
+const progress = computed(() => getQuestionDisplayProgressPercent(questions.value, currentIndex.value));
+const readingSubQuestionProgress = computed(() => getReadingSubQuestionProgress(questions.value, currentIndex.value));
 const canGoPrevious = computed(() => canGoToPreviousQuestion(currentIndex.value));
 const isLastQuestion = computed(() => currentIndex.value >= questions.value.length - 1);
 const currentUnitName = computed(() => String(currentQuestion.value?.unitName || currentQuestion.value?.bankName || '全部单元'));
@@ -214,13 +295,19 @@ const isMarkdownStem = computed(() => {
   return question.type === 'python' || /```|!\[|\[[^\]]+\]\(|\*\*|`/.test(stem);
 });
 const overviewGroups = computed(() => {
-  const groups: Array<{ unit: string; items: Array<{ index: number; number: number; unit: string }> }> = [];
-  const groupByUnit = new Map<string, Array<{ index: number; number: number; unit: string }>>();
+  const groups: Array<{ unit: string; items: Array<{ index: number; targetIndex: number; indices: number[]; number: number; unit: string }> }> = [];
+  const groupByUnit = new Map<string, Array<{ index: number; targetIndex: number; indices: number[]; number: number; unit: string }>>();
 
-  questions.value.forEach((question, index) => {
-    const unit = String(question.unitName || question.bankName || '全部单元');
+  getQuestionDisplayGroups(questions.value).forEach((group) => {
+    const unit = String(group.question.unitName || group.question.bankName || '全部单元');
     if (!groupByUnit.has(unit)) groupByUnit.set(unit, []);
-    groupByUnit.get(unit)!.push({ index, number: index + 1, unit });
+    groupByUnit.get(unit)!.push({
+      index: group.firstIndex,
+      targetIndex: group.firstIndex,
+      indices: group.indices,
+      number: group.number,
+      unit
+    });
   });
 
   groupByUnit.forEach((items, unit) => groups.push({ unit, items }));
@@ -425,6 +512,11 @@ function answerDisplay(question: any) {
       return item;
     })
     .join('\n');
+}
+
+function isCorrectReadingOption(option: any) {
+  const values = officialAnswer(currentQuestion.value);
+  return values.some((item: string) => option.key === item || option.keyLabel === item);
 }
 
 </script>

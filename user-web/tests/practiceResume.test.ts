@@ -5,11 +5,14 @@ import {
   newerPracticeResume,
   buildPracticeResumeKey,
   clearPracticeResume,
+  isPracticeResumeSnapshotComplete,
   practiceResumeUpdatedAt,
   readPracticeResumeSessionRecords,
   readPracticeResume,
+  resolvePracticeResumeFirstUnansweredIndex,
   resolvePracticeResumeIndex,
-  savePracticeResume
+  savePracticeResume,
+  shouldClearPracticeResumeOnExit
 } from '../src/utils/practiceResume';
 
 function memoryStorage() {
@@ -81,6 +84,12 @@ test('practice resume clear removes saved progress', () => {
   assert.equal(resolvePracticeResumeIndex(key, [{ id: 'q1' }, { id: 'q2' }], storage), null);
 });
 
+test('practice resume is cleared only after all questions are answered', () => {
+  assert.equal(shouldClearPracticeResumeOnExit(3, 0), true);
+  assert.equal(shouldClearPracticeResumeOnExit(3, 1), false);
+  assert.equal(shouldClearPracticeResumeOnExit(0, 0), false);
+});
+
 test('practice resume preserves answer card session records', () => {
   const storage = memoryStorage();
   const key = buildPracticeResumeKey('user-1', ['practice', 'bank', 'bank-1']);
@@ -116,4 +125,55 @@ test('practice resume preserves answer card session records', () => {
   assert.equal(records.q1.correct, true);
   assert.equal(records.q2.correct, false);
   assert.deepEqual(records.q2.userAnswer, ['B']);
+});
+
+test('practice resume restores to first unanswered question instead of last viewed question', () => {
+  const storage = memoryStorage();
+  const key = buildPracticeResumeKey('user-1', ['practice', 'bank', 'bank-1']);
+  const questions = [{ id: 'q1' }, { id: 'q2' }, { id: 'q3' }, { id: 'q4' }];
+
+  const snapshot = savePracticeResume(key, questions, 3, {
+    q1: {
+      correct: true,
+      userAnswer: ['A'],
+      answer: ['A'],
+      explanation: ''
+    },
+    q3: {
+      correct: false,
+      userAnswer: ['B'],
+      answer: ['C'],
+      explanation: ''
+    }
+  }, storage);
+
+  assert.equal(resolvePracticeResumeIndex(key, questions, storage), 3);
+  assert.equal(resolvePracticeResumeFirstUnansweredIndex(snapshot, questions), 1);
+});
+
+test('practice resume detects completed snapshots and supports auto-answered questions', () => {
+  const storage = memoryStorage();
+  const key = buildPracticeResumeKey('user-1', ['practice', 'bank', 'bank-1']);
+  const questions = [{ id: 'q1' }, { id: 'py1', type: 'python' }, { id: 'q2' }];
+
+  const snapshot = savePracticeResume(key, questions, 2, {
+    q1: {
+      correct: true,
+      userAnswer: ['A'],
+      answer: ['A'],
+      explanation: ''
+    },
+    q2: {
+      correct: true,
+      userAnswer: ['C'],
+      answer: ['C'],
+      explanation: ''
+    }
+  }, storage);
+
+  assert.equal(
+    isPracticeResumeSnapshotComplete(snapshot, questions, (question) => question.type === 'python'),
+    true
+  );
+  assert.equal(resolvePracticeResumeFirstUnansweredIndex(snapshot, questions, (question) => question.type === 'python'), null);
 });
