@@ -2973,20 +2973,26 @@ body {
 
 /* User identity in sidebar */
 .brand-mark.is-user-avatar {
-  border-radius: 14px;
-  background: #eef6ff;
-  border: 1px solid #dbeafe;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: transparent;
+  border: 0;
+  box-shadow: 0 6px 14px rgba(49, 97, 150, .10);
 }
 .brand-mark.is-user-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: inherit;
 }
 .brand-mark.is-user-avatar b {
   width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
+  border-radius: inherit;
+  background: #eef6ff;
   color: var(--qx-blue-dark);
   font-size: 18px;
   font-weight: 950;

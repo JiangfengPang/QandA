@@ -1238,3 +1238,311 @@
     font-size: 12px !important;
   }
 }
+
+.qmine-panel-head {
+  padding-top: 16px;
+  padding-bottom: 7px;
+}
+
+.qmine-row {
+  min-height: 60px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.qmine-prefs-grid .qmine-row {
+  min-height: 60px;
+}
+
+@media (min-width: 981px) {
+  .qmine-system-panel .qmine-row {
+    min-height: 68px;
+  }
+}
+
+/* ===== 2026-06-28 profile hero Apple glass polish ===== */
+.qmine-profile-hero {
+  border: 1px solid rgba(255, 255, 255, .52) !important;
+  color: #17345f !important;
+  background:
+    radial-gradient(circle at 14% -8%, rgba(255, 255, 255, .54) 0 22%, transparent 42%),
+    radial-gradient(circle at 88% 18%, rgba(119, 193, 255, .12), transparent 42%),
+    radial-gradient(circle at 54% 118%, rgba(48, 112, 218, .08), transparent 42%),
+    linear-gradient(135deg, rgba(255, 255, 255, .38) 0%, rgba(246, 251, 255, .18) 45%, rgba(214, 235, 255, .06) 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .96),
+    inset 0 -1px 0 rgba(255, 255, 255, .38),
+    0 24px 60px rgba(51, 94, 148, .16),
+    0 8px 22px rgba(255, 255, 255, .54) !important;
+  -webkit-backdrop-filter: saturate(1.35) blur(16px);
+  backdrop-filter: saturate(1.35) blur(16px);
+}
+
+.qmine-profile-hero::before {
+  top: -28% !important;
+  right: -8% !important;
+  bottom: -28% !important;
+  width: 78% !important;
+  z-index: 0 !important;
+  opacity: .78 !important;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, .02) 34%, rgba(255, 255, 255, .07) 100%),
+    var(--qmine-avatar-bg) !important;
+  background-size: auto, cover !important;
+  background-position: center, center 42% !important;
+  filter: blur(7px) saturate(1.34) contrast(1.08) !important;
+  transform: scale(1.12) !important;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, .18) 12%, rgba(0, 0, 0, .78) 36%, #000 100%) !important;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, .18) 12%, rgba(0, 0, 0, .78) 36%, #000 100%) !important;
+}
+
+.qmine-profile-hero::after {
+  inset: 1px !important;
+  z-index: 0 !important;
+  border: 1px solid rgba(255, 255, 255, .34) !important;
+  background:
+    linear-gradient(116deg, rgba(255, 255, 255, .32) 0%, rgba(255, 255, 255, .08) 32%, rgba(255, 255, 255, 0) 58%),
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, .34), transparent 27%),
+    radial-gradient(circle at 92% 82%, rgba(110, 231, 183, .05), transparent 34%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .18),
+    inset 0 18px 34px rgba(255, 255, 255, .10) !important;
+}
+
+.qmine-profile-main,
+.qmine-edit-btn {
+  z-index: 1 !important;
+}
+
+.qmine-profile-main {
+  grid-template-columns: 104px minmax(0, 1fr) !important;
+  gap: 22px !important;
+}
+
+.qmine-profile-main h2 {
+  color: #0e4f9d !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .58) !important;
+}
+
+.qmine-profile-main p {
+  color: rgba(43, 91, 139, .78) !important;
+  letter-spacing: 0 !important;
+}
+
+.qmine-avatar {
+  width: 104px !important;
+  height: 104px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 24px !important;
+  background: transparent !important;
+  box-shadow: 0 14px 28px rgba(49, 97, 150, .16) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.qmine-avatar img,
+.qmine-avatar span {
+  border-radius: 24px !important;
+}
+
+.qmine-email-pill {
+  border: 1px solid rgba(255, 255, 255, .60) !important;
+  background: rgba(255, 255, 255, .40) !important;
+  color: #a06400 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .72),
+    0 8px 18px rgba(42, 91, 143, .08) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  backdrop-filter: blur(16px) saturate(1.35);
+}
+
+.qmine-email-pill.bound {
+  background: rgba(222, 255, 241, .48) !important;
+  color: #087f5b !important;
+}
+
+.qmine-edit-btn {
+  border-color: rgba(255, 255, 255, .68) !important;
+  background: rgba(255, 255, 255, .38) !important;
+  color: #1457a6 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .86),
+    0 10px 24px rgba(46, 102, 165, .12) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.45);
+  backdrop-filter: blur(18px) saturate(1.45);
+}
+
+.qmine-edit-btn:hover {
+  border-color: rgba(255, 255, 255, .84) !important;
+  background: rgba(255, 255, 255, .54) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .94),
+    0 12px 26px rgba(46, 102, 165, .15) !important;
+}
+
+@media (max-width: 430px) {
+  .qmine-profile-main {
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+    gap: 11px !important;
+  }
+
+  .qmine-profile-main > div {
+    padding-right: 84px !important;
+  }
+
+  .qmine-avatar {
+    width: 82px !important;
+    height: 82px !important;
+    padding: 0 !important;
+    border-radius: 20px !important;
+  }
+
+  .qmine-avatar img,
+  .qmine-avatar span {
+    border-radius: 20px !important;
+  }
+
+  .qmine-profile-main h2 {
+    font-size: 22px !important;
+  }
+
+  .qmine-profile-main p {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .qmine-profile-main {
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .qmine-profile-main > div {
+    padding-right: 76px !important;
+  }
+
+  .qmine-avatar {
+    width: 76px !important;
+    height: 76px !important;
+    padding: 0 !important;
+    border-radius: 18px !important;
+  }
+
+  .qmine-avatar img,
+  .qmine-avatar span {
+    border-radius: 18px !important;
+  }
+
+  .qmine-profile-main h2 {
+    font-size: 21px !important;
+  }
+
+  .qmine-profile-main p {
+    font-size: 11px !important;
+  }
+}
+
+/* ===== 2026-06-28 mine mobile compact panels ===== */
+@media (max-width: 980px) {
+  .qmine-grid {
+    gap: 8px !important;
+    margin-top: 8px !important;
+  }
+
+  .qmine-panel {
+    border-radius: 20px !important;
+  }
+
+  .qmine-panel-head {
+    padding: 12px 16px 3px !important;
+  }
+
+  .qmine-panel-head h2 {
+    font-size: 17px !important;
+    line-height: 1.18 !important;
+  }
+
+  .qmine-tag,
+  .qmine-mini-tag {
+    min-height: 23px !important;
+    padding: 0 9px !important;
+    font-size: 10.5px !important;
+  }
+
+  .qmine-row,
+  .qmine-prefs-grid .qmine-row {
+    min-height: 52px !important;
+    grid-template-columns: 32px minmax(0, 1fr) auto !important;
+    gap: 10px !important;
+    padding: 7px 16px !important;
+  }
+
+  .qmine-row-icon {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 12px !important;
+  }
+
+  .qmine-row-icon .qx-icon {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .qmine-row-title {
+    font-size: 14px !important;
+    line-height: 1.18 !important;
+  }
+
+  .qmine-row-desc {
+    margin-top: 2px !important;
+    font-size: 11px !important;
+    line-height: 1.22 !important;
+  }
+
+  .qmine-prefs-grid {
+    padding-bottom: 3px !important;
+  }
+
+  .qmine-switch {
+    width: 43px !important;
+    height: 24px !important;
+  }
+
+  .qmine-switch::after {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .qmine-switch.on::after {
+    transform: translateX(19px) !important;
+  }
+
+  .qmine-select-pill {
+    min-height: 25px !important;
+    padding: 0 10px !important;
+    font-size: 11px !important;
+  }
+
+  .qmine-note {
+    margin: 10px 4px 0 !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .qmine-grid {
+    gap: 7px !important;
+    margin-top: 7px !important;
+  }
+
+  .qmine-panel-head {
+    padding: 11px 14px 2px !important;
+  }
+
+  .qmine-row,
+  .qmine-prefs-grid .qmine-row {
+    min-height: 50px !important;
+    padding: 6px 14px !important;
+  }
+}

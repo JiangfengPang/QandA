@@ -206,9 +206,15 @@
   overflow-x: hidden;
   padding: 14px 16px 112px;
   scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .qrev-list { display: grid; gap: 12px; }
+
+.qrev-load-sentinel {
+  height: 1px;
+}
 
 .qrev-card {
   position: relative;
@@ -219,6 +225,13 @@
   background: #fbfdff;
   box-shadow: none;
   overflow: hidden;
+}
+
+@supports (content-visibility: auto) {
+  .qrev-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 150px;
+  }
 }
 
 .qrev-card::after {

@@ -72,9 +72,9 @@
           <p>{{ activeMode === 'wrong' ? '答错题目后，会自动归类到这里。' : '在答题页点击收藏后，收藏题会自动归类到这里。' }}</p>
         </div>
 
-        <div v-else class="qrev-list-wrap">
+        <div v-else ref="reviewListWrapRef" class="qrev-list-wrap" @scroll.passive="handleReviewListScroll">
           <div class="qrev-list">
-            <article v-for="item in displayQuestions" :key="item.id" class="qrev-card">
+            <article v-for="item in visibleQuestions" :key="item.id" class="qrev-card">
               <div class="qrev-chip-row">
                 <span class="qrev-chip">{{ item.unitName || item.bankName || '单元' }}</span>
                 <span class="qrev-chip type">{{ typeName(item.type) }}</span>
@@ -105,6 +105,7 @@
               </div>
             </article>
           </div>
+          <div v-if="visibleQuestions.length < displayQuestions.length" ref="reviewLoadMoreRef" class="qrev-load-sentinel" aria-hidden="true"></div>
         </div>
       </main>
     </section>
@@ -112,13 +113,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { showToast } from 'vant';
 import { judgeAnswerKey, judgeOptionDisplay, optionKeyDisplay } from '../utils/question';
 import { api } from '../api/request';
 import SpeakButton from '../components/SpeakButton.vue';
 import { speechItemsForQuestion } from '../utils/pronunciation';
+import { initialReviewRenderCount, nextReviewRenderCount, REVIEW_SCROLL_LOAD_THRESHOLD_PX } from '../utils/reviewList';
 import '../styles/mobile-lists.css';
 import '../styles/review.css';
 
@@ -130,6 +132,11 @@ const favorites = ref<any[]>([]);
 const selectedSubjectId = ref('');
 const loading = ref(true);
 const subjectStats = ref<any>({});
+const reviewListWrapRef = ref<HTMLElement | null>(null);
+const reviewLoadMoreRef = ref<HTMLElement | null>(null);
+const visibleReviewCount = ref(0);
+let reviewScrollFrame = 0;
+let reviewLoadObserver: IntersectionObserver | null = null;
 
 const activeMode = computed(() => route.name === 'favorites' ? 'favorite' : 'wrong');
 const selectedSubject = computed(() => subjects.value.find((subject) => subject.id === selectedSubjectId.value));
@@ -145,6 +152,7 @@ const reviewCountMap = computed(() => {
   return map;
 });
 const displayQuestions = computed(() => sourceQuestions.value.filter((item) => matchesSubject(item, selectedSubject.value)));
+const visibleQuestions = computed(() => displayQuestions.value.slice(0, visibleReviewCount.value));
 const firstPracticePath = computed(() => {
   const firstQuestion = displayQuestions.value[0];
   if (!firstQuestion?.bankId) return { name: 'library' };
@@ -166,6 +174,26 @@ watch(activeMode, () => {
 });
 watch(selectedSubjectId, () => {
   void refreshSubjectStats();
+});
+watch(
+  () => [activeMode.value, selectedSubjectId.value],
+  () => resetVisibleReviewList({ scrollTop: true })
+);
+watch(() => displayQuestions.value.length, (length, previousLength) => {
+  if (!length || !visibleReviewCount.value || previousLength === 0) {
+    resetVisibleReviewList({ scrollTop: false });
+    return;
+  }
+  visibleReviewCount.value = Math.min(length, Math.max(initialReviewRenderCount(length), visibleReviewCount.value));
+  void nextTick(() => {
+    setupReviewLoadObserver();
+    maybeLoadMoreReviewQuestions();
+  });
+});
+
+onBeforeUnmount(() => {
+  if (reviewScrollFrame) window.cancelAnimationFrame(reviewScrollFrame);
+  reviewLoadObserver?.disconnect();
 });
 
 async function loadData() {
@@ -190,6 +218,60 @@ async function loadData() {
 
 function selectSubject(id: string) {
   selectedSubjectId.value = id;
+}
+
+function resetVisibleReviewList(options: { scrollTop?: boolean } = {}) {
+  visibleReviewCount.value = initialReviewRenderCount(displayQuestions.value.length);
+  if (options.scrollTop && reviewListWrapRef.value) reviewListWrapRef.value.scrollTop = 0;
+  void nextTick(() => {
+    setupReviewLoadObserver();
+    maybeLoadMoreReviewQuestions();
+  });
+}
+
+function handleReviewListScroll() {
+  if (reviewScrollFrame) return;
+  reviewScrollFrame = window.requestAnimationFrame(() => {
+    reviewScrollFrame = 0;
+    maybeLoadMoreReviewQuestions();
+  });
+}
+
+function maybeLoadMoreReviewQuestions() {
+  const container = reviewListWrapRef.value;
+  if (!container || visibleReviewCount.value >= displayQuestions.value.length) return;
+  const nearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - REVIEW_SCROLL_LOAD_THRESHOLD_PX;
+  if (!nearBottom) return;
+
+  loadMoreReviewQuestions();
+}
+
+function loadMoreReviewQuestions() {
+  const nextCount = nextReviewRenderCount(displayQuestions.value.length, visibleReviewCount.value);
+  if (nextCount === visibleReviewCount.value) return;
+  visibleReviewCount.value = nextCount;
+  void nextTick(() => {
+    setupReviewLoadObserver();
+    maybeLoadMoreReviewQuestions();
+  });
+}
+
+function setupReviewLoadObserver() {
+  reviewLoadObserver?.disconnect();
+  reviewLoadObserver = null;
+  if (typeof IntersectionObserver === 'undefined') return;
+  const container = reviewListWrapRef.value;
+  const target = reviewLoadMoreRef.value;
+  if (!container || !target || visibleReviewCount.value >= displayQuestions.value.length) return;
+
+  reviewLoadObserver = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) loadMoreReviewQuestions();
+  }, {
+    root: container,
+    rootMargin: `${REVIEW_SCROLL_LOAD_THRESHOLD_PX}px 0px`,
+    threshold: 0
+  });
+  reviewLoadObserver.observe(target);
 }
 
 function matchesSubject(item: any, subject: any) {

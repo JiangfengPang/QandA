@@ -8,7 +8,7 @@
         </span>
         <div>
           <strong>{{ auth.user?.nickname || '用户' }}</strong>
-          <span>昵称：{{ auth.user?.nickname || '-' }}</span>
+          <span>{{ sidebarEmailText }}</span>
         </div>
       </RouterLink>
 
@@ -94,10 +94,21 @@ const sidebarAvatarSrc = computed(() => {
   const value = auth.user?.avatarUrl || '';
   return value && !sidebarAvatarLoadFailed.value ? value : '';
 });
+const sidebarEmailText = computed(() => {
+  const email = auth.user?.email || '';
+  return email ? `邮箱：${maskEmail(email)}` : '邮箱未绑定';
+});
 const reviewCount = computed(() => Number(reviewSummary.value.wrongQuestionCount || 0));
 
 function isRouteActive(names: string[]) {
   return names.includes(String(route.name));
+}
+
+function maskEmail(email: string) {
+  const [name, domain] = email.split('@');
+  if (!name || !domain) return email;
+  const visible = name.slice(0, Math.min(2, name.length));
+  return `${visible}***@${domain}`;
 }
 
 function setAuthPointer(x = '50%', y = '28%') {
