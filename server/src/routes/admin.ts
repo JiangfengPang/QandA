@@ -16,6 +16,7 @@ import { adminAuditMiddleware, getAdminActionOptions } from '../services/adminAu
 import { getAdminActivityStats } from '../services/adminAnalyticsService.js';
 import { getAdminDashboardStats } from '../services/adminDashboardService.js';
 import { getAdminReadingPassage, saveAdminReadingPassage } from '../services/adminReadingPassageService.js';
+import { getPracticeAnswerQueueMonitor } from '../services/practiceAnswerQueueService.js';
 import { assertAllowedNickname, hasForbiddenNickname, NICKNAME_MAX_CHARS } from '../utils/nicknamePolicy.js';
 import {
   createAnnouncement,
@@ -545,6 +546,10 @@ router.get('/system/status', asyncHandler(async (_req, res) => {
     answerCount: dashboardStats.answerCount,
     checkedAt: new Date().toISOString()
   });
+}));
+
+router.get('/system/practice-answer-queue', asyncHandler(async (_req, res) => {
+  return ok(res, await getPracticeAnswerQueueMonitor());
 }));
 
 router.get('/subjects', asyncHandler(async (_req, res) => {

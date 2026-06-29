@@ -128,20 +128,42 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
   };
 }
 
-export async function toggleFavoriteQuestion(userId: string, questionId: string) {
+export async function toggleFavoriteQuestion(userId: string, questionId: string, desiredFavorite?: boolean) {
   const question = await prisma.question.findFirst({
     where: { id: questionId, isActive: true, bank: { isActive: true, subject: { isActive: true } } },
     select: { id: true }
   });
   if (!question) throw new HttpError('题目不存在或已停用', 404);
 
-  const existed = await prisma.userFavorite.findUnique({ where: { userId_questionId: { userId, questionId } } });
-  if (existed) {
-    await prisma.userFavorite.delete({ where: { id: existed.id } });
+  if (desiredFavorite === true) {
+    await prisma.userFavorite.upsert({
+      where: { userId_questionId: { userId, questionId } },
+      update: {},
+      create: { userId, questionId }
+    });
+    return { favorite: true };
+  }
+
+  if (desiredFavorite === false) {
+    await prisma.userFavorite.deleteMany({ where: { userId, questionId } });
     return { favorite: false };
   }
 
-  await prisma.userFavorite.create({ data: { userId, questionId } });
+  const existed = await prisma.userFavorite.findUnique({
+    where: { userId_questionId: { userId, questionId } },
+    select: { id: true }
+  });
+  if (existed) {
+    await prisma.userFavorite.deleteMany({ where: { userId, questionId } });
+    return { favorite: false };
+  }
+
+  try {
+    await prisma.userFavorite.create({ data: { userId, questionId } });
+  } catch (error) {
+    if ((error as { code?: string }).code === 'P2002') return { favorite: true };
+    throw error;
+  }
   return { favorite: true };
 }
 

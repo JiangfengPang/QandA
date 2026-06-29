@@ -21,7 +21,9 @@
     "seed:dev": "node scripts/run-with-env.mjs tsx src/scripts/seedAdmin.ts",
     "import:legacy:dev": "node scripts/run-with-env.mjs tsx src/scripts/importLegacyBanks.ts",
     "normalize:judge": "tsx src/scripts/normalizeJudgeQuestions.ts",
-    "normalize:judge:dev": "node scripts/run-with-env.mjs tsx src/scripts/normalizeJudgeQuestions.ts"
+    "normalize:judge:dev": "node scripts/run-with-env.mjs tsx src/scripts/normalizeJudgeQuestions.ts",
+    "practice-answer-queue:cleanup": "tsx src/scripts/cleanupPracticeAnswerQueue.ts",
+    "practice-answer-queue:cleanup:dev": "node scripts/run-with-env.mjs tsx src/scripts/cleanupPracticeAnswerQueue.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.0.0",

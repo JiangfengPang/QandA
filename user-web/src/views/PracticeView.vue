@@ -71,8 +71,10 @@
                     </div>
                     <button
                       class="qx-favorite-btn qx-desktop-favorite-btn"
-                      :class="{ active: currentQuestion.favorite }"
+                      :class="{ active: currentQuestion.favorite, 'is-submitting': currentFavoriteSubmitting }"
                       type="button"
+                      :disabled="currentFavoriteSubmitting"
+                      :aria-busy="currentFavoriteSubmitting ? 'true' : 'false'"
                       :aria-label="currentQuestion.favorite ? '取消收藏本题' : '收藏本题'"
                       @click="toggleFavorite"
                     >
@@ -308,8 +310,10 @@
             </button>
             <button
               class="qx-mobile-favorite-btn"
-              :class="{ active: currentQuestion.favorite }"
+              :class="{ active: currentQuestion.favorite, 'is-submitting': currentFavoriteSubmitting }"
               type="button"
+              :disabled="currentFavoriteSubmitting"
+              :aria-busy="currentFavoriteSubmitting ? 'true' : 'false'"
               :aria-label="currentQuestion.favorite ? '取消收藏本题' : '收藏本题'"
               @click="toggleFavorite"
             >
@@ -450,6 +454,26 @@
     </div>
 
     <van-dialog
+      v-model:show="showPracticeResumeChoiceDialog"
+      class-name="qx-resume-choice-dialog"
+      title="继续上次练习？"
+      :show-confirm-button="false"
+      :close-on-click-overlay="false"
+    >
+      <div class="qx-resume-choice">
+        <p>
+          检测到你上次练到第
+          <strong>{{ practiceResumeChoiceQuestionNumber }}</strong>
+          题<span v-if="practiceResumeChoiceTotal">，共 {{ practiceResumeChoiceTotal }} 题</span>。
+        </p>
+        <div class="qx-resume-choice-actions">
+          <button class="qx-resume-choice-btn primary" type="button" @click="choosePracticeResumeRestore('continue')">继续练习</button>
+          <button class="qx-resume-choice-btn danger" type="button" @click="choosePracticeResumeRestore('clear')">清除进度</button>
+        </div>
+      </div>
+    </van-dialog>
+
+    <van-dialog
       v-model:show="showAutoAdvanceHintDialog"
       class-name="qx-auto-advance-hint-dialog"
       title="答对自动下一题"
@@ -499,10 +523,11 @@ import {
   practiceResumeSessionRecordsFromSnapshot,
   practiceResumeUpdatedAt,
   readPracticeResume,
-  resolvePracticeResumeFirstUnansweredIndex,
-  resolvePracticeResumeSnapshotIndex,
+  resolvePracticeResumeRestoreIndex,
   savePracticeResume,
+  shouldAskToRestorePracticeResume,
   shouldClearPracticeResumeOnExit,
+  shouldSavePracticeResumeSnapshot,
   writePracticeResumeSnapshot
 } from '../utils/practiceResume';
 import {
@@ -511,6 +536,7 @@ import {
   fetchRemotePracticeResume,
 } from '../utils/practiceResumeRemote';
 import {
+  dedupePendingAnswerRecords,
   enqueuePendingAnswer,
   nextPendingRetryDelayMs,
   removePendingAnswer,
@@ -556,6 +582,7 @@ type PendingAnswerBatchResponse = {
 };
 
 type PendingAnswerSyncStatus = PendingAnswerRecord['status'] | 'synced';
+type PracticeResumeRestoreChoice = 'continue' | 'clear';
 
 const route = useRoute();
 const router = useRouter();
@@ -579,6 +606,9 @@ const explanationRevealed = ref(false);
 const readingSheetExpanded = ref(true);
 const readingFloatPosition = ref({ x: 32, y: 220 });
 const readingFloatJustDragged = ref(false);
+const showPracticeResumeChoiceDialog = ref(false);
+const practiceResumeChoiceQuestionNumber = ref(1);
+const practiceResumeChoiceTotal = ref(0);
 const showAutoAdvanceHintDialog = ref(false);
 const dontShowAutoAdvanceHint = ref(false);
 const COMPACT_PRACTICE_VIEWPORT_QUERY = '(max-width: 980px), (hover: none) and (pointer: coarse) and (max-device-width: 600px)';
@@ -592,6 +622,7 @@ const touchStartY = ref(0);
 const touchStartTime = ref(0);
 const touchStartInHorizontalScroller = ref(false);
 const quizSessionRecords = ref<Record<string, PracticeSessionRecord>>({});
+const favoriteSubmittingByQuestionId = ref<Record<string, boolean>>({});
 const MAX_RECORDED_ANSWER_SECONDS = 30 * 60;
 const CORRECT_ANSWER_AUTO_ADVANCE_MS = 160;
 const PENDING_ANSWER_SYNC_BATCH_SIZE = 20;
@@ -604,8 +635,10 @@ let practiceViewportMediaQuery: MediaQueryList | null = null;
 let pendingAnswerSyncRunning = false;
 let pendingAnswerRetryTimer: ReturnType<typeof setTimeout> | null = null;
 let correctAnswerAutoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
+let pendingPracticeResumeChoiceResolve: ((choice: PracticeResumeRestoreChoice) => void) | null = null;
 let questionScrollResetFrame: number | undefined;
 let practiceResumeReady = false;
+const answerSubmitLocks = new Set<string>();
 let readingFloatDragState: {
   active: boolean;
   pointerId: number;
@@ -617,6 +650,10 @@ let readingFloatDragState: {
 } | null = null;
 
 const currentQuestion = computed(() => questions.value[currentIndex.value] || null);
+const currentFavoriteSubmitting = computed(() => {
+  const questionId = String(currentQuestion.value?.id || '');
+  return questionId ? Boolean(favoriteSubmittingByQuestionId.value[questionId]) : false;
+});
 const currentOptions = computed(() => normalizeOptions(currentQuestion.value?.options || []));
 const isMultipleQuestion = computed(() => currentQuestion.value?.type === 'multiple');
 const currentQuestionTypeBadge = computed(() => {
@@ -1013,6 +1050,7 @@ onBeforeUnmount(() => {
   }
   clearCorrectAnswerAutoAdvanceTimer();
   clearPendingAnswerRetryTimer();
+  resolvePendingPracticeResumeChoice('continue');
   removeReadingFloatDragListeners();
   flushRemotePracticeResumeSync();
   teardownPracticeViewportQuery();
@@ -1153,8 +1191,36 @@ function isAutoAnsweredPracticeQuestion(question: any) {
   return question?.type === 'python';
 }
 
+async function requestPracticeResumeRestoreChoice(savedIndex: number) {
+  practiceResumeChoiceQuestionNumber.value = Math.max(1, savedIndex + 1);
+  practiceResumeChoiceTotal.value = questions.value.length;
+  showPracticeResumeChoiceDialog.value = true;
+  loading.value = false;
+  await nextTick();
+  return new Promise<PracticeResumeRestoreChoice>((resolve) => {
+    pendingPracticeResumeChoiceResolve = resolve;
+  });
+}
+
+function choosePracticeResumeRestore(choice: PracticeResumeRestoreChoice) {
+  resolvePendingPracticeResumeChoice(choice);
+}
+
+function resolvePendingPracticeResumeChoice(choice: PracticeResumeRestoreChoice) {
+  const resolve = pendingPracticeResumeChoiceResolve;
+  pendingPracticeResumeChoiceResolve = null;
+  showPracticeResumeChoiceDialog.value = false;
+  if (resolve) resolve(choice);
+}
+
 async function restoreSavedPracticeResume() {
   const key = practiceResumeKey.value;
+  if (!key) {
+    practiceResumeReady = true;
+    restoreQuestionState();
+    return;
+  }
+
   const localSnapshot = readPracticeResume(key);
   const remoteSnapshot = await loadRemotePracticeResumeSnapshot(key);
   const selectedSnapshot = newerPracticeResume(localSnapshot, remoteSnapshot);
@@ -1166,7 +1232,6 @@ async function restoreSavedPracticeResume() {
   }
 
   quizSessionRecords.value = practiceResumeSessionRecordsFromSnapshot(selectedSnapshot, questions.value);
-  enqueueResumedPendingAnswers();
 
   if (selectedSnapshot && isPracticeResumeSnapshotComplete(selectedSnapshot, questions.value, isAutoAnsweredPracticeQuestion)) {
     quizSessionRecords.value = {};
@@ -1177,16 +1242,34 @@ async function restoreSavedPracticeResume() {
     return;
   }
 
-  const firstUnansweredIndex = resolvePracticeResumeFirstUnansweredIndex(selectedSnapshot, questions.value, isAutoAnsweredPracticeQuestion);
-  const savedIndex = firstUnansweredIndex ?? resolvePracticeResumeSnapshotIndex(selectedSnapshot, questions.value);
-  if (savedIndex !== null) currentIndex.value = savedIndex;
+  const savedIndex = resolvePracticeResumeRestoreIndex(selectedSnapshot, questions.value, isAutoAnsweredPracticeQuestion);
+  let shouldPersistAfterRestore = true;
+
+  if (shouldAskToRestorePracticeResume(selectedSnapshot, questions.value, savedIndex)) {
+    const choice = await requestPracticeResumeRestoreChoice(savedIndex || 0);
+    if (choice === 'continue') {
+      if (savedIndex !== null) currentIndex.value = savedIndex;
+      enqueueResumedPendingAnswers();
+    } else {
+      currentIndex.value = 0;
+      await clearCurrentPracticeResume();
+      quizSessionRecords.value = {};
+      shouldPersistAfterRestore = false;
+      showToast('已清除上次进度');
+    }
+  } else if (savedIndex !== null) {
+    currentIndex.value = savedIndex;
+    enqueueResumedPendingAnswers();
+  }
+
   practiceResumeReady = true;
   restoreQuestionState();
-  persistCurrentPracticeResume();
+  if (shouldPersistAfterRestore) persistCurrentPracticeResume();
 }
 
 function persistCurrentPracticeResume() {
   if (!practiceResumeReady) return;
+  if (!shouldSavePracticeResumeSnapshot(currentIndex.value, quizSessionRecords.value)) return;
   const snapshot = savePracticeResume(practiceResumeKey.value, questions.value, currentIndex.value, quizSessionRecords.value);
   if (snapshot) scheduleRemotePracticeResumeSync();
 }
@@ -1228,6 +1311,7 @@ function enqueueResumedPendingAnswers() {
     enqueuePendingAnswer(userKey, {
       clientAnswerId: record.clientAnswerId,
       questionId,
+      sessionKey: practiceResumeKey.value || undefined,
       selectedAnswer: record.userAnswer,
       isCorrect: record.correct,
       answer: record.answer,
@@ -1383,6 +1467,7 @@ function restoreQuestionState() {
   answerTip.value = '';
   explanationRevealed.value = false;
   if (!question) {
+    answerSubmitLocks.clear();
     selectedAnswers.value = [];
     textAnswer.value = '';
     fillAnswers.value = [];
@@ -1395,6 +1480,7 @@ function restoreQuestionState() {
 
   const record = quizSessionRecords.value[question.id];
   if (!record) {
+    answerSubmitLocks.delete(String(question.id));
     selectedAnswers.value = [];
     textAnswer.value = '';
     fillAnswers.value = [];
@@ -1607,6 +1693,7 @@ function enqueueCurrentAnswer(
   enqueuePendingAnswer(userKey, {
     clientAnswerId,
     questionId: String(question.id),
+    sessionKey: practiceResumeKey.value || undefined,
     selectedAnswer: userAnswer.map((item) => String(item)),
     isCorrect,
     answer: officialAnswer.map((item) => String(item)),
@@ -1670,12 +1757,19 @@ function pendingAnswerFallbackResult(record: PendingAnswerRecord): PendingAnswer
 }
 
 async function syncPendingAnswerBatch(userKey: string, records: PendingAnswerRecord[]): Promise<PendingAnswerSyncStatus> {
+  const uniqueRecords = dedupePendingAnswerRecords(records);
+  if (!uniqueRecords.length) return 'synced' as const;
+  const uniqueClientAnswerIds = new Set(uniqueRecords.map((record) => record.clientAnswerId));
+  records.forEach((record) => {
+    if (!uniqueClientAnswerIds.has(record.clientAnswerId)) removePendingAnswer(userKey, record.clientAnswerId);
+  });
+
   try {
     const data = await api.post<PendingAnswerBatchResponse>('/practice/answers/batch', {
-      answers: records.map(pendingAnswerPayload)
+      answers: uniqueRecords.map(pendingAnswerPayload)
     });
     const resultByClientAnswerId = new Map((data.results || []).map((item) => [item.clientAnswerId || '', item]));
-    records.forEach((record) => {
+    uniqueRecords.forEach((record) => {
       removePendingAnswer(userKey, record.clientAnswerId);
       applySyncedPendingAnswer(record, resultByClientAnswerId.get(record.clientAnswerId) || pendingAnswerFallbackResult(record));
     });
@@ -1683,7 +1777,7 @@ async function syncPendingAnswerBatch(userKey: string, records: PendingAnswerRec
     return 'synced' as const;
   } catch (error) {
     let nextStatus: PendingAnswerRecord['status'] = 'failed';
-    records.forEach((record) => {
+    uniqueRecords.forEach((record) => {
       nextStatus = markPendingAnswerSyncError(userKey, record, error);
     });
     return nextStatus;
@@ -1722,7 +1816,12 @@ async function syncPendingAnswers(_reason: string, options: { resetAuthFailures?
   const dueRecords = selectDuePendingAnswers(userKey)
     .sort((left, right) => Date.parse(left.answeredAt || '') - Date.parse(right.answeredAt || ''))
     .slice(0, PENDING_ANSWER_SYNC_BATCH_SIZE);
-  if (!dueRecords.length) {
+  const uniqueDueRecords = dedupePendingAnswerRecords(dueRecords);
+  const uniqueDueClientAnswerIds = new Set(uniqueDueRecords.map((record) => record.clientAnswerId));
+  dueRecords.forEach((record) => {
+    if (!uniqueDueClientAnswerIds.has(record.clientAnswerId)) removePendingAnswer(userKey, record.clientAnswerId);
+  });
+  if (!uniqueDueRecords.length) {
     schedulePendingAnswerRetry();
     return;
   }
@@ -1733,7 +1832,7 @@ async function syncPendingAnswers(_reason: string, options: { resetAuthFailures?
   try {
     const batchRecords: PendingAnswerRecord[] = [];
     let stoppedForAuthFailure = false;
-    for (const record of dueRecords) {
+    for (const record of uniqueDueRecords) {
       if (pendingAnswerUserKey.value !== userKey) break;
       const tryingRecord = markPendingAnswerAsSyncing(userKey, record);
       if (!tryingRecord) continue;
@@ -1769,10 +1868,13 @@ function submitAnswer() {
     answerTip.value = '请选择或填写答案';
     return;
   }
+  const questionId = String(question.id || '');
+  if (!questionId || answerSubmitLocks.has(questionId)) return;
+  answerSubmitLocks.add(questionId);
 
   const officialAnswer = getOfficialAnswer(question);
   const answerForCheck = question.type === 'fill' ? fillAnswerGroupsForCheck(question) : officialAnswer;
-  const clientAnswerId = createClientAnswerId(String(question.id));
+  const clientAnswerId = createClientAnswerId(questionId);
   const durationSeconds = currentQuestionDurationSeconds();
   const correct = question.type === 'fill'
     ? isFillAnswerCorrect(userAnswer, answerForCheck)
@@ -1814,15 +1916,32 @@ function confirmAutoAdvanceHint() {
   }
 }
 
+function setFavoriteSubmitting(questionId: string, submitting: boolean) {
+  const next = { ...favoriteSubmittingByQuestionId.value };
+  if (submitting) next[questionId] = true;
+  else delete next[questionId];
+  favoriteSubmittingByQuestionId.value = next;
+}
+
 async function toggleFavorite() {
   const question = currentQuestion.value;
-  if (!question) return;
+  const questionId = String(question?.id || '');
+  if (!question || !questionId || favoriteSubmittingByQuestionId.value[questionId]) return;
+
+  const previousFavorite = Boolean(question.favorite);
+  const nextFavorite = !previousFavorite;
+  question.favorite = nextFavorite;
+  setFavoriteSubmitting(questionId, true);
+
   try {
-    const data = await api.post<{ favorite: boolean }>(`/practice/favorites/${question.id}/toggle`);
+    const data = await api.post<{ favorite: boolean }>(`/practice/favorites/${questionId}/toggle`, { favorite: nextFavorite });
     question.favorite = data.favorite;
     showToast(data.favorite ? '已收藏' : '已取消收藏');
   } catch (e) {
+    question.favorite = previousFavorite;
     showToast({ type: 'fail', message: e instanceof Error ? e.message : '收藏失败' });
+  } finally {
+    setFavoriteSubmitting(questionId, false);
   }
 }
 

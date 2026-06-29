@@ -194,7 +194,8 @@ router.post('/answers/batch', async (req, res, next) => {
 
 router.post('/favorites/:questionId/toggle', async (req, res, next) => {
   try {
-    return ok(res, await toggleFavoriteQuestion(req.auth!.userId, req.params.questionId));
+    const desiredFavorite = typeof req.body?.favorite === 'boolean' ? req.body.favorite : undefined;
+    return ok(res, await toggleFavoriteQuestion(req.auth!.userId, req.params.questionId, desiredFavorite));
   } catch (error) {
     return next(error);
   }

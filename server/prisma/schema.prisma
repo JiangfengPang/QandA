@@ -44,6 +44,7 @@ model User {
   adminOperationLogs   AdminOperationLog[]
 
   @@index([role, lastActiveAt])
+  @@index([role, isActive])
 }
 
 model Subject {
@@ -138,6 +139,7 @@ model UserAnswer {
   @@index([userId, questionId, createdAt])
   @@index([createdAt])
   @@index([createdAt, userId])
+  @@index([createdAt, userId, isCorrect, durationSeconds])
   @@index([questionId])
 }
 

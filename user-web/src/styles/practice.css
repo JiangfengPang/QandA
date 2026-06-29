@@ -30,6 +30,12 @@
   display: none;
 }
 
+.app-frame.is-practice-frame .qx-favorite-btn:disabled,
+.app-frame.is-practice-frame .qx-mobile-favorite-btn:disabled {
+  cursor: wait;
+  opacity: .74;
+}
+
 .app-frame.is-practice-frame .qx-practice-desktop-header {
   width: 100%;
 }
@@ -3054,18 +3060,55 @@
   }
 }
 
+.qx-resume-choice,
 .qx-auto-advance-hint {
   display: grid;
   gap: 18px;
   padding: 6px 24px 22px;
 }
 
+.qx-resume-choice p,
 .qx-auto-advance-hint p {
   margin: 0;
   color: #475569;
   font-size: 15px;
   line-height: 1.65;
   font-weight: 750;
+}
+
+.qx-resume-choice p strong {
+  color: var(--qx-blue-dark);
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.qx-resume-choice-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.qx-resume-choice-btn {
+  min-height: 44px;
+  border: 1px solid #dbe5f3;
+  border-radius: 10px;
+  background: #fff;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.qx-resume-choice-btn.primary {
+  border-color: transparent;
+  background: var(--qx-blue);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(43, 126, 255, 0.18);
+}
+
+.qx-resume-choice-btn.danger {
+  border-color: #fecdd3;
+  background: #fff5f5;
+  color: #e11d48;
 }
 
 .qx-auto-advance-hint-check {
@@ -3089,6 +3132,7 @@
   flex: 0 0 auto;
 }
 
+.qx-resume-choice-dialog .van-dialog__header,
 .qx-auto-advance-hint-dialog .van-dialog__header {
   color: #0f172a;
   font-weight: 950;

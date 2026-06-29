@@ -3,6 +3,7 @@ export type PendingAnswerStatus = 'pending' | 'syncing' | 'failed' | 'auth_faile
 export type PendingAnswerRecord = {
   clientAnswerId: string;
   questionId: string;
+  sessionKey?: string;
   selectedAnswer: string[];
   isCorrect: boolean;
   answer?: string[];
@@ -30,6 +31,7 @@ const STORAGE_PREFIX = 'qanda:pending-answers';
 const QUICK_RETRY_DELAY_MS = 1000;
 const RETRY_DELAYS_MS = [0, QUICK_RETRY_DELAY_MS, QUICK_RETRY_DELAY_MS, 5000, 15000, 60000];
 const STALE_SYNCING_MS = 30000;
+const SAME_SESSION_QUESTION_COLLAPSE_MS = 10000;
 const memoryQueues = new Map<string, string>();
 
 function storageAvailable() {
@@ -55,6 +57,7 @@ function normalizeRecord(value: unknown): PendingAnswerRecord | null {
   return {
     clientAnswerId,
     questionId,
+    sessionKey: raw.sessionKey ? String(raw.sessionKey).trim().slice(0, 191) : undefined,
     selectedAnswer: Array.isArray(raw.selectedAnswer) ? raw.selectedAnswer.map((item) => String(item)) : [],
     isCorrect: Boolean(raw.isCorrect),
     answer: Array.isArray(raw.answer) ? raw.answer.map((item) => String(item)) : undefined,
@@ -113,16 +116,63 @@ export function writePendingAnswerQueue(userKey: string, records: PendingAnswerR
 
 export function enqueuePendingAnswer(userKey: string, record: PendingAnswerRecord, storage: QueueStorage | null = storageAvailable()): PendingAnswerRecord | null {
   const records = readPendingAnswerQueue(userKey, storage);
-  const existingIndex = records.findIndex((item) => item.clientAnswerId === record.clientAnswerId);
-  if (existingIndex >= 0) {
-    return records[existingIndex];
-  }
-
   const normalized = normalizeRecord(record);
   if (!normalized) return null;
-  records.push(normalized);
-  writePendingAnswerQueue(userKey, records, storage);
+
+  const answeredAtMs = Date.parse(normalized.answeredAt || '');
+  const sameSessionQuestionKey = normalized.sessionKey
+    ? `${normalized.sessionKey}:${normalized.questionId}`
+    : '';
+  const next = records.filter((item) => {
+    if (item.clientAnswerId === normalized.clientAnswerId) return false;
+    if (!sameSessionQuestionKey || `${item.sessionKey || ''}:${item.questionId}` !== sameSessionQuestionKey) return true;
+    const itemAnsweredAtMs = Date.parse(item.answeredAt || '');
+    if (!Number.isFinite(answeredAtMs) || !Number.isFinite(itemAnsweredAtMs)) return true;
+    return Math.abs(answeredAtMs - itemAnsweredAtMs) > SAME_SESSION_QUESTION_COLLAPSE_MS;
+  });
+  next.push(normalized);
+  writePendingAnswerQueue(userKey, next, storage);
   return normalized;
+}
+
+export function dedupePendingAnswerRecords(records: PendingAnswerRecord[]) {
+  const byClientAnswerId = new Map<string, PendingAnswerRecord>();
+  for (const record of records) {
+    const normalized = normalizeRecord(record);
+    if (!normalized) continue;
+    byClientAnswerId.set(normalized.clientAnswerId, normalized);
+  }
+
+  const bySessionQuestion = new Map<string, PendingAnswerRecord>();
+  const deduped: PendingAnswerRecord[] = [];
+  for (const record of byClientAnswerId.values()) {
+    const key = record.sessionKey ? `${record.sessionKey}:${record.questionId}` : '';
+    if (!key) {
+      deduped.push(record);
+      continue;
+    }
+
+    const existing = bySessionQuestion.get(key);
+    if (!existing) {
+      bySessionQuestion.set(key, record);
+      continue;
+    }
+
+    const existingTime = Date.parse(existing.answeredAt || '');
+    const recordTime = Date.parse(record.answeredAt || '');
+    const shouldReplace = !Number.isFinite(existingTime)
+      || (Number.isFinite(recordTime) && recordTime >= existingTime);
+    if (shouldReplace) bySessionQuestion.set(key, record);
+  }
+
+  deduped.push(...bySessionQuestion.values());
+  return deduped.sort((left, right) => {
+    const leftTime = Date.parse(left.answeredAt || '');
+    const rightTime = Date.parse(right.answeredAt || '');
+    const safeLeftTime = Number.isFinite(leftTime) ? leftTime : 0;
+    const safeRightTime = Number.isFinite(rightTime) ? rightTime : 0;
+    return safeLeftTime - safeRightTime;
+  });
 }
 
 export function removePendingAnswer(userKey: string, clientAnswerId: string, storage: QueueStorage | null = storageAvailable()) {

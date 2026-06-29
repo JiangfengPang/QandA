@@ -51,7 +51,8 @@
     "prod:migrate": "npm run db:migrate:deploy",
     "prod:prune": "npm prune --omit=dev --workspaces --include-workspace-root",
     "db:normalize:judge": "npm run normalize:judge --workspace server",
-    "db:normalize:judge:dev": "npm run normalize:judge:dev --workspace server"
+    "db:normalize:judge:dev": "npm run normalize:judge:dev --workspace server",
+    "practice-answer-queue:cleanup": "npm run practice-answer-queue:cleanup --workspace server --"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"

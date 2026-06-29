@@ -232,6 +232,20 @@ export function resolvePracticeResumeFirstUnansweredIndex<T extends PracticeResu
   return index >= 0 ? index : null;
 }
 
+export function resolvePracticeResumeRestoreIndex<T extends PracticeResumeQuestion>(
+  snapshot: PracticeResumeSnapshot | null,
+  questions: T[],
+  isAutoAnswered: (question: T) => boolean = () => false
+) {
+  const savedIndex = resolvePracticeResumeSnapshotIndex(snapshot, questions);
+  if (savedIndex === null) return null;
+
+  const records = practiceResumeSessionRecordsFromSnapshot(snapshot, questions);
+  if (!Object.keys(records).length) return savedIndex;
+
+  return resolvePracticeResumeFirstUnansweredIndex(snapshot, questions, isAutoAnswered) ?? savedIndex;
+}
+
 export function isPracticeResumeSnapshotComplete<T extends PracticeResumeQuestion>(
   snapshot: PracticeResumeSnapshot | null,
   questions: T[],
@@ -239,6 +253,24 @@ export function isPracticeResumeSnapshotComplete<T extends PracticeResumeQuestio
 ) {
   if (!snapshot || !questions.length) return false;
   return resolvePracticeResumeFirstUnansweredIndex(snapshot, questions, isAutoAnswered) === null;
+}
+
+export function shouldAskToRestorePracticeResume(
+  snapshot: PracticeResumeSnapshot | null,
+  questions: PracticeResumeQuestion[],
+  resolvedIndex: number | null
+) {
+  if (!snapshot || !questions.length || resolvedIndex === null) return false;
+  if (resolvedIndex > 0) return true;
+  return Object.keys(practiceResumeSessionRecordsFromSnapshot(snapshot, questions)).length > 0;
+}
+
+export function shouldSavePracticeResumeSnapshot(
+  currentIndex: number,
+  sessionRecords?: Record<string, PracticeResumeSessionRecord>
+) {
+  if (currentIndex > 0) return true;
+  return Object.keys(normalizeSessionRecords(sessionRecords)).length > 0;
 }
 
 export function readPracticeResumeSessionRecords(

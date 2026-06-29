@@ -34,6 +34,13 @@ let drainTimer: ReturnType<typeof setTimeout> | null = null;
 let drainTimerDueAt = 0;
 let drainPromise: Promise<void> | null = null;
 let startupLogged = false;
+let earliestNextDrainAt = 0;
+let consecutiveDrainRounds = 0;
+let lastStatsLogAt = 0;
+let processedSinceLastStatsLog = 0;
+let failedSinceLastStatsLog = 0;
+
+const STATS_LOG_PROCESSED_THRESHOLD = 500;
 
 function normalizeSelected(value: unknown) {
   return Array.isArray(value)
@@ -64,15 +71,30 @@ function dueDate(delayMs: number) {
   return new Date(Date.now() + delayMs);
 }
 
+function queueStatusLabel(status: string) {
+  if (status === STATUS_PENDING || status === STATUS_RETRYING || status === STATUS_PROCESSING || status === STATUS_PROCESSED) return status;
+  if (status === STATUS_FAILED) return STATUS_FAILED;
+  return status || 'unknown';
+}
+
 function shouldUseQueue() {
   return env.practiceAnswerQueueEnabled;
 }
 
-export async function enqueuePracticeAnswerSubmissions(userId: string, items: PracticeAnswerQueueInput[]) {
-  if (!shouldUseQueue() || !items.length) return { accepted: 0, inserted: 0, results: [] };
+function dedupeQueueInputs(userId: string, items: PracticeAnswerQueueInput[]) {
+  const byClientAnswerId = new Map<string, {
+    userId: string;
+    questionId: string;
+    clientAnswerId: string;
+    selectedJson: string[];
+    durationSeconds: number;
+    status: string;
+    retryCount: number;
+    nextRunAt: Date;
+  }>();
 
-  const rows = items
-    .map((item) => ({
+  for (const item of items) {
+    const row = {
       userId,
       questionId: String(item.questionId || '').trim(),
       clientAnswerId: String(item.clientAnswerId || '').trim(),
@@ -81,8 +103,18 @@ export async function enqueuePracticeAnswerSubmissions(userId: string, items: Pr
       status: STATUS_PENDING,
       retryCount: 0,
       nextRunAt: new Date()
-    }))
-    .filter((item) => item.questionId && item.clientAnswerId);
+    };
+    if (!row.questionId || !row.clientAnswerId) continue;
+    byClientAnswerId.set(row.clientAnswerId, row);
+  }
+
+  return [...byClientAnswerId.values()];
+}
+
+export async function enqueuePracticeAnswerSubmissions(userId: string, items: PracticeAnswerQueueInput[]) {
+  if (!shouldUseQueue() || !items.length) return { accepted: 0, inserted: 0, results: [] };
+
+  const rows = dedupeQueueInputs(userId, items);
 
   if (!rows.length) return { accepted: 0, inserted: 0, results: [] };
 
@@ -91,21 +123,36 @@ export async function enqueuePracticeAnswerSubmissions(userId: string, items: Pr
       userId,
       clientAnswerId: { in: rows.map((row) => row.clientAnswerId) }
     },
-    select: { clientAnswerId: true }
+    select: { clientAnswerId: true, status: true }
   });
-  const existingClientAnswerIds = new Set(existingRows.map((row) => row.clientAnswerId));
+  const existingStatusByClientAnswerId = new Map(existingRows.map((row) => [row.clientAnswerId, queueStatusLabel(row.status)]));
 
-  const result = await prisma.practiceAnswerQueueItem.createMany({
-    data: rows.filter((row) => !existingClientAnswerIds.has(row.clientAnswerId)),
-    skipDuplicates: true
+  const rowsToCreate = rows.filter((row) => !existingStatusByClientAnswerId.has(row.clientAnswerId));
+  const result = rowsToCreate.length
+    ? await prisma.practiceAnswerQueueItem.createMany({
+      data: rowsToCreate,
+      skipDuplicates: true
+    })
+    : { count: 0 };
+
+  const statusRows = await prisma.practiceAnswerQueueItem.findMany({
+    where: {
+      userId,
+      clientAnswerId: { in: rows.map((row) => row.clientAnswerId) }
+    },
+    select: { clientAnswerId: true, status: true }
   });
+  const finalStatusByClientAnswerId = new Map(statusRows.map((row) => [row.clientAnswerId, queueStatusLabel(row.status)]));
+
   schedulePracticeAnswerQueueDrain(0);
   return {
     accepted: rows.length,
     inserted: result.count,
     results: rows.map((row) => ({
       clientAnswerId: row.clientAnswerId,
-      status: existingClientAnswerIds.has(row.clientAnswerId) ? 'duplicate' : 'queued'
+      status: existingStatusByClientAnswerId.has(row.clientAnswerId)
+        ? `duplicate:${existingStatusByClientAnswerId.get(row.clientAnswerId)}`
+        : finalStatusByClientAnswerId.get(row.clientAnswerId) || 'queued'
     }))
   };
 }
@@ -194,6 +241,7 @@ async function processQueueItem(item: QueueItem) {
 
 async function drainPracticeAnswerQueue() {
   if (!shouldUseQueue()) return false;
+  consecutiveDrainRounds += 1;
   await resetStaleProcessingLocks();
 
   const items = await prisma.practiceAnswerQueueItem.findMany({
@@ -214,11 +262,23 @@ async function drainPracticeAnswerQueue() {
     failedCount += results.filter((result) => result === 'failed').length;
   }
 
-  await logPracticeAnswerQueueStats({ processedCount, failedCount });
+  await maybeLogPracticeAnswerQueueStats({ processedCount, failedCount });
   return items.length >= env.practiceAnswerQueueBatchSize;
 }
 
-async function logPracticeAnswerQueueStats(summary: { processedCount: number; failedCount: number }) {
+function shouldLogPracticeAnswerQueueStats() {
+  const now = Date.now();
+  if (!lastStatsLogAt) return true;
+  if (now - lastStatsLogAt >= env.practiceAnswerQueueStatsLogIntervalMs) return true;
+  if (processedSinceLastStatsLog >= STATS_LOG_PROCESSED_THRESHOLD) return true;
+  return false;
+}
+
+async function maybeLogPracticeAnswerQueueStats(summary: { processedCount: number; failedCount: number }) {
+  processedSinceLastStatsLog += summary.processedCount;
+  failedSinceLastStatsLog += summary.failedCount;
+  if (!shouldLogPracticeAnswerQueueStats()) return;
+
   const grouped = await prisma.practiceAnswerQueueItem.groupBy({
     by: ['status'],
     _count: { _all: true }
@@ -228,13 +288,34 @@ async function logPracticeAnswerQueueStats(summary: { processedCount: number; fa
   const processingCount = countByStatus.get(STATUS_PROCESSING) || 0;
   const failedTotal = countByStatus.get(STATUS_FAILED) || 0;
   console.log(
-    `answer queue worker stats: pending=${pendingCount}, processing=${processingCount}, failed=${failedTotal}, processedThisRound=${summary.processedCount}, failedThisRound=${summary.failedCount}`
+    `answer queue worker stats: pending=${pendingCount}, processing=${processingCount}, failed=${failedTotal}, processedSinceLastLog=${processedSinceLastStatsLog}, failedSinceLastLog=${failedSinceLastStatsLog}`
   );
+  lastStatsLogAt = Date.now();
+  processedSinceLastStatsLog = 0;
+  failedSinceLastStatsLog = 0;
+}
+
+function nextDrainDelayMs(requestedDelayMs: number) {
+  const requested = Math.max(0, requestedDelayMs);
+  if (!env.practiceAnswerQueueStrictInterval) return requested;
+  return Math.max(requested, earliestNextDrainAt - Date.now(), 0);
+}
+
+function shouldDrainAgainImmediately(hasMore: boolean) {
+  if (!hasMore || env.practiceAnswerQueueStrictInterval) return false;
+  return consecutiveDrainRounds < env.practiceAnswerQueueMaxDrainRounds;
+}
+
+function nextDelayAfterDrain(hasMore: boolean) {
+  if (shouldDrainAgainImmediately(hasMore)) return 0;
+  consecutiveDrainRounds = 0;
+  return env.practiceAnswerQueuePollMs;
 }
 
 export function schedulePracticeAnswerQueueDrain(delayMs = env.practiceAnswerQueuePollMs) {
   if (!workerStarted || stopRequested || !shouldUseQueue()) return;
-  const dueAt = Date.now() + Math.max(0, delayMs);
+  const safeDelayMs = nextDrainDelayMs(delayMs);
+  const dueAt = Date.now() + safeDelayMs;
   if (drainTimer && drainTimerDueAt <= dueAt) return;
   if (drainTimer) clearTimeout(drainTimer);
 
@@ -247,14 +328,17 @@ export function schedulePracticeAnswerQueueDrain(delayMs = env.practiceAnswerQue
     drainPromise = drainPracticeAnswerQueue()
       .then((hasMore) => {
         drainPromise = null;
-        if (!stopRequested) schedulePracticeAnswerQueueDrain(hasMore ? 0 : env.practiceAnswerQueuePollMs);
+        earliestNextDrainAt = Date.now() + env.practiceAnswerQueuePollMs;
+        if (!stopRequested) schedulePracticeAnswerQueueDrain(nextDelayAfterDrain(hasMore));
       })
       .catch((error) => {
         drainPromise = null;
+        consecutiveDrainRounds = 0;
+        earliestNextDrainAt = Date.now() + env.practiceAnswerQueuePollMs;
         console.error(`Practice answer queue drain failed: ${truncateError(error)}`);
         if (!stopRequested) schedulePracticeAnswerQueueDrain(env.practiceAnswerQueuePollMs);
       });
-  }, Math.max(0, delayMs));
+  }, safeDelayMs);
   drainTimer.unref?.();
 }
 
@@ -265,7 +349,7 @@ export function startPracticeAnswerQueueWorker() {
   if (!startupLogged) {
     startupLogged = true;
     console.log(
-      `answer queue worker started: batch size=${env.practiceAnswerQueueBatchSize}, concurrency=${env.practiceAnswerQueueConcurrency}, poll interval=${env.practiceAnswerQueuePollMs}ms`
+      `answer queue worker started: batch size=${env.practiceAnswerQueueBatchSize}, concurrency=${env.practiceAnswerQueueConcurrency}, poll interval=${env.practiceAnswerQueuePollMs}ms, strict interval=${env.practiceAnswerQueueStrictInterval}, max drain rounds=${env.practiceAnswerQueueMaxDrainRounds}, stats interval=${env.practiceAnswerQueueStatsLogIntervalMs}ms`
     );
   }
   schedulePracticeAnswerQueueDrain(0);
@@ -280,4 +364,70 @@ export async function stopPracticeAnswerQueueWorker() {
   }
   if (drainPromise) await drainPromise;
   workerStarted = false;
+}
+
+export function practiceAnswerQueueWorkerConfig() {
+  return {
+    enabled: env.practiceAnswerQueueEnabled,
+    batchSize: env.practiceAnswerQueueBatchSize,
+    concurrency: env.practiceAnswerQueueConcurrency,
+    pollMs: env.practiceAnswerQueuePollMs,
+    maxAttempts: env.practiceAnswerQueueMaxAttempts,
+    statsLogIntervalMs: env.practiceAnswerQueueStatsLogIntervalMs,
+    strictInterval: env.practiceAnswerQueueStrictInterval,
+    maxDrainRounds: env.practiceAnswerQueueMaxDrainRounds
+  };
+}
+
+export async function getPracticeAnswerQueueMonitor() {
+  const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+  const [grouped, recentCreatedCount, recentProcessedCount, failedRows] = await Promise.all([
+    prisma.practiceAnswerQueueItem.groupBy({
+      by: ['status'],
+      _count: { _all: true }
+    }),
+    prisma.practiceAnswerQueueItem.count({
+      where: { createdAt: { gte: fiveMinutesAgo } }
+    }),
+    prisma.practiceAnswerQueueItem.count({
+      where: { status: STATUS_PROCESSED, processedAt: { gte: fiveMinutesAgo } }
+    }),
+    prisma.practiceAnswerQueueItem.findMany({
+      where: { status: STATUS_FAILED, lastError: { not: null } },
+      orderBy: { updatedAt: 'desc' },
+      take: 500,
+      select: { lastError: true }
+    })
+  ]);
+
+  const countByStatus = new Map(grouped.map((row) => [row.status, row._count._all]));
+  const failedReasonCounts = new Map<string, number>();
+  for (const row of failedRows) {
+    const reason = truncateError(row.lastError || 'unknown error');
+    failedReasonCounts.set(reason, (failedReasonCounts.get(reason) || 0) + 1);
+  }
+
+  return {
+    counts: {
+      pending: countByStatus.get(STATUS_PENDING) || 0,
+      retrying: countByStatus.get(STATUS_RETRYING) || 0,
+      processing: countByStatus.get(STATUS_PROCESSING) || 0,
+      failed: countByStatus.get(STATUS_FAILED) || 0,
+      processed: countByStatus.get(STATUS_PROCESSED) || 0
+    },
+    recentFiveMinutes: {
+      created: recentCreatedCount,
+      processed: recentProcessedCount
+    },
+    failedReasonsTop10: [...failedReasonCounts.entries()]
+      .sort((left, right) => right[1] - left[1])
+      .slice(0, 10)
+      .map(([reason, count]) => ({ reason, count })),
+    worker: {
+      started: workerStarted,
+      drainRunning: Boolean(drainPromise),
+      nextDrainAt: drainTimerDueAt ? new Date(drainTimerDueAt).toISOString() : null,
+      config: practiceAnswerQueueWorkerConfig()
+    }
+  };
 }

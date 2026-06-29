@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import {
+  dedupePendingAnswerRecords,
   enqueuePendingAnswer,
   isPendingAnswerDue,
   nextPendingRetryDelayMs,
@@ -85,15 +86,50 @@ test('pending answer queue preserves local answer result snapshots for batched s
   assert.equal(record.explanation, '解析内容');
 });
 
-test('same clientAnswerId is not enqueued twice', () => {
+test('same clientAnswerId keeps the latest pending answer', () => {
   const storage = new MemoryStorage();
   enqueuePendingAnswer('user-a', pendingRecord({ selectedAnswer: ['A'] }), storage);
   enqueuePendingAnswer('user-a', pendingRecord({ selectedAnswer: ['B'] }), storage);
 
   const records = readPendingAnswerQueue('user-a', storage);
   assert.equal(records.length, 1);
-  assert.deepEqual(records[0].selectedAnswer, ['A']);
+  assert.deepEqual(records[0].selectedAnswer, ['B']);
   assert.equal(records[0].clientAnswerId, 'question-1:client-1');
+});
+
+test('same session question collapses short duplicate submissions to the latest answer', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord({
+    clientAnswerId: 'q1:first',
+    sessionKey: 'session-a',
+    selectedAnswer: ['A'],
+    answeredAt: '2026-06-16T00:00:00.000Z'
+  }), storage);
+  enqueuePendingAnswer('user-a', pendingRecord({
+    clientAnswerId: 'q1:last',
+    sessionKey: 'session-a',
+    selectedAnswer: ['B'],
+    answeredAt: '2026-06-16T00:00:05.000Z'
+  }), storage);
+
+  const records = readPendingAnswerQueue('user-a', storage);
+  assert.equal(records.length, 1);
+  assert.equal(records[0].clientAnswerId, 'q1:last');
+  assert.deepEqual(records[0].selectedAnswer, ['B']);
+});
+
+test('batch dedupe keeps one record per clientAnswerId and per session question', () => {
+  const records = dedupePendingAnswerRecords([
+    pendingRecord({ clientAnswerId: 'q1:first', sessionKey: 'session-a', selectedAnswer: ['A'], answeredAt: '2026-06-16T00:00:00.000Z' }),
+    pendingRecord({ clientAnswerId: 'q1:first', sessionKey: 'session-a', selectedAnswer: ['B'], answeredAt: '2026-06-16T00:00:01.000Z' }),
+    pendingRecord({ clientAnswerId: 'q1:last', sessionKey: 'session-a', selectedAnswer: ['C'], answeredAt: '2026-06-16T00:00:02.000Z' }),
+    pendingRecord({ clientAnswerId: 'q2:other', questionId: 'question-2', sessionKey: 'session-a', selectedAnswer: ['D'], answeredAt: '2026-06-16T00:00:03.000Z' })
+  ]);
+
+  assert.deepEqual(records.map((record) => [record.clientAnswerId, record.selectedAnswer]), [
+    ['q1:last', ['C']],
+    ['q2:other', ['D']]
+  ]);
 });
 
 test('successful sync removes the pending answer', () => {
@@ -198,7 +234,8 @@ test('practice view batches pending answer sync and keeps local pending records 
 
   assert.match(source, /\/practice\/answers\/batch/);
   assert.match(source, /PENDING_ANSWER_SYNC_BATCH_SIZE = 20/);
-  assert.match(source, /records\.map\(pendingAnswerPayload\)/);
+  assert.match(source, /dedupePendingAnswerRecords/);
+  assert.match(source, /uniqueRecords\.map\(pendingAnswerPayload\)/);
   assert.match(source, /catch \(error\) \{[\s\S]*markPendingAnswerSyncError/);
   assert.doesNotMatch(
     source.match(/async function syncPendingAnswerBatch[\s\S]*?async function syncPendingAnswerSingle/)?.[0] || '',

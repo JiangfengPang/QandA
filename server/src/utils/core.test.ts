@@ -8,7 +8,7 @@ import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
 import { createVerificationCode } from './verificationCode.js';
 import { assertAllowedNickname, hasForbiddenNickname, normalizeNickname } from './nicknamePolicy.js';
-import { buildDailyActivityTrend } from '../services/adminAnalyticsService.js';
+import { buildActivityStatsFromDailyUserAggregates, buildDailyActivityTrend } from '../services/adminAnalyticsService.js';
 import { assertStandardReadingQuestionImport } from '../services/importService.js';
 import {
   isPresenceSessionOnline,
@@ -236,12 +236,23 @@ test('practice answer idempotency keeps database and service safeguards', () => 
   assert.match(service, /code\?:\s*string\s*\}\)\.code === 'P2002'/);
 });
 
+test('favorite submission can set a desired state idempotently', () => {
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/practiceRecordService.ts', import.meta.url), 'utf8');
+
+  assert.match(route, /typeof req\.body\?\.favorite === 'boolean'/);
+  assert.match(service, /desiredFavorite\?: boolean/);
+  assert.match(service, /prisma\.userFavorite\.upsert/);
+  assert.match(service, /prisma\.userFavorite\.deleteMany\(\{ where: \{ userId, questionId \} \}\)/);
+});
+
 test('practice answer queue is wired through schema, API and server worker', () => {
   const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
   const migration = readFileSync(new URL('../../prisma/migrations/20260629000300_add_practice_answer_queue/migration.sql', import.meta.url), 'utf8');
   const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
   const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
   const server = readFileSync(new URL('../server.ts', import.meta.url), 'utf8');
+  const env = readFileSync(new URL('../config/env.ts', import.meta.url), 'utf8');
 
   assert.match(schema, /model PracticeAnswerQueueItem/);
   assert.match(schema, /@@unique\(\[userId,\s*clientAnswerId\]\)/);
@@ -259,7 +270,12 @@ test('practice answer queue is wired through schema, API and server worker', () 
   assert.match(queueService, /STATUS_RETRYING = 'retrying'/);
   assert.match(queueService, /status:\s*permanent \? STATUS_FAILED : STATUS_RETRYING/);
   assert.match(queueService, /practiceAnswerQueueConcurrency/);
-  assert.match(queueService, /existingClientAnswerIds/);
+  assert.match(queueService, /dedupeQueueInputs/);
+  assert.match(queueService, /existingStatusByClientAnswerId/);
+  assert.match(queueService, /duplicate:\$\{existingStatusByClientAnswerId\.get\(row\.clientAnswerId\)\}/);
+  assert.match(env, /PRACTICE_ANSWER_QUEUE_STATS_LOG_INTERVAL_MS/);
+  assert.match(env, /PRACTICE_ANSWER_QUEUE_STRICT_INTERVAL/);
+  assert.match(env, /PRACTICE_ANSWER_QUEUE_MAX_DRAIN_ROUNDS/);
   assert.doesNotMatch(queueService, /STATUS_DEAD/);
   assert.match(server, /startPracticeAnswerQueueWorker\(\)/);
 });
@@ -274,6 +290,32 @@ test('practice answer queue worker consumes successfully and retries failed jobs
   assert.match(queueService, /return 'failed' as const/);
   assert.match(queueService, /retryDelayMs\(nextRetryCount\)/);
   assert.match(queueService, /nextRetryCount >= env\.practiceAnswerQueueMaxAttempts/);
+  assert.match(queueService, /practiceAnswerQueueStrictInterval/);
+  assert.match(queueService, /practiceAnswerQueueMaxDrainRounds/);
+  assert.match(queueService, /processedSinceLastLog/);
+});
+
+test('practice answer queue exposes admin monitoring and safe processed cleanup', () => {
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const cleanupScript = readFileSync(new URL('../scripts/cleanupPracticeAnswerQueue.ts', import.meta.url), 'utf8');
+  const serverPackage = readFileSync(new URL('../../package.json', import.meta.url), 'utf8');
+  const redesignDoc = readFileSync(new URL('../../../docs/queue-redesign.md', import.meta.url), 'utf8');
+
+  assert.match(adminRoute, /\/system\/practice-answer-queue/);
+  assert.match(adminRoute, /getPracticeAnswerQueueMonitor/);
+  assert.match(queueService, /recentFiveMinutes/);
+  assert.match(queueService, /failedReasonsTop10/);
+  assert.match(queueService, /practiceAnswerQueueWorkerConfig/);
+  assert.match(cleanupScript, /status:\s*'processed'/);
+  assert.match(cleanupScript, /createdAt:\s*\{\s*lt:\s*cutoff\s*\}/);
+  assert.match(cleanupScript, /--confirm/);
+  assert.match(cleanupScript, /dry-run/);
+  assert.doesNotMatch(cleanupScript, /pending|processing|failed/);
+  assert.match(serverPackage, /practice-answer-queue:cleanup/);
+  assert.match(redesignDoc, /Redis \+ BullMQ/);
+  assert.match(redesignDoc, /qanda-worker/);
+  assert.match(redesignDoc, /灰度/);
 });
 
 test('practice resume sessions have account-scoped persistence safeguards', () => {
@@ -331,6 +373,89 @@ test('admin activity trend uses application day buckets and distinct active user
       { date: '2026-06-27', answerCount: 3, activeUserCount: 2, correctCount: 2, accuracy: 67 }
     ]
   );
+});
+
+test('admin activity stats derive summary, trend and ranking from daily user aggregates', () => {
+  const trendStart = new Date(2026, 5, 24);
+  const sevenDayStart = new Date(2026, 5, 26);
+  const today = new Date(2026, 6, 2);
+  const stats = buildActivityStatsFromDailyUserAggregates([
+    {
+      date: '2026-06-24',
+      userId: 'u-old',
+      nickname: '旧记录',
+      email: null,
+      answerCount: 10,
+      correctCount: 10,
+      durationSeconds: 100
+    },
+    {
+      date: '2026-06-26',
+      userId: 'u-a',
+      nickname: '甲同学',
+      email: 'a@qq.com',
+      answerCount: 2,
+      correctCount: 1,
+      durationSeconds: 30
+    },
+    {
+      date: '2026-06-27',
+      userId: 'u-a',
+      nickname: '甲同学',
+      email: 'a@qq.com',
+      answerCount: 3,
+      correctCount: 3,
+      durationSeconds: 50
+    },
+    {
+      date: '2026-07-02',
+      userId: 'u-b',
+      nickname: '乙同学',
+      email: null,
+      answerCount: 4,
+      correctCount: 2,
+      durationSeconds: 80
+    }
+  ], trendStart, 9, sevenDayStart, today);
+
+  assert.deepEqual(stats.summary, {
+    activeToday: 1,
+    activeSevenDays: 2,
+    answersToday: 4,
+    answersSevenDays: 9,
+    correctSevenDays: 6,
+    durationSevenDays: 160
+  });
+  assert.deepEqual(
+    stats.trend.map((row) => ({
+      date: row.date,
+      answerCount: row.answerCount,
+      activeUserCount: row.activeUserCount,
+      correctCount: row.correctCount,
+      accuracy: row.accuracy
+    })),
+    [
+      { date: '2026-06-24', answerCount: 10, activeUserCount: 1, correctCount: 10, accuracy: 100 },
+      { date: '2026-06-25', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-06-26', answerCount: 2, activeUserCount: 1, correctCount: 1, accuracy: 50 },
+      { date: '2026-06-27', answerCount: 3, activeUserCount: 1, correctCount: 3, accuracy: 100 },
+      { date: '2026-06-28', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-06-29', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-06-30', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-07-01', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-07-02', answerCount: 4, activeUserCount: 1, correctCount: 2, accuracy: 50 }
+    ]
+  );
+  assert.deepEqual(stats.topActiveUsers.map((row) => ({
+    id: row.id,
+    answerCount: row.answerCount,
+    correctCount: row.correctCount,
+    accuracy: row.accuracy,
+    durationSeconds: row.durationSeconds
+  })), [
+    { id: 'u-a', answerCount: 5, correctCount: 4, accuracy: 80, durationSeconds: 80 },
+    { id: 'u-b', answerCount: 4, correctCount: 2, accuracy: 50, durationSeconds: 80 }
+  ]);
 });
 
 test('presence online window requires a fresh unended heartbeat', () => {

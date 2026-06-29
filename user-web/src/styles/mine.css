@@ -1546,3 +1546,101 @@
     padding: 6px 14px !important;
   }
 }
+
+/* Keep the compact profile header stable on large-phone widths. */
+.qmine-profile-copy {
+  min-width: 0;
+  display: grid;
+  justify-items: start;
+}
+
+.qmine-created-date {
+  max-width: 100%;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 560px) {
+  .qmine-profile-hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .qmine-profile-main {
+    width: 100% !important;
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .qmine-profile-main > .qmine-profile-copy {
+    padding-right: 0 !important;
+  }
+
+  .qmine-avatar {
+    width: 76px !important;
+    height: 76px !important;
+  }
+
+  .qmine-profile-main h2 {
+    max-width: calc(100% - 98px) !important;
+    margin-bottom: 4px !important;
+    font-size: 22px !important;
+    line-height: 1.08 !important;
+  }
+
+  .qmine-created-date {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+  }
+
+  .qmine-email-pill {
+    max-width: min(100%, 196px) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .qmine-edit-btn {
+    position: absolute !important;
+    top: 18px !important;
+    right: 16px !important;
+    min-width: 88px !important;
+    height: 34px !important;
+    padding: 0 13px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .qmine-profile-main {
+    grid-template-columns: 72px minmax(0, 1fr) !important;
+    gap: 11px !important;
+  }
+
+  .qmine-profile-main > .qmine-profile-copy {
+    padding-right: 0 !important;
+  }
+
+  .qmine-avatar {
+    width: 72px !important;
+    height: 72px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .qmine-profile-main {
+    grid-template-columns: 68px minmax(0, 1fr) !important;
+  }
+
+  .qmine-profile-main > .qmine-profile-copy {
+    padding-right: 0 !important;
+  }
+
+  .qmine-avatar {
+    width: 68px !important;
+    height: 68px !important;
+  }
+
+  .qmine-created-date {
+    font-size: 11px !important;
+  }
+}
