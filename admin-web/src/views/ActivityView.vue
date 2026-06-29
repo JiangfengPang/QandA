@@ -4,7 +4,7 @@
       <div>
         <div class="activity-kicker">用户实时状态</div>
         <h2>在线用户与答题活跃度</h2>
-        <p>在线用户指最近 {{ data.onlineWindowMinutes || 5 }} 分钟内访问过答题端的账号，统计数据来自真实答题记录。</p>
+        <p>当前在线指最近 {{ onlineWindowLabel }}内持续发送心跳的学生端账号，答题活跃指标来自真实答题记录。</p>
       </div>
       <div class="hero-actions">
         <el-select v-model="days" style="width: 128px" @change="load">
@@ -56,8 +56,8 @@
           <el-table-column prop="email" label="QQ 邮箱" min-width="155" show-overflow-tooltip>
             <template #default="{ row }">{{ row.email || '-' }}</template>
           </el-table-column>
-          <el-table-column label="最近活动" width="86" align="right">
-            <template #default="{ row }">{{ relativeTime(row.lastActiveAt) }}</template>
+          <el-table-column label="最后心跳" width="86" align="right">
+            <template #default="{ row }">{{ relativeTime(row.lastSeenAt) }}</template>
           </el-table-column>
         </el-table>
       </el-card>
@@ -116,6 +116,7 @@ use([BarChart, LineChart, GridComponent, LegendComponent, TooltipComponent, Canv
 
 type ActivityData = {
   onlineWindowMinutes: number;
+  onlineWindowSeconds?: number;
   checkedAt: string;
   summary: {
     totalStudents: number;
@@ -127,7 +128,7 @@ type ActivityData = {
     accuracySevenDays: number;
     durationSevenDays: number;
   };
-  onlineUsers: Array<{ id: string; nickname: string; email: string; lastActiveAt: string }>;
+  onlineUsers: Array<{ id: string; nickname: string; email: string; lastSeenAt: string }>;
   trend: Array<{ date: string; label: string; answerCount: number; activeUserCount: number; accuracy: number }>;
   topActiveUsers: Array<{
     id: string;
@@ -140,7 +141,8 @@ type ActivityData = {
 };
 
 const emptyData = (): ActivityData => ({
-  onlineWindowMinutes: 5,
+  onlineWindowMinutes: 1.5,
+  onlineWindowSeconds: 90,
   checkedAt: '',
   summary: {
     totalStudents: 0,
@@ -172,6 +174,14 @@ const metrics = computed(() => [
   { label: '近 7 天正确率', value: `${data.value.summary.accuracySevenDays}%`, hint: '按全部答题记录计算', icon: Clock, tone: 'green' }
 ]);
 
+const onlineWindowLabel = computed(() => {
+  const seconds = Math.max(0, Number(data.value.onlineWindowSeconds || 0));
+  if (seconds && seconds < 120) return `${seconds} 秒`;
+  const minutes = Number(data.value.onlineWindowMinutes || 0);
+  if (minutes < 1) return '90 秒';
+  return `${Number.isInteger(minutes) ? minutes : minutes.toFixed(1)} 分钟`;
+});
+
 function formatDuration(seconds: number) {
   const value = Math.max(0, Number(seconds || 0));
   if (value < 60) return `${value} 秒`;
@@ -200,7 +210,7 @@ function renderChart() {
       right: 0,
       textStyle: { color: '#64748b', fontFamily: 'inherit' }
     },
-    grid: { top: 42, right: 18, bottom: 30, left: 42, containLabel: true },
+    grid: { top: 42, right: 50, bottom: 30, left: 42, containLabel: true },
     xAxis: {
       type: 'category',
       boundaryGap: true,
@@ -209,18 +219,29 @@ function renderChart() {
       axisTick: { show: false },
       axisLabel: { color: '#64748b' }
     },
-    yAxis: {
-      type: 'value',
-      minInterval: 1,
-      axisLine: { show: false },
-      axisTick: { show: false },
-      axisLabel: { color: '#64748b' },
-      splitLine: { lineStyle: { color: '#edf1f7' } }
-    },
+    yAxis: [
+      {
+        type: 'value',
+        minInterval: 1,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: '#2563eb' },
+        splitLine: { lineStyle: { color: '#edf1f7' } }
+      },
+      {
+        type: 'value',
+        minInterval: 1,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: '#14b8a6' },
+        splitLine: { show: false }
+      }
+    ],
     series: [
       {
         name: '答题次数',
         type: 'bar',
+        yAxisIndex: 0,
         barMaxWidth: 28,
         data: data.value.trend.map((item) => item.answerCount),
         itemStyle: { borderRadius: [6, 6, 0, 0] }
@@ -228,6 +249,7 @@ function renderChart() {
       {
         name: '活跃用户',
         type: 'line',
+        yAxisIndex: 1,
         smooth: true,
         symbolSize: 7,
         lineStyle: { width: 3 },

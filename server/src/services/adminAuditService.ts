@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import type { Prisma } from '@prisma/client';
 import { prisma } from '../db/prisma.js';
+import { invalidateAdminDashboardStatsCache } from './adminDashboardService.js';
 
 type AuditDescriptor = {
   action: string;
@@ -168,6 +169,7 @@ export function adminAuditMiddleware(req: Request, res: Response, next: NextFunc
   const startedAt = Date.now();
   res.once('finish', () => {
     if (!req.auth?.userId) return;
+    if (res.statusCode < 400) invalidateAdminDashboardStatsCache();
     const path = req.originalUrl.split('?')[0] || req.path;
     const descriptor = describeAdminOperation(req.method, path, req.body);
     void recordAdminOperation({

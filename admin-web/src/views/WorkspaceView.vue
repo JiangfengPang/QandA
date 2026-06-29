@@ -166,7 +166,7 @@
               <template #header>
                 <div class="card-head">
                   <div class="card-title">题目导入</div>
-                  <span class="muted">支持阅读理解快捷导入与 QandA 标准 JSON</span>
+                  <span class="muted">支持 QandA 标准 JSON</span>
                 </div>
               </template>
               <div class="import-target">
@@ -175,101 +175,38 @@
                 <el-tag type="info" v-else>未选择目标，将按 JSON 内 subject.name 与 unit.name 自动导入</el-tag>
               </div>
 
-              <el-tabs v-model="importMode" class="import-mode-tabs">
-                <el-tab-pane label="阅读理解快捷导入" name="reading">
-                  <el-alert
-                    title="一篇原文可以一次导入多道阅读理解小题"
-                    description="把原文粘到“阅读原文”，把小题按 1. 题干 答案 / A. 选项 的格式粘到“小题与选项”。解析可写在每题选项后：解析：……"
-                    type="success"
-                    show-icon
-                    class="mb"
-                  />
-                  <el-form label-width="96px" class="reading-import-form">
-                    <el-row :gutter="14">
-                      <el-col v-if="!selectedSubject" :xs="24" :md="12">
-                        <el-form-item label="科目名称">
-                          <el-input v-model="readingImport.subjectName" placeholder="例如：大学英语阅读理解" />
-                        </el-form-item>
-                      </el-col>
-                      <el-col v-if="!selectedBank" :xs="24" :md="12">
-                        <el-form-item label="题库名称">
-                          <el-input v-model="readingImport.bankName" placeholder="例如：四级阅读 Passage One" />
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-row :gutter="14">
-                      <el-col :xs="24" :md="18">
-                        <el-form-item label="总题干">
-                          <el-input v-model="readingImport.stem" placeholder="Read the passage and choose the best answer." />
-                        </el-form-item>
-                      </el-col>
-                      <el-col :xs="24" :md="6">
-                        <el-form-item label="分值">
-                          <el-input-number v-model="readingImport.score" :min="0" :step="0.5" controls-position="right" style="width:100%" />
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-form-item label="阅读原文">
-                      <el-input
-                        v-model="readingImport.passage"
-                        class="reading-import-textarea"
-                        type="textarea"
-                        :rows="10"
-                        placeholder="粘贴阅读理解原文。支持 Markdown，段落之间可保留空行。"
-                      />
-                    </el-form-item>
-                    <el-form-item label="小题与选项">
-                      <el-input
-                        v-model="readingImport.questionsText"
-                        class="reading-import-textarea"
-                        type="textarea"
-                        :rows="12"
-                        placeholder="1. What do we learn from the passage? D&#10;A. Option text&#10;B. Option text&#10;C. Option text&#10;D. Option text&#10;解析：可选解析&#10;&#10;2. Next question? A&#10;A. ..."
-                      />
-                    </el-form-item>
-                  </el-form>
-                  <div class="reading-import-actions">
-                    <el-button @click="fillReadingSample">填入阅读示例</el-button>
-                    <el-button @click="generateReadingJson">生成到 JSON</el-button>
-                    <el-button type="primary" :loading="importing" @click="submitReadingImport">直接导入阅读理解</el-button>
-                  </div>
-                </el-tab-pane>
+              <el-alert
+                title="填空题统一使用 blanks：单空也写 blanks 里 1 个空，每个空只用 answer 数组。"
+                description='阅读理解题统一使用 type/passageId/question/readingPassage/readingQuestion/options[{ key, text }]/answer/explanation。同一篇短文下的小题必须共用 passageId。'
+                type="info"
+                show-icon
+                class="mb"
+              />
 
-                <el-tab-pane label="JSON 原始导入" name="json">
-                  <el-alert
-                    title="填空题统一使用 blanks：单空也写 blanks 里 1 个空，每个空只用 answer 数组。"
-                    description='阅读理解题统一使用 type/passageId/question/readingPassage/readingQuestion/options[{ key, text }]/answer/explanation。同一篇短文下的小题必须共用 passageId。'
-                    type="info"
-                    show-icon
-                    class="mb"
-                  />
+              <el-upload
+                ref="uploadRef"
+                class="mb"
+                drag
+                accept=".json,application/json"
+                :auto-upload="false"
+                :show-file-list="false"
+                :before-upload="handleFile"
+                :on-change="handleFileChange"
+              >
+                <div class="upload-inner">把 JSON 文件拖到这里，或点击选择文件</div>
+              </el-upload>
 
-                  <el-upload
-                    ref="uploadRef"
-                    class="mb"
-                    drag
-                    accept=".json,application/json"
-                    :auto-upload="false"
-                    :show-file-list="false"
-                    :before-upload="handleFile"
-                    :on-change="handleFileChange"
-                  >
-                    <div class="upload-inner">把 JSON 文件拖到这里，或点击选择文件</div>
-                  </el-upload>
-
-                  <el-input
-                    v-model="jsonText"
-                    type="textarea"
-                    :rows="16"
-                    placeholder='粘贴 JSON；阅读理解必须使用 "type": "reading"，并填写 passageId / question / readingPassage / readingQuestion / options[{ "key": "A", "text": "..." }] / answer。'
-                  />
-                  <div class="toolbar bottom">
-                    <el-button @click="fillSample">填入示例</el-button>
-                    <el-button @click="clearImport">清空</el-button>
-                    <el-button type="primary" :loading="importing" @click="submitImport">开始导入</el-button>
-                  </div>
-                </el-tab-pane>
-              </el-tabs>
+              <el-input
+                v-model="jsonText"
+                type="textarea"
+                :rows="16"
+                placeholder='粘贴 JSON；阅读理解必须使用 "type": "reading"，并填写 passageId / question / readingPassage / readingQuestion / options[{ "key": "A", "text": "..." }] / answer。'
+              />
+              <div class="toolbar bottom">
+                <el-button @click="fillSample">填入示例</el-button>
+                <el-button @click="clearImport">清空</el-button>
+                <el-button type="primary" :loading="importing" @click="submitImport">开始导入</el-button>
+              </div>
 
               <el-result v-if="lastImport" icon="success" title="导入成功" :sub-title="importSummary">
                 <template #extra>
@@ -581,19 +518,10 @@ const bankMode = ref<'edit' | 'create'>('create');
 const subjectForm = reactive({ id: '', name: '', description: '', color: '#5b8def', isActive: true });
 const bankForm = reactive({ id: '', name: '', description: '', isActive: true });
 
-const importMode = ref<'reading' | 'json'>('reading');
 const jsonText = ref('');
 const importing = ref(false);
 const lastImport = ref<any>(null);
 const uploadRef = ref<any>();
-const readingImport = reactive({
-  subjectName: '大学英语阅读理解',
-  bankName: '阅读理解导入',
-  stem: 'Read the passage and choose the best answer.',
-  score: 2,
-  passage: '',
-  questionsText: ''
-});
 
 const questions = ref<any[]>([]);
 const questionKeyword = ref('');
@@ -657,14 +585,6 @@ const importSummary = computed(() => {
   return `科目：${subject}；题库：${bank}；新增：${lastImport.value.createdCount ?? 0}；更新：${lastImport.value.updatedCount ?? 0}；共处理：${lastImport.value.questionCount ?? 0}`;
 });
 
-type ReadingOptionDraft = { label: string; text: string };
-type ReadingQuestionDraft = {
-  number: string;
-  question: string;
-  answer: string;
-  options: ReadingOptionDraft[];
-  explanation: string;
-};
 type ReadingQuestionFormItem = {
   id: string;
   localId: string;
@@ -674,15 +594,45 @@ type ReadingQuestionFormItem = {
   explanation: string;
 };
 
+const EXPANDED_SUBJECTS_STORAGE_KEY = 'qanda-admin-workspace-expanded-subject-ids';
+
+function readStoredExpandedSubjectIds(validIds: Set<string>) {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(EXPANDED_SUBJECTS_STORAGE_KEY);
+    if (!raw) return null;
+    const value = JSON.parse(raw);
+    if (!Array.isArray(value)) return null;
+    return value.filter((id): id is string => typeof id === 'string' && validIds.has(id));
+  } catch {
+    return null;
+  }
+}
+
+function persistExpandedSubjectIds() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(EXPANDED_SUBJECTS_STORAGE_KEY, JSON.stringify(expandedSubjectIds.value));
+  } catch {
+    // localStorage can be unavailable in private or restricted browser contexts.
+  }
+}
+
+function setExpandedSubjectIds(ids: string[]) {
+  expandedSubjectIds.value = Array.from(new Set(ids));
+  persistExpandedSubjectIds();
+}
+
 async function loadTree() {
   tree.value = await api.get<SubjectNode[]>('/admin/tree');
+  const subjectIds = tree.value.map((subject) => subject.id);
+  const validIds = new Set(subjectIds);
 
   if (!hasInitializedExpansion.value) {
-    expandedSubjectIds.value = tree.value.map((subject) => subject.id);
+    setExpandedSubjectIds(readStoredExpandedSubjectIds(validIds) ?? subjectIds);
     hasInitializedExpansion.value = true;
   } else {
-    const validIds = new Set(tree.value.map((subject) => subject.id));
-    expandedSubjectIds.value = expandedSubjectIds.value.filter((id) => validIds.has(id));
+    setExpandedSubjectIds(expandedSubjectIds.value.filter((id) => validIds.has(id)));
   }
 
   if (selectedBank.value) {
@@ -703,9 +653,9 @@ function isSubjectExpanded(subjectId: string) {
 
 function toggleSubject(subject: SubjectNode) {
   const exists = expandedSubjectIds.value.includes(subject.id);
-  expandedSubjectIds.value = exists
+  setExpandedSubjectIds(exists
     ? expandedSubjectIds.value.filter((id) => id !== subject.id)
-    : [...expandedSubjectIds.value, subject.id];
+    : [...expandedSubjectIds.value, subject.id]);
 }
 
 function handleSubjectDragStart(subject: SubjectNode, event: DragEvent) {
@@ -914,25 +864,25 @@ function handleBankModeChange() {
   }
 }
 
-function selectSubject(subject: SubjectNode, changeTab = true) {
+function selectSubject(subject: SubjectNode, changeTab = true, expandSubject = changeTab) {
   selectedSubject.value = subject;
   selectedBank.value = null;
   selectedType.value = 'subject';
   subjectMode.value = 'edit';
   bankMode.value = 'create';
-  if (!isSubjectExpanded(subject.id)) expandedSubjectIds.value = [...expandedSubjectIds.value, subject.id];
+  if (expandSubject && !isSubjectExpanded(subject.id)) setExpandedSubjectIds([...expandedSubjectIds.value, subject.id]);
   applySubjectToForm(subject);
   resetBankForm();
   if (changeTab) activeTab.value = 'structure';
 }
 
-function selectBank(subject: SubjectNode, bank: BankNode, changeTab = true) {
+function selectBank(subject: SubjectNode, bank: BankNode, changeTab = true, expandSubject = changeTab) {
   selectedSubject.value = subject;
   selectedBank.value = bank;
   selectedType.value = 'bank';
   subjectMode.value = 'edit';
   bankMode.value = 'edit';
-  if (!isSubjectExpanded(subject.id)) expandedSubjectIds.value = [...expandedSubjectIds.value, subject.id];
+  if (expandSubject && !isSubjectExpanded(subject.id)) setExpandedSubjectIds([...expandedSubjectIds.value, subject.id]);
   applySubjectToForm(subject);
   applyBankToForm(bank);
   questionMeta.page = 1;
@@ -999,128 +949,6 @@ async function deleteBank() {
   await loadTree();
 }
 
-function fillReadingSample() {
-  readingImport.subjectName = selectedSubject.value?.name || '大学英语阅读理解';
-  readingImport.bankName = selectedBank.value?.name || 'Passage One 阅读理解';
-  readingImport.stem = 'Passage One. Read the passage and choose the best answer.';
-  readingImport.score = 2;
-  readingImport.passage = `Passage One
-
-New research suggests that pandas may be at risk of dying out because they are too comfortable. Experts say too much happiness can stop the bears from searching for new mates.
-
-Environmentalists have long believed that building roads or homes near the bears may threaten their survival by “reducing or fragmenting their natural habitats”. But the new research suggests that a modest degree of discomfort and fragmentation may actually help preserve panda populations.`;
-  readingImport.questionsText = `1. What do we learn from new research about pandas? D
-A. They are losing habitat due to the building of roads and houses.
-B. They have stopped seeking new mates for reproduction.
-C. They may not adapt to the fragmentation of their habitat.
-D. They may cease to exist as a result of enjoying too good a life.
-解析：The opening paragraph says pandas may risk dying out because they are too comfortable.
-
-2. What can we conclude from the new research? A
-A. Environmentalists’ long-time belief regarding panda conservation may be misleading.
-B. Housing development near pandas’ homes may threaten their survival.
-C. Pandas’ natural habitats are becoming less suitable for reproduction.
-D. The increased panda population is attributed to the fragmentation of their habitat.
-解析：The passage contrasts the old belief with the new finding that modest fragmentation may help.`;
-}
-
-function extractReadingAnswer(text: string) {
-  const match = text.match(/\s+(?:(?:答案|正确答案|Answer|Correct answer)\s*[:：]?\s*)?([A-Ha-h])\s*$/);
-  if (!match || match.index === undefined) return { text: text.trim(), answer: '' };
-  return {
-    text: text.slice(0, match.index).trim(),
-    answer: match[1].toUpperCase()
-  };
-}
-
-function parseReadingQuestionsText(input: string): ReadingQuestionDraft[] {
-  const lines = input.replace(/\r\n?/g, '\n').split('\n');
-  const items: ReadingQuestionDraft[] = [];
-  let current: ReadingQuestionDraft | null = null;
-  let activeOption: ReadingOptionDraft | null = null;
-  let readingExplanation = false;
-
-  function pushCurrent() {
-    if (!current) return;
-    current.question = current.question.replace(/\s+/g, ' ').trim();
-    current.explanation = current.explanation.trim();
-    current.options = current.options.map((option) => ({
-      label: option.label,
-      text: option.text.replace(/\s+/g, ' ').trim()
-    }));
-    const title = `第 ${current.number} 题`;
-    if (!current.question) throw new Error(`${title} 缺少小题题干`);
-    if (current.options.length < 2) throw new Error(`${title} 至少需要 2 个选项`);
-    if (!current.answer) throw new Error(`${title} 缺少正确答案，请写在题干末尾或单独写“答案：A”`);
-    if (!current.options.some((option) => option.label === current!.answer)) {
-      throw new Error(`${title} 的正确答案 ${current.answer} 没有对应选项`);
-    }
-    items.push(current);
-  }
-
-  lines.forEach((rawLine) => {
-    const line = rawLine.trim();
-    if (!line) return;
-
-    const questionMatch = line.match(/^(\d+)[\.．、\)]\s*(.+)$/);
-    if (questionMatch) {
-      pushCurrent();
-      const extracted = extractReadingAnswer(questionMatch[2]);
-      current = {
-        number: questionMatch[1],
-        question: extracted.text,
-        answer: extracted.answer,
-        options: [],
-        explanation: ''
-      };
-      activeOption = null;
-      readingExplanation = false;
-      return;
-    }
-
-    if (!current) {
-      throw new Error('小题文本需要从“1. 题干 答案”开始');
-    }
-
-    const answerMatch = line.match(/^(?:答案|正确答案|Answer|Correct answer)\s*[:：]?\s*([A-Ha-h])\s*$/);
-    if (answerMatch) {
-      current.answer = answerMatch[1].toUpperCase();
-      activeOption = null;
-      readingExplanation = false;
-      return;
-    }
-
-    const explanationMatch = line.match(/^(?:解析|Explanation|Analysis)\s*[:：]\s*(.*)$/i);
-    if (explanationMatch) {
-      current.explanation = [current.explanation, explanationMatch[1].trim()].filter(Boolean).join('\n');
-      activeOption = null;
-      readingExplanation = true;
-      return;
-    }
-
-    const optionMatch = line.match(/^([A-Ha-h])[\.\)．、]\s*(.+)$/);
-    if (optionMatch) {
-      const option = { label: optionMatch[1].toUpperCase(), text: optionMatch[2].trim() };
-      current.options.push(option);
-      activeOption = option;
-      readingExplanation = false;
-      return;
-    }
-
-    if (readingExplanation) {
-      current.explanation = [current.explanation, line].filter(Boolean).join('\n');
-    } else if (activeOption) {
-      activeOption.text = `${activeOption.text} ${line}`.trim();
-    } else {
-      current.question = `${current.question} ${line}`.trim();
-    }
-  });
-
-  pushCurrent();
-  if (!items.length) throw new Error('没有解析到阅读理解小题');
-  return items;
-}
-
 function safeLegacyId(value: string) {
   return value
     .trim()
@@ -1130,59 +958,6 @@ function safeLegacyId(value: string) {
     .slice(0, 80);
 }
 
-function buildReadingImportPayload() {
-  const passage = readingImport.passage.trim();
-  if (!passage) throw new Error('请先填写阅读原文');
-
-  const subjectName = selectedSubject.value?.name || readingImport.subjectName.trim();
-  const bankName = selectedBank.value?.name || readingImport.bankName.trim();
-  if (!selectedSubject.value && !subjectName) throw new Error('未选择科目时，需要填写科目名称');
-  if (!selectedBank.value && !bankName) throw new Error('未选择题库时，需要填写题库名称');
-
-  const items = parseReadingQuestionsText(readingImport.questionsText);
-  const stem = readingImport.stem.trim() || 'Read the passage and choose the best answer.';
-  const idPrefix = safeLegacyId(`${bankName}-${Date.now().toString(36)}`) || `reading-${Date.now().toString(36)}`;
-  const passageId = idPrefix;
-
-  return {
-    version: 1,
-    source: '阅读理解快捷导入',
-    subject: {
-      id: selectedSubject.value?.legacyId || safeLegacyId(subjectName),
-      name: subjectName,
-      color: selectedSubject.value?.color || '#5b8def'
-    },
-    unit: {
-      id: selectedBank.value?.legacyId || safeLegacyId(bankName),
-      name: bankName,
-      description: '阅读理解快捷导入'
-    },
-    questions: items.map((item, index) => ({
-      id: `${idPrefix}-${String(index + 1).padStart(3, '0')}`,
-      type: 'reading',
-      typeLabel: '阅读理解',
-      score: Number(readingImport.score || 0),
-      passageId,
-      question: stem,
-      readingPassage: passage,
-      readingQuestion: item.question,
-      options: item.options.map((option) => ({ key: option.label, text: option.text })),
-      answer: item.answer,
-      explanation: item.explanation
-    }))
-  };
-}
-
-function generateReadingJson() {
-  try {
-    jsonText.value = JSON.stringify(buildReadingImportPayload(), null, 2);
-    importMode.value = 'json';
-    ElMessage.success('已生成阅读理解 JSON，可检查后导入');
-  } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '生成失败');
-  }
-}
-
 async function finishImport(result: any) {
   lastImport.value = result;
   ElMessage.success(`导入成功：新增 ${result.createdCount ?? 0}，更新 ${result.updatedCount ?? 0}`);
@@ -1190,23 +965,6 @@ async function finishImport(result: any) {
   const subject = tree.value.find((item) => item.id === result.subject?.id);
   const bank = subject?.banks.find((item) => item.id === result.bank?.id);
   if (subject && bank) selectBank(subject, bank, false);
-}
-
-async function submitReadingImport() {
-  importing.value = true;
-  try {
-    const payload = buildReadingImportPayload();
-    const result = await api.post<any>('/admin/import/json', {
-      payload,
-      subjectId: selectedSubject.value?.id,
-      bankId: selectedBank.value?.id
-    });
-    await finishImport(result);
-  } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '导入失败');
-  } finally {
-    importing.value = false;
-  }
 }
 
 function fillSample() {

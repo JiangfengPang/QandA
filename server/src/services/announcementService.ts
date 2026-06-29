@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { Prisma } from '@prisma/client';
 import { prisma } from '../db/prisma.js';
 import { HttpError, pageMeta, toInt } from '../utils/http.js';
 
@@ -50,18 +51,17 @@ function normalizeContent(value: string | string[]) {
 
 function normalizeInput(input: unknown) {
   const parsed = announcementInputSchema.parse(input);
-  const isPublished = parsed.isPublished ?? true;
-  const publishedAt = parseDateTime(parsed.publishedAt) || (isPublished ? new Date() : null);
+  const publishedAt = parseDateTime(parsed.publishedAt) || new Date();
   return {
     title: parsed.title,
     summary: parsed.summary,
     contentJson: normalizeContent(parsed.content),
     categoryLabel: parsed.categoryLabel,
-    statusLabel: parsed.statusLabel || '已发布',
-    statusTone: parsed.statusTone || 'success',
+    statusLabel: '已发布',
+    statusTone: 'success',
     publisher: parsed.publisher || 'QandA 管理员',
-    isPublished,
-    isPinned: Boolean(isPublished && parsed.isPinned),
+    isPublished: true,
+    isPinned: Boolean(parsed.isPinned),
     publishedAt
   };
 }
@@ -152,8 +152,8 @@ export async function listAdminAnnouncements(query: Record<string, unknown>) {
   const pageSize = Math.min(toInt(query.pageSize, 100), 200);
   const keyword = String(query.keyword || '').trim();
   const statusLabel = String(query.statusLabel || '').trim();
-  const isPublishedRaw = String(query.isPublished || '').trim();
   const where = {
+    isPublished: true,
     ...(keyword ? {
       OR: [
         { title: { contains: keyword } },
@@ -163,12 +163,10 @@ export async function listAdminAnnouncements(query: Record<string, unknown>) {
         { publisher: { contains: keyword } }
       ]
     } : {}),
-    ...(statusLabel ? { statusLabel } : {}),
-    ...(isPublishedRaw === 'true' ? { isPublished: true } : {}),
-    ...(isPublishedRaw === 'false' ? { isPublished: false } : {})
-  };
+    ...(statusLabel ? { statusLabel } : {})
+  } satisfies Prisma.AnnouncementWhereInput;
 
-  const [total, rows, categories, statuses] = await Promise.all([
+  const [total, rows, categories, statuses, totalReadCount] = await Promise.all([
     prisma.announcement.count({ where }),
     prisma.announcement.findMany({
       where,
@@ -177,14 +175,20 @@ export async function listAdminAnnouncements(query: Record<string, unknown>) {
       skip: (page - 1) * pageSize,
       take: pageSize
     }),
-    prisma.announcement.findMany({ distinct: ['categoryLabel'], select: { categoryLabel: true }, orderBy: { categoryLabel: 'asc' } }),
-    prisma.announcement.findMany({ distinct: ['statusLabel'], select: { statusLabel: true, statusTone: true }, orderBy: { statusLabel: 'asc' } })
+    prisma.announcement.findMany({ where: { isPublished: true }, distinct: ['categoryLabel'], select: { categoryLabel: true }, orderBy: { categoryLabel: 'asc' } }),
+    prisma.announcement.findMany({ where: { isPublished: true }, distinct: ['statusLabel'], select: { statusLabel: true, statusTone: true }, orderBy: { statusLabel: 'asc' } }),
+    prisma.announcementRead.count({ where: { announcement: where } })
   ]);
 
   return {
     rows: rows.map((item) => toAnnouncementDto(item)),
     categoryOptions: categories.map((item) => item.categoryLabel).filter(Boolean),
     statusOptions: statuses.map((item) => ({ label: item.statusLabel, tone: item.statusTone })).filter((item) => item.label),
+    summary: {
+      total,
+      publishedCount: total,
+      totalReadCount
+    },
     meta: pageMeta(page, pageSize, total)
   };
 }

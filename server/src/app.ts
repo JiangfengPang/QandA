@@ -5,6 +5,7 @@ import { env } from './config/env.js';
 import authRouter from './routes/auth.js';
 import publicRouter from './routes/public.js';
 import practiceRouter from './routes/practice.js';
+import presenceRouter from './routes/presence.js';
 import adminRouter from './routes/admin.js';
 import { errorHandler, notFound } from './middleware/error.js';
 
@@ -62,6 +63,7 @@ export function createApp() {
   }));
 
   app.use('/api/auth', authRouter);
+  app.use('/api/presence', presenceRouter);
   app.use('/api', publicRouter);
   app.use('/api/practice', practiceRouter);
   app.use('/api/admin', adminRouter);

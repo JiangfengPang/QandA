@@ -5,6 +5,8 @@ export type PendingAnswerRecord = {
   questionId: string;
   selectedAnswer: string[];
   isCorrect: boolean;
+  answer?: string[];
+  explanation?: string;
   answeredAt: string;
   retryCount: number;
   lastTriedAt: string;
@@ -55,6 +57,8 @@ function normalizeRecord(value: unknown): PendingAnswerRecord | null {
     questionId,
     selectedAnswer: Array.isArray(raw.selectedAnswer) ? raw.selectedAnswer.map((item) => String(item)) : [],
     isCorrect: Boolean(raw.isCorrect),
+    answer: Array.isArray(raw.answer) ? raw.answer.map((item) => String(item)) : undefined,
+    explanation: raw.explanation === undefined ? undefined : String(raw.explanation),
     answeredAt: String(raw.answeredAt || new Date().toISOString()),
     retryCount: Math.max(0, Math.floor(Number(raw.retryCount) || 0)),
     lastTriedAt: String(raw.lastTriedAt || ''),

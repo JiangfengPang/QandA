@@ -7,8 +7,14 @@ import { asyncHandler } from './asyncHandler.js';
 import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
 import { createVerificationCode } from './verificationCode.js';
+import { assertAllowedNickname, hasForbiddenNickname, normalizeNickname } from './nicknamePolicy.js';
 import { buildDailyActivityTrend } from '../services/adminAnalyticsService.js';
 import { assertStandardReadingQuestionImport } from '../services/importService.js';
+import {
+  isPresenceSessionOnline,
+  normalizePresenceSessionId,
+  PRESENCE_ONLINE_WINDOW_MS
+} from '../services/presenceService.js';
 import { effectiveQuestionCount, summarizeBankProgress, summarizeEffectiveAnswers, summarizeLatestAnswers } from '../services/progressService.js';
 import { formatQuestion } from '../services/questionService.js';
 
@@ -72,6 +78,21 @@ test('verification codes are six numeric digits', () => {
   for (let index = 0; index < 100; index += 1) {
     assert.match(createVerificationCode(), /^\d{6}$/);
   }
+});
+
+test('nickname policy normalizes and accepts meaningful nicknames', () => {
+  assert.equal(normalizeNickname('  Ａ 同学  '), 'A 同学');
+  assert.equal(assertAllowedNickname('学习者4821'), '学习者4821');
+  assert.equal(hasForbiddenNickname('阅读理解演示'), false);
+});
+
+test('nickname policy rejects low quality and reserved nicknames', () => {
+  assert.throws(() => assertAllowedNickname('。'), /不能只包含标点/);
+  assert.throws(() => assertAllowedNickname('A'), /至少需要 2 个有效字符/);
+  assert.throws(() => assertAllowedNickname('111111'), /连续重复字符/);
+  assert.throws(() => assertAllowedNickname('管理员'), /保留词/);
+  assert.throws(() => assertAllowedNickname('傻逼'), /不文明用语/);
+  assert.equal(hasForbiddenNickname('...'), true);
 });
 
 test('avatar signatures must match the declared format', () => {
@@ -215,6 +236,46 @@ test('practice answer idempotency keeps database and service safeguards', () => 
   assert.match(service, /code\?:\s*string\s*\}\)\.code === 'P2002'/);
 });
 
+test('practice answer queue is wired through schema, API and server worker', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260629000300_add_practice_answer_queue/migration.sql', import.meta.url), 'utf8');
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const server = readFileSync(new URL('../server.ts', import.meta.url), 'utf8');
+
+  assert.match(schema, /model PracticeAnswerQueueItem/);
+  assert.match(schema, /@@unique\(\[userId,\s*clientAnswerId\]\)/);
+  assert.match(migration, /CREATE TABLE `PracticeAnswerQueueItem`/);
+  assert.match(route, /router\.post\('\/answers\/batch'/);
+  assert.match(route, /enqueuePracticeAnswerSubmissions/);
+  assert.match(route, /queueStatus/);
+  assert.match(route, /canQueueClientEvaluatedAnswer/);
+  assert.match(route, /submitPracticeAnswer\(req\.auth!\.userId,\s*input\.questionId/);
+  assert.doesNotMatch(queueService, /isCorrect/);
+  assert.doesNotMatch(queueService, /explanation/);
+  assert.match(queueService, /submitPracticeAnswer/);
+  assert.match(queueService, /answer queue worker started/);
+  assert.match(queueService, /answer queue worker stats/);
+  assert.match(queueService, /STATUS_RETRYING = 'retrying'/);
+  assert.match(queueService, /status:\s*permanent \? STATUS_FAILED : STATUS_RETRYING/);
+  assert.match(queueService, /practiceAnswerQueueConcurrency/);
+  assert.match(queueService, /existingClientAnswerIds/);
+  assert.doesNotMatch(queueService, /STATUS_DEAD/);
+  assert.match(server, /startPracticeAnswerQueueWorker\(\)/);
+});
+
+test('practice answer queue worker consumes successfully and retries failed jobs', () => {
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+
+  assert.match(queueService, /await submitPracticeAnswer\(/);
+  assert.match(queueService, /await markQueueItemProcessed\(item\.id\)/);
+  assert.match(queueService, /return 'processed' as const/);
+  assert.match(queueService, /await markQueueItemFailed\(item,\s*error\)/);
+  assert.match(queueService, /return 'failed' as const/);
+  assert.match(queueService, /retryDelayMs\(nextRetryCount\)/);
+  assert.match(queueService, /nextRetryCount >= env\.practiceAnswerQueueMaxAttempts/);
+});
+
 test('practice resume sessions have account-scoped persistence safeguards', () => {
   const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
   const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
@@ -228,6 +289,23 @@ test('practice resume sessions have account-scoped persistence safeguards', () =
   assert.match(route, /router\.put\('\/sessions'/);
   assert.match(route, /router\.delete\('\/sessions'/);
   assert.match(service, /userId_sessionKey:\s*\{\s*userId,\s*sessionKey\s*\}/);
+  assert.match(service, /sessionSnapshotFingerprint/);
+  assert.match(service, /findUnique/);
+  assert.match(service, /existing && sessionSnapshotFingerprint/);
+});
+
+test('practice review summary uses user-scoped short cache and reports queued answers', () => {
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/practiceStatsService.ts', import.meta.url), 'utf8');
+
+  assert.match(route, /getPracticeReviewSummary\(req\.auth!\.userId,\s*\{/);
+  assert.match(route, /subjectId: getOptionalQueryText\(req\.query\.subjectId\)/);
+  assert.match(route, /bankId: getOptionalQueryText\(req\.query\.bankId\)/);
+  assert.match(service, /reviewSummaryCacheKey\(userId,\s*scope\)/);
+  assert.match(service, /practiceReviewSummaryCacheSeconds/);
+  assert.match(service, /practiceAnswerQueueItem\.count/);
+  assert.match(service, /pendingAnswerCount/);
+  assert.match(service, /syncing: queuedAnswerCount > 0/);
 });
 
 test('admin activity trend uses application day buckets and distinct active users', () => {
@@ -253,4 +331,64 @@ test('admin activity trend uses application day buckets and distinct active user
       { date: '2026-06-27', answerCount: 3, activeUserCount: 2, correctCount: 2, accuracy: 67 }
     ]
   );
+});
+
+test('presence online window requires a fresh unended heartbeat', () => {
+  const now = new Date('2026-06-28T12:00:00.000Z');
+
+  assert.equal(
+    isPresenceSessionOnline({ lastSeenAt: new Date(now.getTime() - PRESENCE_ONLINE_WINDOW_MS + 1) }, now),
+    true
+  );
+  assert.equal(
+    isPresenceSessionOnline({ lastSeenAt: new Date(now.getTime() - PRESENCE_ONLINE_WINDOW_MS - 1) }, now),
+    false
+  );
+  assert.equal(
+    isPresenceSessionOnline({
+      lastSeenAt: new Date(now.getTime() - 10_000),
+      endedAt: new Date(now.getTime() - 1_000)
+    }, now),
+    false
+  );
+});
+
+test('presence session ids are bounded and URL-safe', () => {
+  assert.equal(normalizePresenceSessionId('  tab-abc_123.456:789  '), 'tab-abc_123.456:789');
+  assert.throws(() => normalizePresenceSessionId('short'), /在线会话标识无效/);
+  assert.throws(() => normalizePresenceSessionId('bad id with spaces'), /在线会话标识无效/);
+});
+
+test('presence heartbeat architecture is wired through schema, API and user client', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260628000100_add_user_presence_sessions/migration.sql', import.meta.url), 'utf8');
+  const app = readFileSync(new URL('../app.ts', import.meta.url), 'utf8');
+  const route = readFileSync(new URL('../routes/presence.ts', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/presenceService.ts', import.meta.url), 'utf8');
+  const analytics = readFileSync(new URL('../services/adminAnalyticsService.ts', import.meta.url), 'utf8');
+  const userPresence = readFileSync(new URL('../../../user-web/src/utils/presence.ts', import.meta.url), 'utf8');
+  const userPresenceConfig = readFileSync(new URL('../../../user-web/src/config/presence.ts', import.meta.url), 'utf8');
+  const userApp = readFileSync(new URL('../../../user-web/src/App.vue', import.meta.url), 'utf8');
+  const authStore = readFileSync(new URL('../../../user-web/src/stores/auth.ts', import.meta.url), 'utf8');
+
+  assert.match(schema, /model UserPresenceSession/);
+  assert.match(schema, /@@unique\(\[userId,\s*sessionId\]\)/);
+  assert.match(migration, /CREATE TABLE `UserPresenceSession`/);
+  assert.match(app, /app\.use\('\/api\/presence', presenceRouter\)/);
+  assert.match(route, /router\.post\('\/heartbeat'/);
+  assert.match(route, /router\.post\('\/leave'/);
+  assert.match(route, /heartbeatIntervalMs/);
+  assert.match(service, /PRESENCE_MIN_WRITE_INTERVAL_SECONDS/);
+  assert.match(service, /throttled: true/);
+  assert.match(service, /presenceCountCacheSeconds/);
+  assert.match(service, /onlineCountCache/);
+  assert.match(analytics, /listOnlinePresenceUsers\(now\)/);
+  assert.match(analytics, /countOnlinePresenceUsers\(now\)/);
+  assert.match(userPresenceConfig, /120000/);
+  assert.match(userPresenceConfig, /300000/);
+  assert.match(userPresence, /window\.setTimeout/);
+  assert.match(userPresence, /sendHeartbeat\('visible'\)/);
+  assert.match(userPresence, /window\.addEventListener\('pagehide', handlePageHide\)/);
+  assert.match(userApp, /startPresenceHeartbeat\(\)/);
+  assert.match(authStore, /stopPresenceHeartbeat\(\{ notify: true \}\)/);
 });

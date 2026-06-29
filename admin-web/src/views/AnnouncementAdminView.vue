@@ -9,28 +9,31 @@
       <div class="announcement-admin-stats">
         <article>
           <span>全部公告</span>
-          <strong>{{ rows.length }}</strong>
+          <strong>{{ announcementSummary.total }}</strong>
         </article>
         <article>
           <span>发布中</span>
-          <strong>{{ publishedCount }}</strong>
+          <strong>{{ announcementSummary.publishedCount }}</strong>
         </article>
         <article>
           <span>累计阅读</span>
-          <strong>{{ totalReadCount }}</strong>
+          <strong>{{ announcementSummary.totalReadCount }}</strong>
         </article>
       </div>
     </el-card>
 
     <el-card class="panel-card announcement-admin-panel" shadow="never">
       <div class="announcement-admin-toolbar">
-        <el-input v-model="query.keyword" placeholder="搜索公告标题、分类或内容" clearable>
+        <el-input
+          v-model="query.keyword"
+          placeholder="搜索公告标题、分类或内容"
+          clearable
+          @input="handleKeywordInput"
+          @clear="handleSearch"
+          @keyup.enter="handleSearch"
+        >
           <template #prefix><el-icon><Search /></el-icon></template>
         </el-input>
-        <el-select v-model="query.publishState" placeholder="发布状态" clearable>
-          <el-option label="已发布" value="published" />
-          <el-option label="未发布" value="draft" />
-        </el-select>
         <el-button type="primary" @click="openCreate">
           <el-icon><Plus /></el-icon>
           新增公告
@@ -123,6 +126,16 @@
           </div>
         </article>
       </div>
+
+      <el-pagination
+        v-if="meta.total > meta.pageSize"
+        v-model:current-page="meta.page"
+        class="pager announcement-admin-pager"
+        layout="prev, pager, next, total"
+        :total="meta.total"
+        :page-size="meta.pageSize"
+        @current-change="loadRows"
+      />
     </el-card>
 
     <el-dialog
@@ -199,7 +212,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { Delete, Edit, Plus, Search } from '@element-plus/icons-vue';
 import { ElButton } from 'element-plus/es/components/button/index';
 import { ElCard } from 'element-plus/es/components/card/index';
@@ -209,7 +222,7 @@ import { ElIcon } from 'element-plus/es/components/icon/index';
 import { ElInput } from 'element-plus/es/components/input/index';
 import { ElMessage } from 'element-plus/es/components/message/index';
 import { ElMessageBox } from 'element-plus/es/components/message-box/index';
-import { ElOption, ElSelect } from 'element-plus/es/components/select/index';
+import { ElPagination } from 'element-plus/es/components/pagination/index';
 import { ElSwitch } from 'element-plus/es/components/switch/index';
 import { ElTable as ElTableBase, ElTableColumn as ElTableColumnBase } from 'element-plus/es/components/table/index';
 import { ElTag } from 'element-plus/es/components/tag/index';
@@ -241,7 +254,17 @@ type AnnouncementAdminRow = {
 type AnnouncementAdminPayload = {
   rows: AnnouncementAdminRow[];
   categoryOptions: string[];
-  statusOptions: Array<{ label: string; tone: AnnouncementTone }>;
+  summary?: {
+    total: number;
+    publishedCount: number;
+    totalReadCount: number;
+  };
+  meta?: {
+    page: number;
+    pageSize: number;
+    total: number;
+    pages: number;
+  };
 };
 
 type AnnouncementForm = {
@@ -260,18 +283,16 @@ type AnnouncementForm = {
 
 const rows = ref<AnnouncementAdminRow[]>([]);
 const categoryOptions = ref<string[]>(['维护', '题库', '活动']);
-const statusOptions = ref<Array<{ label: string; tone: AnnouncementTone }>>([
-  { label: '已发布', tone: 'success' },
-  { label: '草稿', tone: 'info' }
-]);
+const meta = reactive({ page: 1, pageSize: 20, total: 0, pages: 0 });
+const summary = reactive({ total: 0, publishedCount: 0, totalReadCount: 0 });
 const loading = ref(false);
 const saving = ref(false);
 const pinningId = ref('');
 const dialogVisible = ref(false);
+let searchTimer: number | undefined;
 
 const query = reactive({
-  keyword: '',
-  publishState: '' as '' | 'published' | 'draft'
+  keyword: ''
 });
 
 const emptyForm = (): AnnouncementForm => ({
@@ -290,17 +311,12 @@ const emptyForm = (): AnnouncementForm => ({
 
 const form = reactive<AnnouncementForm>(emptyForm());
 
-const publishedCount = computed(() => rows.value.filter((item) => item.isPublished).length);
-const totalReadCount = computed(() => rows.value.reduce((sum, item) => sum + Number(item.readCount || 0), 0));
-const filteredRows = computed(() => {
-  const keyword = query.keyword.trim();
-  return rows.value.filter((item) => {
-    const matchKeyword = !keyword || `${item.title}${item.summary}${item.content.join('')}${item.categoryLabel}${item.statusLabel}`.includes(keyword);
-    const matchPublished = !query.publishState
-      || (query.publishState === 'published' ? item.isPublished : !item.isPublished);
-    return matchKeyword && matchPublished;
-  });
-});
+const announcementSummary = computed(() => ({
+  total: summary.total || meta.total || rows.value.length,
+  publishedCount: summary.publishedCount || meta.total || rows.value.length,
+  totalReadCount: summary.totalReadCount
+}));
+const filteredRows = computed(() => rows.value);
 
 function assignForm(value: Partial<AnnouncementForm>) {
   Object.assign(form, emptyForm(), value);
@@ -309,15 +325,37 @@ function assignForm(value: Partial<AnnouncementForm>) {
 async function loadRows() {
   loading.value = true;
   try {
-    const data = await api.get<AnnouncementAdminPayload>('/admin/announcements');
+    const params = new URLSearchParams({
+      page: String(meta.page),
+      pageSize: String(meta.pageSize)
+    });
+    const keyword = query.keyword.trim();
+    if (keyword) params.set('keyword', keyword);
+    const data = await api.get<AnnouncementAdminPayload>(`/admin/announcements?${params}`);
     rows.value = data.rows;
+    Object.assign(meta, data.meta || { page: 1, pageSize: meta.pageSize, total: rows.value.length, pages: 1 });
+    Object.assign(summary, data.summary || {
+      total: meta.total,
+      publishedCount: meta.total,
+      totalReadCount: rows.value.reduce((sum, item) => sum + Number(item.readCount || 0), 0)
+    });
     categoryOptions.value = Array.from(new Set([...categoryOptions.value, ...data.categoryOptions])).filter(Boolean);
-    statusOptions.value = data.statusOptions.length ? data.statusOptions : statusOptions.value;
   } catch (error) {
     ElMessage.error(error instanceof Error ? error.message : '公告列表加载失败');
   } finally {
     loading.value = false;
   }
+}
+
+function handleSearch() {
+  if (searchTimer) window.clearTimeout(searchTimer);
+  meta.page = 1;
+  void loadRows();
+}
+
+function handleKeywordInput() {
+  if (searchTimer) window.clearTimeout(searchTimer);
+  searchTimer = window.setTimeout(handleSearch, 250);
 }
 
 function openCreate() {
@@ -415,6 +453,10 @@ async function remove(id: string) {
 }
 
 onMounted(loadRows);
+
+onBeforeUnmount(() => {
+  if (searchTimer) window.clearTimeout(searchTimer);
+});
 </script>
 
 <style scoped>
@@ -483,7 +525,7 @@ onMounted(loadRows);
 
 .announcement-admin-toolbar {
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) 150px auto;
+  grid-template-columns: minmax(240px, 1fr) auto;
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -496,6 +538,11 @@ onMounted(loadRows);
   color: #1d4ed8;
   font-size: 15px;
   font-weight: 700;
+}
+
+.announcement-admin-pager {
+  margin-top: 16px;
+  justify-content: flex-end;
 }
 
 .announcement-admin-mobile-list {

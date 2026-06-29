@@ -72,14 +72,15 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { api } from './api/request';
 import AuthParticleBackground from './components/AuthParticleBackground.vue';
 import QxIcon from './components/QxIcon.vue';
 import { useAuthStore } from './stores/auth';
+import { startPresenceHeartbeat, stopPresenceHeartbeat } from './utils/presence';
+import { fetchPracticeReviewSummary, type PracticeReviewSummary } from './utils/reviewSummary';
 
 const route = useRoute();
 const auth = useAuthStore();
-const reviewSummary = ref({ wrongQuestionCount: 0, favoriteCount: 0 });
+const reviewSummary = ref<PracticeReviewSummary>({ wrongQuestionCount: 0, favoriteCount: 0 });
 const sidebarAvatarLoadFailed = ref(false);
 
 const layoutName = computed(() => String(route.meta.layout || 'main'));
@@ -130,14 +131,24 @@ function resetAuthPointer() {
 
 async function refreshReviewSummary() {
   if (isAuthLayout.value) return;
+  const userKey = auth.user?.id || auth.user?.email || auth.user?.username || '';
+  if (!userKey) return;
   try {
-    reviewSummary.value = await api.get('/practice/review-summary');
+    reviewSummary.value = await fetchPracticeReviewSummary(userKey);
   } catch {
     reviewSummary.value = { wrongQuestionCount: 0, favoriteCount: 0 };
   }
 }
 
 watch(() => route.fullPath, refreshReviewSummary);
+watch(
+  () => Boolean(auth.user) && !isAuthLayout.value,
+  (enabled) => {
+    if (enabled) startPresenceHeartbeat();
+    else void stopPresenceHeartbeat({ notify: true });
+  },
+  { immediate: true }
+);
 watch(() => auth.user?.avatarUrl, () => {
   sidebarAvatarLoadFailed.value = false;
 });
@@ -149,5 +160,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('qanda:stats-updated', refreshReviewSummary);
+  void stopPresenceHeartbeat({ notify: true });
 });
 </script>

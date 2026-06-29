@@ -26,7 +26,7 @@
         <el-select v-model="filters.nicknameStatus" class="user-filter-select" placeholder="昵称状态" @change="applyFilters">
           <el-option label="全部昵称" value="" />
           <el-option label="正常昵称" value="normal" />
-          <el-option label="疑似违规" value="violation" />
+          <el-option label="不合规昵称" value="violation" />
         </el-select>
         <el-select v-model="filters.recentActive" class="user-filter-select" placeholder="最近活跃" @change="applyFilters">
           <el-option label="全部活跃" value="" />
@@ -67,34 +67,42 @@
         empty-text="暂无符合条件的答题用户"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="44" />
-        <el-table-column prop="email" label="QQ 邮箱" min-width="190" show-overflow-tooltip>
+        <el-table-column type="selection" width="42" align="center" />
+        <el-table-column prop="email" label="QQ 邮箱" width="200" show-overflow-tooltip>
           <template #default="{ row }">
             <div class="email-cell">
-              <span>{{ row.email || '-' }}</span>
-              <el-button v-if="row.email" link type="primary" @click.stop="copyEmail(row.email)">复制</el-button>
+              <button
+                v-if="row.email"
+                type="button"
+                class="email-copy-target"
+                :title="`点击复制 ${row.email}`"
+                @click.stop="copyEmail(row.email)"
+              >
+                {{ row.email }}
+              </button>
+              <span v-else class="empty-email">-</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="昵称" min-width="150" show-overflow-tooltip>
+        <el-table-column label="昵称" width="160" show-overflow-tooltip>
           <template #default="{ row }">
             <span class="nickname-text">{{ row.nickname }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="昵称状态" width="112">
+        <el-table-column label="昵称状态" width="95">
           <template #default="{ row }">
             <el-tag :type="row.nicknameViolation ? 'danger' : 'success'" size="small" :effect="row.nicknameViolation ? 'dark' : 'plain'">
-              {{ row.nicknameViolation ? '疑似违规' : '正常' }}
+              {{ row.nicknameViolation ? '不合规' : '正常' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="状态" width="96">
+        <el-table-column label="状态" width="74">
           <template #default="{ row }">
             <el-switch :model-value="row.isActive" @change="toggle(row, Boolean($event))" />
           </template>
         </el-table-column>
-        <el-table-column prop="answerCount" label="答题次数" width="104" align="right" sortable />
-        <el-table-column label="正确率" min-width="150">
+        <el-table-column prop="answerCount" label="答题次数" width="92" sortable />
+        <el-table-column label="正确率" min-width="220">
           <template #default="{ row }">
             <div class="accuracy-cell">
               <el-progress :percentage="row.accuracy" :stroke-width="7" :show-text="false" />
@@ -102,18 +110,20 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="wrongCount" label="错题" width="82" align="right" sortable />
-        <el-table-column prop="favoriteCount" label="收藏" width="82" align="right" sortable />
-        <el-table-column label="最近活跃" min-width="150" sortable>
+        <el-table-column prop="wrongCount" label="错题" width="68" sortable />
+        <el-table-column prop="favoriteCount" label="收藏" width="68" sortable />
+        <el-table-column label="最近活跃" width="118" sortable>
           <template #default="{ row }">{{ relativeTime(row.lastActiveAt) }}</template>
         </el-table-column>
-        <el-table-column label="注册时间" min-width="172" sortable>
+        <el-table-column label="注册时间" width="185" sortable>
           <template #default="{ row }">{{ formatDateTime(row.createdAt) }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="170" fixed="right">
+        <el-table-column label="操作" width="184">
           <template #default="{ row }">
-            <el-button link type="primary" @click="openDetail(row)">查看详情</el-button>
-            <el-button link :type="row.nicknameViolation ? 'danger' : 'primary'" @click="resetNickname(row)">重置昵称</el-button>
+            <div class="user-action-cell">
+              <el-button link type="primary" @click="openDetail(row)">查看详情</el-button>
+              <el-button link :type="row.nicknameViolation ? 'danger' : 'primary'" @click="resetNickname(row)">重置昵称</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -136,7 +146,7 @@
             <el-descriptions-item label="QQ 邮箱">{{ detail.user.email || '-' }}</el-descriptions-item>
             <el-descriptions-item label="昵称">
               {{ detail.user.nickname }}
-              <el-tag v-if="detail.user.nicknameViolation" type="danger" size="small" effect="dark">疑似违规</el-tag>
+              <el-tag v-if="detail.user.nicknameViolation" type="danger" size="small" effect="dark">不合规</el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="账号状态">{{ detail.user.isActive ? '启用' : '停用' }}</el-descriptions-item>
             <el-descriptions-item label="最近活跃">{{ formatDateTime(detail.user.lastActiveAt) }}</el-descriptions-item>
@@ -285,7 +295,7 @@ const summaryCards = computed(() => [
   { label: '筛选用户', value: summary.value.total, hint: '当前条件下的用户数' },
   { label: '启用用户', value: summary.value.activeCount, hint: `${summary.value.inactiveCount} 个已停用` },
   { label: '今日活跃', value: summary.value.activeToday, hint: `近 7 天 ${summary.value.activeSevenDays} 人` },
-  { label: '违规昵称', value: summary.value.nicknameViolationCount, hint: '需要人工处理' },
+  { label: '不合规昵称', value: summary.value.nicknameViolationCount, hint: '需要人工处理' },
   { label: '沉默用户', value: summary.value.inactiveThirtyDays, hint: '30 天未活跃或从未活跃' }
 ]);
 
@@ -512,22 +522,23 @@ onMounted(load);
 }
 
 .user-filter-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 260px 132px 132px 132px 350px auto auto 1fr;
   gap: 10px;
   align-items: center;
 }
 
 .user-search-input {
-  width: 260px;
+  width: 100%;
 }
 
 .user-filter-select {
-  width: 138px;
+  width: 100%;
 }
 
 .user-date-range {
-  width: 250px;
+  width: 350px;
+  max-width: 100%;
 }
 
 .user-batch-bar {
@@ -550,16 +561,41 @@ onMounted(load);
   padding: 14px 16px;
 }
 
-.email-cell {
-  display: grid;
-  width: 100%;
-  grid-template-columns: minmax(0, 1fr) 36px;
-  min-width: 0;
-  align-items: center;
-  gap: 8px;
+.user-table-card :deep(.el-table__cell) {
+  vertical-align: middle;
 }
 
-.email-cell span,
+.user-table-card :deep(.el-table th.el-table__cell > .cell) {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding-right: 12px;
+  padding-left: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.user-table-card :deep(.el-table th.el-table__cell .caret-wrapper) {
+  display: inline-flex;
+  flex: 0 0 12px;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 18px;
+  margin-left: 0;
+  vertical-align: middle;
+}
+
+.email-cell {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+}
+
+.email-copy-target,
+.empty-email,
 .nickname-text {
   min-width: 0;
   overflow: hidden;
@@ -567,22 +603,64 @@ onMounted(load);
   white-space: nowrap;
 }
 
-.email-cell :deep(.el-button) {
-  justify-self: end;
-  min-width: 32px;
+.email-copy-target {
+  max-width: 100%;
   padding: 0;
+  border: 0;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  font: inherit;
+  line-height: 22px;
+  text-align: left;
+}
+
+.email-copy-target:hover,
+.email-copy-target:focus-visible {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.email-copy-target:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, .28);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.empty-email {
+  color: #94a3b8;
+}
+
+.nickname-text {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.user-action-cell {
+  display: flex;
+  min-width: 0;
+  justify-content: flex-start;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.user-action-cell :deep(.el-button) {
+  min-height: 22px;
+  padding: 0;
+  font-weight: 600;
 }
 
 .accuracy-cell {
   display: grid;
-  grid-template-columns: minmax(74px, 1fr) 42px;
+  grid-template-columns: minmax(54px, 1fr) 40px;
   gap: 8px;
   align-items: center;
 }
 
 .accuracy-cell span {
   color: #475569;
-  text-align: right;
+  text-align: left;
 }
 
 .pager {
@@ -657,11 +735,23 @@ onMounted(load);
   .user-summary-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .user-filter-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .user-date-range {
+    width: 100%;
+  }
 }
 
 @media (max-width: 760px) {
   .user-summary-grid,
   .detail-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-filter-row {
     grid-template-columns: 1fr;
   }
 

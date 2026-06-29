@@ -1,5 +1,3 @@
-import { HttpError } from './http.js';
-
 export const NICKNAME_MIN_CHARS = 2;
 export const NICKNAME_MAX_CHARS = 16;
 
@@ -84,6 +82,16 @@ const shortAbusePatterns = [
   /(^|[^a-z0-9])w[\s._-]*d[\s._-]*n[\s._-]*m[\s._-]*d([^a-z0-9]|$)/i
 ];
 
+const nicknamePrefixes = ['学习者', '答题者', '同学', '练习生', '探索者'];
+
+export function normalizeNickname(value: unknown) {
+  return String(value || '')
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
 function normalizeForModeration(value: string) {
   return value
     .normalize('NFKC')
@@ -106,14 +114,6 @@ function compactForModeration(value: string) {
   return normalizeForModeration(value).replace(/[^\p{L}\p{N}]/gu, '');
 }
 
-export function normalizeNickname(value: unknown) {
-  return String(value || '')
-    .normalize('NFKC')
-    .replace(/[\u200B-\u200D\uFEFF]/g, '')
-    .trim()
-    .replace(/\s+/g, ' ');
-}
-
 function countCharacters(value: string) {
   return Array.from(value).length;
 }
@@ -122,57 +122,44 @@ function effectiveCharacters(value: string) {
   return value.match(/[\p{L}\p{N}]/gu) || [];
 }
 
-function hasReservedNickname(value: string) {
-  const compact = compactForModeration(value);
-  return reservedNicknameTerms.some((term) => compact.includes(term));
-}
-
 function isRepeatedNickname(value: string) {
   const compact = compactForModeration(value);
   if (compact.length < 4) return false;
   return new Set(Array.from(compact)).size === 1;
 }
 
-export function validateNickname(value: unknown, options: { emptyMessage?: string } = {}) {
-  const nickname = normalizeNickname(value);
-  if (!nickname) return { valid: false, nickname, message: options.emptyMessage || '请输入昵称' };
-  if (countCharacters(nickname) > NICKNAME_MAX_CHARS) {
-    return { valid: false, nickname, message: `昵称不能超过 ${NICKNAME_MAX_CHARS} 个字符` };
-  }
-
-  const effective = effectiveCharacters(nickname);
-  if (!effective.length) return { valid: false, nickname, message: '昵称不能只包含标点、空格或表情' };
-  if (effective.length < NICKNAME_MIN_CHARS) {
-    return { valid: false, nickname, message: `昵称至少需要 ${NICKNAME_MIN_CHARS} 个有效字符` };
-  }
-  if (isRepeatedNickname(nickname)) return { valid: false, nickname, message: '昵称不能使用连续重复字符' };
-  if (hasReservedNickname(nickname)) return { valid: false, nickname, message: '昵称包含保留词，请换一个昵称' };
-  if (hasForbiddenNickname(nickname)) return { valid: false, nickname, message: '昵称包含不文明用语，请换一个昵称' };
-  return { valid: true, nickname, message: '' };
+function hasReservedNickname(value: string) {
+  const compact = compactForModeration(value);
+  return reservedNicknameTerms.some((term) => compact.includes(term));
 }
 
-export function hasForbiddenNickname(value: unknown) {
-  const nickname = normalizeNickname(value);
-  if (!nickname) return false;
-
-  if (countCharacters(nickname) > NICKNAME_MAX_CHARS) return true;
-  const effective = effectiveCharacters(nickname);
-  if (effective.length < NICKNAME_MIN_CHARS) return true;
-  if (isRepeatedNickname(nickname)) return true;
-  if (hasReservedNickname(nickname)) return true;
-
-  const normalized = normalizeForModeration(nickname);
+function hasAbusiveNickname(value: string) {
+  const normalized = normalizeForModeration(value);
   if (shortAbusePatterns.some((pattern) => pattern.test(normalized))) return true;
 
-  const compact = compactForModeration(nickname);
+  const compact = compactForModeration(value);
   return (
     forbiddenNicknameTerms.some((term) => compact.includes(term)) ||
     forbiddenNicknamePatterns.some((pattern) => pattern.test(compact))
   );
 }
 
-export function assertAllowedNickname(value: unknown, options: { emptyMessage?: string } = {}) {
-  const result = validateNickname(value, options);
-  if (!result.valid) throw new HttpError(result.message, 400);
-  return result.nickname;
+export function nicknamePolicyMessage(value: unknown, emptyMessage = '请输入昵称') {
+  const nickname = normalizeNickname(value);
+  if (!nickname) return emptyMessage;
+  if (countCharacters(nickname) > NICKNAME_MAX_CHARS) return `昵称不能超过 ${NICKNAME_MAX_CHARS} 个字符`;
+
+  const effective = effectiveCharacters(nickname);
+  if (!effective.length) return '昵称不能只包含标点、空格或表情';
+  if (effective.length < NICKNAME_MIN_CHARS) return `昵称至少需要 ${NICKNAME_MIN_CHARS} 个有效字符`;
+  if (isRepeatedNickname(nickname)) return '昵称不能使用连续重复字符';
+  if (hasReservedNickname(nickname)) return '昵称包含保留词，请换一个昵称';
+  if (hasAbusiveNickname(nickname)) return '昵称包含不文明用语，请换一个昵称';
+  return '';
+}
+
+export function createRandomNickname() {
+  const prefix = nicknamePrefixes[Math.floor(Math.random() * nicknamePrefixes.length)] || '学习者';
+  const suffix = String(Math.floor(1000 + Math.random() * 9000));
+  return `${prefix}${suffix}`;
 }

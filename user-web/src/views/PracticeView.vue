@@ -507,8 +507,8 @@ import {
 } from '../utils/practiceResume';
 import {
   clearRemotePracticeResume,
+  createRemotePracticeResumeSaveController,
   fetchRemotePracticeResume,
-  saveRemotePracticeResume
 } from '../utils/practiceResumeRemote';
 import {
   enqueuePendingAnswer,
@@ -539,6 +539,23 @@ type AnswerSpeechPart = {
   value: string;
   speechItems: SpeechItem[];
 };
+
+type PendingAnswerSyncResult = {
+  clientAnswerId?: string;
+  correct: boolean;
+  answer: string[];
+  explanation: string;
+  recorded?: boolean;
+  queued?: boolean;
+};
+
+type PendingAnswerBatchResponse = {
+  accepted: number;
+  queued?: number;
+  results: PendingAnswerSyncResult[];
+};
+
+type PendingAnswerSyncStatus = PendingAnswerRecord['status'] | 'synced';
 
 const route = useRoute();
 const router = useRouter();
@@ -577,6 +594,9 @@ const touchStartInHorizontalScroller = ref(false);
 const quizSessionRecords = ref<Record<string, PracticeSessionRecord>>({});
 const MAX_RECORDED_ANSWER_SECONDS = 30 * 60;
 const CORRECT_ANSWER_AUTO_ADVANCE_MS = 160;
+const PENDING_ANSWER_SYNC_BATCH_SIZE = 20;
+const NEW_ANSWER_SYNC_DELAY_MS = 1500;
+const NEW_ANSWER_SYNC_JITTER_MS = 3000;
 const AUTO_ADVANCE_HINT_DISMISSED_KEY = 'qanda_auto_advance_hint_dismissed';
 const questionVisibleStartedAt = ref(Date.now());
 const questionActiveElapsedMs = ref(0);
@@ -584,7 +604,6 @@ let practiceViewportMediaQuery: MediaQueryList | null = null;
 let pendingAnswerSyncRunning = false;
 let pendingAnswerRetryTimer: ReturnType<typeof setTimeout> | null = null;
 let correctAnswerAutoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
-let remotePracticeResumeSaveTimer: ReturnType<typeof setTimeout> | null = null;
 let questionScrollResetFrame: number | undefined;
 let practiceResumeReady = false;
 let readingFloatDragState: {
@@ -707,6 +726,20 @@ const practiceResumeKey = computed(() => {
   }
 
   return buildPracticeResumeKey(userKey, ['practice', 'bank', route.params.bankId || '']);
+});
+
+const remotePracticeResumeSaver = createRemotePracticeResumeSaveController({
+  read: () => {
+    const key = practiceResumeKey.value;
+    const snapshot = readPracticeResume(key);
+    return key && snapshot ? { key, snapshot } : null;
+  },
+  onSaved: (sent, savedSnapshot) => {
+    const currentSnapshot = readPracticeResume(sent.key);
+    if (savedSnapshot && practiceResumeUpdatedAt(currentSnapshot) <= practiceResumeUpdatedAt(sent.snapshot)) {
+      writePracticeResumeSnapshot(sent.key, savedSnapshot);
+    }
+  }
 });
 
 const preferences = computed(() => auth.user?.preferences || {
@@ -1068,6 +1101,7 @@ function resumeQuestionTimer() {
 function handleVisibilityChange() {
   if (document.visibilityState === 'hidden') {
     pauseQuestionTimer();
+    void flushRemotePracticeResumeSync({ keepalive: true });
   } else {
     resumeQuestionTimer();
   }
@@ -1159,7 +1193,7 @@ function persistCurrentPracticeResume() {
 
 async function clearCurrentPracticeResume() {
   const key = practiceResumeKey.value;
-  clearRemotePracticeResumeSaveTimer();
+  remotePracticeResumeSaver.cancel();
   clearPracticeResume(key);
   try {
     await clearRemotePracticeResume(key);
@@ -1176,41 +1210,13 @@ async function loadRemotePracticeResumeSnapshot(key: string) {
   }
 }
 
-function clearRemotePracticeResumeSaveTimer() {
-  if (!remotePracticeResumeSaveTimer) return;
-  clearTimeout(remotePracticeResumeSaveTimer);
-  remotePracticeResumeSaveTimer = null;
-}
-
 function scheduleRemotePracticeResumeSync() {
   if (!practiceResumeReady || !practiceResumeKey.value) return;
-  clearRemotePracticeResumeSaveTimer();
-  remotePracticeResumeSaveTimer = setTimeout(() => {
-    remotePracticeResumeSaveTimer = null;
-    void syncRemotePracticeResume();
-  }, 300);
+  remotePracticeResumeSaver.schedule();
 }
 
 function flushRemotePracticeResumeSync(options: { keepalive?: boolean } = {}) {
-  clearRemotePracticeResumeSaveTimer();
-  void syncRemotePracticeResume(options);
-}
-
-async function syncRemotePracticeResume(options: { keepalive?: boolean } = {}) {
-  const key = practiceResumeKey.value;
-  const snapshot = readPracticeResume(key);
-  if (!key || !snapshot) return;
-
-  const sentUpdatedAt = practiceResumeUpdatedAt(snapshot);
-  try {
-    const savedSnapshot = await saveRemotePracticeResume(key, snapshot, options.keepalive ? { keepalive: true } : {});
-    const currentSnapshot = readPracticeResume(key);
-    if (savedSnapshot && practiceResumeUpdatedAt(currentSnapshot) <= sentUpdatedAt) {
-      writePracticeResumeSnapshot(key, savedSnapshot);
-    }
-  } catch {
-    // 网络不可用时保留本地快照，后续切题/答题会再次尝试同步。
-  }
+  return remotePracticeResumeSaver.flush(options.keepalive ? { keepalive: true } : {});
 }
 
 function enqueueResumedPendingAnswers() {
@@ -1224,6 +1230,8 @@ function enqueueResumedPendingAnswers() {
       questionId,
       selectedAnswer: record.userAnswer,
       isCorrect: record.correct,
+      answer: record.answer,
+      explanation: record.explanation,
       answeredAt: new Date().toISOString(),
       retryCount: 0,
       lastTriedAt: '',
@@ -1508,7 +1516,11 @@ function clearPendingAnswerRetryTimer() {
   pendingAnswerRetryTimer = null;
 }
 
-function schedulePendingAnswerRetry() {
+function nextNewAnswerSyncDelayMs() {
+  return NEW_ANSWER_SYNC_DELAY_MS + Math.floor(Math.random() * NEW_ANSWER_SYNC_JITTER_MS);
+}
+
+function schedulePendingAnswerRetry(options: { minDelayMs?: number } = {}) {
   clearPendingAnswerRetryTimer();
   const userKey = pendingAnswerUserKey.value;
   if (!userKey) return;
@@ -1518,7 +1530,7 @@ function schedulePendingAnswerRetry() {
   pendingAnswerRetryTimer = setTimeout(() => {
     pendingAnswerRetryTimer = null;
     void syncPendingAnswers('timer');
-  }, Math.min(Math.max(delay, 250), 60000));
+  }, Math.min(Math.max(delay, options.minDelayMs ?? 250), 60000));
 }
 
 function handlePendingAnswerOnline() {
@@ -1580,7 +1592,15 @@ function applySyncedPendingAnswer(record: PendingAnswerRecord, data: { correct: 
   }, record.clientAnswerId, 'synced');
 }
 
-function enqueueCurrentAnswer(question: any, userAnswer: string[], clientAnswerId: string, isCorrect: boolean, durationSeconds: number) {
+function enqueueCurrentAnswer(
+  question: any,
+  userAnswer: string[],
+  clientAnswerId: string,
+  isCorrect: boolean,
+  durationSeconds: number,
+  officialAnswer: string[],
+  explanationText: string
+) {
   const userKey = pendingAnswerUserKey.value;
   if (!userKey) return;
 
@@ -1589,12 +1609,105 @@ function enqueueCurrentAnswer(question: any, userAnswer: string[], clientAnswerI
     questionId: String(question.id),
     selectedAnswer: userAnswer.map((item) => String(item)),
     isCorrect,
+    answer: officialAnswer.map((item) => String(item)),
+    explanation: explanationText,
     answeredAt: new Date().toISOString(),
     retryCount: 0,
     lastTriedAt: '',
     status: 'pending',
     durationSeconds
   });
+}
+
+function markPendingAnswerAsSyncing(userKey: string, record: PendingAnswerRecord) {
+  return updatePendingAnswer(userKey, record.clientAnswerId, (current) => ({
+    ...current,
+    status: 'syncing',
+    retryCount: current.retryCount + 1,
+    lastTriedAt: new Date().toISOString(),
+    lastError: undefined,
+    lastStatusCode: undefined
+  }));
+}
+
+function markPendingAnswerSyncError(userKey: string, record: PendingAnswerRecord, error: unknown): PendingAnswerRecord['status'] {
+  const status = pendingAnswerErrorStatus(error);
+  const nextStatus: PendingAnswerRecord['status'] = status === 401 || status === 403
+    ? 'auth_failed'
+    : status === 400
+      ? 'invalid'
+      : 'failed';
+  updatePendingAnswer(userKey, record.clientAnswerId, {
+    status: nextStatus,
+    lastError: pendingAnswerErrorMessage(error),
+    lastStatusCode: status || undefined
+  });
+  markPracticeRecordSyncStatus(record, 'failed');
+  return nextStatus;
+}
+
+function pendingAnswerPayload(record: PendingAnswerRecord) {
+  return {
+    questionId: record.questionId,
+    selected: record.selectedAnswer,
+    clientAnswerId: record.clientAnswerId,
+    durationSeconds: record.durationSeconds || 0,
+    isCorrect: record.isCorrect,
+    answer: record.answer || [],
+    explanation: record.explanation || ''
+  };
+}
+
+function pendingAnswerFallbackResult(record: PendingAnswerRecord): PendingAnswerSyncResult {
+  return {
+    clientAnswerId: record.clientAnswerId,
+    correct: record.isCorrect,
+    answer: record.answer || [],
+    explanation: record.explanation || '',
+    queued: true,
+    recorded: false
+  };
+}
+
+async function syncPendingAnswerBatch(userKey: string, records: PendingAnswerRecord[]): Promise<PendingAnswerSyncStatus> {
+  try {
+    const data = await api.post<PendingAnswerBatchResponse>('/practice/answers/batch', {
+      answers: records.map(pendingAnswerPayload)
+    });
+    const resultByClientAnswerId = new Map((data.results || []).map((item) => [item.clientAnswerId || '', item]));
+    records.forEach((record) => {
+      removePendingAnswer(userKey, record.clientAnswerId);
+      applySyncedPendingAnswer(record, resultByClientAnswerId.get(record.clientAnswerId) || pendingAnswerFallbackResult(record));
+    });
+    window.dispatchEvent(new Event('qanda:stats-updated'));
+    return 'synced' as const;
+  } catch (error) {
+    let nextStatus: PendingAnswerRecord['status'] = 'failed';
+    records.forEach((record) => {
+      nextStatus = markPendingAnswerSyncError(userKey, record, error);
+    });
+    return nextStatus;
+  }
+}
+
+async function syncPendingAnswerSingle(userKey: string, record: PendingAnswerRecord): Promise<PendingAnswerSyncStatus> {
+  try {
+    const data = await api.post<PendingAnswerSyncResult>('/practice/answers', {
+      questionId: record.questionId,
+      selected: record.selectedAnswer,
+      clientAnswerId: record.clientAnswerId,
+      durationSeconds: record.durationSeconds || 0,
+      isCorrect: record.answer ? record.isCorrect : undefined,
+      answer: record.answer,
+      explanation: record.explanation
+    });
+    removePendingAnswer(userKey, record.clientAnswerId);
+    applySyncedPendingAnswer(record, data);
+    window.dispatchEvent(new Event('qanda:stats-updated'));
+    return 'synced' as const;
+  } catch (error) {
+    return markPendingAnswerSyncError(userKey, record, error);
+  }
 }
 
 async function syncPendingAnswers(_reason: string, options: { resetAuthFailures?: boolean } = {}) {
@@ -1606,9 +1719,9 @@ async function syncPendingAnswers(_reason: string, options: { resetAuthFailures?
     return;
   }
 
-  const dueRecords = selectDuePendingAnswers(userKey).sort((left, right) => (
-    Date.parse(left.answeredAt || '') - Date.parse(right.answeredAt || '')
-  ));
+  const dueRecords = selectDuePendingAnswers(userKey)
+    .sort((left, right) => Date.parse(left.answeredAt || '') - Date.parse(right.answeredAt || ''))
+    .slice(0, PENDING_ANSWER_SYNC_BATCH_SIZE);
   if (!dueRecords.length) {
     schedulePendingAnswerRetry();
     return;
@@ -1618,43 +1731,28 @@ async function syncPendingAnswers(_reason: string, options: { resetAuthFailures?
   clearPendingAnswerRetryTimer();
 
   try {
+    const batchRecords: PendingAnswerRecord[] = [];
+    let stoppedForAuthFailure = false;
     for (const record of dueRecords) {
       if (pendingAnswerUserKey.value !== userKey) break;
-      const tryingRecord = updatePendingAnswer(userKey, record.clientAnswerId, (current) => ({
-        ...current,
-        status: 'syncing',
-        retryCount: current.retryCount + 1,
-        lastTriedAt: new Date().toISOString(),
-        lastError: undefined,
-        lastStatusCode: undefined
-      }));
+      const tryingRecord = markPendingAnswerAsSyncing(userKey, record);
       if (!tryingRecord) continue;
 
-      try {
-        const data = await api.post<{ correct: boolean; answer: string[]; explanation: string; recorded?: boolean }>('/practice/answers', {
-          questionId: tryingRecord.questionId,
-          selected: tryingRecord.selectedAnswer,
-          clientAnswerId: tryingRecord.clientAnswerId,
-          durationSeconds: tryingRecord.durationSeconds || 0
-        });
-        removePendingAnswer(userKey, tryingRecord.clientAnswerId);
-        applySyncedPendingAnswer(tryingRecord, data);
-        window.dispatchEvent(new Event('qanda:stats-updated'));
-      } catch (error) {
-        const status = pendingAnswerErrorStatus(error);
-        const nextStatus: PendingAnswerRecord['status'] = status === 401 || status === 403
-          ? 'auth_failed'
-          : status === 400
-            ? 'invalid'
-            : 'failed';
-        updatePendingAnswer(userKey, tryingRecord.clientAnswerId, {
-          status: nextStatus,
-          lastError: pendingAnswerErrorMessage(error),
-          lastStatusCode: status || undefined
-        });
-        markPracticeRecordSyncStatus(tryingRecord, 'failed');
-        if (nextStatus === 'auth_failed') break;
+      if (tryingRecord.answer) {
+        batchRecords.push(tryingRecord);
+        continue;
       }
+
+      const singleStatus = await syncPendingAnswerSingle(userKey, tryingRecord);
+      if (singleStatus === 'auth_failed') {
+        stoppedForAuthFailure = true;
+        break;
+      }
+    }
+
+    if (!stoppedForAuthFailure && batchRecords.length && pendingAnswerUserKey.value === userKey) {
+      const batchStatus = await syncPendingAnswerBatch(userKey, batchRecords);
+      if (batchStatus === 'auth_failed') return;
     }
   } finally {
     pendingAnswerSyncRunning = false;
@@ -1685,10 +1783,10 @@ function submitAnswer() {
     explanation: question.explanation || ''
   }, clientAnswerId, 'pending');
 
-  enqueueCurrentAnswer(question, userAnswer, clientAnswerId, correct, durationSeconds);
+  enqueueCurrentAnswer(question, userAnswer, clientAnswerId, correct, durationSeconds, officialAnswer, question.explanation || '');
   if (correct && autoAdvanceOnCorrectFeature.value) scheduleCorrectAnswerAutoAdvance(question);
   else clearCorrectAnswerAutoAdvanceTimer();
-  void syncPendingAnswers('new-answer');
+  schedulePendingAnswerRetry({ minDelayMs: nextNewAnswerSyncDelayMs() });
 }
 
 function hasDismissedAutoAdvanceHint() {
@@ -1836,6 +1934,7 @@ async function finishQuiz() {
 
   const shouldClearResume = shouldClearPracticeResumeOnExit(questions.value.length, unansweredQuestionCount.value);
   if (shouldClearResume) await clearCurrentPracticeResume();
+  else await flushRemotePracticeResumeSync();
 
   const returnRoute = practiceReturnRoute.value;
   if (returnRoute) {

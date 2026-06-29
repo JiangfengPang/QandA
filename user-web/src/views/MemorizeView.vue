@@ -239,8 +239,8 @@ import {
 } from '../utils/practiceResume';
 import {
   clearRemotePracticeResume,
+  createRemotePracticeResumeSaveController,
   fetchRemotePracticeResume,
-  saveRemotePracticeResume
 } from '../utils/practiceResumeRemote';
 import '../styles/practice.css';
 import '../styles/practice-feedback.css';
@@ -259,7 +259,6 @@ const memorizeMainRef = ref<HTMLElement | null>(null);
 const touchStartX = ref(0);
 const touchStartY = ref(0);
 const touchStartTime = ref(0);
-let remoteMemorizeResumeSaveTimer: ReturnType<typeof setTimeout> | null = null;
 let memorizeResumeReady = false;
 
 const currentQuestion = computed(() => questions.value[currentIndex.value] || null);
@@ -283,6 +282,19 @@ const memorizeResumeKey = computed(() => buildPracticeResumeKey(
   auth.user?.id || auth.user?.email || auth.user?.username || 'anonymous',
   ['memorize', 'subject', route.params.subjectId || '']
 ));
+const remoteMemorizeResumeSaver = createRemotePracticeResumeSaveController({
+  read: () => {
+    const key = memorizeResumeKey.value;
+    const snapshot = readPracticeResume(key);
+    return key && snapshot ? { key, snapshot } : null;
+  },
+  onSaved: (sent, savedSnapshot) => {
+    const currentSnapshot = readPracticeResume(sent.key);
+    if (savedSnapshot && practiceResumeUpdatedAt(currentSnapshot) <= practiceResumeUpdatedAt(sent.snapshot)) {
+      writePracticeResumeSnapshot(sent.key, savedSnapshot);
+    }
+  }
+});
 const currentQuestionTypeBadge = computed(() => {
   const label = questionTypeText(currentQuestion.value);
   if (label.endsWith('题') || label === '题目') return label;
@@ -318,6 +330,7 @@ useVisualViewportHeight();
 
 onMounted(async () => {
   window.addEventListener('keydown', handleKeydown);
+  document.addEventListener('visibilitychange', handleMemorizeVisibilityChange);
   window.addEventListener('pagehide', handleMemorizePageHide);
   try {
     const subjectId = String(route.params.subjectId || '').trim();
@@ -335,6 +348,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown);
+  document.removeEventListener('visibilitychange', handleMemorizeVisibilityChange);
   window.removeEventListener('pagehide', handleMemorizePageHide);
   flushRemoteMemorizeResumeSync();
 });
@@ -343,7 +357,8 @@ watch(() => [currentIndex.value, currentQuestion.value?.id, questions.value.leng
   persistCurrentMemorizeResume();
 });
 
-function returnToLibrary() {
+async function returnToLibrary() {
+  await flushRemoteMemorizeResumeSync();
   const subjectId = String(route.params.subjectId || bank.value?.subjectId || '').trim();
   router.push({ name: 'library', query: subjectId ? { subjectId } : {} });
 }
@@ -351,7 +366,7 @@ function returnToLibrary() {
 async function nextQuestion() {
   if (isLastQuestion.value) {
     await clearCurrentMemorizeResume();
-    returnToLibrary();
+    await returnToLibrary();
     return;
   }
   currentIndex.value += 1;
@@ -392,7 +407,7 @@ function persistCurrentMemorizeResume() {
 
 async function clearCurrentMemorizeResume() {
   const key = memorizeResumeKey.value;
-  clearRemoteMemorizeResumeSaveTimer();
+  remoteMemorizeResumeSaver.cancel();
   clearPracticeResume(key);
   try {
     await clearRemotePracticeResume(key);
@@ -409,41 +424,13 @@ async function loadRemoteMemorizeResumeSnapshot(key: string) {
   }
 }
 
-function clearRemoteMemorizeResumeSaveTimer() {
-  if (!remoteMemorizeResumeSaveTimer) return;
-  clearTimeout(remoteMemorizeResumeSaveTimer);
-  remoteMemorizeResumeSaveTimer = null;
-}
-
 function scheduleRemoteMemorizeResumeSync() {
   if (!memorizeResumeReady || !memorizeResumeKey.value) return;
-  clearRemoteMemorizeResumeSaveTimer();
-  remoteMemorizeResumeSaveTimer = setTimeout(() => {
-    remoteMemorizeResumeSaveTimer = null;
-    void syncRemoteMemorizeResume();
-  }, 300);
+  remoteMemorizeResumeSaver.schedule();
 }
 
 function flushRemoteMemorizeResumeSync(options: { keepalive?: boolean } = {}) {
-  clearRemoteMemorizeResumeSaveTimer();
-  void syncRemoteMemorizeResume(options);
-}
-
-async function syncRemoteMemorizeResume(options: { keepalive?: boolean } = {}) {
-  const key = memorizeResumeKey.value;
-  const snapshot = readPracticeResume(key);
-  if (!key || !snapshot) return;
-
-  const sentUpdatedAt = practiceResumeUpdatedAt(snapshot);
-  try {
-    const savedSnapshot = await saveRemotePracticeResume(key, snapshot, options.keepalive ? { keepalive: true } : {});
-    const currentSnapshot = readPracticeResume(key);
-    if (savedSnapshot && practiceResumeUpdatedAt(currentSnapshot) <= sentUpdatedAt) {
-      writePracticeResumeSnapshot(key, savedSnapshot);
-    }
-  } catch {
-    // 离线时保留本地快照，下次切题会再次尝试。
-  }
+  return remoteMemorizeResumeSaver.flush(options.keepalive ? { keepalive: true } : {});
 }
 
 function toggleOverview() {
@@ -481,6 +468,12 @@ function handleTouchEnd(event: TouchEvent) {
 
 function handleMemorizePageHide() {
   flushRemoteMemorizeResumeSync({ keepalive: true });
+}
+
+function handleMemorizeVisibilityChange() {
+  if (document.visibilityState === 'hidden') {
+    void flushRemoteMemorizeResumeSync({ keepalive: true });
+  }
 }
 
 function questionStem(question: any) {

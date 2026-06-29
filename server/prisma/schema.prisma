@@ -35,9 +35,11 @@ model User {
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   answers              UserAnswer[]
+  answerQueueItems     PracticeAnswerQueueItem[]
   favorites            UserFavorite[]
   wrongs               WrongQuestion[]
   practiceSessions     UserPracticeSession[]
+  presenceSessions     UserPresenceSession[]
   announcementReads    AnnouncementRead[]
   adminOperationLogs   AdminOperationLog[]
 
@@ -95,11 +97,12 @@ model Question {
   isActive    Boolean          @default(true)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
-  bank        Bank             @relation(fields: [bankId], references: [id], onDelete: Cascade)
-  options     QuestionOption[]
-  answers     UserAnswer[]
-  favorites   UserFavorite[]
-  wrongs      WrongQuestion[]
+  bank             Bank                      @relation(fields: [bankId], references: [id], onDelete: Cascade)
+  options          QuestionOption[]
+  answers          UserAnswer[]
+  answerQueueItems PracticeAnswerQueueItem[]
+  favorites        UserFavorite[]
+  wrongs           WrongQuestion[]
 
   @@index([bankId])
   @@index([type])
@@ -133,6 +136,33 @@ model UserAnswer {
   @@unique([userId, clientAnswerId])
   @@index([userId, createdAt])
   @@index([userId, questionId, createdAt])
+  @@index([createdAt])
+  @@index([createdAt, userId])
+  @@index([questionId])
+}
+
+model PracticeAnswerQueueItem {
+  id              String    @id @default(cuid())
+  userId          String
+  questionId      String
+  clientAnswerId  String    @db.VarChar(120)
+  selectedJson    Json
+  durationSeconds Int       @default(0)
+  status          String    @default("pending") @db.VarChar(20)
+  retryCount      Int       @default(0)
+  lastError       String?   @db.VarChar(500)
+  nextRunAt       DateTime  @default(now())
+  lockedAt        DateTime?
+  processedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question        Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clientAnswerId])
+  @@index([status, nextRunAt])
+  @@index([lockedAt])
+  @@index([userId, createdAt])
   @@index([questionId])
 }
 
@@ -174,6 +204,24 @@ model UserPracticeSession {
   @@index([userId, updatedAt])
 }
 
+model UserPresenceSession {
+  id          String    @id @default(cuid())
+  userId      String
+  sessionId   String    @db.VarChar(120)
+  userAgent   String?   @db.VarChar(500)
+  ipAddress   String?   @db.VarChar(80)
+  lastSeenAt  DateTime  @default(now())
+  endedAt     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sessionId])
+  @@index([lastSeenAt])
+  @@index([endedAt, lastSeenAt])
+  @@index([userId, lastSeenAt])
+}
+
 model Announcement {
   id            String             @id @default(cuid())
   title         String             @db.VarChar(160)
@@ -183,7 +231,7 @@ model Announcement {
   statusLabel   String             @default("已发布") @db.VarChar(40)
   statusTone    String             @default("success") @db.VarChar(20)
   publisher     String             @default("QandA 教务助手") @db.VarChar(80)
-  isPublished   Boolean            @default(false)
+  isPublished   Boolean            @default(true)
   isPinned      Boolean            @default(false)
   publishedAt   DateTime?
   createdAt     DateTime           @default(now())

@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+const viteEnv = (import.meta as ImportMeta & { env?: Record<string, string> }).env || {};
+const API_BASE = viteEnv.VITE_API_BASE || '/api';
 
 type ApiResponse<T> = { code: number; message: string; data: T };
 
@@ -39,6 +40,27 @@ export function setToken(_token?: string) {
 
 export function clearToken() {
   localStorage.removeItem('qanda_user_token');
+}
+
+export function apiUrl(url: string) {
+  return `${API_BASE}${url}`;
+}
+
+export function postKeepalive(url: string, data?: unknown) {
+  const headers = new Headers();
+  headers.set('X-Qanda-Client', 'user');
+  headers.set('Content-Type', 'application/json');
+
+  const csrfToken = readCookie('qanda_user_csrf');
+  if (csrfToken) headers.set('X-CSRF-Token', csrfToken);
+
+  void fetch(apiUrl(url), {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(data || {}),
+    credentials: 'include',
+    keepalive: true
+  }).catch(() => undefined);
 }
 
 async function parseResponse<T>(res: Response): Promise<ApiResponse<T>> {

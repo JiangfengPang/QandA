@@ -25,6 +25,7 @@ import { accountLimiter, ipLimiter, passwordResetAccountLimiter } from '../middl
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { recordAdminOperation } from '../services/adminAuditService.js';
 import { isQqEmail } from '../utils/email.js';
+import { NICKNAME_MAX_CHARS } from '../utils/nicknamePolicy.js';
 
 const router = Router();
 
@@ -45,7 +46,7 @@ const avatarUrlSchema = z.string().max(800000, '头像图片过大，请选择�
 
 const registerCodeSchema = z.object({ email: qqEmailSchema });
 const registerSchema = z.object({
-  nickname: z.string().min(1, '请输入昵称').max(80, '昵称不能超过 80 个字符'),
+  nickname: z.string().min(1, '请输入昵称').max(NICKNAME_MAX_CHARS, `昵称不能超过 ${NICKNAME_MAX_CHARS} 个字符`),
   email: qqEmailSchema,
   code: z.string().min(4, '请输入验证码').max(12),
   password: passwordRule
@@ -73,7 +74,7 @@ const loginSchema = z.object({
   }
 });
 const profileSchema = z.object({
-  nickname: z.string().min(1).max(80).optional(),
+  nickname: z.string().min(1, '昵称不能为空').max(NICKNAME_MAX_CHARS, `昵称不能超过 ${NICKNAME_MAX_CHARS} 个字符`).optional(),
   avatarUrl: avatarUrlSchema.optional().nullable()
 });
 const emailCodeSchema = z.object({ email: qqEmailSchema });

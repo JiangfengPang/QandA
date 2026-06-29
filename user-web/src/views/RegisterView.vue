@@ -7,7 +7,19 @@
 
     <van-form class="auth-form" @submit="submit">
       <van-cell-group inset>
-        <van-field v-model="nickname" name="nickname" label="昵称" placeholder="请输入昵称" autocomplete="nickname" :rules="[{ required: true, message: '请输入昵称' }]" />
+        <van-field
+          v-model="nickname"
+          name="nickname"
+          label="昵称"
+          placeholder="2-16 个字符，不能全是符号"
+          autocomplete="nickname"
+          maxlength="16"
+          :rules="[{ validator: validateNicknameField }]"
+        >
+          <template #button>
+            <van-button size="small" plain type="primary" native-type="button" @click="fillRandomNickname">随机</van-button>
+          </template>
+        </van-field>
         <van-field v-model="email" name="email" label="QQ 邮箱" placeholder="请输入 QQ 邮箱" autocomplete="email" :rules="[{ required: true, message: '请输入 QQ 邮箱' }]" />
         <van-field v-model="code" name="code" label="验证码" placeholder="请输入验证码" maxlength="12">
           <template #button>
@@ -63,6 +75,7 @@ import { api } from '../api/request';
 import QxIcon from '../components/QxIcon.vue';
 import { useAuthStore } from '../stores/auth';
 import { isQqEmail } from '../utils/email';
+import { createRandomNickname, nicknamePolicyMessage, normalizeNickname } from '../utils/nicknamePolicy';
 import { passwordPolicyMessage } from '../utils/passwordPolicy';
 
 const nickname = ref('');
@@ -92,6 +105,14 @@ function startCountdown(seconds = 60) {
   }, 1000);
 }
 
+function validateNicknameField(value: string) {
+  return nicknamePolicyMessage(value) || true;
+}
+
+function fillRandomNickname() {
+  nickname.value = createRandomNickname();
+}
+
 async function sendCode() {
   const emailValue = email.value.trim();
   if (!isQqEmail(emailValue)) {
@@ -113,9 +134,10 @@ async function sendCode() {
 
 async function submit() {
   const emailValue = email.value.trim();
-  const nicknameValue = nickname.value.trim();
+  const nicknameValue = normalizeNickname(nickname.value);
+  const nicknameMessage = nicknamePolicyMessage(nicknameValue);
 
-  if (!nicknameValue) return showToast('请输入昵称');
+  if (nicknameMessage) return showToast(nicknameMessage);
   if (!isQqEmail(emailValue)) return showToast('请输入正确的 QQ 邮箱');
   if (!code.value.trim()) return showToast('请输入验证码');
 

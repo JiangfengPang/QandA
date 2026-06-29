@@ -1,12 +1,14 @@
 import { env } from './config/env.js';
 import { createApp } from './app.js';
 import { prisma } from './db/prisma.js';
+import { startPracticeAnswerQueueWorker, stopPracticeAnswerQueueWorker } from './services/practiceAnswerQueueService.js';
 
 const app = createApp();
 
 const server = app.listen(env.port, env.host, () => {
   console.log(`QandA API running at http://${env.host}:${env.port}`);
 });
+startPracticeAnswerQueueWorker();
 
 let shuttingDown = false;
 
@@ -23,6 +25,7 @@ async function shutdown(signal: NodeJS.Signals) {
 
   server.close(async (error) => {
     try {
+      await stopPracticeAnswerQueueWorker();
       await prisma.$disconnect();
     } finally {
       clearTimeout(forceExitTimer);

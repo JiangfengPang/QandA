@@ -2210,7 +2210,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 42px 32px 32px;
+    padding: 18px 20px 28px;
     overflow: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
@@ -2237,7 +2237,7 @@
   }
 
   .app-frame.is-practice-frame .qx-question-card-head {
-    margin: 0 0 32px;
+    margin: 0 0 24px;
   }
 
   .app-frame.is-practice-frame .qx-question-head-main {

@@ -1,5 +1,8 @@
+import { Prisma } from '@prisma/client';
+import { env } from '../config/env.js';
 import { prisma } from '../db/prisma.js';
-import { addDays, dayKey, dayLabel, dayStart, sumRecordedDurationSeconds } from '../utils/date.js';
+import { addDays, dayStart } from '../utils/date.js';
+import { buildDateBuckets, dateBucketCaseSql } from '../utils/sqlDateBuckets.js';
 import { effectiveQuestionCount, effectiveQuestionCountsByBank, summarizeEffectiveAnswers } from './progressService.js';
 
 type ScopedQuestionFilter = {
@@ -7,38 +10,101 @@ type ScopedQuestionFilter = {
   bank?: { subjectId?: string; isActive?: boolean; subject?: { isActive?: boolean } };
 };
 
+type DbNumeric = bigint | number | string | null | undefined;
+
+type LatestAnswerRow = {
+  questionId: string;
+  isCorrect: boolean | number;
+  createdAt: Date;
+  bankId: string;
+  subjectId: string;
+};
+
+type DailyTrendAggregateRow = {
+  date: string;
+  answerCount: DbNumeric;
+  correctCount: DbNumeric;
+};
+
+type AnswerSummaryRow = {
+  answerRecordCount: DbNumeric;
+  totalDurationSeconds: DbNumeric;
+};
+
+type SubjectFavoriteRow = {
+  subjectId: string;
+  favoriteCount: DbNumeric;
+};
+
+export type PracticeReviewSummaryScope = {
+  subjectId?: string;
+  bankId?: string;
+  scope?: string;
+};
+
+type PracticeReviewSummary = {
+  wrongQuestionCount: number;
+  favoriteCount: number;
+  pendingAnswerCount: number;
+  queuedAnswerCount: number;
+  syncing: boolean;
+};
+
+const reviewSummaryCache = new Map<string, { expiresAt: number; value?: PracticeReviewSummary; promise?: Promise<PracticeReviewSummary> }>();
+
 function buildQuestionFilter(subjectId?: string): ScopedQuestionFilter {
   return subjectId
     ? { isActive: true, bank: { subjectId, isActive: true, subject: { isActive: true } } }
     : { isActive: true, bank: { isActive: true, subject: { isActive: true } } };
 }
 
-function buildDailyTrend(records: Array<{ createdAt: Date; isCorrect: boolean }>) {
-  const today = dayStart(new Date());
-  const trendStart = addDays(today, -6);
-  const trendMap = new Map<string, { answerCount: number; correctCount: number }>();
+function buildReviewQuestionFilter(scope: PracticeReviewSummaryScope = {}) {
+  const subjectId = String(scope.subjectId || '').trim();
+  const bankId = String(scope.bankId || '').trim();
+  if (bankId) return { isActive: true, bankId, bank: { isActive: true, subject: { isActive: true } } };
+  return buildQuestionFilter(subjectId || undefined);
+}
 
-  for (let index = 0; index < 7; index += 1) {
-    const date = addDays(trendStart, index);
-    trendMap.set(dayKey(date), { answerCount: 0, correctCount: 0 });
-  }
+function toNumber(value: DbNumeric) {
+  if (value === null || value === undefined) return 0;
+  const numberValue = Number(value);
+  return Number.isFinite(numberValue) ? numberValue : 0;
+}
 
-  for (const answer of records) {
-    const key = dayKey(answer.createdAt);
-    const row = trendMap.get(key);
-    if (!row) continue;
-    row.answerCount += 1;
-    if (answer.isCorrect) row.correctCount += 1;
-  }
+function toBoolean(value: boolean | number) {
+  return value === true || value === 1;
+}
 
-  return Array.from(trendMap.entries()).map(([key, value]) => {
-    const date = new Date(`${key}T00:00:00`);
+function subjectFilterSql(subjectId?: string) {
+  return subjectId ? Prisma.sql`AND b.\`subjectId\` = ${subjectId}` : Prisma.empty;
+}
+
+function reviewSummaryCacheKey(userId: string, scope: PracticeReviewSummaryScope = {}) {
+  return [
+    userId,
+    String(scope.scope || 'all').trim() || 'all',
+    String(scope.subjectId || 'all-subjects').trim() || 'all-subjects',
+    String(scope.bankId || 'all-banks').trim() || 'all-banks'
+  ].join(':');
+}
+
+function buildDailyTrend(rows: DailyTrendAggregateRow[], trendStart: Date, days: number) {
+  const rowsByDate = new Map(rows.map((row) => [
+    row.date,
+    {
+      answerCount: toNumber(row.answerCount),
+      correctCount: toNumber(row.correctCount)
+    }
+  ]));
+
+  return buildDateBuckets(trendStart, days).map((bucket) => {
+    const row = rowsByDate.get(bucket.key) || { answerCount: 0, correctCount: 0 };
     return {
-      date: key,
-      label: dayLabel(date),
-      answerCount: value.answerCount,
-      correctCount: value.correctCount,
-      accuracy: value.answerCount ? Math.round((value.correctCount / value.answerCount) * 100) : 0
+      date: bucket.key,
+      label: bucket.label,
+      answerCount: row.answerCount,
+      correctCount: row.correctCount,
+      accuracy: row.answerCount ? Math.round((row.correctCount / row.answerCount) * 100) : 0
     };
   });
 }
@@ -47,8 +113,20 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
   const questionFilter = buildQuestionFilter(subjectId);
   const today = dayStart(new Date());
   const trendStart = addDays(today, -6);
+  const tomorrow = addDays(today, 1);
+  const scopedSubjectSql = subjectFilterSql(subjectId);
+  const trendBucketSql = dateBucketCaseSql(Prisma.sql`ua.\`createdAt\``, buildDateBuckets(trendStart, 7));
 
-  const [subjects, banks, favoriteRecords, wrongRecords, answerRecords, trendAnswers, recentAnswer] = await Promise.all([
+  const [
+    subjects,
+    banks,
+    favoriteSubjectRows,
+    wrongRecords,
+    answerSummaryRows,
+    latestAnswerRows,
+    trendRows,
+    recentAnswer
+  ] = await Promise.all([
     prisma.subject.findMany({
       where: { isActive: true, ...(subjectId ? { id: subjectId } : {}) },
       orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
@@ -67,30 +145,93 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
         }
       }
     }),
-    prisma.userFavorite.findMany({
-      where: { userId, question: questionFilter },
-      select: { question: { select: { bank: { select: { subjectId: true } } } } }
-    }),
+    prisma.$queryRaw<SubjectFavoriteRow[]>(Prisma.sql`
+      SELECT b.\`subjectId\`, COUNT(DISTINCT uf.\`questionId\`) AS \`favoriteCount\`
+      FROM \`UserFavorite\` uf
+      INNER JOIN \`Question\` q ON q.\`id\` = uf.\`questionId\`
+      INNER JOIN \`Bank\` b ON b.\`id\` = q.\`bankId\`
+      INNER JOIN \`Subject\` s ON s.\`id\` = b.\`subjectId\`
+      WHERE uf.\`userId\` = ${userId}
+        AND q.\`isActive\` = 1
+        AND b.\`isActive\` = 1
+        AND s.\`isActive\` = 1
+        ${scopedSubjectSql}
+      GROUP BY b.\`subjectId\`
+    `),
     prisma.wrongQuestion.findMany({
       where: { userId, question: questionFilter },
       select: { questionId: true, question: { select: { bank: { select: { subjectId: true } } } } }
     }),
-    prisma.userAnswer.findMany({
-      where: { userId, question: questionFilter },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        questionId: true,
-        isCorrect: true,
-        durationSeconds: true,
-        createdAt: true,
-        question: { select: { bank: { select: { subjectId: true } } } }
-      }
-    }),
-    prisma.userAnswer.findMany({
-      where: { userId, question: questionFilter, createdAt: { gte: trendStart } },
-      select: { createdAt: true, isCorrect: true },
-      orderBy: { createdAt: 'asc' }
-    }),
+    prisma.$queryRaw<AnswerSummaryRow[]>(Prisma.sql`
+      SELECT
+        COUNT(ua.\`id\`) AS \`answerRecordCount\`,
+        COALESCE(SUM(ua.\`durationSeconds\`), 0) AS \`totalDurationSeconds\`
+      FROM \`UserAnswer\` ua
+      INNER JOIN \`Question\` q ON q.\`id\` = ua.\`questionId\`
+      INNER JOIN \`Bank\` b ON b.\`id\` = q.\`bankId\`
+      INNER JOIN \`Subject\` s ON s.\`id\` = b.\`subjectId\`
+      WHERE ua.\`userId\` = ${userId}
+        AND q.\`isActive\` = 1
+        AND b.\`isActive\` = 1
+        AND s.\`isActive\` = 1
+        ${scopedSubjectSql}
+    `),
+    prisma.$queryRaw<LatestAnswerRow[]>(Prisma.sql`
+      SELECT
+        ranked.\`questionId\`,
+        ranked.\`isCorrect\`,
+        ranked.\`createdAt\`,
+        ranked.\`bankId\`,
+        ranked.\`subjectId\`
+      FROM (
+        SELECT
+          ua.\`questionId\`,
+          ua.\`isCorrect\`,
+          ua.\`createdAt\`,
+          q.\`bankId\`,
+          b.\`subjectId\`,
+          ROW_NUMBER() OVER (
+            PARTITION BY ua.\`questionId\`
+            ORDER BY ua.\`createdAt\` DESC, ua.\`id\` DESC
+          ) AS \`rowNumber\`
+        FROM \`UserAnswer\` ua
+        INNER JOIN \`Question\` q ON q.\`id\` = ua.\`questionId\`
+        INNER JOIN \`Bank\` b ON b.\`id\` = q.\`bankId\`
+        INNER JOIN \`Subject\` s ON s.\`id\` = b.\`subjectId\`
+        WHERE ua.\`userId\` = ${userId}
+          AND q.\`isActive\` = 1
+          AND b.\`isActive\` = 1
+          AND s.\`isActive\` = 1
+          ${scopedSubjectSql}
+      ) ranked
+      WHERE ranked.\`rowNumber\` = 1
+    `),
+    prisma.$queryRaw<DailyTrendAggregateRow[]>(Prisma.sql`
+      SELECT
+        bucketed.\`date\`,
+        COUNT(bucketed.\`id\`) AS \`answerCount\`,
+        SUM(CASE WHEN bucketed.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`
+      FROM (
+        SELECT
+          ${trendBucketSql} AS \`date\`,
+          ua.\`id\`,
+          ua.\`isCorrect\`
+        FROM \`UserAnswer\` ua
+        INNER JOIN \`Question\` q ON q.\`id\` = ua.\`questionId\`
+        INNER JOIN \`Bank\` b ON b.\`id\` = q.\`bankId\`
+        INNER JOIN \`Subject\` s ON s.\`id\` = b.\`subjectId\`
+        WHERE ua.\`userId\` = ${userId}
+          AND ua.\`createdAt\` >= ${trendStart}
+          AND ua.\`createdAt\` < ${tomorrow}
+          AND q.\`isActive\` = 1
+          AND b.\`isActive\` = 1
+          AND s.\`isActive\` = 1
+          ${scopedSubjectSql}
+      ) bucketed
+      WHERE bucketed.\`date\` IS NOT NULL
+      GROUP BY bucketed.\`date\`
+      ORDER BY bucketed.\`date\` ASC
+    `),
     prisma.userAnswer.findFirst({
       where: { userId, question: questionFilter },
       orderBy: { createdAt: 'desc' },
@@ -103,8 +244,7 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
                 id: true,
                 name: true,
                 subjectId: true,
-                subject: { select: { name: true } },
-                _count: { select: { questions: { where: { isActive: true } } } }
+                subject: { select: { name: true } }
               }
             }
           }
@@ -118,24 +258,35 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
     subjectId: bank.subjectId
   })));
   const effectiveCountsByBank = effectiveQuestionCountsByBank(effectiveQuestions);
-  const summary = summarizeEffectiveAnswers(effectiveQuestions, answerRecords, wrongRecords);
+  const latestAnswerRecords = latestAnswerRows.map((record) => ({
+    questionId: record.questionId,
+    isCorrect: toBoolean(record.isCorrect),
+    createdAt: new Date(record.createdAt),
+    bankId: record.bankId,
+    subjectId: record.subjectId
+  }));
+  const scopedWrongRecords = wrongRecords.map((record) => ({
+    questionId: record.questionId,
+    subjectId: record.question.bank.subjectId
+  }));
+  const answerSummary = answerSummaryRows[0] || { answerRecordCount: 0, totalDurationSeconds: 0 };
+  const summary = summarizeEffectiveAnswers(effectiveQuestions, latestAnswerRecords, scopedWrongRecords);
   const totalBySubject = new Map<string, number>();
   const favoriteBySubject = new Map<string, number>();
 
   for (const bank of banks) {
     totalBySubject.set(bank.subjectId, (totalBySubject.get(bank.subjectId) || 0) + effectiveQuestionCount(bank.questions));
   }
-  for (const record of favoriteRecords) {
-    const id = record.question.bank.subjectId;
-    favoriteBySubject.set(id, (favoriteBySubject.get(id) || 0) + 1);
+  for (const row of favoriteSubjectRows) {
+    favoriteBySubject.set(row.subjectId, toNumber(row.favoriteCount));
   }
 
   const subjectStats = subjects.map((subject) => {
     const subjectQuestions = effectiveQuestions.filter((question) => question.subjectId === subject.id);
     const latestSummary = summarizeEffectiveAnswers(
       subjectQuestions,
-      answerRecords.filter((record) => record.question.bank.subjectId === subject.id),
-      wrongRecords.filter((record) => record.question.bank.subjectId === subject.id)
+      latestAnswerRecords.filter((record) => record.subjectId === subject.id),
+      scopedWrongRecords.filter((record) => record.subjectId === subject.id)
     );
 
     return {
@@ -182,17 +333,17 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
 
   return {
     answerCount: summary.answerCount,
-    answerRecordCount: answerRecords.length,
+    answerRecordCount: toNumber(answerSummary.answerRecordCount),
     correctCount: summary.correctCount,
     wrongCount: summary.wrongCount,
     accuracy: summary.accuracy,
-    favoriteCount: favoriteRecords.length,
+    favoriteCount: Array.from(favoriteBySubject.values()).reduce((sum, value) => sum + value, 0),
     wrongQuestionCount: summary.wrongQuestionCount,
     totalQuestionCount: banks.reduce((sum, bank) => sum + effectiveQuestionCount(bank.questions), 0),
     subjectCount: subjects.length,
     bankCount: banks.length,
-    totalDurationSeconds: sumRecordedDurationSeconds(answerRecords),
-    dailyTrend: buildDailyTrend(trendAnswers),
+    totalDurationSeconds: toNumber(answerSummary.totalDurationSeconds),
+    dailyTrend: buildDailyTrend(trendRows, trendStart, 7),
     subjectStats,
     weakSubjects,
     subjectOverview,
@@ -200,11 +351,50 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
   };
 }
 
-export async function getPracticeReviewSummary(userId: string) {
-  const questionFilter = buildQuestionFilter();
-  const [wrongQuestionCount, favoriteCount] = await Promise.all([
+async function loadPracticeReviewSummary(userId: string, scope: PracticeReviewSummaryScope = {}): Promise<PracticeReviewSummary> {
+  const questionFilter = buildReviewQuestionFilter(scope);
+  const queueStatuses = ['pending', 'processing', 'retrying'];
+  const [wrongQuestionCount, favoriteCount, queuedAnswerCount] = await Promise.all([
     prisma.wrongQuestion.count({ where: { userId, question: questionFilter } }),
-    prisma.userFavorite.count({ where: { userId, question: questionFilter } })
+    prisma.userFavorite.count({ where: { userId, question: questionFilter } }),
+    prisma.practiceAnswerQueueItem.count({
+      where: {
+        userId,
+        status: { in: queueStatuses },
+        question: questionFilter
+      }
+    })
   ]);
-  return { wrongQuestionCount, favoriteCount };
+
+  return {
+    wrongQuestionCount,
+    favoriteCount,
+    pendingAnswerCount: queuedAnswerCount,
+    queuedAnswerCount,
+    syncing: queuedAnswerCount > 0
+  };
+}
+
+export async function getPracticeReviewSummary(userId: string, scope: PracticeReviewSummaryScope = {}) {
+  const ttlMs = env.practiceReviewSummaryCacheSeconds * 1000;
+  if (ttlMs <= 0) return loadPracticeReviewSummary(userId, scope);
+
+  const key = reviewSummaryCacheKey(userId, scope);
+  const now = Date.now();
+  const cached = reviewSummaryCache.get(key);
+  if (cached?.value && cached.expiresAt > now) return cached.value;
+  if (cached?.promise) return cached.promise;
+
+  const promise = loadPracticeReviewSummary(userId, scope)
+    .then((value) => {
+      reviewSummaryCache.set(key, { expiresAt: Date.now() + ttlMs, value });
+      return value;
+    })
+    .catch((error) => {
+      reviewSummaryCache.delete(key);
+      throw error;
+    });
+
+  reviewSummaryCache.set(key, { expiresAt: now + ttlMs, promise });
+  return promise;
 }

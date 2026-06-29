@@ -165,11 +165,14 @@
           </div>
           <input ref="avatarInput" class="qmine-avatar-file" type="file" accept="image/png,image/jpeg,image/webp" @change="handleAvatarChange" />
         </div>
-        <van-field v-model="profileForm.nickname" label="昵称" placeholder="请输入昵称">
+        <van-field v-model="profileForm.nickname" label="昵称" placeholder="2-16 个字符，不能全是符号" maxlength="16">
           <template #right-icon>
             <button class="qx-field-icon-btn" type="button" aria-label="清空昵称" @click.stop="profileForm.nickname = ''">
               <QxIcon name="clear" tone="slate" />
             </button>
+          </template>
+          <template #button>
+            <van-button size="small" plain type="primary" native-type="button" @click="fillProfileRandomNickname">随机</van-button>
           </template>
         </van-field>
       </div>
@@ -304,6 +307,7 @@ import QxIcon from '../components/QxIcon.vue';
 import SpeechVoiceDialog from '../components/SpeechVoiceDialog.vue';
 import { useAuthStore, type UserPreferences } from '../stores/auth';
 import { isQqEmail } from '../utils/email';
+import { createRandomNickname, nicknamePolicyMessage, normalizeNickname } from '../utils/nicknamePolicy';
 import { passwordPolicyMessage } from '../utils/passwordPolicy';
 import {
   canUseSpeechSynthesis,
@@ -457,6 +461,10 @@ function removeAvatar() {
   if (avatarInput.value) avatarInput.value.value = '';
 }
 
+function fillProfileRandomNickname() {
+  profileForm.nickname = createRandomNickname();
+}
+
 async function handleAvatarChange(event: Event) {
   const input = event.target as HTMLInputElement;
   const file = input.files?.[0];
@@ -580,9 +588,10 @@ async function sendCurrentEmailCode() {
 
 async function beforeProfileClose(action: string) {
   if (action !== 'confirm') return true;
-  const nickname = profileForm.nickname.trim();
-  if (!nickname) {
-    showToast('请输入昵称');
+  const nickname = normalizeNickname(profileForm.nickname);
+  const nicknameMessage = nicknamePolicyMessage(nickname, '昵称不能为空');
+  if (nicknameMessage) {
+    showToast(nicknameMessage);
     return false;
   }
   try {

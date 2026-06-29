@@ -34,6 +34,12 @@ function parseBool(value: string | undefined, fallback: boolean) {
   return ['1', 'true', 'yes', 'on'].includes(String(value).trim().toLowerCase());
 }
 
+function parseIntRange(value: string | undefined, fallback: number, min: number, max: number) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(Math.max(Math.floor(parsed), min), max);
+}
+
 const ipHttpMode = parseBool(process.env.IP_HTTP_MODE, false);
 const cookieSecure = ipHttpMode ? false : parseBool(process.env.COOKIE_SECURE, isProduction);
 const cookieSameSiteRaw = String(process.env.COOKIE_SAME_SITE || 'lax').trim().toLowerCase();
@@ -90,5 +96,15 @@ export const env = {
   smtpPass: required('SMTP_PASS', ''),
   smtpFrom: required('SMTP_FROM', process.env.SMTP_USER || ''),
   appName: process.env.APP_NAME || 'QandA 刷题系统',
-  uploadDir: process.env.UPLOAD_DIR || 'uploads'
+  uploadDir: process.env.UPLOAD_DIR || 'uploads',
+  practiceAnswerQueueEnabled: parseBool(process.env.PRACTICE_ANSWER_QUEUE_ENABLED, true),
+  practiceAnswerQueueBatchSize: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_BATCH_SIZE, 25, 1, 100),
+  practiceAnswerQueueConcurrency: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_CONCURRENCY, 1, 1, 10),
+  practiceAnswerQueuePollMs: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_POLL_MS, 1000, 200, 30000),
+  practiceAnswerQueueMaxAttempts: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_MAX_ATTEMPTS, 8, 1, 50),
+  practiceReviewSummaryCacheSeconds: parseIntRange(process.env.PRACTICE_REVIEW_SUMMARY_CACHE_SECONDS, 10, 0, 60),
+  presenceHeartbeatIntervalMs: parseIntRange(process.env.PRESENCE_HEARTBEAT_INTERVAL_MS, 120000, 30000, 600000),
+  presenceOnlineWindowSeconds: parseIntRange(process.env.PRESENCE_ONLINE_WINDOW_SECONDS, 300, 60, 1800),
+  presenceMinWriteIntervalSeconds: parseIntRange(process.env.PRESENCE_MIN_WRITE_INTERVAL_SECONDS, 60, 0, 600),
+  presenceCountCacheSeconds: parseIntRange(process.env.PRESENCE_COUNT_CACHE_SECONDS, 15, 0, 120)
 };

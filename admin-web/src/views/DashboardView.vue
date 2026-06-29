@@ -9,54 +9,22 @@
     </div>
 
     <div class="dashboard-chart-grid">
-      <el-card class="dashboard-chart-card is-wide" shadow="never">
+      <el-card class="dashboard-chart-card dashboard-type-card" shadow="never">
         <template #header>
           <div class="dashboard-card-head">
-            <div>
-              <strong>内容资产结构</strong>
-              <span>科目、题库、题目是同一内容层级，适合放在同一张图里比较</span>
-            </div>
-            <el-tag effect="plain">不含答题记录</el-tag>
-          </div>
-        </template>
-        <div ref="scaleChartRef" class="dashboard-chart" />
-      </el-card>
-
-      <el-card class="dashboard-chart-card" shadow="never">
-        <template #header>
-          <div class="dashboard-card-head">
-            <div>
+            <div class="dashboard-card-title">
               <strong>题型结构</strong>
               <span>当前题库中各题型占比</span>
             </div>
           </div>
         </template>
-        <div ref="typeChartRef" class="dashboard-chart" />
-      </el-card>
-    </div>
-
-    <div class="dashboard-insight-grid">
-      <el-card class="dashboard-insight-card" shadow="never">
-        <template #header>
-          <div class="dashboard-card-head">
-            <div>
-              <strong>内容建设效率</strong>
-              <span>题库与题目规模的派生指标</span>
-            </div>
-          </div>
-        </template>
-        <div class="dashboard-derived-list">
-          <div v-for="item in derivedMetrics" :key="item.label">
-            <span>{{ item.label }}</span>
-            <strong>{{ item.value }}</strong>
-          </div>
-        </div>
+        <div ref="typeChartRef" class="dashboard-chart dashboard-type-chart" />
       </el-card>
 
       <el-card class="dashboard-insight-card" shadow="never">
         <template #header>
           <div class="dashboard-card-head">
-            <div>
+            <div class="dashboard-card-title">
               <strong>题型数量</strong>
               <span>用于快速发现题型结构是否失衡</span>
             </div>
@@ -70,21 +38,39 @@
         </div>
       </el-card>
     </div>
+
+    <div class="dashboard-insight-grid">
+      <el-card class="dashboard-insight-card" shadow="never">
+        <template #header>
+          <div class="dashboard-card-head">
+            <div class="dashboard-card-title">
+              <strong>内容建设效率</strong>
+              <span>题库与题目规模的派生指标</span>
+            </div>
+          </div>
+        </template>
+        <div class="dashboard-derived-list">
+          <div v-for="item in derivedMetrics" :key="item.label">
+            <span>{{ item.label }}</span>
+            <strong>{{ item.value }}</strong>
+          </div>
+        </div>
+      </el-card>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
-import { BarChart, PieChart } from 'echarts/charts';
-import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+import { PieChart } from 'echarts/charts';
+import { TooltipComponent } from 'echarts/components';
 import { init, use, type ECharts } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ElCard } from 'element-plus/es/components/card/index';
 import { ElMessage } from 'element-plus/es/components/message/index';
-import { ElTag } from 'element-plus/es/components/tag/index';
 import { api } from '../api/request';
 
-use([BarChart, PieChart, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer]);
+use([PieChart, TooltipComponent, CanvasRenderer]);
 
 type QuestionTypeCount = {
   type: string;
@@ -112,10 +98,9 @@ const emptyStats = (): DashboardStats => ({
 
 const loading = ref(false);
 const stats = ref<DashboardStats>(emptyStats());
-const scaleChartRef = ref<HTMLElement>();
 const typeChartRef = ref<HTMLElement>();
-let scaleChart: ECharts | null = null;
 let typeChart: ECharts | null = null;
+const typeChartColors = ['#2563eb', '#14b8a6', '#f97316', '#8b5cf6', '#06b6d4', '#ef4444'];
 
 const typeRows = computed(() => {
   const rows = stats.value.questionTypeCounts || [];
@@ -131,12 +116,6 @@ const kpiCards = computed(() => [
   { label: '题库数', value: formatNumber(stats.value.bankCount), hint: '按单元或专题组织' },
   { label: '题目数', value: formatNumber(stats.value.questionCount), hint: `${typeRows.value.length || 0} 种题型` },
   { label: '答题记录', value: formatNumber(stats.value.answerCount), hint: '累计提交答案，不参与规模图比较' }
-]);
-
-const contentScaleRows = computed(() => [
-  { label: '科目', value: stats.value.subjectCount },
-  { label: '题库', value: stats.value.bankCount },
-  { label: '题目', value: stats.value.questionCount }
 ]);
 
 const derivedMetrics = computed(() => {
@@ -160,91 +139,50 @@ function formatDecimal(value: number) {
   return value >= 10 ? value.toFixed(1) : value.toFixed(2);
 }
 
-function renderScaleChart() {
-  if (!scaleChartRef.value) return;
-  if (!scaleChart) scaleChart = init(scaleChartRef.value);
-  scaleChart.setOption({
-    color: ['#2563eb'],
-    tooltip: {
-      trigger: 'axis',
-      valueFormatter: (value: unknown) => formatNumber(Number(value || 0))
-    },
-    grid: { top: 24, right: 18, bottom: 34, left: 52, containLabel: true },
-    xAxis: {
-      type: 'value',
-      minInterval: 1,
-      axisLine: { show: false },
-      axisTick: { show: false },
-      axisLabel: {
-        color: '#64748b',
-        formatter: (value: number) => formatNumber(value)
-      },
-      splitLine: { lineStyle: { color: '#edf2f7' } }
-    },
-    yAxis: {
-      type: 'category',
-      data: contentScaleRows.value.map((item) => item.label),
-      inverse: true,
-      axisLine: { lineStyle: { color: '#d9e2f0' } },
-      axisTick: { show: false },
-      axisLabel: { color: '#64748b', fontWeight: 700 }
-    },
-    series: [{
-      name: '数量',
-      type: 'bar',
-      barMaxWidth: 34,
-      data: contentScaleRows.value.map((item) => item.value),
-      itemStyle: { borderRadius: [0, 7, 7, 0] },
-      label: {
-        show: true,
-        position: 'right',
-        color: '#1e3a8a',
-        fontWeight: 700,
-        formatter: ({ value }: { value: number }) => formatNumber(value)
-      }
-    }]
-  });
-}
-
 function renderTypeChart() {
   if (!typeChartRef.value) return;
   if (!typeChart) typeChart = init(typeChartRef.value);
   const rows = typeRows.value.length
     ? typeRows.value
     : [{ type: 'empty', label: '暂无题目', count: 1 }];
+  typeChart.clear();
   typeChart.setOption({
-    color: ['#2563eb', '#14b8a6', '#f97316', '#8b5cf6', '#06b6d4', '#ef4444'],
+    color: typeRows.value.length ? typeChartColors : ['#cbd5e1'],
     tooltip: {
       trigger: 'item',
       formatter: ({ name, value, percent }: { name: string; value: number; percent: number }) => (
         `${name}<br/>${formatNumber(value)} 题 · ${percent}%`
       )
     },
-    legend: {
-      bottom: 0,
-      left: 'center',
-      itemWidth: 10,
-      itemHeight: 10,
-      textStyle: { color: '#64748b', fontFamily: 'inherit' }
-    },
     series: [{
       name: '题型数量',
       type: 'pie',
-      radius: ['48%', '70%'],
-      center: ['50%', '43%'],
+      radius: ['38%', '58%'],
+      center: ['50%', '50%'],
       avoidLabelOverlap: true,
       label: {
+        show: true,
+        position: 'outer',
+        alignTo: 'edge',
+        edgeDistance: 18,
         color: '#475569',
-        formatter: '{b}\n{d}%'
+        lineHeight: 16,
+        formatter: ({ name, value, percent }: { name: string; value: number; percent: number }) => (
+          `${name}\n${formatNumber(value)} 题 · ${percent}%`
+        )
       },
-      labelLine: { lineStyle: { color: '#cbd5e1' } },
+      labelLine: {
+        show: true,
+        length: 16,
+        length2: 42,
+        lineStyle: { color: '#cbd5e1' }
+      },
       data: rows.map((item) => ({ name: item.label, value: item.count }))
     }]
   });
 }
 
 function renderCharts() {
-  renderScaleChart();
   renderTypeChart();
 }
 
@@ -262,7 +200,6 @@ async function load() {
 }
 
 function resizeCharts() {
-  scaleChart?.resize();
   typeChart?.resize();
 }
 
@@ -273,9 +210,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeCharts);
-  scaleChart?.dispose();
   typeChart?.dispose();
-  scaleChart = null;
   typeChart = null;
 });
 </script>
@@ -324,16 +259,14 @@ onBeforeUnmount(() => {
 .dashboard-kpi small {
   display: block;
   margin-top: 8px;
-  overflow: hidden;
   color: #94a3b8;
   font-size: 12px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
 }
 
 .dashboard-chart-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(360px, .75fr);
+  grid-template-columns: minmax(640px, 1.15fr) minmax(360px, .85fr);
   gap: 16px;
   margin-bottom: 16px;
 }
@@ -350,32 +283,43 @@ onBeforeUnmount(() => {
 
 .dashboard-card-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
+  min-width: 0;
 }
 
-.dashboard-card-head strong {
+.dashboard-card-title {
+  min-width: 0;
+}
+
+.dashboard-card-title strong {
   display: block;
   color: #172033;
   font-size: 16px;
+  line-height: 1.3;
 }
 
-.dashboard-card-head span {
+.dashboard-card-title span {
   display: block;
   margin-top: 4px;
   color: #94a3b8;
   font-size: 12px;
+  line-height: 1.45;
 }
 
 .dashboard-chart {
   width: 100%;
-  height: 330px;
+  height: 380px;
+}
+
+.dashboard-type-chart {
+  min-height: 380px;
 }
 
 .dashboard-insight-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -386,7 +330,7 @@ onBeforeUnmount(() => {
 }
 
 .dashboard-derived-list {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .dashboard-derived-list div,
@@ -438,9 +382,12 @@ onBeforeUnmount(() => {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .dashboard-chart-grid,
-  .dashboard-insight-grid {
+  .dashboard-chart-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-derived-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -450,8 +397,17 @@ onBeforeUnmount(() => {
     grid-template-columns: 1fr;
   }
 
+  .dashboard-card-head {
+    flex-direction: column;
+  }
+
   .dashboard-chart {
     height: 300px;
+  }
+
+  .dashboard-type-chart {
+    height: 320px;
+    min-height: 320px;
   }
 }
 </style>

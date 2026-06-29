@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFileSync } from 'node:fs';
 import {
   enqueuePendingAnswer,
   isPendingAnswerDue,
@@ -70,6 +71,18 @@ test('pending answer queue is isolated per user and persists in storage', () => 
   assert.equal(readPendingAnswerQueue('user-b', storage).length, 1);
   assert.equal(readPendingAnswerQueue('user-a', storage)[0].questionId, 'question-1');
   assert.ok(storage.getItem(pendingAnswerQueueKey('user-a'))?.includes('question-1:client-1'));
+});
+
+test('pending answer queue preserves local answer result snapshots for batched sync', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord({
+    answer: ['A'],
+    explanation: '解析内容'
+  }), storage);
+
+  const [record] = readPendingAnswerQueue('user-a', storage);
+  assert.deepEqual(record.answer, ['A']);
+  assert.equal(record.explanation, '解析内容');
 });
 
 test('same clientAnswerId is not enqueued twice', () => {
@@ -178,4 +191,17 @@ test('queue keeps a same-page fallback when localStorage is unavailable', () => 
   const records = readPendingAnswerQueue(userKey, null);
   assert.equal(records.length, 1);
   assert.equal(records[0].clientAnswerId, 'question-1:client-1');
+});
+
+test('practice view batches pending answer sync and keeps local pending records on batch failure', () => {
+  const source = readFileSync(new URL('../src/views/PracticeView.vue', import.meta.url), 'utf8');
+
+  assert.match(source, /\/practice\/answers\/batch/);
+  assert.match(source, /PENDING_ANSWER_SYNC_BATCH_SIZE = 20/);
+  assert.match(source, /records\.map\(pendingAnswerPayload\)/);
+  assert.match(source, /catch \(error\) \{[\s\S]*markPendingAnswerSyncError/);
+  assert.doesNotMatch(
+    source.match(/async function syncPendingAnswerBatch[\s\S]*?async function syncPendingAnswerSingle/)?.[0] || '',
+    /catch \(error\) \{[\s\S]*removePendingAnswer/
+  );
 });

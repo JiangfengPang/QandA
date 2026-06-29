@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { api, clearToken } from '../api/request';
+import { stopPresenceHeartbeat } from '../utils/presence';
 import { setPreferredSpeechVoiceKey } from '../utils/pronunciation';
 
 export type UserPreferences = {
@@ -83,6 +84,7 @@ export const useAuthStore = defineStore('auth', {
       return this.user;
     },
     async logout() {
+      await stopPresenceHeartbeat({ notify: true });
       try {
         await api.post('/auth/logout');
       } catch {

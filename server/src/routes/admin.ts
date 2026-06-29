@@ -14,8 +14,9 @@ import { setAuthCookies } from '../utils/cookie.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { adminAuditMiddleware, getAdminActionOptions } from '../services/adminAuditService.js';
 import { getAdminActivityStats } from '../services/adminAnalyticsService.js';
+import { getAdminDashboardStats } from '../services/adminDashboardService.js';
 import { getAdminReadingPassage, saveAdminReadingPassage } from '../services/adminReadingPassageService.js';
-import { assertAllowedNickname, hasForbiddenNickname } from '../utils/nicknamePolicy.js';
+import { assertAllowedNickname, hasForbiddenNickname, NICKNAME_MAX_CHARS } from '../utils/nicknamePolicy.js';
 import {
   createAnnouncement,
   deleteAnnouncement,
@@ -88,38 +89,7 @@ function percentage(correctCount: number, answerCount: number) {
 }
 
 router.get('/dashboard', asyncHandler(async (_req, res) => {
-  const [userCount, subjectCount, bankCount, questionCount, answerCount, questionTypeRows] = await Promise.all([
-    prisma.user.count(),
-    prisma.subject.count(),
-    prisma.bank.count(),
-    prisma.question.count(),
-    prisma.userAnswer.count(),
-    prisma.question.groupBy({
-      by: ['type'],
-      _count: { _all: true },
-      orderBy: { type: 'asc' }
-    })
-  ]);
-  const typeLabels: Record<string, string> = {
-    single: '单选题',
-    multiple: '多选题',
-    judge: '判断题',
-    fill: '填空题',
-    python: 'Python题',
-    reading: '阅读理解'
-  };
-  return ok(res, {
-    userCount,
-    subjectCount,
-    bankCount,
-    questionCount,
-    answerCount,
-    questionTypeCounts: questionTypeRows.map((row) => ({
-      type: row.type,
-      label: typeLabels[row.type] || row.type || '其他题型',
-      count: row._count._all
-    }))
-  });
+  return ok(res, await getAdminDashboardStats());
 }));
 
 router.get('/activity', asyncHandler(async (req, res) => {
@@ -405,7 +375,10 @@ router.patch('/users/batch', asyncHandler(async (req, res) => {
 }));
 
 router.patch('/users/:id', asyncHandler(async (req, res) => {
-  const schema = z.object({ isActive: z.boolean().optional(), nickname: z.string().max(80).optional() });
+  const schema = z.object({
+    isActive: z.boolean().optional(),
+    nickname: z.string().max(NICKNAME_MAX_CHARS, `昵称不能超过 ${NICKNAME_MAX_CHARS} 个字符`).optional()
+  });
   const input = schema.parse(req.body);
   const data: { isActive?: boolean; nickname?: string } = {};
   if (typeof input.isActive === 'boolean') data.isActive = input.isActive;
@@ -447,7 +420,10 @@ router.get('/admins', asyncHandler(async (req, res) => {
 }));
 
 router.patch('/admins/:id', asyncHandler(async (req, res) => {
-  const schema = z.object({ isActive: z.boolean().optional(), nickname: z.string().max(80).optional() });
+  const schema = z.object({
+    isActive: z.boolean().optional(),
+    nickname: z.string().max(NICKNAME_MAX_CHARS, `昵称不能超过 ${NICKNAME_MAX_CHARS} 个字符`).optional()
+  });
   const input = schema.parse(req.body);
   const data: { isActive?: boolean; nickname?: string } = {};
   if (typeof input.isActive === 'boolean') data.isActive = input.isActive;
@@ -557,21 +533,16 @@ router.get('/tree', asyncHandler(async (_req, res) => {
 }));
 
 router.get('/system/status', asyncHandler(async (_req, res) => {
-  const [subjectCount, bankCount, questionCount, userCount, answerCount] = await Promise.all([
-    prisma.subject.count(),
-    prisma.bank.count(),
-    prisma.question.count(),
-    prisma.user.count(),
-    prisma.userAnswer.count()
-  ]);
+  await prisma.$queryRaw`SELECT 1`;
+  const dashboardStats = await getAdminDashboardStats();
   return ok(res, {
     api: 'ok',
     database: 'ok',
-    subjectCount,
-    bankCount,
-    questionCount,
-    userCount,
-    answerCount,
+    subjectCount: dashboardStats.subjectCount,
+    bankCount: dashboardStats.bankCount,
+    questionCount: dashboardStats.questionCount,
+    userCount: dashboardStats.userCount,
+    answerCount: dashboardStats.answerCount,
     checkedAt: new Date().toISOString()
   });
 }));
