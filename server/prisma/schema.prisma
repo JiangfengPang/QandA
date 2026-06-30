@@ -239,6 +239,8 @@ model PracticeAnswerSubmissionQueue {
   practiceSessionId  String
   clientSubmissionId String    @db.VarChar(120)
   answersJson        Json
+  payloadVersion          Int       @default(1)
+  processedPayloadVersion Int       @default(0)
   status             String    @default("pending") @db.VarChar(20)
   retryCount         Int       @default(0)
   lastError          String?   @db.VarChar(500)

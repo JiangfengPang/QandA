@@ -122,6 +122,10 @@ export function writePendingAnswerQueue(userKey: string, records: PendingAnswerR
   }
 }
 
+export function clearPendingAnswerQueue(userKey: string, storage: QueueStorage | null = storageAvailable()) {
+  writePendingAnswerQueue(userKey, [], storage);
+}
+
 export function enqueuePendingAnswer(userKey: string, record: PendingAnswerRecord, storage: QueueStorage | null = storageAvailable()): PendingAnswerRecord | null {
   const records = readPendingAnswerQueue(userKey, storage);
   const normalized = normalizeRecord(record);

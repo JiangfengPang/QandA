@@ -75,6 +75,7 @@ import { useRoute } from 'vue-router';
 import AuthParticleBackground from './components/AuthParticleBackground.vue';
 import QxIcon from './components/QxIcon.vue';
 import { useAuthStore } from './stores/auth';
+import { requestPendingAnswerSessionFlush } from './utils/pendingAnswerSync';
 import { startPresenceHeartbeat, stopPresenceHeartbeat } from './utils/presence';
 import { fetchPracticeReviewSummary, type PracticeReviewSummary } from './utils/reviewSummary';
 
@@ -129,9 +130,24 @@ function resetAuthPointer() {
   setAuthPointer();
 }
 
+function pendingAnswerUserKey() {
+  return auth.user?.id || auth.user?.email || auth.user?.username || '';
+}
+
+function requestAppPendingAnswerFlush() {
+  if (isAuthLayout.value) return;
+  const userKey = pendingAnswerUserKey();
+  if (!userKey) return;
+  void requestPendingAnswerSessionFlush(userKey, { dispatchStatsUpdated: true });
+}
+
+function handlePendingAnswerOnline() {
+  requestAppPendingAnswerFlush();
+}
+
 async function refreshReviewSummary() {
   if (isAuthLayout.value) return;
-  const userKey = auth.user?.id || auth.user?.email || auth.user?.username || '';
+  const userKey = pendingAnswerUserKey();
   if (!userKey) return;
   try {
     reviewSummary.value = await fetchPracticeReviewSummary(userKey);
@@ -144,8 +160,12 @@ watch(() => route.fullPath, refreshReviewSummary);
 watch(
   () => Boolean(auth.user) && !isAuthLayout.value,
   (enabled) => {
-    if (enabled) startPresenceHeartbeat();
-    else void stopPresenceHeartbeat({ notify: true });
+    if (enabled) {
+      startPresenceHeartbeat();
+      requestAppPendingAnswerFlush();
+    } else {
+      void stopPresenceHeartbeat({ notify: true });
+    }
   },
   { immediate: true }
 );
@@ -156,10 +176,12 @@ onMounted(() => {
   setAuthPointer();
   refreshReviewSummary();
   window.addEventListener('qanda:stats-updated', refreshReviewSummary);
+  window.addEventListener('online', handlePendingAnswerOnline);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('qanda:stats-updated', refreshReviewSummary);
+  window.removeEventListener('online', handlePendingAnswerOnline);
   void stopPresenceHeartbeat({ notify: true });
 });
 </script>

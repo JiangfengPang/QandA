@@ -202,6 +202,10 @@ export async function clearFavoriteQuestions(userId: string, subjectId?: string)
 
 export async function clearPracticeRecords(userId: string) {
   await prisma.$transaction([
+    prisma.practiceAnswerSubmissionQueue.deleteMany({ where: { userId } }),
+    prisma.practiceAnswerQueueItem.deleteMany({ where: { userId } }),
+    prisma.practiceSession.deleteMany({ where: { userId } }),
+    prisma.userPracticeSession.deleteMany({ where: { userId } }),
     prisma.userAnswer.deleteMany({ where: { userId } }),
     prisma.wrongQuestion.deleteMany({ where: { userId } }),
     prisma.userFavorite.deleteMany({ where: { userId } })

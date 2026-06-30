@@ -550,6 +550,14 @@ import {
   updatePendingAnswer,
   type PendingAnswerRecord
 } from '../utils/pendingAnswerQueue';
+import {
+  buildPendingAnswerBatchPayload,
+  createPendingAnswerClientSubmissionId,
+  groupPendingAnswerRecordsByPracticeSession,
+  postPendingAnswerSessionKeepalive,
+  type PendingAnswerBatchResponse,
+  type PendingAnswerSyncResult
+} from '../utils/pendingAnswerSync';
 import type { PracticeSessionRecord } from '../types/practice';
 import '../styles/practice.css';
 import '../styles/practice-feedback.css';
@@ -568,24 +576,6 @@ type AnswerSpeechPart = {
   prefix: string;
   value: string;
   speechItems: SpeechItem[];
-};
-
-type PendingAnswerSyncResult = {
-  clientAnswerId?: string;
-  correct: boolean;
-  answer: string[];
-  explanation: string;
-  recorded?: boolean;
-  queued?: boolean;
-};
-
-type PendingAnswerBatchResponse = {
-  practiceSessionId?: string;
-  clientSubmissionId?: string;
-  accepted: number;
-  queued?: number;
-  submissionStatus?: string;
-  results: PendingAnswerSyncResult[];
 };
 
 type PendingAnswerSyncStatus = PendingAnswerRecord['status'] | 'synced';
@@ -636,14 +626,13 @@ const favoriteSubmittingByQuestionId = ref<Record<string, boolean>>({});
 const MAX_RECORDED_ANSWER_SECONDS = 30 * 60;
 const CORRECT_ANSWER_AUTO_ADVANCE_MS = 160;
 const PENDING_ANSWER_SYNC_BATCH_SIZE = 20;
-const NEW_ANSWER_SYNC_DELAY_MS = 1500;
-const NEW_ANSWER_SYNC_JITTER_MS = 3000;
 const AUTO_ADVANCE_HINT_DISMISSED_KEY = 'qanda_auto_advance_hint_dismissed';
 const questionVisibleStartedAt = ref(Date.now());
 const questionActiveElapsedMs = ref(0);
 let practiceViewportMediaQuery: MediaQueryList | null = null;
 let pendingAnswerSyncRunning = false;
 let pendingAnswerRetryTimer: ReturnType<typeof setTimeout> | null = null;
+let lastKeepaliveSessionSubmitAt = 0;
 let correctAnswerAutoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
 let pendingPracticeResumeChoiceResolve: ((choice: PracticeResumeRestoreChoice) => void) | null = null;
 let questionScrollResetFrame: number | undefined;
@@ -1031,6 +1020,7 @@ onMounted(async () => {
   if (typeof window !== 'undefined') {
     window.addEventListener('pagehide', handlePracticePageHide);
     window.addEventListener('beforeunload', handlePracticeBeforeUnload);
+    window.addEventListener('online', handlePendingAnswerOnline);
   }
   try {
     if (reviewPracticeMode.value) {
@@ -1044,6 +1034,7 @@ onMounted(async () => {
     practiceResumeReady = true;
   } finally {
     loading.value = false;
+    void syncPendingAnswers('mount', { resetAuthFailures: true });
     void nextTick(() => maybeShowAutoAdvanceHint());
   }
 });
@@ -1053,6 +1044,7 @@ onBeforeUnmount(() => {
   if (typeof window !== 'undefined') {
     window.removeEventListener('pagehide', handlePracticePageHide);
     window.removeEventListener('beforeunload', handlePracticeBeforeUnload);
+    window.removeEventListener('online', handlePendingAnswerOnline);
   }
   if (typeof window !== 'undefined' && questionScrollResetFrame !== undefined) {
     window.cancelAnimationFrame(questionScrollResetFrame);
@@ -1181,19 +1173,23 @@ function resumeQuestionTimer() {
 function handleVisibilityChange() {
   if (document.visibilityState === 'hidden') {
     pauseQuestionTimer();
+    submitCurrentPracticeSessionKeepalive();
     void flushRemotePracticeResumeSync({ keepalive: true });
   } else {
     resumeQuestionTimer();
+    void syncPendingAnswers('visible', { resetAuthFailures: true });
   }
 }
 
 function handlePracticePageHide() {
   pauseQuestionTimer();
+  submitCurrentPracticeSessionKeepalive();
   flushRemotePracticeResumeSync({ keepalive: true });
 }
 
 function handlePracticeBeforeUnload() {
   pauseQuestionTimer();
+  submitCurrentPracticeSessionKeepalive();
   persistCurrentPracticeResume();
 }
 
@@ -1683,10 +1679,6 @@ function clearPendingAnswerRetryTimer() {
   pendingAnswerRetryTimer = null;
 }
 
-function nextNewAnswerSyncDelayMs() {
-  return NEW_ANSWER_SYNC_DELAY_MS + Math.floor(Math.random() * NEW_ANSWER_SYNC_JITTER_MS);
-}
-
 function schedulePendingAnswerRetry(options: { minDelayMs?: number } = {}) {
   clearPendingAnswerRetryTimer();
   const userKey = pendingAnswerUserKey.value;
@@ -1817,19 +1809,6 @@ function markPendingAnswerSyncError(userKey: string, record: PendingAnswerRecord
   return nextStatus;
 }
 
-function pendingAnswerPayload(record: PendingAnswerRecord) {
-  return {
-    questionId: record.questionId,
-    practiceSessionId: record.practiceSessionId,
-    selected: record.selectedAnswer,
-    clientAnswerId: record.clientAnswerId,
-    durationSeconds: record.durationSeconds || 0,
-    isCorrect: record.isCorrect,
-    answer: record.answer || [],
-    explanation: record.explanation || ''
-  };
-}
-
 function pendingAnswerFallbackResult(record: PendingAnswerRecord): PendingAnswerSyncResult {
   return {
     clientAnswerId: record.clientAnswerId,
@@ -1854,13 +1833,12 @@ async function syncPendingAnswerBatch(
   });
 
   try {
-    const data = await api.post<PendingAnswerBatchResponse>('/practice/answers/batch', {
+    const data = await api.post<PendingAnswerBatchResponse>('/practice/answers/batch', buildPendingAnswerBatchPayload(uniqueRecords, {
       practiceSessionId: options.practiceSessionId,
       clientSubmissionId: options.clientSubmissionId,
       scopeType: 'practice',
-      scopeId: practiceSessionScope(),
-      answers: uniqueRecords.map(pendingAnswerPayload)
-    });
+      scopeId: practiceSessionScope()
+    }));
     const resultByClientAnswerId = new Map((data.results || []).map((item) => [item.clientAnswerId || '', item]));
     removePendingAnswersByClientAnswerIds(userKey, uniqueRecords.map((record) => record.clientAnswerId));
     uniqueRecords.forEach((record) => {
@@ -1874,26 +1852,6 @@ async function syncPendingAnswerBatch(
       nextStatus = markPendingAnswerSyncError(userKey, record, error);
     });
     return nextStatus;
-  }
-}
-
-async function syncPendingAnswerSingle(userKey: string, record: PendingAnswerRecord): Promise<PendingAnswerSyncStatus> {
-  try {
-    const data = await api.post<PendingAnswerSyncResult>('/practice/answers', {
-      questionId: record.questionId,
-      selected: record.selectedAnswer,
-      clientAnswerId: record.clientAnswerId,
-      durationSeconds: record.durationSeconds || 0,
-      isCorrect: record.answer ? record.isCorrect : undefined,
-      answer: record.answer,
-      explanation: record.explanation
-    });
-    removePendingAnswer(userKey, record.clientAnswerId);
-    applySyncedPendingAnswer(record, data);
-    window.dispatchEvent(new Event('qanda:stats-updated'));
-    return 'synced' as const;
-  } catch (error) {
-    return markPendingAnswerSyncError(userKey, record, error);
   }
 }
 
@@ -1924,27 +1882,21 @@ async function syncPendingAnswers(_reason: string, options: { resetAuthFailures?
 
   try {
     const batchRecords: PendingAnswerRecord[] = [];
-    let stoppedForAuthFailure = false;
     for (const record of uniqueDueRecords) {
       if (pendingAnswerUserKey.value !== userKey) break;
       const tryingRecord = markPendingAnswerAsSyncing(userKey, record);
       if (!tryingRecord) continue;
-
-      if (tryingRecord.answer) {
-        batchRecords.push(tryingRecord);
-        continue;
-      }
-
-      const singleStatus = await syncPendingAnswerSingle(userKey, tryingRecord);
-      if (singleStatus === 'auth_failed') {
-        stoppedForAuthFailure = true;
-        break;
-      }
+      batchRecords.push(tryingRecord);
     }
 
-    if (!stoppedForAuthFailure && batchRecords.length && pendingAnswerUserKey.value === userKey) {
-      const batchStatus = await syncPendingAnswerBatch(userKey, batchRecords);
-      if (batchStatus === 'auth_failed') return;
+    if (batchRecords.length && pendingAnswerUserKey.value === userKey) {
+      for (const group of groupPendingAnswerRecordsByPracticeSession(batchRecords)) {
+        const batchStatus = await syncPendingAnswerBatch(userKey, group.records, {
+          practiceSessionId: group.practiceSessionId,
+          clientSubmissionId: createPendingAnswerClientSubmissionId(group.practiceSessionId)
+        });
+        if (batchStatus === 'auth_failed') return;
+      }
     }
   } finally {
     pendingAnswerSyncRunning = false;
@@ -1960,16 +1912,27 @@ function currentPracticeSessionPendingRecords() {
     .filter((record) => record.status !== 'invalid');
 }
 
+function submitCurrentPracticeSessionKeepalive() {
+  const records = currentPracticeSessionPendingRecords();
+  if (!records.length) return false;
+  const now = Date.now();
+  if (now - lastKeepaliveSessionSubmitAt < 1000) return false;
+  lastKeepaliveSessionSubmitAt = now;
+  return postPendingAnswerSessionKeepalive(records, {
+    practiceSessionId: ensurePracticeSessionId(),
+    clientSubmissionId: createClientSubmissionId(),
+    scopeType: 'practice',
+    scopeId: practiceSessionScope()
+  });
+}
+
 function hasUnsubmittedCurrentPracticeSession() {
   if (sessionSubmitted.value) return false;
   return currentPracticeSessionPendingRecords().length > 0;
 }
 
 function createClientSubmissionId() {
-  const randomId = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
-    ? crypto.randomUUID()
-    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
-  return `${ensurePracticeSessionId()}:${randomId}`.slice(0, 120);
+  return createPendingAnswerClientSubmissionId(ensurePracticeSessionId());
 }
 
 async function submitCurrentPracticeSession() {

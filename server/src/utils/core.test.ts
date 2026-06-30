@@ -626,6 +626,28 @@ test('session-level practice answer queue is wired through schema, API and worke
   assert.match(workerSplitDoc, /qanda-worker/);
 });
 
+test('session queue merges repeat submissions and requeues newer payloads without extra rows', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+
+  assert.match(schema, /payloadVersion\s+Int\s+@default\(1\)/);
+  assert.match(schema, /processedPayloadVersion\s+Int\s+@default\(0\)/);
+  assert.match(schema, /@@unique\(\[userId,\s*practiceSessionId\]\)/);
+  assert.match(queueService, /mergeSessionQueueAnswers/);
+  assert.match(queueService, /payloadVersion:\s*\{\s*increment:\s*1\s*\}/);
+  assert.match(queueService, /existingBySession\.status === STATUS_PROCESSING/);
+  assert.match(queueService, /current\.payloadVersion !== item\.payloadVersion/);
+  assert.match(queueService, /status:\s*STATUS_RETRYING/);
+});
+
+test('clearing practice records removes queued answer submissions to prevent stale writeback', () => {
+  const service = readFileSync(new URL('../services/practiceRecordService.ts', import.meta.url), 'utf8');
+
+  assert.match(service, /practiceAnswerSubmissionQueue\.deleteMany\(\{ where: \{ userId \} \}\)/);
+  assert.match(service, /practiceAnswerQueueItem\.deleteMany\(\{ where: \{ userId \} \}\)/);
+  assert.match(service, /practiceSession\.deleteMany\(\{ where: \{ userId \} \}\)/);
+});
+
 test('practice resume sessions have account-scoped persistence safeguards', () => {
   const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
   const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');

@@ -154,18 +154,34 @@ test('batch dedupe keeps one record per clientAnswerId and per session question'
   ]);
 });
 
-test('practice view submits pending answers only from explicit finish flow', () => {
+test('practice view keeps per-answer writes local and flushes the session on lifecycle exits', () => {
   const source = readFileSync(new URL('../src/views/PracticeView.vue', import.meta.url), 'utf8');
   const submitAnswerBody = source.match(/function submitAnswer\(\) \{[\s\S]*?\n\}/)?.[0] || '';
-  const confirmOptionBody = source.match(/function confirmOption\(key: string\) \{[\s\S]*?\n\}/)?.[0] || '';
+  const pageHideBody = source.match(/function handlePracticePageHide\(\) \{[\s\S]*?\n\}/)?.[0] || '';
+  const beforeUnloadBody = source.match(/function handlePracticeBeforeUnload\(\) \{[\s\S]*?\n\}/)?.[0] || '';
+  const visibilityBody = source.match(/function handleVisibilityChange\(\) \{[\s\S]*?\n\}/)?.[0] || '';
 
   assert.match(source, /practiceSessionId/);
   assert.match(source, /submitCurrentPracticeSession/);
+  assert.match(source, /submitCurrentPracticeSessionKeepalive/);
   assert.match(source, /clientSubmissionId/);
   assert.match(source, /提交失败，答案已暂存在本机，请稍后重试/);
   assert.doesNotMatch(submitAnswerBody, /schedulePendingAnswerRetry/);
-  assert.doesNotMatch(confirmOptionBody, /submitAnswer\(\)/);
-  assert.doesNotMatch(source, /window\.addEventListener\('online', handlePendingAnswerOnline\)/);
+  assert.doesNotMatch(submitAnswerBody, /syncPendingAnswers/);
+  assert.match(pageHideBody, /submitCurrentPracticeSessionKeepalive\(\)/);
+  assert.match(beforeUnloadBody, /submitCurrentPracticeSessionKeepalive\(\)/);
+  assert.match(visibilityBody, /submitCurrentPracticeSessionKeepalive\(\)/);
+  assert.match(source, /window\.addEventListener\('online', handlePendingAnswerOnline\)/);
+  assert.match(source, /groupPendingAnswerRecordsByPracticeSession/);
+});
+
+test('pending answer keepalive posts one compact batch per practice session', () => {
+  const source = readFileSync(new URL('../src/utils/pendingAnswerSync.ts', import.meta.url), 'utf8');
+
+  assert.match(source, /postKeepalive\('\/practice\/answers\/batch'/);
+  assert.match(source, /practiceSessionId/);
+  assert.match(source, /compact:\s*true/);
+  assert.doesNotMatch(source, /\/practice\/answers'/);
 });
 
 test('successful sync removes the pending answer', () => {
@@ -271,10 +287,11 @@ test('practice view batches pending answer sync and keeps local pending records 
   assert.match(source, /\/practice\/answers\/batch/);
   assert.match(source, /PENDING_ANSWER_SYNC_BATCH_SIZE = 20/);
   assert.match(source, /dedupePendingAnswerRecords/);
-  assert.match(source, /uniqueRecords\.map\(pendingAnswerPayload\)/);
+  assert.match(source, /buildPendingAnswerBatchPayload\(uniqueRecords/);
+  assert.match(source, /groupPendingAnswerRecordsByPracticeSession\(batchRecords\)/);
   assert.match(source, /catch \(error\) \{[\s\S]*markPendingAnswerSyncError/);
   assert.doesNotMatch(
-    source.match(/async function syncPendingAnswerBatch[\s\S]*?async function syncPendingAnswerSingle/)?.[0] || '',
+    source.match(/async function syncPendingAnswerBatch[\s\S]*?async function syncPendingAnswers/)?.[0] || '',
     /catch \(error\) \{[\s\S]*removePendingAnswer/
   );
 });

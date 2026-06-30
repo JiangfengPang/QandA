@@ -22,6 +22,7 @@ type SessionQueueItem = {
   userId: string;
   practiceSessionId: string;
   answersJson: unknown;
+  payloadVersion: number;
   status: string;
   retryCount: number;
 };
@@ -229,6 +230,13 @@ export function dedupeSessionAnswers(practiceSessionId: string, items: PracticeA
   return [...bySessionQuestion.values()];
 }
 
+export function mergeSessionQueueAnswers(practiceSessionId: string, existing: unknown, incoming: PracticeAnswerQueueInput[]) {
+  return dedupeSessionAnswers(practiceSessionId, [
+    ...normalizeSessionQueueAnswers(existing),
+    ...incoming
+  ]);
+}
+
 async function ensurePracticeSession(userId: string, input: PracticeAnswerSessionSubmissionInput, answerCount: number) {
   const practiceSessionId = normalizeText(input.practiceSessionId, 191);
   if (!practiceSessionId) throw new HttpError('练习会话标识不能为空', 400);
@@ -261,37 +269,37 @@ export async function enqueuePracticeAnswerSessionSubmission(userId: string, inp
   await ensurePracticeSession(userId, { ...input, practiceSessionId, clientSubmissionId }, answers.length);
   const payload = answers as unknown as Prisma.InputJsonValue;
 
+  const existingByClientSubmission = await prisma.practiceAnswerSubmissionQueue.findUnique({
+    where: { userId_clientSubmissionId: { userId, clientSubmissionId } },
+    select: { practiceSessionId: true }
+  });
+  if (existingByClientSubmission && existingByClientSubmission.practiceSessionId !== practiceSessionId) {
+    throw new HttpError('提交标识已用于其他练习会话', 409);
+  }
+
   const existingBySession = await prisma.practiceAnswerSubmissionQueue.findUnique({
     where: { userId_practiceSessionId: { userId, practiceSessionId } },
-    select: { id: true, status: true }
+    select: { id: true, status: true, answersJson: true, payloadVersion: true }
   });
 
   if (existingBySession) {
-    if (existingBySession.status === STATUS_PROCESSED) {
-      return {
-        accepted: answers.length,
-        queued: 0,
-        submissionStatus: STATUS_PROCESSED,
-        results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status: `duplicate:${STATUS_PROCESSED}` }))
-      };
-    }
-
-    if (existingBySession.status === STATUS_PROCESSING) {
-      return {
-        accepted: answers.length,
-        queued: 0,
-        submissionStatus: STATUS_PROCESSING,
-        results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status: `duplicate:${STATUS_PROCESSING}` }))
-      };
-    }
+    const mergedAnswers = mergeSessionQueueAnswers(practiceSessionId, existingBySession.answersJson, answers);
+    const mergedPayload = mergedAnswers as unknown as Prisma.InputJsonValue;
+    const nextStatus = existingBySession.status === STATUS_PROCESSING
+      ? STATUS_PROCESSING
+      : (existingBySession.status === STATUS_PENDING || existingBySession.status === STATUS_RETRYING)
+        ? existingBySession.status
+        : STATUS_RETRYING;
 
     await prisma.practiceAnswerSubmissionQueue.update({
       where: { id: existingBySession.id },
       data: {
         clientSubmissionId,
-        answersJson: payload,
-        status: existingBySession.status === STATUS_FAILED ? STATUS_RETRYING : existingBySession.status,
+        answersJson: mergedPayload,
+        payloadVersion: { increment: 1 },
+        status: nextStatus,
         nextRunAt: new Date(),
+        processedAt: null,
         lastError: null
       }
     });
@@ -299,17 +307,9 @@ export async function enqueuePracticeAnswerSessionSubmission(userId: string, inp
     return {
       accepted: answers.length,
       queued: 0,
-      submissionStatus: existingBySession.status,
-      results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status: `duplicate:${existingBySession.status}` }))
+      submissionStatus: nextStatus,
+      results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status: `duplicate:${queueStatusLabel(nextStatus)}` }))
     };
-  }
-
-  const existingByClientSubmission = await prisma.practiceAnswerSubmissionQueue.findUnique({
-    where: { userId_clientSubmissionId: { userId, clientSubmissionId } },
-    select: { practiceSessionId: true }
-  });
-  if (existingByClientSubmission && existingByClientSubmission.practiceSessionId !== practiceSessionId) {
-    throw new HttpError('提交标识已用于其他练习会话', 409);
   }
 
   await prisma.practiceAnswerSubmissionQueue.create({
@@ -461,6 +461,27 @@ async function markSessionQueueItemProcessed(item: SessionQueueItem, summary: {
   correctCount: number;
   durationSeconds: number;
 }) {
+  const current = await prisma.practiceAnswerSubmissionQueue.findUnique({
+    where: { id: item.id },
+    select: { payloadVersion: true }
+  });
+  if (!current) return;
+
+  if (current.payloadVersion !== item.payloadVersion) {
+    await prisma.practiceAnswerSubmissionQueue.update({
+      where: { id: item.id },
+      data: {
+        status: STATUS_RETRYING,
+        lockedAt: null,
+        processedAt: null,
+        processedPayloadVersion: item.payloadVersion,
+        lastError: null,
+        nextRunAt: new Date()
+      }
+    });
+    return;
+  }
+
   await prisma.$transaction([
     prisma.practiceSession.update({
       where: { id: item.practiceSessionId },
@@ -478,6 +499,7 @@ async function markSessionQueueItemProcessed(item: SessionQueueItem, summary: {
         status: STATUS_PROCESSED,
         lockedAt: null,
         processedAt: new Date(),
+        processedPayloadVersion: item.payloadVersion,
         lastError: null
       }
     })
