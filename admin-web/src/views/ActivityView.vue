@@ -36,7 +36,7 @@
               <strong>答题趋势</strong>
               <span>每日答题次数与活跃用户数</span>
             </div>
-            <el-tag effect="plain">{{ days }} 天</el-tag>
+            <el-tag effect="plain">{{ rangeLabel }}</el-tag>
           </div>
         </template>
         <div ref="chartRef" class="activity-chart" />
@@ -68,12 +68,12 @@
       <template #header>
         <div class="card-heading">
           <div>
-            <strong>近 7 天活跃用户排行</strong>
+            <strong>{{ rangeLabel }}活跃用户排行</strong>
             <span>按答题次数排序，帮助识别高活跃学习用户</span>
           </div>
         </div>
       </template>
-      <el-table :data="data.topActiveUsers" stripe empty-text="近 7 天暂无答题记录">
+      <el-table :data="data.topActiveUsers" stripe :empty-text="`${rangeLabel}暂无答题记录`">
         <el-table-column type="index" label="排名" width="72" align="center" />
         <el-table-column prop="nickname" label="昵称" min-width="140" />
         <el-table-column prop="email" label="QQ 邮箱" min-width="190">
@@ -128,6 +128,7 @@ type ActivityData = {
   onlineWindowMinutes: number;
   onlineWindowSeconds?: number;
   checkedAt: string;
+  rangeDays?: number;
   online?: {
     effectiveUsers: number;
     validAccountTotal: number;
@@ -141,10 +142,14 @@ type ActivityData = {
     totalStudents: number;
     onlineCount: number;
     activeToday: number;
+    activeRangeDays: number;
     activeSevenDays: number;
     answersToday: number;
+    answersRangeDays: number;
     answersSevenDays: number;
+    accuracyRangeDays: number;
     accuracySevenDays: number;
+    durationRangeDays: number;
     durationSevenDays: number;
   };
   onlineUsers: Array<{ id: string; nickname: string; email: string | null; lastSeenAt: string }>;
@@ -170,6 +175,7 @@ const emptyData = (): ActivityData => ({
   onlineWindowMinutes: 1.5,
   onlineWindowSeconds: 90,
   checkedAt: '',
+  rangeDays: 14,
   activityAggregation: {
     generatedAt: '',
     lagSeconds: null,
@@ -182,10 +188,14 @@ const emptyData = (): ActivityData => ({
     totalStudents: 0,
     onlineCount: 0,
     activeToday: 0,
+    activeRangeDays: 0,
     activeSevenDays: 0,
     answersToday: 0,
+    answersRangeDays: 0,
     answersSevenDays: 0,
+    accuracyRangeDays: 0,
     accuracySevenDays: 0,
+    durationRangeDays: 0,
     durationSevenDays: 0
   },
   onlineUsers: [],
@@ -205,13 +215,15 @@ let summaryRequestId = 0;
 let detailRequestId = 0;
 let detailFrameId: number | undefined;
 
+const rangeLabel = computed(() => `近 ${data.value.rangeDays || days.value} 天`);
+
 const metrics = computed(() => [
   { label: '当前在线', value: data.value.summary.onlineCount, hint: `共 ${data.value.summary.totalStudents} 个有效学生账号总数`, icon: UserFilled, tone: 'blue' },
   { label: '今日活跃', value: data.value.summary.activeToday, hint: '今日有答题记录的用户', icon: User, tone: 'cyan' },
   { label: '今日答题', value: data.value.summary.answersToday, hint: '今日提交的答案总数', icon: Select, tone: 'indigo' },
-  { label: '近 7 天活跃', value: data.value.summary.activeSevenDays, hint: '近 7 天独立答题用户', icon: DataAnalysis, tone: 'violet' },
-  { label: '近 7 天答题', value: data.value.summary.answersSevenDays, hint: `累计 ${formatDuration(data.value.summary.durationSevenDays)}`, icon: Timer, tone: 'orange' },
-  { label: '近 7 天正确率', value: `${data.value.summary.accuracySevenDays}%`, hint: '按正式答题记录计算', icon: Clock, tone: 'green' }
+  { label: `${rangeLabel.value}活跃`, value: data.value.summary.activeRangeDays, hint: `${rangeLabel.value}独立答题用户`, icon: DataAnalysis, tone: 'violet' },
+  { label: `${rangeLabel.value}答题`, value: data.value.summary.answersRangeDays, hint: `累计 ${formatDuration(data.value.summary.durationRangeDays)}`, icon: Timer, tone: 'orange' },
+  { label: `${rangeLabel.value}正确率`, value: `${data.value.summary.accuracyRangeDays}%`, hint: '按正式答题记录计算', icon: Clock, tone: 'green' }
 ]);
 
 const onlineWindowLabel = computed(() => {

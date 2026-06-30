@@ -703,7 +703,7 @@ test('admin activity trend uses application day buckets and distinct active user
 
 test('admin activity stats derive summary, trend and ranking from daily user aggregates', () => {
   const trendStart = new Date(2026, 5, 24);
-  const sevenDayStart = new Date(2026, 5, 26);
+  const rangeStart = trendStart;
   const today = new Date(2026, 6, 2);
   const stats = buildActivityStatsFromDailyUserAggregates([
     {
@@ -742,15 +742,19 @@ test('admin activity stats derive summary, trend and ranking from daily user agg
       correctCount: 2,
       durationSeconds: 80
     }
-  ], trendStart, 9, sevenDayStart, today);
+  ], trendStart, 9, rangeStart, today);
 
   assert.deepEqual(stats.summary, {
     activeToday: 1,
-    activeSevenDays: 2,
+    activeRangeDays: 3,
+    activeSevenDays: 3,
     answersToday: 4,
-    answersSevenDays: 9,
-    correctSevenDays: 6,
-    durationSevenDays: 160
+    answersRangeDays: 19,
+    answersSevenDays: 19,
+    correctRangeDays: 16,
+    correctSevenDays: 16,
+    durationRangeDays: 260,
+    durationSevenDays: 260
   });
   assert.deepEqual(
     stats.trend.map((row) => ({
@@ -779,6 +783,7 @@ test('admin activity stats derive summary, trend and ranking from daily user agg
     accuracy: row.accuracy,
     durationSeconds: row.durationSeconds
   })), [
+    { id: 'u-old', answerCount: 10, correctCount: 10, accuracy: 100, durationSeconds: 100 },
     { id: 'u-a', answerCount: 5, correctCount: 4, accuracy: 80, durationSeconds: 80 },
     { id: 'u-b', answerCount: 4, correctCount: 2, accuracy: 50, durationSeconds: 80 }
   ]);

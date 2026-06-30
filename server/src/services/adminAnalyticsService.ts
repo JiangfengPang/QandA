@@ -129,15 +129,15 @@ export function buildActivityStatsFromDailyUserAggregates(
   rows: DailyUserActivityAggregateRow[],
   trendStart: Date,
   days: number,
-  sevenDayStart: Date,
+  rangeStart: Date,
   today: Date,
   topLimit = 10
 ) {
   const todayKey = dayKey(today);
-  const sevenDayStartKey = dayKey(sevenDayStart);
+  const rangeStartKey = dayKey(rangeStart);
   const trendMap = new Map<string, { answerCount: number; correctCount: number; activeUserCount: number }>();
   const activeTodayUserIds = new Set<string>();
-  const activeSevenDayUserIds = new Set<string>();
+  const activeRangeUserIds = new Set<string>();
   const topUserMap = new Map<string, {
     id: string;
     nickname: string;
@@ -147,9 +147,9 @@ export function buildActivityStatsFromDailyUserAggregates(
     durationSeconds: number;
   }>();
   let answersToday = 0;
-  let answersSevenDays = 0;
-  let correctSevenDays = 0;
-  let durationSevenDays = 0;
+  let answersRangeDays = 0;
+  let correctRangeDays = 0;
+  let durationRangeDays = 0;
 
   for (let index = 0; index < days; index += 1) {
     trendMap.set(dayKey(addDays(trendStart, index)), { answerCount: 0, correctCount: 0, activeUserCount: 0 });
@@ -166,11 +166,11 @@ export function buildActivityStatsFromDailyUserAggregates(
       if (answerCount > 0) trendRow.activeUserCount += 1;
     }
 
-    if (row.date < sevenDayStartKey) continue;
-    activeSevenDayUserIds.add(row.userId);
-    answersSevenDays += answerCount;
-    correctSevenDays += correctCount;
-    durationSevenDays += durationSeconds;
+    if (row.date < rangeStartKey) continue;
+    activeRangeUserIds.add(row.userId);
+    answersRangeDays += answerCount;
+    correctRangeDays += correctCount;
+    durationRangeDays += durationSeconds;
 
     const topUser = topUserMap.get(row.userId) || {
       id: row.userId,
@@ -221,11 +221,15 @@ export function buildActivityStatsFromDailyUserAggregates(
   return {
     summary: {
       activeToday: activeTodayUserIds.size,
-      activeSevenDays: activeSevenDayUserIds.size,
+      activeRangeDays: activeRangeUserIds.size,
       answersToday,
-      answersSevenDays,
-      correctSevenDays,
-      durationSevenDays
+      answersRangeDays,
+      correctRangeDays,
+      durationRangeDays,
+      activeSevenDays: activeRangeUserIds.size,
+      answersSevenDays: answersRangeDays,
+      correctSevenDays: correctRangeDays,
+      durationSevenDays: durationRangeDays
     },
     trend,
     topActiveUsers
@@ -254,7 +258,6 @@ async function buildDailyUserActivitySnapshot(days: number) {
   const now = new Date();
   const today = dayStart(now);
   const tomorrow = addDays(today, 1);
-  const sevenDayStart = addDays(today, -6);
   const trendStart = addDays(today, -(days - 1));
   const statRows = await prisma.userDailyActivityStat.findMany({
     where: {
@@ -281,8 +284,8 @@ async function buildDailyUserActivitySnapshot(days: number) {
     correctCount: row.correctCount,
     durationSeconds: row.durationSeconds
   }));
-  const computedStats = buildActivityStatsFromDailyUserAggregates(rows, trendStart, days, sevenDayStart, today);
-  return { now, today, sevenDayStart, trendStart, rows, stats: computedStats };
+  const computedStats = buildActivityStatsFromDailyUserAggregates(rows, trendStart, days, trendStart, today);
+  return { now, today, rangeStart: trendStart, trendStart, rows, stats: computedStats };
 }
 
 async function loadDailyUserActivitySnapshot(days: number, controls: { userForceLogoutAt: Date | null }) {
@@ -331,17 +334,18 @@ async function buildAdminActivitySummary(
     snapshot.rows,
     snapshot.trendStart,
     days,
-    snapshot.sevenDayStart,
+    snapshot.rangeStart,
     snapshot.today
   );
-  const answersSevenDays = aggregateStats.summary.answersSevenDays;
-  const correctSevenDays = aggregateStats.summary.correctSevenDays;
+  const answersRangeDays = aggregateStats.summary.answersRangeDays;
+  const correctRangeDays = aggregateStats.summary.correctRangeDays;
   const generatedAt = snapshot.now.toISOString();
 
   return {
     onlineWindowMinutes: PRESENCE_ONLINE_WINDOW_SECONDS / 60,
     onlineWindowSeconds: PRESENCE_ONLINE_WINDOW_SECONDS,
     checkedAt: generatedAt,
+    rangeDays: days,
     online: {
       effectiveUsers: onlineCount,
       validAccountTotal: totalStudents
@@ -355,10 +359,16 @@ async function buildAdminActivitySummary(
       totalStudents,
       onlineCount,
       activeToday: aggregateStats.summary.activeToday,
+      activeRangeDays: aggregateStats.summary.activeRangeDays,
       activeSevenDays: aggregateStats.summary.activeSevenDays,
       answersToday: aggregateStats.summary.answersToday,
-      answersSevenDays,
-      accuracySevenDays: answersSevenDays ? Math.round((correctSevenDays / answersSevenDays) * 100) : 0,
+      answersRangeDays,
+      accuracyRangeDays: answersRangeDays ? Math.round((correctRangeDays / answersRangeDays) * 100) : 0,
+      correctRangeDays,
+      durationRangeDays: aggregateStats.summary.durationRangeDays,
+      answersSevenDays: answersRangeDays,
+      accuracySevenDays: answersRangeDays ? Math.round((correctRangeDays / answersRangeDays) * 100) : 0,
+      correctSevenDays: correctRangeDays,
       durationSevenDays: aggregateStats.summary.durationSevenDays
     },
     trend: aggregateStats.trend
@@ -381,7 +391,7 @@ async function buildAdminActivityDetail(
     snapshot.rows,
     snapshot.trendStart,
     days,
-    snapshot.sevenDayStart,
+    snapshot.rangeStart,
     snapshot.today
   );
 
