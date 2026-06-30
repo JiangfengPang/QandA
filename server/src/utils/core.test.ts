@@ -8,8 +8,13 @@ import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
 import { createVerificationCode } from './verificationCode.js';
 import { assertAllowedNickname, hasForbiddenNickname, normalizeNickname } from './nicknamePolicy.js';
-import { buildActivityStatsFromDailyUserAggregates, buildDailyActivityTrend } from '../services/adminAnalyticsService.js';
+import {
+  activityDetailCacheKey,
+  buildActivityStatsFromDailyUserAggregates,
+  buildDailyActivityTrend
+} from '../services/adminAnalyticsService.js';
 import { assertStandardObjectiveQuestionImport, assertStandardReadingQuestionImport } from '../services/importService.js';
+import { countPendingSessionAnswersFromQueuePayloads } from '../services/practiceStatsService.js';
 import {
   isPresenceSessionOnline,
   normalizePresenceSessionId,
@@ -313,6 +318,37 @@ test('reading passage counts as one effective question group', () => {
   assert.equal(summary.accuracy, 50);
 });
 
+test('partial reading passage answers still count as started progress', () => {
+  const answeredAt = new Date('2026-06-01T09:00:00.000Z');
+  const questions = [
+    { id: 'r1', bankId: 'bank-a', type: 'reading', rawJson: { passageId: 'passage-one' } },
+    { id: 'r2', bankId: 'bank-a', type: 'reading', rawJson: { passageId: 'passage-one' } },
+    { id: 'q1', bankId: 'bank-a', type: 'single', rawJson: null }
+  ];
+
+  const summary = summarizeEffectiveAnswers(questions, [
+    { questionId: 'r1', isCorrect: true, createdAt: answeredAt }
+  ]);
+
+  assert.equal(effectiveQuestionCount(questions), 2);
+  assert.equal(summary.answerCount, 1);
+  assert.equal(summary.correctCount, 0);
+  assert.equal(summary.wrongCount, 1);
+  assert.equal(summary.accuracy, 0);
+});
+
+test('practice review summary counts pending session queue answers', () => {
+  const service = readFileSync(new URL('../services/practiceStatsService.ts', import.meta.url), 'utf8');
+  const loadSummaryBlock = service.slice(
+    service.indexOf('async function loadPracticeReviewSummary'),
+    service.indexOf('export async function getPracticeReviewSummary')
+  );
+
+  assert.match(loadSummaryBlock, /countPendingPracticeAnswers\(userId,\s*questionFilter\)/);
+  assert.doesNotMatch(loadSummaryBlock, /practiceAnswerQueueItem\.count/);
+  assert.doesNotMatch(loadSummaryBlock, /queueStatuses/);
+});
+
 test('reading JSON import accepts only the standard field names', () => {
   const standardReadingQuestion = {
     id: 'passage-one-q1',
@@ -611,6 +647,24 @@ test('practice review summary uses user-scoped short cache and reports queued an
   assert.match(service, /syncing: queuedAnswerCount > 0/);
 });
 
+test('practice stats can expose pending session queue answer counts', () => {
+  const payloads = [
+    [
+      { questionId: 'q-a', clientAnswerId: 'a-1' },
+      { questionId: 'q-b', clientAnswerId: 'b-1' },
+      { questionId: '', clientAnswerId: 'missing-question' }
+    ],
+    [
+      { questionId: 'q-c', clientAnswerId: 'c-1' },
+      { questionId: 'q-b', clientAnswerId: 'b-latest' }
+    ],
+    { not: 'an array' }
+  ];
+
+  assert.equal(countPendingSessionAnswersFromQueuePayloads(payloads), 3);
+  assert.equal(countPendingSessionAnswersFromQueuePayloads(payloads, new Set(['q-b', 'q-c'])), 2);
+});
+
 test('admin activity trend uses application day buckets and distinct active users', () => {
   const trendStart = new Date(2026, 5, 26);
   const trend = buildDailyActivityTrend([
@@ -719,6 +773,12 @@ test('admin activity stats derive summary, trend and ranking from daily user agg
   ]);
 });
 
+test('admin activity detail cache is independent of trend-day selector', () => {
+  const forceLogoutAt = new Date('2026-06-30T00:00:00.000Z');
+  assert.equal(activityDetailCacheKey(forceLogoutAt), activityDetailCacheKey(forceLogoutAt));
+  assert.notEqual(activityDetailCacheKey(forceLogoutAt), activityDetailCacheKey(new Date('2026-06-30T00:00:01.000Z')));
+});
+
 test('presence online window requires a fresh unended heartbeat', () => {
   const now = new Date('2026-06-28T12:00:00.000Z');
 
@@ -803,5 +863,7 @@ test('presence and activity monitoring stay effective and non-blocking during ma
   assert.match(adminRoute, /router\.get\('\/activity\/detail'/);
   assert.match(activityView, /summaryLoading/);
   assert.match(activityView, /detailLoading/);
+  assert.match(activityView, /@change="loadSummary"/);
+  assert.doesNotMatch(activityView, /@change="loadActivity"/);
   assert.doesNotMatch(activityView, /v-loading="loading"/);
 });

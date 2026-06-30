@@ -19,9 +19,9 @@
         />
         <StatsMetricCard
           label="已做题数"
-          :value="stats.answerCount || 0"
+          :value="displayAnswerCount"
           unit="题"
-          :sub="`完成度 ${completionRate}%`"
+          :sub="answerProgressSubText"
           icon="check-circle"
           tone="green"
         />
@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted } from 'vue';
 import StatsTopbar from '../components/stats/StatsTopbar.vue';
 import StatsMetricCard from '../components/stats/StatsMetricCard.vue';
 import LearningAdvicePanel from '../components/stats/LearningAdvicePanel.vue';
@@ -101,9 +101,10 @@ const {
   stats,
   loading,
   clearing,
-  completionRate,
+  displayAnswerCount,
   unansweredCount,
   studyDurationLabel,
+  answerProgressSubText,
   wrongDistribution,
   hasWrongDistribution,
   subjectMasteryList,
@@ -114,31 +115,97 @@ const {
 
 const { trendRef, wrongRef, renderCharts, disposeCharts, resizeCharts } = useStatsCharts(stats, wrongDistribution, hasWrongDistribution);
 
-onMounted(async () => {
-  await refreshAndRender();
+onMounted(() => {
+  mounted = true;
   window.addEventListener('resize', resizeCharts);
+  window.addEventListener('focus', handleWindowFocus);
+  window.addEventListener('pageshow', handlePageShow);
+  window.addEventListener('qanda:stats-updated', handleStatsUpdated);
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  void refreshAndRender();
 });
 
 onBeforeUnmount(() => {
+  mounted = false;
   window.removeEventListener('resize', resizeCharts);
+  window.removeEventListener('focus', handleWindowFocus);
+  window.removeEventListener('pageshow', handlePageShow);
+  window.removeEventListener('qanda:stats-updated', handleStatsUpdated);
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+  clearScheduledRefresh();
+  clearScheduledChartRender();
   disposeCharts();
 });
 
-async function refreshAndRender() {
-  await loadStats();
+let mounted = false;
+let refreshFrameId: number | undefined;
+let chartFrameId: number | undefined;
+let resizeTimerId: ReturnType<typeof setTimeout> | undefined;
+
+async function refreshAndRender(options: { silent?: boolean } = {}) {
+  await loadStats(options);
+  await renderChartsAfterStatsChange();
+}
+
+async function renderChartsAfterStatsChange() {
   await nextTick();
-  requestAnimationFrame(() => {
+  if (!mounted) return;
+  clearScheduledChartRender();
+  chartFrameId = requestAnimationFrame(() => {
+    chartFrameId = undefined;
+    if (!mounted) return;
     renderCharts();
-    setTimeout(resizeCharts, 80);
+    resizeTimerId = setTimeout(() => {
+      resizeTimerId = undefined;
+      if (mounted) resizeCharts();
+    }, 80);
   });
+}
+
+function scheduleRefreshAndRender() {
+  if (refreshFrameId !== undefined) return;
+  refreshFrameId = requestAnimationFrame(() => {
+    refreshFrameId = undefined;
+    void refreshAndRender({ silent: true });
+  });
+}
+
+function handleStatsUpdated() {
+  if (clearing.value) return;
+  scheduleRefreshAndRender();
+}
+
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible') scheduleRefreshAndRender();
+}
+
+function handleWindowFocus() {
+  scheduleRefreshAndRender();
+}
+
+function handlePageShow() {
+  scheduleRefreshAndRender();
+}
+
+function clearScheduledRefresh() {
+  if (refreshFrameId === undefined) return;
+  cancelAnimationFrame(refreshFrameId);
+  refreshFrameId = undefined;
+}
+
+function clearScheduledChartRender() {
+  if (chartFrameId !== undefined) {
+    cancelAnimationFrame(chartFrameId);
+    chartFrameId = undefined;
+  }
+  if (resizeTimerId !== undefined) {
+    clearTimeout(resizeTimerId);
+    resizeTimerId = undefined;
+  }
 }
 
 async function handleClearRecords() {
   await clearRecords();
-  await nextTick();
-  requestAnimationFrame(() => {
-    renderCharts();
-    resizeCharts();
-  });
+  await renderChartsAfterStatsChange();
 }
 </script>

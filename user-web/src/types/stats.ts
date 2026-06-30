@@ -45,6 +45,9 @@ export type StatsPayload = {
   accuracy: number;
   favoriteCount: number;
   wrongQuestionCount: number;
+  pendingAnswerCount: number;
+  queuedAnswerCount: number;
+  syncing: boolean;
   totalDurationSeconds: number;
   dailyTrend: DailyTrend[];
   subjectStats: SubjectStat[];
@@ -71,6 +74,9 @@ export const defaultStatsPayload = (): StatsPayload => ({
   accuracy: 0,
   favoriteCount: 0,
   wrongQuestionCount: 0,
+  pendingAnswerCount: 0,
+  queuedAnswerCount: 0,
+  syncing: false,
   totalDurationSeconds: 0,
   dailyTrend: [],
   subjectStats: [],
@@ -78,3 +84,16 @@ export const defaultStatsPayload = (): StatsPayload => ({
   subjectOverview: { notStarted: 0, inProgress: 0, completed: 0 },
   recentBank: null
 });
+
+export function answeredCountForDisplay(stats: Pick<StatsPayload, 'totalQuestionCount' | 'answerCount' | 'pendingAnswerCount'>) {
+  const total = Math.max(0, Number(stats.totalQuestionCount || 0));
+  const answered = Math.max(0, Number(stats.answerCount || 0));
+  const pending = Math.max(0, Number(stats.pendingAnswerCount || 0));
+  return total ? Math.min(total, answered + pending) : answered + pending;
+}
+
+export function completionRateForDisplay(stats: Pick<StatsPayload, 'totalQuestionCount' | 'answerCount' | 'pendingAnswerCount'>) {
+  const total = Math.max(0, Number(stats.totalQuestionCount || 0));
+  if (!total) return 0;
+  return Math.min(100, Math.round((answeredCountForDisplay(stats) / total) * 100));
+}

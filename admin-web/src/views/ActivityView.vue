@@ -7,7 +7,7 @@
         <p>当前在线指最近 {{ onlineWindowLabel }}内持续发送心跳的有效学生端账号，答题活跃指标来自正式答题记录。</p>
       </div>
       <div class="hero-actions">
-        <el-select v-model="days" style="width: 128px" @change="loadActivity">
+        <el-select v-model="days" style="width: 128px" @change="loadSummary">
           <el-option :value="7" label="近 7 天" />
           <el-option :value="14" label="近 14 天" />
           <el-option :value="30" label="近 30 天" />
@@ -307,10 +307,10 @@ async function loadDetail() {
 }
 
 async function loadActivity() {
-  await Promise.allSettled([
-    loadSummary(),
-    loadDetail()
-  ]);
+  await loadSummary();
+  requestAnimationFrame(() => {
+    void loadDetail();
+  });
 }
 
 function resizeChart() {

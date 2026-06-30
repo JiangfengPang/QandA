@@ -255,6 +255,11 @@ function activityCacheKey(days: number, userForceLogoutAt?: Date | null, ttlMs =
   return `${days}:${userForceLogoutAt?.getTime() || 0}:${ttlMs}:${bucket}`;
 }
 
+export function activityDetailCacheKey(userForceLogoutAt?: Date | null, ttlMs = ACTIVITY_DETAIL_CACHE_TTL_MS) {
+  const bucket = Math.floor(Date.now() / ttlMs);
+  return `detail:${userForceLogoutAt?.getTime() || 0}:${ttlMs}:${bucket}`;
+}
+
 async function buildAdminActivitySummary(
   trendDays = 14,
   controls?: { userForceLogoutAt: Date | null }
@@ -423,7 +428,7 @@ export async function getAdminActivitySummary(trendDays = 14, options: { force?:
 export async function getAdminActivityDetail(trendDays = 14, options: { force?: boolean } = {}) {
   const days = clampActivityDays(trendDays);
   const controls = await getSystemControls();
-  const key = activityCacheKey(days, controls.userForceLogoutAt, ACTIVITY_DETAIL_CACHE_TTL_MS);
+  const key = activityDetailCacheKey(controls.userForceLogoutAt);
   if (!options.force && detailCache && detailCache.key === key && detailCache.expiresAt > Date.now()) {
     return detailCache.value;
   }

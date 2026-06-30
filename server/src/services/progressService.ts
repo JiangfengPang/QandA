@@ -95,9 +95,11 @@ export function summarizeEffectiveAnswers(
 
   for (const questionIds of groups.values()) {
     const latestAnswers = questionIds.map((id) => latest.get(id)).filter(Boolean) as AnswerSummaryInput[];
-    if (latestAnswers.length !== questionIds.length) continue;
+    if (!latestAnswers.length) continue;
     answerCount += 1;
-    if (latestAnswers.every((answer) => answer.isCorrect)) correctCount += 1;
+    if (latestAnswers.length === questionIds.length && latestAnswers.every((answer) => answer.isCorrect)) {
+      correctCount += 1;
+    }
   }
 
   const wrongGroupKeys = new Set<string>();

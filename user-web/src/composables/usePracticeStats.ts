@@ -2,7 +2,7 @@ import { computed, ref } from 'vue';
 import { showConfirmDialog, showToast } from 'vant';
 import { api } from '../api/request';
 import type { LearningAdvice, StatsPayload, SubjectStat } from '../types/stats';
-import { defaultStatsPayload } from '../types/stats';
+import { answeredCountForDisplay, completionRateForDisplay, defaultStatsPayload } from '../types/stats';
 import { formatDuration } from '../utils/duration';
 
 export function subjectProgress(subject: SubjectStat) {
@@ -15,15 +15,19 @@ export function usePracticeStats() {
   const loading = ref(true);
   const clearing = ref(false);
   const stats = ref<StatsPayload>(defaultStatsPayload());
+  const displayAnswerCount = computed(() => answeredCountForDisplay(stats.value));
+  const pendingAnswerCount = computed(() => Math.max(0, Number(stats.value.pendingAnswerCount || 0)));
 
-  const completionRate = computed(() => {
-    const total = Number(stats.value.totalQuestionCount || 0);
-    if (!total) return 0;
-    return Math.min(100, Math.round((Number(stats.value.answerCount || 0) / total) * 100));
-  });
+  const completionRate = computed(() => completionRateForDisplay(stats.value));
 
-  const unansweredCount = computed(() => Math.max(Number(stats.value.totalQuestionCount || 0) - Number(stats.value.answerCount || 0), 0));
+  const unansweredCount = computed(() => Math.max(Number(stats.value.totalQuestionCount || 0) - displayAnswerCount.value, 0));
   const studyDurationLabel = computed(() => formatDuration(Number(stats.value.totalDurationSeconds || 0)));
+  const answerProgressSubText = computed(() => {
+    if (pendingAnswerCount.value > 0) {
+      return `正式 ${stats.value.answerCount || 0} 题 · 同步中 ${pendingAnswerCount.value} 条 · 完成度 ${completionRate.value}%`;
+    }
+    return `完成度 ${completionRate.value}%`;
+  });
 
   const wrongDistribution = computed(() => {
     return [...(stats.value.subjectStats || [])]
@@ -67,6 +71,15 @@ export function usePracticeStats() {
       });
     }
 
+    if (pendingAnswerCount.value > 0) {
+      advice.push({
+        type: 'warn',
+        icon: 'clock',
+        title: '答案正在同步',
+        desc: `还有 ${pendingAnswerCount.value} 条答案已提交到队列，正式统计会在处理完成后刷新。`
+      });
+    }
+
     if (unansweredCount.value > 0) {
       advice.push({
         type: 'blue',
@@ -88,14 +101,14 @@ export function usePracticeStats() {
     return advice.slice(0, 3);
   });
 
-  async function loadStats() {
-    loading.value = true;
+  async function loadStats(options: { silent?: boolean } = {}) {
+    if (!options.silent) loading.value = true;
     try {
       stats.value = await api.get<StatsPayload>('/practice/stats');
     } catch (error) {
       showToast({ type: 'fail', message: error instanceof Error ? error.message : '统计加载失败' });
     } finally {
-      loading.value = false;
+      if (!options.silent) loading.value = false;
     }
   }
 
@@ -128,9 +141,12 @@ export function usePracticeStats() {
     stats,
     loading,
     clearing,
+    displayAnswerCount,
+    pendingAnswerCount,
     completionRate,
     unansweredCount,
     studyDurationLabel,
+    answerProgressSubText,
     wrongDistribution,
     hasWrongDistribution,
     subjectMasteryList,
