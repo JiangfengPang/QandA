@@ -779,6 +779,41 @@ test('admin activity detail cache is independent of trend-day selector', () => {
   assert.notEqual(activityDetailCacheKey(forceLogoutAt), activityDetailCacheKey(new Date('2026-06-30T00:00:01.000Z')));
 });
 
+test('admin activity summary and detail share one daily user aggregate snapshot', () => {
+  const analytics = readFileSync(new URL('../services/adminAnalyticsService.ts', import.meta.url), 'utf8');
+  const summaryBlock = analytics.slice(
+    analytics.indexOf('async function buildAdminActivitySummary'),
+    analytics.indexOf('async function buildAdminActivityDetail')
+  );
+  const detailBlock = analytics.slice(
+    analytics.indexOf('async function buildAdminActivityDetail'),
+    analytics.indexOf('export async function getAdminActivitySummary')
+  );
+
+  assert.match(analytics, /activitySnapshotCache/);
+  assert.match(analytics, /loadDailyUserActivitySnapshot/);
+  assert.match(summaryBlock, /buildActivityStatsFromDailyUserAggregates/);
+  assert.match(detailBlock, /loadDailyUserActivitySnapshot\(days,\s*systemControls/);
+  assert.doesNotMatch(summaryBlock, /SevenDaySummaryRow/);
+  assert.doesNotMatch(detailBlock, /FROM `UserAnswer` a/);
+});
+
+test('admin activity view cancels stale panel requests', () => {
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+  const request = readFileSync(new URL('../../../admin-web/src/api/request.ts', import.meta.url), 'utf8');
+
+  assert.match(request, /get:\s*<T>\(url:\s*string,\s*options\?:\s*RequestInit\)/);
+  assert.match(activityView, /AbortController/);
+  assert.match(activityView, /summaryRequestId/);
+  assert.match(activityView, /detailRequestId/);
+  assert.match(activityView, /abortActivityRequests/);
+  assert.match(activityView, /isAbortError/);
+  assert.match(activityView, /api\.get<ActivitySummaryData>\([^,]+,\s*\{\s*signal:/);
+  assert.match(activityView, /api\.get<ActivityDetailData>\([^,]+,\s*\{\s*signal:/);
+  assert.match(activityView, /function loadActivity\(\)/);
+  assert.doesNotMatch(activityView, /async function loadActivity\(\)\s*\{\s*await loadSummary/);
+});
+
 test('presence online window requires a fresh unended heartbeat', () => {
   const now = new Date('2026-06-28T12:00:00.000Z');
 

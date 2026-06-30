@@ -176,6 +176,11 @@ const days = ref(14);
 const data = ref<ActivityData>(emptyData());
 const chartRef = ref<HTMLElement>();
 let chart: ECharts | null = null;
+let summaryController: AbortController | null = null;
+let detailController: AbortController | null = null;
+let summaryRequestId = 0;
+let detailRequestId = 0;
+let detailFrameId: number | undefined;
 
 const metrics = computed(() => [
   { label: '当前在线', value: data.value.summary.onlineCount, hint: `共 ${data.value.summary.totalStudents} 个有效学生账号总数`, icon: UserFilled, tone: 'blue' },
@@ -271,10 +276,36 @@ function renderChart() {
   });
 }
 
+function isAbortError(error: unknown) {
+  return typeof error === 'object' && error !== null && 'name' in error && error.name === 'AbortError';
+}
+
+function abortActivityRequests(scope: 'summary' | 'detail' | 'all' = 'all') {
+  if ((scope === 'summary' || scope === 'all') && summaryController) {
+    summaryController.abort();
+    summaryController = null;
+  }
+  if ((scope === 'detail' || scope === 'all') && detailController) {
+    detailController.abort();
+    detailController = null;
+  }
+}
+
+function clearScheduledDetailLoad() {
+  if (detailFrameId === undefined) return;
+  cancelAnimationFrame(detailFrameId);
+  detailFrameId = undefined;
+}
+
 async function loadSummary() {
+  abortActivityRequests('summary');
+  const requestId = ++summaryRequestId;
+  const controller = new AbortController();
+  summaryController = controller;
   summaryLoading.value = true;
   try {
-    const summary = await api.get<ActivitySummaryData>(`/admin/activity/summary?days=${days.value}`);
+    const summary = await api.get<ActivitySummaryData>(`/admin/activity/summary?days=${days.value}`, { signal: controller.signal });
+    if (requestId !== summaryRequestId) return;
     data.value = {
       ...data.value,
       ...summary,
@@ -284,31 +315,47 @@ async function loadSummary() {
     await nextTick();
     renderChart();
   } catch (error) {
+    if (isAbortError(error)) return;
     ElMessage.error(error instanceof Error ? error.message : '活跃度摘要加载失败');
   } finally {
-    summaryLoading.value = false;
+    if (requestId === summaryRequestId) {
+      summaryLoading.value = false;
+      if (summaryController === controller) summaryController = null;
+    }
   }
 }
 
 async function loadDetail() {
+  abortActivityRequests('detail');
+  const requestId = ++detailRequestId;
+  const controller = new AbortController();
+  detailController = controller;
   detailLoading.value = true;
   try {
-    const detail = await api.get<ActivityDetailData>(`/admin/activity/detail?days=${days.value}`);
+    const detail = await api.get<ActivityDetailData>(`/admin/activity/detail?days=${days.value}`, { signal: controller.signal });
+    if (requestId !== detailRequestId) return;
     data.value = {
       ...data.value,
       onlineUsers: detail.onlineUsers,
       topActiveUsers: detail.topActiveUsers
     };
   } catch (error) {
+    if (isAbortError(error)) return;
     ElMessage.error(error instanceof Error ? error.message : '活跃度明细加载失败');
   } finally {
-    detailLoading.value = false;
+    if (requestId === detailRequestId) {
+      detailLoading.value = false;
+      if (detailController === controller) detailController = null;
+    }
   }
 }
 
-async function loadActivity() {
-  await loadSummary();
-  requestAnimationFrame(() => {
+function loadActivity() {
+  abortActivityRequests();
+  clearScheduledDetailLoad();
+  void loadSummary();
+  detailFrameId = requestAnimationFrame(() => {
+    detailFrameId = undefined;
     void loadDetail();
   });
 }
@@ -324,6 +371,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeChart);
+  abortActivityRequests();
+  clearScheduledDetailLoad();
   chart?.dispose();
   chart = null;
 });

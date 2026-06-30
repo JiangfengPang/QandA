@@ -43,27 +43,14 @@ type DailyActivitySummaryAggregateRow = {
   durationSeconds: DbNumeric;
 };
 
-type SevenDaySummaryRow = {
-  activeSevenDays: DbNumeric;
-  answersSevenDays: DbNumeric;
-  correctSevenDays: DbNumeric;
-  durationSevenDays: DbNumeric;
-};
-
-type TopActiveUserRow = {
-  id: string;
-  nickname: string;
-  email: string | null;
-  answerCount: DbNumeric;
-  correctCount: DbNumeric;
-  durationSeconds: DbNumeric;
-};
-
 const ACTIVITY_SUMMARY_CACHE_TTL_MS = 10_000;
 const ACTIVITY_DETAIL_CACHE_TTL_MS = 30_000;
 
+type ActivitySnapshot = Awaited<ReturnType<typeof buildDailyUserActivitySnapshot>>;
+
 let summaryCache: { key: string; expiresAt: number; value: Awaited<ReturnType<typeof buildAdminActivitySummary>> } | null = null;
 let detailCache: { key: string; expiresAt: number; value: Awaited<ReturnType<typeof buildAdminActivityDetail>> } | null = null;
+let activitySnapshotCache: { key: string; expiresAt: number; value?: ActivitySnapshot; promise?: Promise<ActivitySnapshot> } | null = null;
 
 function toNumber(value: DbNumeric) {
   if (value === null || value === undefined) return 0;
@@ -255,85 +242,105 @@ function activityCacheKey(days: number, userForceLogoutAt?: Date | null, ttlMs =
   return `${days}:${userForceLogoutAt?.getTime() || 0}:${ttlMs}:${bucket}`;
 }
 
+function activitySnapshotCacheKey(days: number, userForceLogoutAt?: Date | null, ttlMs = ACTIVITY_SUMMARY_CACHE_TTL_MS) {
+  return `snapshot:${activityCacheKey(days, userForceLogoutAt, ttlMs)}`;
+}
+
 export function activityDetailCacheKey(userForceLogoutAt?: Date | null, ttlMs = ACTIVITY_DETAIL_CACHE_TTL_MS) {
   const bucket = Math.floor(Date.now() / ttlMs);
   return `detail:${userForceLogoutAt?.getTime() || 0}:${ttlMs}:${bucket}`;
 }
 
-async function buildAdminActivitySummary(
-  trendDays = 14,
-  controls?: { userForceLogoutAt: Date | null }
-) {
-  const days = Math.min(Math.max(Math.round(trendDays), 7), 30);
+async function buildDailyUserActivitySnapshot(days: number) {
   const now = new Date();
   const today = dayStart(now);
   const tomorrow = addDays(today, 1);
   const sevenDayStart = addDays(today, -6);
   const trendStart = addDays(today, -(days - 1));
   const trendBucketSql = dateBucketCaseSql(Prisma.sql`a.\`createdAt\``, buildDateBuckets(trendStart, days));
+  const rows = await prisma.$queryRaw<DailyUserActivityAggregateRow[]>(Prisma.sql`
+    SELECT
+      bucketed.\`date\`,
+      bucketed.\`userId\`,
+      bucketed.\`nickname\`,
+      bucketed.\`email\`,
+      COUNT(bucketed.\`id\`) AS \`answerCount\`,
+      SUM(CASE WHEN bucketed.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`,
+      COALESCE(SUM(bucketed.\`durationSeconds\`), 0) AS \`durationSeconds\`
+    FROM (
+      SELECT
+        ${trendBucketSql} AS \`date\`,
+        a.\`id\`,
+        a.\`isCorrect\`,
+        a.\`userId\`,
+        a.\`durationSeconds\`,
+        u.\`nickname\`,
+        u.\`email\`
+      FROM \`UserAnswer\` a
+      INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
+      WHERE a.\`createdAt\` >= ${trendStart}
+        AND a.\`createdAt\` < ${tomorrow}
+        AND u.\`role\` = 'STUDENT'
+        AND u.\`isActive\` = 1
+    ) bucketed
+    WHERE bucketed.\`date\` IS NOT NULL
+    GROUP BY bucketed.\`date\`, bucketed.\`userId\`, bucketed.\`nickname\`, bucketed.\`email\`
+    ORDER BY bucketed.\`date\` ASC
+  `);
+  const stats = buildActivityStatsFromDailyUserAggregates(rows, trendStart, days, sevenDayStart, today);
+  return { now, today, sevenDayStart, trendStart, rows, stats };
+}
+
+async function loadDailyUserActivitySnapshot(days: number, controls: { userForceLogoutAt: Date | null }) {
+  const key = activitySnapshotCacheKey(days, controls.userForceLogoutAt);
+  const nowMs = Date.now();
+  if (activitySnapshotCache?.key === key) {
+    if (activitySnapshotCache.value && activitySnapshotCache.expiresAt > nowMs) return activitySnapshotCache.value;
+    if (activitySnapshotCache.promise) return activitySnapshotCache.promise;
+  }
+
+  const promise = buildDailyUserActivitySnapshot(days)
+    .then((value) => {
+      activitySnapshotCache = { key, expiresAt: Date.now() + ACTIVITY_SUMMARY_CACHE_TTL_MS, value };
+      return value;
+    })
+    .catch((error) => {
+      if (activitySnapshotCache?.key === key) activitySnapshotCache = null;
+      throw error;
+    });
+
+  activitySnapshotCache = { key, expiresAt: nowMs + ACTIVITY_SUMMARY_CACHE_TTL_MS, promise };
+  return promise;
+}
+
+async function buildAdminActivitySummary(
+  trendDays = 14,
+  controls?: { userForceLogoutAt: Date | null }
+) {
+  const days = clampActivityDays(trendDays);
+  const now = new Date();
   const systemControls = controls || await getSystemControls();
 
   const [
     totalStudents,
     onlineCount,
-    dailyRows,
-    sevenDayRows
+    snapshot
   ] = await Promise.all([
     prisma.user.count({ where: { role: UserRole.STUDENT, isActive: true } }),
     countOnlinePresenceUsers(now, undefined, { userForceLogoutAt: systemControls.userForceLogoutAt }),
-    prisma.$queryRaw<DailyActivitySummaryAggregateRow[]>(Prisma.sql`
-      SELECT
-        bucketed.\`date\`,
-        COUNT(bucketed.\`id\`) AS \`answerCount\`,
-        SUM(CASE WHEN bucketed.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`,
-        COUNT(DISTINCT bucketed.\`userId\`) AS \`activeUserCount\`,
-        COALESCE(SUM(bucketed.\`durationSeconds\`), 0) AS \`durationSeconds\`
-      FROM (
-        SELECT
-          ${trendBucketSql} AS \`date\`,
-          a.\`id\`,
-          a.\`isCorrect\`,
-          a.\`userId\`,
-          a.\`durationSeconds\`,
-          u.\`nickname\`,
-          u.\`email\`
-        FROM \`UserAnswer\` a
-        INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
-        WHERE a.\`createdAt\` >= ${trendStart}
-          AND a.\`createdAt\` < ${tomorrow}
-          AND u.\`role\` = 'STUDENT'
-          AND u.\`isActive\` = 1
-      ) bucketed
-      WHERE bucketed.\`date\` IS NOT NULL
-      GROUP BY bucketed.\`date\`
-      ORDER BY bucketed.\`date\` ASC
-    `),
-    prisma.$queryRaw<SevenDaySummaryRow[]>(Prisma.sql`
-      SELECT
-        COUNT(DISTINCT a.\`userId\`) AS \`activeSevenDays\`,
-        COUNT(a.\`id\`) AS \`answersSevenDays\`,
-        SUM(CASE WHEN a.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctSevenDays\`,
-        COALESCE(SUM(a.\`durationSeconds\`), 0) AS \`durationSevenDays\`
-      FROM \`UserAnswer\` a
-      INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
-      WHERE a.\`createdAt\` >= ${sevenDayStart}
-        AND a.\`createdAt\` < ${tomorrow}
-        AND u.\`role\` = 'STUDENT'
-        AND u.\`isActive\` = 1
-    `)
+    loadDailyUserActivitySnapshot(days, systemControls)
   ]);
 
-  const trend = buildDailyActivityTrendFromSummaryRows(dailyRows, trendStart, days);
-  const todayRow = dailyRows.find((row) => row.date === dayKey(today));
-  const sevenDaySummary = sevenDayRows[0] || {
-    activeSevenDays: 0,
-    answersSevenDays: 0,
-    correctSevenDays: 0,
-    durationSevenDays: 0
-  };
-  const answersSevenDays = toNumber(sevenDaySummary.answersSevenDays);
-  const correctSevenDays = toNumber(sevenDaySummary.correctSevenDays);
-  const generatedAt = now.toISOString();
+  const aggregateStats = buildActivityStatsFromDailyUserAggregates(
+    snapshot.rows,
+    snapshot.trendStart,
+    days,
+    snapshot.sevenDayStart,
+    snapshot.today
+  );
+  const answersSevenDays = aggregateStats.summary.answersSevenDays;
+  const correctSevenDays = aggregateStats.summary.correctSevenDays;
+  const generatedAt = snapshot.now.toISOString();
 
   return {
     onlineWindowMinutes: PRESENCE_ONLINE_WINDOW_SECONDS / 60,
@@ -350,14 +357,14 @@ async function buildAdminActivitySummary(
     summary: {
       totalStudents,
       onlineCount,
-      activeToday: toNumber(todayRow?.activeUserCount),
-      activeSevenDays: toNumber(sevenDaySummary.activeSevenDays),
-      answersToday: toNumber(todayRow?.answerCount),
+      activeToday: aggregateStats.summary.activeToday,
+      activeSevenDays: aggregateStats.summary.activeSevenDays,
+      answersToday: aggregateStats.summary.answersToday,
       answersSevenDays,
       accuracySevenDays: answersSevenDays ? Math.round((correctSevenDays / answersSevenDays) * 100) : 0,
-      durationSevenDays: toNumber(sevenDaySummary.durationSevenDays)
+      durationSevenDays: aggregateStats.summary.durationSevenDays
     },
-    trend
+    trend: aggregateStats.trend
   };
 }
 
@@ -367,49 +374,24 @@ async function buildAdminActivityDetail(
 ) {
   const days = clampActivityDays(trendDays);
   const now = new Date();
-  const today = dayStart(now);
-  const tomorrow = addDays(today, 1);
-  const sevenDayStart = addDays(today, -6);
   const systemControls = controls || await getSystemControls();
-  const [onlineUsers, topRows] = await Promise.all([
+  const [onlineUsers, snapshot] = await Promise.all([
     listOnlinePresenceUsers(now, undefined, { userForceLogoutAt: systemControls.userForceLogoutAt }),
-    prisma.$queryRaw<TopActiveUserRow[]>(Prisma.sql`
-      SELECT
-        u.\`id\`,
-        u.\`nickname\`,
-        u.\`email\`,
-        COUNT(a.\`id\`) AS \`answerCount\`,
-        SUM(CASE WHEN a.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`,
-        COALESCE(SUM(a.\`durationSeconds\`), 0) AS \`durationSeconds\`
-      FROM \`UserAnswer\` a
-      INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
-      WHERE a.\`createdAt\` >= ${sevenDayStart}
-        AND a.\`createdAt\` < ${tomorrow}
-        AND u.\`role\` = 'STUDENT'
-        AND u.\`isActive\` = 1
-      GROUP BY u.\`id\`, u.\`nickname\`, u.\`email\`
-      ORDER BY \`answerCount\` DESC, \`correctCount\` DESC, u.\`nickname\` ASC, u.\`id\` ASC
-      LIMIT 10
-    `)
+    loadDailyUserActivitySnapshot(days, systemControls)
   ]);
+  const aggregateStats = buildActivityStatsFromDailyUserAggregates(
+    snapshot.rows,
+    snapshot.trendStart,
+    days,
+    snapshot.sevenDayStart,
+    snapshot.today
+  );
 
   return {
-    checkedAt: now.toISOString(),
+    checkedAt: snapshot.now.toISOString(),
     days,
     onlineUsers,
-    topActiveUsers: topRows.map((row) => {
-      const answerCount = toNumber(row.answerCount);
-      const correctCount = toNumber(row.correctCount);
-      return {
-        id: row.id,
-        nickname: row.nickname,
-        email: row.email,
-        answerCount,
-        correctCount,
-        durationSeconds: toNumber(row.durationSeconds),
-        accuracy: answerCount ? Math.round((correctCount / answerCount) * 100) : 0
-      };
-    })
+    topActiveUsers: aggregateStats.topActiveUsers
   };
 }
 
