@@ -1,5 +1,4 @@
-import net from 'node:net';
-import tls from 'node:tls';
+import nodemailer from 'nodemailer';
 import { env } from '../config/env.js';
 import { HttpError } from '../utils/http.js';
 
@@ -7,6 +6,19 @@ type SendMailInput = {
   to: string;
   subject: string;
   text: string;
+};
+
+type MailSendResult = {
+  sent: boolean;
+  devCode?: string;
+};
+
+type SmtpErrorLike = {
+  code?: unknown;
+  command?: unknown;
+  response?: unknown;
+  responseCode?: unknown;
+  message?: unknown;
 };
 
 function smtpReady() {
@@ -22,104 +34,74 @@ function smtpReady() {
   );
 }
 
-function encodeHeader(value: string) {
-  return `=?UTF-8?B?${Buffer.from(value, 'utf8').toString('base64')}?=`;
+function truncate(value: string, max = 300) {
+  return value.length > max ? `${value.slice(0, max)}...` : value;
 }
 
-function escapeAddress(value: string) {
-  return value.replace(/[\r\n<>]/g, '').trim();
+function redactSecrets(value: string) {
+  const secrets = [
+    String(env.smtpPass || ''),
+    Buffer.from(String(env.smtpPass || '')).toString('base64')
+  ].filter((item) => item.length >= 4);
+
+  return secrets.reduce((text, secret) => text.split(secret).join('[redacted]'), value);
 }
 
-function createClient() {
-  return env.smtpSecure
-    ? tls.connect({ host: env.smtpHost, port: env.smtpPort, servername: env.smtpHost })
-    : net.connect({ host: env.smtpHost, port: env.smtpPort });
+function formatSmtpError(error: unknown) {
+  const smtpError = error as SmtpErrorLike;
+  const parts = [
+    smtpError.responseCode ? `responseCode=${smtpError.responseCode}` : '',
+    smtpError.code ? `code=${smtpError.code}` : '',
+    smtpError.command ? `command=${smtpError.command}` : '',
+    smtpError.response ? `response=${smtpError.response}` : '',
+    smtpError.message ? `message=${smtpError.message}` : ''
+  ].filter(Boolean);
+
+  return truncate(redactSecrets(parts.join('; ') || String(error)));
 }
 
-function readResponse(socket: net.Socket | tls.TLSSocket) {
-  return new Promise<string>((resolve, reject) => {
-    let buffer = '';
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error('SMTP 响应超时'));
-    }, 10000);
-
-    function cleanup() {
-      clearTimeout(timer);
-      socket.off('data', onData);
-      socket.off('error', onError);
+function createTransporter() {
+  return nodemailer.createTransport({
+    host: env.smtpHost,
+    port: env.smtpPort,
+    secure: env.smtpSecure,
+    requireTLS: !env.smtpSecure,
+    auth: {
+      user: env.smtpUser,
+      pass: env.smtpPass
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
+    tls: {
+      servername: env.smtpHost
     }
-
-    function onError(error: Error) {
-      cleanup();
-      reject(error);
-    }
-
-    function onData(chunk: Buffer) {
-      buffer += chunk.toString('utf8');
-      const lines = buffer.split(/\r?\n/).filter(Boolean);
-      const last = lines[lines.length - 1] || '';
-      if (/^\d{3}\s/.test(last)) {
-        cleanup();
-        resolve(buffer);
-      }
-    }
-
-    socket.on('data', onData);
-    socket.on('error', onError);
   });
 }
 
-async function sendCommand(socket: net.Socket | tls.TLSSocket, command: string, expected: number[]) {
-  socket.write(`${command}\r\n`);
-  const response = await readResponse(socket);
-  const code = Number(response.slice(0, 3));
-  if (!expected.includes(code)) {
-    throw new Error(`SMTP 命令失败：${command}; ${response.trim()}`);
-  }
-  return response;
-}
-
 async function sendViaSmtp(input: SendMailInput) {
-  let socket = createClient();
-  await readResponse(socket);
+  const transporter = createTransporter();
 
-  await sendCommand(socket, `EHLO ${env.smtpHost}`, [250]);
-
-  if (!env.smtpSecure) {
-    await sendCommand(socket, 'STARTTLS', [220]);
-    socket = tls.connect({ socket, servername: env.smtpHost });
-    await sendCommand(socket, `EHLO ${env.smtpHost}`, [250]);
+  try {
+    await transporter.sendMail({
+      from: { name: env.appName, address: env.smtpFrom },
+      to: input.to,
+      subject: input.subject,
+      text: input.text,
+      envelope: {
+        from: env.smtpFrom,
+        to: [input.to]
+      }
+    });
+  } catch (error) {
+    console.error(`[${env.appName}] 邮件发送失败：${formatSmtpError(error)}`);
+    throw new HttpError('邮件服务暂时不可用，请稍后再试', 502, 'SMTP_SEND_FAILED');
+  } finally {
+    transporter.close();
   }
-
-  await sendCommand(socket, 'AUTH LOGIN', [334]);
-  await sendCommand(socket, Buffer.from(env.smtpUser).toString('base64'), [334]);
-  await sendCommand(socket, Buffer.from(env.smtpPass).toString('base64'), [235]);
-  await sendCommand(socket, `MAIL FROM:<${escapeAddress(env.smtpFrom)}>`, [250]);
-  await sendCommand(socket, `RCPT TO:<${escapeAddress(input.to)}>`, [250, 251]);
-  await sendCommand(socket, 'DATA', [354]);
-
-  const from = `${encodeHeader(env.appName)} <${escapeAddress(env.smtpFrom)}>`;
-  const message = [
-    `From: ${from}`,
-    `To: <${escapeAddress(input.to)}>`,
-    `Subject: ${encodeHeader(input.subject)}`,
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: base64',
-    '',
-    Buffer.from(input.text, 'utf8').toString('base64').replace(/(.{76})/g, '$1\r\n'),
-    '.',
-    ''
-  ].join('\r\n');
-
-  socket.write(message);
-  await readResponse(socket);
-  await sendCommand(socket, 'QUIT', [221]);
-  socket.end();
 }
 
-export async function sendPasswordResetCode(to: string, code: string) {
+export async function sendPasswordResetCode(to: string, code: string): Promise<MailSendResult> {
   const subject = `${env.appName} 找回密码验证码`;
   const text = [
     `你的 ${env.appName} 找回密码验证码是：${code}`,
@@ -139,8 +121,7 @@ export async function sendPasswordResetCode(to: string, code: string) {
   return { sent: true, devCode: undefined };
 }
 
-
-export async function sendEmailVerificationCode(to: string, code: string, scene = '邮箱验证') {
+export async function sendEmailVerificationCode(to: string, code: string, scene = '邮箱验证'): Promise<MailSendResult> {
   const subject = `${env.appName} ${scene}验证码`;
   const text = [
     `你的 ${env.appName} ${scene}验证码是：${code}`,

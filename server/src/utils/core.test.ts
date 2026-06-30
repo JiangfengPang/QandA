@@ -231,6 +231,15 @@ test('verification codes are six numeric digits', () => {
   }
 });
 
+test('mail service uses accepted-delivery errors without leaking SMTP secrets', () => {
+  const service = readFileSync(new URL('../services/mailService.ts', import.meta.url), 'utf8');
+
+  assert.match(service, /nodemailer\.createTransport/);
+  assert.match(service, /SMTP_SEND_FAILED/);
+  assert.match(service, /redactSecrets/);
+  assert.doesNotMatch(service, /SMTP 命令失败：\$\{command\}/);
+});
+
 test('nickname policy normalizes and accepts meaningful nicknames', () => {
   assert.equal(normalizeNickname('  Ａ 同学  '), 'A 同学');
   assert.equal(assertAllowedNickname('学习者4821'), '学习者4821');

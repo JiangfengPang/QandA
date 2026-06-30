@@ -275,7 +275,16 @@ export async function requestPasswordReset(input: { account: string }) {
     data: { resetCodeHash, resetCodeExpiresAt, resetCodeAttempts: 0 }
   });
 
-  const mail = await sendPasswordResetCode(user.email, code);
+  const mail = await sendPasswordResetCode(user.email, code).catch(async (error) => {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { resetCodeHash: null, resetCodeExpiresAt: null, resetCodeAttempts: 0 }
+    }).catch((cleanupError) => {
+      console.error('找回密码验证码发送失败后的记录清理失败', cleanupError);
+    });
+    throw error;
+  });
+
   return {
     sent: true,
     devCode: mail.devCode,
