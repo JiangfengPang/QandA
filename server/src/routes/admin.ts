@@ -9,14 +9,21 @@ import { importLegacyBankJson } from '../services/importService.js';
 import { fail, ok, pageMeta, toInt, HttpError } from '../utils/http.js';
 import { validatePasswordStrength } from '../utils/passwordPolicy.js';
 import { normalizeJudgeAnswerArray, normalizeJudgeOptionsForStorage } from '../utils/judge.js';
+import { normalizeAnswerForObjectiveType } from '../utils/answerNormalization.js';
 import { createToken } from '../services/authService.js';
 import { setAuthCookies } from '../utils/cookie.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { adminAuditMiddleware, getAdminActionOptions } from '../services/adminAuditService.js';
-import { getAdminActivityStats } from '../services/adminAnalyticsService.js';
+import {
+  getAdminActivityDetail,
+  getAdminActivityStats,
+  getAdminActivitySummary
+} from '../services/adminAnalyticsService.js';
 import { getAdminDashboardStats } from '../services/adminDashboardService.js';
 import { getAdminReadingPassage, saveAdminReadingPassage } from '../services/adminReadingPassageService.js';
 import { getPracticeAnswerQueueMonitor } from '../services/practiceAnswerQueueService.js';
+import { getSystemControls, serializeSystemControls, updateSystemControls } from '../services/systemControlService.js';
+import { env } from '../config/env.js';
 import { assertAllowedNickname, hasForbiddenNickname, NICKNAME_MAX_CHARS } from '../utils/nicknamePolicy.js';
 import {
   createAnnouncement,
@@ -28,6 +35,8 @@ import {
 const router = Router();
 router.use(authRequired, adminRequired);
 router.use(adminAuditMiddleware);
+
+let systemHealthCache: { expiresAt: number; value: unknown } | null = null;
 
 function parseOptionalDate(value: unknown) {
   const text = String(value || '').trim();
@@ -96,6 +105,16 @@ router.get('/dashboard', asyncHandler(async (_req, res) => {
 router.get('/activity', asyncHandler(async (req, res) => {
   const days = Math.min(Math.max(toInt(req.query.days, 14), 7), 30);
   return ok(res, await getAdminActivityStats(days));
+}));
+
+router.get('/activity/summary', asyncHandler(async (req, res) => {
+  const days = Math.min(Math.max(toInt(req.query.days, 14), 7), 30);
+  return ok(res, await getAdminActivitySummary(days));
+}));
+
+router.get('/activity/detail', asyncHandler(async (req, res) => {
+  const days = Math.min(Math.max(toInt(req.query.days, 14), 7), 30);
+  return ok(res, await getAdminActivityDetail(days));
 }));
 
 router.get('/announcements', asyncHandler(async (req, res) => {
@@ -548,8 +567,54 @@ router.get('/system/status', asyncHandler(async (_req, res) => {
   });
 }));
 
+router.get('/system/controls', asyncHandler(async (_req, res) => {
+  return ok(res, serializeSystemControls(await getSystemControls()));
+}));
+
+router.put('/system/controls', asyncHandler(async (req, res) => {
+  const schema = z.object({
+    userLoginDisabled: z.boolean().optional(),
+    practiceAnswerWorkerPaused: z.boolean().optional()
+  });
+  const input = schema.parse(req.body);
+  const controls = await updateSystemControls(input);
+  systemHealthCache = null;
+  return ok(res, serializeSystemControls(controls), '系统控制已更新');
+}));
+
 router.get('/system/practice-answer-queue', asyncHandler(async (_req, res) => {
   return ok(res, await getPracticeAnswerQueueMonitor());
+}));
+
+router.get('/system/health', asyncHandler(async (_req, res) => {
+  if (systemHealthCache && systemHealthCache.expiresAt > Date.now()) return ok(res, systemHealthCache.value);
+
+  const databaseStartedAt = Date.now();
+  await prisma.$queryRaw`SELECT 1`;
+  const databaseLatencyMs = Date.now() - databaseStartedAt;
+  const [controls, queue] = await Promise.all([
+    getSystemControls(),
+    getPracticeAnswerQueueMonitor()
+  ]);
+
+  const value = {
+    api: 'ok',
+    database: {
+      status: 'ok',
+      latencyMs: databaseLatencyMs
+    },
+    controls: serializeSystemControls(controls),
+    queue,
+    worker: queue.worker,
+    version: {
+      server: process.env.QANDA_BUILD_ID || process.env.npm_package_version || '2.0.0'
+    },
+    checkedAt: new Date().toISOString()
+  };
+  if (env.systemHealthCacheMs > 0) {
+    systemHealthCache = { value, expiresAt: Date.now() + env.systemHealthCacheMs };
+  }
+  return ok(res, value);
 }));
 
 router.get('/subjects', asyncHandler(async (_req, res) => {
@@ -695,12 +760,12 @@ function normalizeQuestionInput<T extends {
     if (input.type === 'python') return input;
     return {
       ...input,
-      answer: choiceAnswerList(input.answer || [])
+      answer: normalizeChoiceQuestionAnswer(input.type || 'multiple', input.answer || [])
     };
   }
   return {
     ...input,
-    answer: normalizeJudgeAnswerArray(choiceAnswerList(input.answer || [])),
+    answer: normalizeJudgeAnswerArray(normalizeChoiceQuestionAnswer('judge', input.answer || [])),
     options: normalizeJudgeOptionsForStorage()
   };
 }
@@ -734,6 +799,10 @@ function hasFillQuestionAnswer(answer: string[] | string[][]) {
 
 function choiceAnswerList(answer: string[] | string[][]): string[] {
   return Array.isArray(answer) ? answer.filter((item): item is string => typeof item === 'string') : [];
+}
+
+function normalizeChoiceQuestionAnswer(type: string, answer: string[] | string[][]): string[] {
+  return normalizeAnswerForObjectiveType(type, choiceAnswerList(answer));
 }
 
 function rejectReadingQuestionWrite(type?: string) {

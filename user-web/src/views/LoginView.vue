@@ -37,8 +37,8 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { showToast } from 'vant';
 import QxIcon from '../components/QxIcon.vue';
 import { useAuthStore } from '../stores/auth';
@@ -49,7 +49,19 @@ const password = ref('');
 const showPassword = ref(false);
 const loading = ref(false);
 const router = useRouter();
+const route = useRoute();
 const auth = useAuthStore();
+
+onMounted(() => {
+  let flagged = route.query.maintenance === '1';
+  try {
+    flagged = flagged || window.sessionStorage.getItem('qanda:user-login-disabled') === '1';
+    window.sessionStorage.removeItem('qanda:user-login-disabled');
+  } catch {
+    // Ignore storage failures.
+  }
+  if (flagged) showToast({ type: 'fail', message: '系统维护中，暂时无法登录，请稍后再试' });
+});
 
 async function submit() {
   const emailValue = email.value.trim();

@@ -3,8 +3,9 @@ import jwt from 'jsonwebtoken';
 import { UserRole, type UserRole as UserRoleType } from '../utils/roles.js';
 import { env } from '../config/env.js';
 import { prisma } from '../db/prisma.js';
-import { fail } from '../utils/http.js';
-import { cookieNames, getClientFromRequest, readCookie, type ClientApp } from '../utils/cookie.js';
+import { fail, HttpError } from '../utils/http.js';
+import { clearAuthCookies, cookieNames, getClientFromRequest, readCookie, type ClientApp } from '../utils/cookie.js';
+import { assertUserAccessAllowed, USER_LOGIN_DISABLED } from '../services/systemControlService.js';
 
 type JwtPayload = {
   userId: string;
@@ -13,6 +14,7 @@ type JwtPayload = {
   csrfToken: string;
   audience: ClientApp;
   sessionVersion?: number;
+  iat?: number;
 };
 
 function isUnsafeMethod(method: string) {
@@ -52,6 +54,7 @@ export async function authRequired(req: Request, res: Response, next: NextFuncti
     if ((payload.sessionVersion ?? 0) !== user.sessionVersion) {
       return fail(res, '登录已失效，请重新登录', 401);
     }
+    await assertUserAccessAllowed({ role: user.role, tokenIssuedAt: payload.iat });
 
     req.auth = { userId: user.id, username: user.username, role: user.role, csrfToken: payload.csrfToken };
     if (
@@ -64,7 +67,11 @@ export async function authRequired(req: Request, res: Response, next: NextFuncti
       });
     }
     return next();
-  } catch {
+  } catch (error) {
+    if (error instanceof HttpError) {
+      if (error.code === USER_LOGIN_DISABLED && client === 'user') clearAuthCookies(res, 'user');
+      return fail(res, error.message, error.status, error.code);
+    }
     return fail(res, '登录已失效，请重新登录', 401);
   }
 }

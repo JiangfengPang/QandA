@@ -16,7 +16,7 @@ export function errorHandler(error: unknown, _req: Request, res: Response, _next
     return fail(res, error.errors[0]?.message || '参数错误', 400);
   }
 
-  const anyError = error as { message?: string; status?: number; code?: number };
+  const anyError = error as { message?: string; status?: number; code?: number | string };
   const status = Number(anyError.status || 500);
   const message = env.isProduction && status >= 500
     ? '服务器内部错误'
@@ -26,5 +26,5 @@ export function errorHandler(error: unknown, _req: Request, res: Response, _next
     console.error(error);
   }
 
-  return fail(res, message, status, Number(anyError.code || status));
+  return fail(res, message, status, anyError.code || status);
 }

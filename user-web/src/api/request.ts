@@ -1,14 +1,14 @@
 const viteEnv = (import.meta as ImportMeta & { env?: Record<string, string> }).env || {};
 const API_BASE = viteEnv.VITE_API_BASE || '/api';
 
-type ApiResponse<T> = { code: number; message: string; data: T };
+type ApiResponse<T> = { code: number | string; message: string; data: T };
 
 export class ApiError extends Error {
   status: number;
-  code: number;
+  code: number | string;
   payload: unknown;
 
-  constructor(message: string, status: number, code: number, payload: unknown) {
+  constructor(message: string, status: number, code: number | string, payload: unknown) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -40,6 +40,21 @@ export function setToken(_token?: string) {
 
 export function clearToken() {
   localStorage.removeItem('qanda_user_token');
+}
+
+function handleUserLoginDisabled() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.setItem('qanda:user-login-disabled', '1');
+  } catch {
+    // Ignore storage failures; redirect still protects the session.
+  }
+  window.dispatchEvent(new Event('qanda:user-login-disabled'));
+  clearToken();
+  const path = window.location.pathname;
+  if (!path.includes('/login')) {
+    window.location.href = '/login?maintenance=1';
+  }
 }
 
 export function apiUrl(url: string) {
@@ -88,6 +103,7 @@ export async function request<T>(url: string, options: RequestInit = {}): Promis
   const res = await fetch(`${API_BASE}${url}`, { ...options, method, headers, credentials: 'include' });
   const payload = await parseResponse<T>(res);
   if (!res.ok || payload.code !== 0) {
+    if (payload.code === 'USER_LOGIN_DISABLED') handleUserLoginDisabled();
     throw new ApiError(payload.message || '请求失败', res.status, payload.code, payload);
   }
   return payload.data;

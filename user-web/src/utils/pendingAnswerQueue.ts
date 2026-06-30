@@ -3,7 +3,11 @@ export type PendingAnswerStatus = 'pending' | 'syncing' | 'failed' | 'auth_faile
 export type PendingAnswerRecord = {
   clientAnswerId: string;
   questionId: string;
+  practiceSessionId?: string;
   sessionKey?: string;
+  clientSubmissionId?: string;
+  questionIndex?: number;
+  scope?: string;
   selectedAnswer: string[];
   isCorrect: boolean;
   answer?: string[];
@@ -57,7 +61,11 @@ function normalizeRecord(value: unknown): PendingAnswerRecord | null {
   return {
     clientAnswerId,
     questionId,
+    practiceSessionId: raw.practiceSessionId ? String(raw.practiceSessionId).trim().slice(0, 191) : undefined,
     sessionKey: raw.sessionKey ? String(raw.sessionKey).trim().slice(0, 191) : undefined,
+    clientSubmissionId: raw.clientSubmissionId ? String(raw.clientSubmissionId).trim().slice(0, 120) : undefined,
+    questionIndex: raw.questionIndex === undefined ? undefined : Math.max(0, Math.floor(Number(raw.questionIndex) || 0)),
+    scope: raw.scope ? String(raw.scope).trim().slice(0, 120) : undefined,
     selectedAnswer: Array.isArray(raw.selectedAnswer) ? raw.selectedAnswer.map((item) => String(item)) : [],
     isCorrect: Boolean(raw.isCorrect),
     answer: Array.isArray(raw.answer) ? raw.answer.map((item) => String(item)) : undefined,
@@ -120,11 +128,15 @@ export function enqueuePendingAnswer(userKey: string, record: PendingAnswerRecor
   if (!normalized) return null;
 
   const answeredAtMs = Date.parse(normalized.answeredAt || '');
+  const samePracticeQuestionKey = normalized.practiceSessionId
+    ? `${normalized.practiceSessionId}:${normalized.questionId}`
+    : '';
   const sameSessionQuestionKey = normalized.sessionKey
     ? `${normalized.sessionKey}:${normalized.questionId}`
     : '';
   const next = records.filter((item) => {
     if (item.clientAnswerId === normalized.clientAnswerId) return false;
+    if (samePracticeQuestionKey && `${item.practiceSessionId || ''}:${item.questionId}` === samePracticeQuestionKey) return false;
     if (!sameSessionQuestionKey || `${item.sessionKey || ''}:${item.questionId}` !== sameSessionQuestionKey) return true;
     const itemAnsweredAtMs = Date.parse(item.answeredAt || '');
     if (!Number.isFinite(answeredAtMs) || !Number.isFinite(itemAnsweredAtMs)) return true;
@@ -146,7 +158,9 @@ export function dedupePendingAnswerRecords(records: PendingAnswerRecord[]) {
   const bySessionQuestion = new Map<string, PendingAnswerRecord>();
   const deduped: PendingAnswerRecord[] = [];
   for (const record of byClientAnswerId.values()) {
-    const key = record.sessionKey ? `${record.sessionKey}:${record.questionId}` : '';
+    const key = record.practiceSessionId
+      ? `${record.practiceSessionId}:${record.questionId}`
+      : record.sessionKey ? `${record.sessionKey}:${record.questionId}` : '';
     if (!key) {
       deduped.push(record);
       continue;
@@ -179,6 +193,28 @@ export function removePendingAnswer(userKey: string, clientAnswerId: string, sto
   const records = readPendingAnswerQueue(userKey, storage);
   const next = records.filter((record) => record.clientAnswerId !== clientAnswerId);
   writePendingAnswerQueue(userKey, next, storage);
+}
+
+export function removePendingAnswersByClientAnswerIds(
+  userKey: string,
+  clientAnswerIds: Iterable<string>,
+  storage: QueueStorage | null = storageAvailable()
+) {
+  const ids = new Set([...clientAnswerIds].map((item) => String(item || '').trim()).filter(Boolean));
+  if (!ids.size) return;
+  const records = readPendingAnswerQueue(userKey, storage);
+  const next = records.filter((record) => !ids.has(record.clientAnswerId));
+  writePendingAnswerQueue(userKey, next, storage);
+}
+
+export function selectPendingAnswersByPracticeSession(
+  userKey: string,
+  practiceSessionId: string,
+  storage: QueueStorage | null = storageAvailable()
+) {
+  const sessionId = String(practiceSessionId || '').trim();
+  if (!sessionId) return [];
+  return readPendingAnswerQueue(userKey, storage).filter((record) => record.practiceSessionId === sessionId);
 }
 
 export function updatePendingAnswer(

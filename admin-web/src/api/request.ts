@@ -1,6 +1,6 @@
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
-type ApiResponse<T> = { code: number; message: string; data: T };
+type ApiResponse<T> = { code: number | string; message: string; data: T };
 
 function readCookie(name: string) {
   if (typeof document === 'undefined') return '';

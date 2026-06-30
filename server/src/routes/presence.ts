@@ -9,7 +9,7 @@ import {
   PRESENCE_HEARTBEAT_INTERVAL_MS,
   PRESENCE_HEARTBEAT_INTERVAL_SECONDS,
   PRESENCE_ONLINE_WINDOW_SECONDS,
-  recordPresenceHeartbeat
+  recordPresenceHeartbeatBestEffort
 } from '../services/presenceService.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { fail, ok } from '../utils/http.js';
@@ -36,12 +36,23 @@ router.post('/heartbeat', asyncHandler(async (req, res) => {
 
   const input = presenceSchema.parse(req.body);
   const sessionId = normalizePresenceSessionId(input.sessionId);
-  const session = await recordPresenceHeartbeat({
+  const result = await recordPresenceHeartbeatBestEffort({
     userId: req.auth!.userId,
     sessionId,
     userAgent: String(req.headers['user-agent'] || ''),
     ipAddress: clientIp(req)
   });
+  if (result.degraded || !result.session) {
+    return ok(res, {
+      alive: false,
+      degraded: true,
+      sessionId,
+      heartbeatIntervalMs: PRESENCE_HEARTBEAT_INTERVAL_MS,
+      heartbeatIntervalSeconds: PRESENCE_HEARTBEAT_INTERVAL_SECONDS,
+      onlineWindowSeconds: PRESENCE_ONLINE_WINDOW_SECONDS
+    }, '在线状态暂时不可用，已降级处理');
+  }
+  const session = result.session;
 
   return ok(res, {
     alive: true,

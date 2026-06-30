@@ -9,7 +9,7 @@ import { clientIp } from '../middleware/rateLimit.js';
 import { createVerificationCode } from './verificationCode.js';
 import { assertAllowedNickname, hasForbiddenNickname, normalizeNickname } from './nicknamePolicy.js';
 import { buildActivityStatsFromDailyUserAggregates, buildDailyActivityTrend } from '../services/adminAnalyticsService.js';
-import { assertStandardReadingQuestionImport } from '../services/importService.js';
+import { assertStandardObjectiveQuestionImport, assertStandardReadingQuestionImport } from '../services/importService.js';
 import {
   isPresenceSessionOnline,
   normalizePresenceSessionId,
@@ -17,8 +17,14 @@ import {
 } from '../services/presenceService.js';
 import { effectiveQuestionCount, summarizeBankProgress, summarizeEffectiveAnswers, summarizeLatestAnswers } from '../services/progressService.js';
 import { formatQuestion } from '../services/questionService.js';
+import {
+  assertPracticeSelectedAnswerAllowed,
+  normalizeSelectedForPracticeStorage
+} from '../services/practiceRecordService.js';
+import { dedupeSessionAnswers } from '../services/practiceAnswerQueueService.js';
 
 test('answer comparison normalizes case, order and duplicates', () => {
+  assert.deepEqual(normalizeAnswer([null, undefined, '']), []);
   assert.deepEqual(normalizeAnswer(['b', ' A ', 'a']), ['A', 'B']);
   assert.equal(isAnswerCorrect(['b', 'a'], ['A', 'B']), true);
   assert.equal(isAnswerCorrect(['A'], ['A', 'B']), false);
@@ -26,11 +32,151 @@ test('answer comparison normalizes case, order and duplicates', () => {
   assert.equal(isAnswerCorrect(['look upon ... as'], ['look upon … as']), true);
 });
 
+test('multiple choice comparison accepts compact answer strings in any order', () => {
+  assert.deepEqual(normalizeAnswer(['ACD']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('CDA'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer(['CDA']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('A,C,D'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('A、C、D'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('A C D'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer(['c', 'd', 'a']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer(['A', 'A', 'C']), ['A', 'C']);
+  assert.equal(isAnswerCorrect(['C', 'D', 'A'], ['ACD']), true);
+  assert.equal(isAnswerCorrect('CDA', ['A', 'C', 'D']), true);
+  assert.equal(isAnswerCorrect(['B', 'D', 'A'], ['ABD']), true);
+  assert.equal(isAnswerCorrect(['A', 'C'], ['ACD']), false);
+});
+
+test('practice answer submission normalizes compact objective selections before option validation', () => {
+  const allowedLabels = ['A', 'B', 'C', 'D'];
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', ['CDA']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', 'CDA'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', ['C', 'D', 'A']), ['A', 'C', 'D']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('multiple', normalizeSelectedForPracticeStorage('multiple', ['CDA']), allowedLabels);
+  });
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('multiple', normalizeSelectedForPracticeStorage('multiple', ['A', 'E']), allowedLabels),
+    /答案包含无效选项/
+  );
+});
+
+test('practice answer submission keeps single reading judge and fill selection rules', () => {
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('single', ['A', 'C'], ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('single', normalizeSelectedForPracticeStorage('single', 'AB'), ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('reading', ['A', 'B'], ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('reading', normalizeSelectedForPracticeStorage('reading', 'AB'), ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['true']), ['A']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['错误']), ['B']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('fill', ['CDA']), ['CDA']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('fill', 'CDA'), ['CDA']);
+});
+
+test('practice judge answer validation normalizes option labels before comparing selections', () => {
+  const trueFalseLabels = ['true', 'false'];
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], trueFalseLabels));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['B'], trueFalseLabels));
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['true']), ['A']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['true']), trueFalseLabels);
+  });
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['false']), ['B']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['false']), trueFalseLabels);
+  });
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['正确']), ['A']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['正确']), trueFalseLabels);
+  });
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['错误']), ['B']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['错误']), trueFalseLabels);
+  });
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], ['A', 'B']));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['B'], ['正确', '错误']));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], ['对', '错']));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], ['是', '否']));
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('judge', ['C'], trueFalseLabels),
+    /答案包含无效选项/
+  );
+});
+
 test('fill answer comparison accepts any configured answer variant', () => {
   assert.equal(isFillAnswerCorrect([' Colour '], ['color', 'colour']), true);
   assert.equal(isFillAnswerCorrect(['color'], ['color', 'colour']), true);
   assert.equal(isFillAnswerCorrect(['colours'], ['color', 'colour']), false);
   assert.equal(isAnswerCorrect(['color'], ['color', 'colour']), false);
+  assert.equal(isFillAnswerCorrect(['CDA'], ['CDA']), true);
+  assert.equal(isFillAnswerCorrect(['A、C、D'], ['A、C、D']), true);
+});
+
+test('practice queue preserves scalar selected values for service-level normalization', () => {
+  assert.deepEqual(dedupeSessionAnswers('session-a', [{
+    questionId: 'question-a',
+    selected: 'CDA' as any,
+    clientAnswerId: 'client-a',
+    durationSeconds: 3
+  }]), [{
+    questionId: 'question-a',
+    selected: ['CDA'],
+    clientAnswerId: 'client-a',
+    durationSeconds: 3
+  }]);
+});
+
+test('direct and queued practice submissions use the same selected normalization before judging', () => {
+  const directSelected = normalizeSelectedForPracticeStorage('multiple', 'CDA');
+  const queuedSelected = dedupeSessionAnswers('session-a', [{
+    questionId: 'question-a',
+    selected: 'CDA' as any,
+    clientAnswerId: 'client-a',
+    durationSeconds: 3
+  }])[0].selected;
+
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', queuedSelected), directSelected);
+  assert.equal(isAnswerCorrect(directSelected, ['A', 'C', 'D']), true);
+  assert.equal(isAnswerCorrect(normalizeSelectedForPracticeStorage('multiple', queuedSelected), ['A', 'C', 'D']), true);
+});
+
+test('formatted judge questions normalize scalar historical answers and labels', () => {
+  const formatted = formatQuestion({
+    id: 'judge-true-false',
+    bankId: 'bank-a',
+    type: 'judge',
+    typeLabel: '判断题',
+    difficulty: 'easy',
+    score: 1,
+    stem: 'The statement is true.',
+    answerJson: 'true',
+    tagsJson: [],
+    explanation: '',
+    rawJson: {},
+    options: [
+      { id: 'opt-true', label: 'true', content: '正确' },
+      { id: 'opt-false', label: 'false', content: '错误' }
+    ],
+    answers: [{ selectedJson: 'false', createdAt: new Date('2026-06-30T00:00:00.000Z') }]
+  }) as any;
+
+  assert.deepEqual(formatted.answer, ['A']);
+  assert.deepEqual(formatted.userAnswer, ['B']);
+  assert.equal(formatted.options[0].key, 'A');
+  assert.equal(formatted.options[0].isCorrect, true);
+  assert.equal(formatted.options[1].key, 'B');
+  assert.equal(formatted.options[1].isCorrect, false);
 });
 
 test('multi blank fill comparison preserves blank order and per-blank variants', () => {
@@ -202,6 +348,66 @@ test('reading JSON import accepts only the standard field names', () => {
   );
 });
 
+test('objective JSON import requires canonical answer arrays and option fields', () => {
+  const standardMultipleQuestion = {
+    id: 'objective-multiple',
+    type: 'multiple',
+    question: 'Which options are correct?',
+    options: [
+      { key: 'A', text: 'Alpha' },
+      { key: 'B', text: 'Beta' },
+      { key: 'C', text: 'Gamma' },
+      { key: 'D', text: 'Delta' }
+    ],
+    answer: ['A', 'C', 'D'],
+    explanation: 'A, C and D are correct.'
+  };
+
+  assert.doesNotThrow(() => assertStandardObjectiveQuestionImport(standardMultipleQuestion));
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, answer: 'ACD' }),
+    /必须使用 answer 数组/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, answer: ['ACD'] }),
+    /每个答案项必须是一个独立选项标识/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, answer: ['C', 'A', 'D'] }),
+    /必须按选项顺序填写/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({
+      ...standardMultipleQuestion,
+      choices: standardMultipleQuestion.options,
+      options: undefined
+    }),
+    /不要使用 choices，请使用 options/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({
+      ...standardMultipleQuestion,
+      options: standardMultipleQuestion.options.map((option) => ({ label: option.key, content: option.text }))
+    }),
+    /必须使用 \{ "key": "A", "text": "\.\.\." \}/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, type: 'single', answer: ['A', 'C'] }),
+    /单选题只能设置一个正确答案/
+  );
+
+  assert.doesNotThrow(() => assertStandardObjectiveQuestionImport({
+    id: 'objective-judge',
+    type: 'judge',
+    question: 'This statement is true.',
+    options: [
+      { key: 'A', text: '正确' },
+      { key: 'B', text: '错误' }
+    ],
+    answer: ['A']
+  }));
+});
+
 test('admin generic question writes reject reading questions', () => {
   const route = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
 
@@ -316,6 +522,61 @@ test('practice answer queue exposes admin monitoring and safe processed cleanup'
   assert.match(redesignDoc, /Redis \+ BullMQ/);
   assert.match(redesignDoc, /qanda-worker/);
   assert.match(redesignDoc, /灰度/);
+});
+
+test('system controls persist maintenance and worker pause settings safely', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260630000100_add_system_controls_and_session_submission_queue/migration.sql', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/systemControlService.ts', import.meta.url), 'utf8');
+  const authMiddleware = readFileSync(new URL('../middleware/auth.ts', import.meta.url), 'utf8');
+  const authService = readFileSync(new URL('../services/authService.ts', import.meta.url), 'utf8');
+  const authRoute = readFileSync(new URL('../routes/auth.ts', import.meta.url), 'utf8');
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const env = readFileSync(new URL('../config/env.ts', import.meta.url), 'utf8');
+
+  assert.match(schema, /model SystemSetting/);
+  assert.match(schema, /userLoginDisabled\s+Boolean\s+@default\(false\)/);
+  assert.match(schema, /practiceAnswerWorkerPaused\s+Boolean\s+@default\(false\)/);
+  assert.match(migration, /CREATE TABLE `SystemSetting`/);
+  assert.match(service, /USER_LOGIN_DISABLED/);
+  assert.match(service, /SYSTEM_SETTINGS_CACHE_MS/);
+  assert.match(service, /userForceLogoutAt: now/);
+  assert.match(authMiddleware, /assertUserAccessAllowed/);
+  assert.match(authMiddleware, /clearAuthCookies\(res,\s*'user'\)/);
+  assert.match(authService, /assertUserLoginAllowed\(\)/);
+  assert.match(authRoute, /assertUserLoginAllowed\(\)/);
+  assert.match(adminRoute, /\/system\/controls/);
+  assert.match(adminRoute, /\/system\/health/);
+  assert.match(env, /SYSTEM_SETTINGS_CACHE_MS/);
+  assert.match(env, /SYSTEM_HEALTH_CACHE_MS/);
+});
+
+test('session-level practice answer queue is wired through schema, API and worker', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260630000100_add_system_controls_and_session_submission_queue/migration.sql', import.meta.url), 'utf8');
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const cleanupScript = readFileSync(new URL('../scripts/cleanupPracticeAnswerQueue.ts', import.meta.url), 'utf8');
+  const workerSplitDoc = readFileSync(new URL('../../../docs/worker-split.md', import.meta.url), 'utf8');
+
+  assert.match(schema, /model PracticeSession/);
+  assert.match(schema, /model PracticeAnswerSubmissionQueue/);
+  assert.match(schema, /@@unique\(\[userId,\s*practiceSessionId\]\)/);
+  assert.match(schema, /@@unique\(\[userId,\s*clientSubmissionId\]\)/);
+  assert.match(schema, /@@index\(\[status,\s*nextRunAt\]\)/);
+  assert.match(migration, /CREATE TABLE `PracticeSession`/);
+  assert.match(migration, /CREATE TABLE `PracticeAnswerSubmissionQueue`/);
+  assert.match(route, /practiceSessionId/);
+  assert.match(route, /clientSubmissionId/);
+  assert.match(route, /enqueuePracticeAnswerSessionSubmission/);
+  assert.match(queueService, /dedupeSessionAnswers/);
+  assert.match(queueService, /processSessionQueueItem/);
+  assert.match(queueService, /getPracticeAnswerWorkerPaused/);
+  assert.match(queueService, /answer queue worker paused/);
+  assert.match(queueService, /practiceAnswerSubmissionQueue/);
+  assert.match(cleanupScript, /practiceAnswerSubmissionQueue/);
+  assert.match(workerSplitDoc, /qanda-server/);
+  assert.match(workerSplitDoc, /qanda-worker/);
 });
 
 test('practice resume sessions have account-scoped persistence safeguards', () => {
@@ -507,8 +768,8 @@ test('presence heartbeat architecture is wired through schema, API and user clie
   assert.match(service, /throttled: true/);
   assert.match(service, /presenceCountCacheSeconds/);
   assert.match(service, /onlineCountCache/);
-  assert.match(analytics, /listOnlinePresenceUsers\(now\)/);
-  assert.match(analytics, /countOnlinePresenceUsers\(now\)/);
+  assert.match(analytics, /listOnlinePresenceUsers\(now,\s*undefined,\s*\{\s*userForceLogoutAt/);
+  assert.match(analytics, /countOnlinePresenceUsers\(now,\s*undefined,\s*\{\s*userForceLogoutAt/);
   assert.match(userPresenceConfig, /120000/);
   assert.match(userPresenceConfig, /300000/);
   assert.match(userPresence, /window\.setTimeout/);
@@ -516,4 +777,31 @@ test('presence heartbeat architecture is wired through schema, API and user clie
   assert.match(userPresence, /window\.addEventListener\('pagehide', handlePageHide\)/);
   assert.match(userApp, /startPresenceHeartbeat\(\)/);
   assert.match(authStore, /stopPresenceHeartbeat\(\{ notify: true \}\)/);
+});
+
+test('presence and activity monitoring stay effective and non-blocking during maintenance', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const route = readFileSync(new URL('../routes/presence.ts', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/presenceService.ts', import.meta.url), 'utf8');
+  const controls = readFileSync(new URL('../services/systemControlService.ts', import.meta.url), 'utf8');
+  const analytics = readFileSync(new URL('../services/adminAnalyticsService.ts', import.meta.url), 'utf8');
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+
+  assert.match(schema, /@@index\(\[endedAt,\s*lastSeenAt,\s*userId\]\)/);
+  assert.match(service, /getEffectiveOnlinePresenceFilter/);
+  assert.match(service, /endStudentPresenceSessionsForMaintenance/);
+  assert.match(service, /userForceLogoutAt/);
+  assert.match(controls, /endStudentPresenceSessionsForMaintenance/);
+  assert.match(route, /recordPresenceHeartbeatBestEffort/);
+  assert.match(route, /alive:\s*false/);
+  assert.match(route, /degraded:\s*true/);
+  assert.match(analytics, /getAdminActivitySummary/);
+  assert.match(analytics, /getAdminActivityDetail/);
+  assert.match(analytics, /source:\s*'official_answers'/);
+  assert.match(adminRoute, /router\.get\('\/activity\/summary'/);
+  assert.match(adminRoute, /router\.get\('\/activity\/detail'/);
+  assert.match(activityView, /summaryLoading/);
+  assert.match(activityView, /detailLoading/);
+  assert.doesNotMatch(activityView, /v-loading="loading"/);
 });

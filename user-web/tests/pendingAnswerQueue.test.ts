@@ -118,6 +118,28 @@ test('same session question collapses short duplicate submissions to the latest 
   assert.deepEqual(records[0].selectedAnswer, ['B']);
 });
 
+test('same practiceSessionId question always keeps the latest answer', () => {
+  const storage = new MemoryStorage();
+  enqueuePendingAnswer('user-a', pendingRecord({
+    clientAnswerId: 'q1:first',
+    practiceSessionId: 'practice-session-a',
+    selectedAnswer: ['A'],
+    answeredAt: '2026-06-16T00:00:00.000Z'
+  }), storage);
+  enqueuePendingAnswer('user-a', pendingRecord({
+    clientAnswerId: 'q1:last',
+    practiceSessionId: 'practice-session-a',
+    selectedAnswer: ['B'],
+    answeredAt: '2026-06-16T00:20:00.000Z'
+  }), storage);
+
+  const records = readPendingAnswerQueue('user-a', storage);
+  assert.equal(records.length, 1);
+  assert.equal(records[0].practiceSessionId, 'practice-session-a');
+  assert.equal(records[0].clientAnswerId, 'q1:last');
+  assert.deepEqual(records[0].selectedAnswer, ['B']);
+});
+
 test('batch dedupe keeps one record per clientAnswerId and per session question', () => {
   const records = dedupePendingAnswerRecords([
     pendingRecord({ clientAnswerId: 'q1:first', sessionKey: 'session-a', selectedAnswer: ['A'], answeredAt: '2026-06-16T00:00:00.000Z' }),
@@ -130,6 +152,20 @@ test('batch dedupe keeps one record per clientAnswerId and per session question'
     ['q1:last', ['C']],
     ['q2:other', ['D']]
   ]);
+});
+
+test('practice view submits pending answers only from explicit finish flow', () => {
+  const source = readFileSync(new URL('../src/views/PracticeView.vue', import.meta.url), 'utf8');
+  const submitAnswerBody = source.match(/function submitAnswer\(\) \{[\s\S]*?\n\}/)?.[0] || '';
+  const confirmOptionBody = source.match(/function confirmOption\(key: string\) \{[\s\S]*?\n\}/)?.[0] || '';
+
+  assert.match(source, /practiceSessionId/);
+  assert.match(source, /submitCurrentPracticeSession/);
+  assert.match(source, /clientSubmissionId/);
+  assert.match(source, /提交失败，答案已暂存在本机，请稍后重试/);
+  assert.doesNotMatch(submitAnswerBody, /schedulePendingAnswerRetry/);
+  assert.doesNotMatch(confirmOptionBody, /submitAnswer\(\)/);
+  assert.doesNotMatch(source, /window\.addEventListener\('online', handlePendingAnswerOnline\)/);
 });
 
 test('successful sync removes the pending answer', () => {

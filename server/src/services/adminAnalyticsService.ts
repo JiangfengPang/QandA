@@ -5,6 +5,7 @@ import {
   listOnlinePresenceUsers,
   PRESENCE_ONLINE_WINDOW_SECONDS
 } from './presenceService.js';
+import { getSystemControls } from './systemControlService.js';
 import { addDays, dayKey, dayLabel, dayStart } from '../utils/date.js';
 import { buildDateBuckets, dateBucketCaseSql } from '../utils/sqlDateBuckets.js';
 import { UserRole } from '../utils/roles.js';
@@ -33,6 +34,36 @@ type DailyUserActivityAggregateRow = {
   correctCount: DbNumeric;
   durationSeconds: DbNumeric;
 };
+
+type DailyActivitySummaryAggregateRow = {
+  date: string;
+  answerCount: DbNumeric;
+  correctCount: DbNumeric;
+  activeUserCount: DbNumeric;
+  durationSeconds: DbNumeric;
+};
+
+type SevenDaySummaryRow = {
+  activeSevenDays: DbNumeric;
+  answersSevenDays: DbNumeric;
+  correctSevenDays: DbNumeric;
+  durationSevenDays: DbNumeric;
+};
+
+type TopActiveUserRow = {
+  id: string;
+  nickname: string;
+  email: string | null;
+  answerCount: DbNumeric;
+  correctCount: DbNumeric;
+  durationSeconds: DbNumeric;
+};
+
+const ACTIVITY_SUMMARY_CACHE_TTL_MS = 10_000;
+const ACTIVITY_DETAIL_CACHE_TTL_MS = 30_000;
+
+let summaryCache: { key: string; expiresAt: number; value: Awaited<ReturnType<typeof buildAdminActivitySummary>> } | null = null;
+let detailCache: { key: string; expiresAt: number; value: Awaited<ReturnType<typeof buildAdminActivityDetail>> } | null = null;
 
 function toNumber(value: DbNumeric) {
   if (value === null || value === undefined) return 0;
@@ -72,7 +103,7 @@ export function buildDailyActivityTrend(records: DailyActivityRow[], trendStart:
 }
 
 export function buildDailyActivityTrendFromAggregates(
-  rows: DailyActivityAggregateRow[],
+  rows: Array<DailyActivityAggregateRow | DailyActivitySummaryAggregateRow>,
   trendStart: Date,
   days: number
 ) {
@@ -98,6 +129,14 @@ export function buildDailyActivityTrendFromAggregates(
       accuracy: row.answerCount ? Math.round((row.correctCount / row.answerCount) * 100) : 0
     };
   });
+}
+
+function buildDailyActivityTrendFromSummaryRows(
+  rows: DailyActivitySummaryAggregateRow[],
+  trendStart: Date,
+  days: number
+) {
+  return buildDailyActivityTrendFromAggregates(rows, trendStart, days);
 }
 
 export function buildActivityStatsFromDailyUserAggregates(
@@ -207,7 +246,19 @@ export function buildActivityStatsFromDailyUserAggregates(
   };
 }
 
-export async function getAdminActivityStats(trendDays = 14) {
+function clampActivityDays(trendDays = 14) {
+  return Math.min(Math.max(Math.round(trendDays), 7), 30);
+}
+
+function activityCacheKey(days: number, userForceLogoutAt?: Date | null, ttlMs = ACTIVITY_SUMMARY_CACHE_TTL_MS) {
+  const bucket = Math.floor(Date.now() / ttlMs);
+  return `${days}:${userForceLogoutAt?.getTime() || 0}:${ttlMs}:${bucket}`;
+}
+
+async function buildAdminActivitySummary(
+  trendDays = 14,
+  controls?: { userForceLogoutAt: Date | null }
+) {
   const days = Math.min(Math.max(Math.round(trendDays), 7), 30);
   const now = new Date();
   const today = dayStart(now);
@@ -215,24 +266,22 @@ export async function getAdminActivityStats(trendDays = 14) {
   const sevenDayStart = addDays(today, -6);
   const trendStart = addDays(today, -(days - 1));
   const trendBucketSql = dateBucketCaseSql(Prisma.sql`a.\`createdAt\``, buildDateBuckets(trendStart, days));
+  const systemControls = controls || await getSystemControls();
 
   const [
     totalStudents,
     onlineCount,
-    onlineUsers,
-    dailyUserRows
+    dailyRows,
+    sevenDayRows
   ] = await Promise.all([
     prisma.user.count({ where: { role: UserRole.STUDENT, isActive: true } }),
-    countOnlinePresenceUsers(now),
-    listOnlinePresenceUsers(now),
-    prisma.$queryRaw<DailyUserActivityAggregateRow[]>(Prisma.sql`
+    countOnlinePresenceUsers(now, undefined, { userForceLogoutAt: systemControls.userForceLogoutAt }),
+    prisma.$queryRaw<DailyActivitySummaryAggregateRow[]>(Prisma.sql`
       SELECT
         bucketed.\`date\`,
-        bucketed.\`userId\`,
-        bucketed.\`nickname\`,
-        bucketed.\`email\`,
         COUNT(bucketed.\`id\`) AS \`answerCount\`,
         SUM(CASE WHEN bucketed.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`,
+        COUNT(DISTINCT bucketed.\`userId\`) AS \`activeUserCount\`,
         COALESCE(SUM(bucketed.\`durationSeconds\`), 0) AS \`durationSeconds\`
       FROM (
         SELECT
@@ -251,31 +300,146 @@ export async function getAdminActivityStats(trendDays = 14) {
           AND u.\`isActive\` = 1
       ) bucketed
       WHERE bucketed.\`date\` IS NOT NULL
-      GROUP BY bucketed.\`date\`, bucketed.\`userId\`, bucketed.\`nickname\`, bucketed.\`email\`
+      GROUP BY bucketed.\`date\`
       ORDER BY bucketed.\`date\` ASC
+    `),
+    prisma.$queryRaw<SevenDaySummaryRow[]>(Prisma.sql`
+      SELECT
+        COUNT(DISTINCT a.\`userId\`) AS \`activeSevenDays\`,
+        COUNT(a.\`id\`) AS \`answersSevenDays\`,
+        SUM(CASE WHEN a.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctSevenDays\`,
+        COALESCE(SUM(a.\`durationSeconds\`), 0) AS \`durationSevenDays\`
+      FROM \`UserAnswer\` a
+      INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
+      WHERE a.\`createdAt\` >= ${sevenDayStart}
+        AND a.\`createdAt\` < ${tomorrow}
+        AND u.\`role\` = 'STUDENT'
+        AND u.\`isActive\` = 1
     `)
   ]);
 
-  const activity = buildActivityStatsFromDailyUserAggregates(dailyUserRows, trendStart, days, sevenDayStart, today);
-  const answersSevenDays = activity.summary.answersSevenDays;
-  const correctSevenDays = activity.summary.correctSevenDays;
+  const trend = buildDailyActivityTrendFromSummaryRows(dailyRows, trendStart, days);
+  const todayRow = dailyRows.find((row) => row.date === dayKey(today));
+  const sevenDaySummary = sevenDayRows[0] || {
+    activeSevenDays: 0,
+    answersSevenDays: 0,
+    correctSevenDays: 0,
+    durationSevenDays: 0
+  };
+  const answersSevenDays = toNumber(sevenDaySummary.answersSevenDays);
+  const correctSevenDays = toNumber(sevenDaySummary.correctSevenDays);
+  const generatedAt = now.toISOString();
 
   return {
     onlineWindowMinutes: PRESENCE_ONLINE_WINDOW_SECONDS / 60,
     onlineWindowSeconds: PRESENCE_ONLINE_WINDOW_SECONDS,
-    checkedAt: now,
+    checkedAt: generatedAt,
+    online: {
+      effectiveUsers: onlineCount,
+      validAccountTotal: totalStudents
+    },
+    metrics: {
+      source: 'official_answers' as const,
+      generatedAt
+    },
     summary: {
       totalStudents,
       onlineCount,
-      activeToday: activity.summary.activeToday,
-      activeSevenDays: activity.summary.activeSevenDays,
-      answersToday: activity.summary.answersToday,
+      activeToday: toNumber(todayRow?.activeUserCount),
+      activeSevenDays: toNumber(sevenDaySummary.activeSevenDays),
+      answersToday: toNumber(todayRow?.answerCount),
       answersSevenDays,
       accuracySevenDays: answersSevenDays ? Math.round((correctSevenDays / answersSevenDays) * 100) : 0,
-      durationSevenDays: activity.summary.durationSevenDays
+      durationSevenDays: toNumber(sevenDaySummary.durationSevenDays)
     },
+    trend
+  };
+}
+
+async function buildAdminActivityDetail(
+  trendDays = 14,
+  controls?: { userForceLogoutAt: Date | null }
+) {
+  const days = clampActivityDays(trendDays);
+  const now = new Date();
+  const today = dayStart(now);
+  const tomorrow = addDays(today, 1);
+  const sevenDayStart = addDays(today, -6);
+  const systemControls = controls || await getSystemControls();
+  const [onlineUsers, topRows] = await Promise.all([
+    listOnlinePresenceUsers(now, undefined, { userForceLogoutAt: systemControls.userForceLogoutAt }),
+    prisma.$queryRaw<TopActiveUserRow[]>(Prisma.sql`
+      SELECT
+        u.\`id\`,
+        u.\`nickname\`,
+        u.\`email\`,
+        COUNT(a.\`id\`) AS \`answerCount\`,
+        SUM(CASE WHEN a.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`,
+        COALESCE(SUM(a.\`durationSeconds\`), 0) AS \`durationSeconds\`
+      FROM \`UserAnswer\` a
+      INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
+      WHERE a.\`createdAt\` >= ${sevenDayStart}
+        AND a.\`createdAt\` < ${tomorrow}
+        AND u.\`role\` = 'STUDENT'
+        AND u.\`isActive\` = 1
+      GROUP BY u.\`id\`, u.\`nickname\`, u.\`email\`
+      ORDER BY \`answerCount\` DESC, \`correctCount\` DESC, u.\`nickname\` ASC, u.\`id\` ASC
+      LIMIT 10
+    `)
+  ]);
+
+  return {
+    checkedAt: now.toISOString(),
+    days,
     onlineUsers,
-    trend: activity.trend,
-    topActiveUsers: activity.topActiveUsers
+    topActiveUsers: topRows.map((row) => {
+      const answerCount = toNumber(row.answerCount);
+      const correctCount = toNumber(row.correctCount);
+      return {
+        id: row.id,
+        nickname: row.nickname,
+        email: row.email,
+        answerCount,
+        correctCount,
+        durationSeconds: toNumber(row.durationSeconds),
+        accuracy: answerCount ? Math.round((correctCount / answerCount) * 100) : 0
+      };
+    })
+  };
+}
+
+export async function getAdminActivitySummary(trendDays = 14, options: { force?: boolean } = {}) {
+  const days = clampActivityDays(trendDays);
+  const controls = await getSystemControls();
+  const key = activityCacheKey(days, controls.userForceLogoutAt);
+  if (!options.force && summaryCache && summaryCache.key === key && summaryCache.expiresAt > Date.now()) {
+    return summaryCache.value;
+  }
+  const value = await buildAdminActivitySummary(days, controls);
+  summaryCache = { key, value, expiresAt: Date.now() + ACTIVITY_SUMMARY_CACHE_TTL_MS };
+  return value;
+}
+
+export async function getAdminActivityDetail(trendDays = 14, options: { force?: boolean } = {}) {
+  const days = clampActivityDays(trendDays);
+  const controls = await getSystemControls();
+  const key = activityCacheKey(days, controls.userForceLogoutAt, ACTIVITY_DETAIL_CACHE_TTL_MS);
+  if (!options.force && detailCache && detailCache.key === key && detailCache.expiresAt > Date.now()) {
+    return detailCache.value;
+  }
+  const value = await buildAdminActivityDetail(days, controls);
+  detailCache = { key, value, expiresAt: Date.now() + ACTIVITY_DETAIL_CACHE_TTL_MS };
+  return value;
+}
+
+export async function getAdminActivityStats(trendDays = 14) {
+  const [summary, detail] = await Promise.all([
+    getAdminActivitySummary(trendDays),
+    getAdminActivityDetail(trendDays)
+  ]);
+  return {
+    ...summary,
+    onlineUsers: detail.onlineUsers,
+    topActiveUsers: detail.topActiveUsers
   };
 }

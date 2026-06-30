@@ -100,6 +100,139 @@ function hasOwnField(value: unknown, field: string) {
   return Boolean(value && typeof value === 'object' && Object.prototype.hasOwnProperty.call(value, field));
 }
 
+function objectiveImportError(question: LegacyQuestion, sortOrder: number, message: string) {
+  const title = getStem(question).replace(/\s+/g, ' ').slice(0, 40);
+  return new Error(`第 ${sortOrder + 1} 题「${title}」：${message}`);
+}
+
+function assertCanonicalImportType(question: LegacyQuestion, sortOrder: number, normalizedType: string) {
+  if (question.type !== normalizedType) {
+    throw objectiveImportError(question, sortOrder, `题型 type 必须使用标准值 "${normalizedType}"，不要使用别名或省略。`);
+  }
+}
+
+function assertStandardQuestionStem(question: LegacyQuestion, sortOrder: number, errorFactory: (message: string) => Error) {
+  const alias = ['stem', 'title', 'content'].find((field) => hasOwnField(question, field));
+  if (alias) throw errorFactory(`题干字段已统一：不要使用 ${alias}，请使用 question。`);
+  if (!hasOwnField(question, 'question') || !String(question.question || '').trim()) {
+    throw errorFactory('题目必须使用非空 question 字段。');
+  }
+}
+
+function compactChoiceToken(value: string) {
+  const compact = value.replace(/[\s,，、;；/|]+/g, '');
+  return compact.length > 1 && /^[A-Z]+$/.test(compact);
+}
+
+function assertStandardAnswerArray(question: LegacyQuestion, sortOrder: number, errorFactory: (message: string) => Error) {
+  if (hasOwnField(question, 'answers')) throw errorFactory('答案字段已统一：不要使用 answers，请使用 answer。');
+  if (hasOwnField(question, 'correctAnswer')) throw errorFactory('答案字段已统一：不要使用 correctAnswer，请使用 answer。');
+  if (!hasOwnField(question, 'answer') || !Array.isArray(question.answer)) {
+    throw errorFactory('必须使用 answer 数组，例如 "answer": ["A"] 或 "answer": ["A", "C", "D"]。');
+  }
+
+  const answer = question.answer.map((item, index) => {
+    if (typeof item !== 'string') throw errorFactory(`answer 第 ${index + 1} 项必须是字符串。`);
+    if (!item.trim()) throw errorFactory(`answer 第 ${index + 1} 项不能为空。`);
+    if (item !== item.trim()) throw errorFactory(`answer 第 ${index + 1} 项不能包含首尾空格。`);
+    if (compactChoiceToken(item)) {
+      throw errorFactory('每个答案项必须是一个独立选项标识，例如多选题使用 "answer": ["A", "C", "D"]，不要使用 "ACD"。');
+    }
+    return item;
+  });
+  if (!answer.length) throw errorFactory('answer 数组不能为空。');
+  if (new Set(answer).size !== answer.length) throw errorFactory('answer 数组不能包含重复选项。');
+  return answer;
+}
+
+function assertStandardObjectiveOptions(question: LegacyQuestion, sortOrder: number) {
+  if (hasOwnField(question, 'choices')) {
+    throw objectiveImportError(question, sortOrder, '选项字段已统一：不要使用 choices，请使用 options。');
+  }
+  if (!Array.isArray(question.options) || question.options.length < 2) {
+    throw objectiveImportError(question, sortOrder, '选择题必须提供 options 数组，且至少 2 个选项。');
+  }
+
+  const seenLabels = new Set<string>();
+  return question.options.map((option, index) => {
+    const label = `第 ${index + 1} 个选项`;
+    if (hasOwnField(option, 'keyLabel') || hasOwnField(option, 'label') || hasOwnField(option, 'content') || hasOwnField(option, 'value')) {
+      throw objectiveImportError(question, sortOrder, `${label}必须使用 { "key": "A", "text": "..." }，不要使用 keyLabel/label/content/value。`);
+    }
+    if (typeof option.key !== 'string' || !option.key.trim()) {
+      throw objectiveImportError(question, sortOrder, `${label}缺少 key。`);
+    }
+    if (option.key !== option.key.trim() || !/^[A-Z]$/.test(option.key)) {
+      throw objectiveImportError(question, sortOrder, `${label}的 key 必须是单个大写字母，例如 "A"。`);
+    }
+    if (seenLabels.has(option.key)) {
+      throw objectiveImportError(question, sortOrder, `选项标识 ${option.key} 重复。`);
+    }
+    seenLabels.add(option.key);
+    if (typeof option.text !== 'string' || !option.text.trim()) {
+      throw objectiveImportError(question, sortOrder, `${label}缺少 text。`);
+    }
+    return { label: option.key, content: option.text };
+  });
+}
+
+function assertAnswerMatchesOptions(
+  question: LegacyQuestion,
+  sortOrder: number,
+  type: string,
+  answer: string[],
+  options: Array<{ label: string }>
+) {
+  const order = new Map(options.map((option, index) => [option.label, index]));
+  const missing = answer.find((item) => !order.has(item));
+  if (missing) throw objectiveImportError(question, sortOrder, `正确答案 ${missing} 没有对应选项。`);
+
+  const sortedAnswer = [...answer].sort((left, right) => (order.get(left) ?? 0) - (order.get(right) ?? 0));
+  if (JSON.stringify(sortedAnswer) !== JSON.stringify(answer)) {
+    throw objectiveImportError(question, sortOrder, `answer 必须按选项顺序填写，请改为 ${JSON.stringify(sortedAnswer)}。`);
+  }
+  if (type === 'single' && answer.length !== 1) {
+    throw objectiveImportError(question, sortOrder, '单选题只能设置一个正确答案。');
+  }
+  if (type === 'multiple' && answer.length < 1) {
+    throw objectiveImportError(question, sortOrder, '多选题至少需要 1 个正确答案。');
+  }
+}
+
+export function assertStandardObjectiveQuestionImport(questionInput: unknown, sortOrder = 0) {
+  const question = questionInput as LegacyQuestion;
+  const type = normalizeType(question.type);
+  if (!['single', 'multiple', 'judge'].includes(type)) {
+    throw objectiveImportError(question, sortOrder, '客观题导入校验只支持 single、multiple、judge。');
+  }
+  assertCanonicalImportType(question, sortOrder, type);
+  assertStandardQuestionStem(question, sortOrder, (message) => objectiveImportError(question, sortOrder, message));
+  const answer = assertStandardAnswerArray(question, sortOrder, (message) => objectiveImportError(question, sortOrder, message));
+
+  if (type === 'judge') {
+    if (hasOwnField(question, 'choices')) {
+      throw objectiveImportError(question, sortOrder, '判断题不要使用 choices。');
+    }
+    if (hasOwnField(question, 'options')) {
+      const options = assertStandardObjectiveOptions(question, sortOrder);
+      if (
+        options.length !== 2
+        || options[0].label !== 'A'
+        || options[1].label !== 'B'
+      ) {
+        throw objectiveImportError(question, sortOrder, '判断题 options 如需提供，必须正好是 A=正确、B=错误 两个标准选项。');
+      }
+    }
+    if (answer.length !== 1 || !['A', 'B'].includes(answer[0])) {
+      throw objectiveImportError(question, sortOrder, '判断题 answer 必须是 ["A"] 或 ["B"]。');
+    }
+    return;
+  }
+
+  const options = assertStandardObjectiveOptions(question, sortOrder);
+  assertAnswerMatchesOptions(question, sortOrder, type, answer, options);
+}
+
 function fillImportError(question: LegacyQuestion, sortOrder: number, message: string) {
   const title = getStem(question).replace(/\s+/g, ' ').slice(0, 40);
   return new Error(`第 ${sortOrder + 1} 题「${title}」：${message}`);
@@ -218,12 +351,11 @@ function assertReadingImport(
   options: Array<{ label: string; content: string }>
 ) {
   assertNoReadingAliasFields(question, sortOrder);
+  assertCanonicalImportType(question, sortOrder, 'reading');
   if (question.type !== 'reading') {
     throw readingImportError(question, sortOrder, '阅读理解题 type 必须固定为 "reading"。');
   }
-  if (!hasOwnField(question, 'question') || !String(question.question || '').trim()) {
-    throw readingImportError(question, sortOrder, '阅读理解题必须使用 question 作为大题题干。');
-  }
+  assertStandardQuestionStem(question, sortOrder, (message) => readingImportError(question, sortOrder, message));
   if (!normalizeReadingPassageId(question)) {
     throw readingImportError(question, sortOrder, '阅读理解题必须提供 passageId，同一篇短文下的小题使用同一个 passageId。');
   }
@@ -292,6 +424,9 @@ function getStem(question: LegacyQuestion) {
 async function upsertQuestion(bankId: string, question: LegacyQuestion, sortOrder: number): Promise<QuestionImportStatus> {
   const type = normalizeType(question.type);
   assertReadingFieldsHaveReadingType(question, sortOrder, type);
+  if (['single', 'multiple', 'judge'].includes(type)) {
+    assertStandardObjectiveQuestionImport(question, sortOrder);
+  }
   const fillBlanks = type === 'fill' ? normalizeFillBlanks(question, sortOrder) : [];
   const answer = type === 'judge'
     ? normalizeJudgeAnswerArray(question.answer ?? question.correctAnswer)

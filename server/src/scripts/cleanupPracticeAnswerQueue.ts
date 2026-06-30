@@ -35,9 +35,15 @@ async function main() {
     createdAt: { lt: cutoff }
   };
 
-  const [count, range] = await Promise.all([
+  const [count, sessionCount, range, sessionRange] = await Promise.all([
     prisma.practiceAnswerQueueItem.count({ where }),
+    prisma.practiceAnswerSubmissionQueue.count({ where }),
     prisma.practiceAnswerQueueItem.aggregate({
+      where,
+      _min: { createdAt: true },
+      _max: { createdAt: true }
+    }),
+    prisma.practiceAnswerSubmissionQueue.aggregate({
       where,
       _min: { createdAt: true },
       _max: { createdAt: true }
@@ -46,17 +52,24 @@ async function main() {
 
   console.log(`practice answer queue cleanup ${confirmed ? 'confirm' : 'dry-run'}`);
   console.log(`criteria: status=processed, createdAt < ${cutoff.toISOString()} (--days=${days})`);
-  console.log(`matched: ${count}`);
+  console.log(`legacyMatched: ${count}`);
   console.log(`oldestCreatedAt: ${isoOrNull(range._min.createdAt)}`);
   console.log(`newestCreatedAt: ${isoOrNull(range._max.createdAt)}`);
+  console.log(`sessionMatched: ${sessionCount}`);
+  console.log(`sessionOldestCreatedAt: ${isoOrNull(sessionRange._min.createdAt)}`);
+  console.log(`sessionNewestCreatedAt: ${isoOrNull(sessionRange._max.createdAt)}`);
 
   if (!confirmed) {
     console.log('dry-run only; pass --confirm to delete matched processed rows.');
     return;
   }
 
-  const result = await prisma.practiceAnswerQueueItem.deleteMany({ where });
-  console.log(`deleted: ${result.count}`);
+  const [legacyResult, sessionResult] = await prisma.$transaction([
+    prisma.practiceAnswerQueueItem.deleteMany({ where }),
+    prisma.practiceAnswerSubmissionQueue.deleteMany({ where })
+  ]);
+  console.log(`legacyDeleted: ${legacyResult.count}`);
+  console.log(`sessionDeleted: ${sessionResult.count}`);
 }
 
 main()

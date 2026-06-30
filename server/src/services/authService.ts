@@ -11,6 +11,7 @@ import { assertQqEmail, checkEmailCode, sendEmailCode, verifyEmailCode } from '.
 import { removeLocalAvatarIfOwned, saveAvatarFromDataUrl } from './avatarStorage.js';
 import { createVerificationCode } from '../utils/verificationCode.js';
 import { assertAllowedNickname } from '../utils/nicknamePolicy.js';
+import { assertUserLoginAllowed } from './systemControlService.js';
 
 export type UserPreferences = {
   autoShowExplanation: boolean;
@@ -65,6 +66,7 @@ function normalizePreferences(input: Partial<UserPreferences>): Partial<UserPref
 }
 
 export async function sendRegisterCode(input: { email: string }) {
+  await assertUserLoginAllowed();
   const email = assertQqEmail(input.email);
   const existed = await prisma.user.findFirst({ where: { OR: [{ email }, { username: email }] }, select: { id: true } });
   if (existed) throw new HttpError('该 QQ 邮箱已注册', 409);
@@ -72,6 +74,7 @@ export async function sendRegisterCode(input: { email: string }) {
 }
 
 export async function registerUser(input: { nickname: string; email: string; code: string; password: string }) {
+  await assertUserLoginAllowed();
   const email = assertQqEmail(input.email);
   const nickname = assertAllowedNickname(input.nickname, { emptyMessage: '请输入昵称' });
   assertStrongPassword(input.password);
@@ -111,6 +114,7 @@ export async function loginUser(input: { email?: string; username?: string; pass
 
     if (!user || !user.isActive) throw new HttpError('管理员账号或密码错误', 401);
   } else {
+    await assertUserLoginAllowed();
     const email = assertQqEmail(String(input.email || ''));
     user = await prisma.user.findFirst({ where: { email, role: UserRole.STUDENT } });
 

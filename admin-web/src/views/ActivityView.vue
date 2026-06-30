@@ -1,22 +1,22 @@
 <template>
-  <section class="activity-page" v-loading="loading">
+  <section class="activity-page">
     <el-card class="activity-hero" shadow="never">
       <div>
         <div class="activity-kicker">用户实时状态</div>
         <h2>在线用户与答题活跃度</h2>
-        <p>当前在线指最近 {{ onlineWindowLabel }}内持续发送心跳的学生端账号，答题活跃指标来自真实答题记录。</p>
+        <p>当前在线指最近 {{ onlineWindowLabel }}内持续发送心跳的有效学生端账号，答题活跃指标来自正式答题记录。</p>
       </div>
       <div class="hero-actions">
-        <el-select v-model="days" style="width: 128px" @change="load">
+        <el-select v-model="days" style="width: 128px" @change="loadActivity">
           <el-option :value="7" label="近 7 天" />
           <el-option :value="14" label="近 14 天" />
           <el-option :value="30" label="近 30 天" />
         </el-select>
-        <el-button type="primary" :icon="Refresh" @click="load">刷新数据</el-button>
+        <el-button type="primary" :icon="Refresh" :loading="summaryLoading || detailLoading" @click="loadActivity">刷新数据</el-button>
       </div>
     </el-card>
 
-    <div class="metric-grid">
+    <div class="metric-grid" v-loading="summaryLoading">
       <el-card v-for="item in metrics" :key="item.label" class="metric-card" shadow="never">
         <div class="metric-top">
           <span>{{ item.label }}</span>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="activity-grid">
-      <el-card class="content-card trend-card" shadow="never">
+      <el-card class="content-card trend-card" shadow="never" v-loading="summaryLoading">
         <template #header>
           <div class="card-heading">
             <div>
@@ -41,7 +41,7 @@
         <div ref="chartRef" class="activity-chart" />
       </el-card>
 
-      <el-card class="content-card online-card" shadow="never">
+      <el-card class="content-card online-card" shadow="never" v-loading="detailLoading">
         <template #header>
           <div class="card-heading">
             <div>
@@ -63,7 +63,7 @@
       </el-card>
     </div>
 
-    <el-card class="content-card ranking-card" shadow="never">
+    <el-card class="content-card ranking-card" shadow="never" v-loading="detailLoading">
       <template #header>
         <div class="card-heading">
           <div>
@@ -118,6 +118,14 @@ type ActivityData = {
   onlineWindowMinutes: number;
   onlineWindowSeconds?: number;
   checkedAt: string;
+  online?: {
+    effectiveUsers: number;
+    validAccountTotal: number;
+  };
+  metrics?: {
+    source: 'official_answers' | 'daily_aggregate';
+    generatedAt: string;
+  };
   summary: {
     totalStudents: number;
     onlineCount: number;
@@ -128,7 +136,7 @@ type ActivityData = {
     accuracySevenDays: number;
     durationSevenDays: number;
   };
-  onlineUsers: Array<{ id: string; nickname: string; email: string; lastSeenAt: string }>;
+  onlineUsers: Array<{ id: string; nickname: string; email: string | null; lastSeenAt: string }>;
   trend: Array<{ date: string; label: string; answerCount: number; activeUserCount: number; accuracy: number }>;
   topActiveUsers: Array<{
     id: string;
@@ -139,6 +147,9 @@ type ActivityData = {
     durationSeconds: number;
   }>;
 };
+
+type ActivitySummaryData = Omit<ActivityData, 'onlineUsers' | 'topActiveUsers'>;
+type ActivityDetailData = Pick<ActivityData, 'onlineUsers' | 'topActiveUsers'> & { checkedAt?: string; days?: number };
 
 const emptyData = (): ActivityData => ({
   onlineWindowMinutes: 1.5,
@@ -159,19 +170,20 @@ const emptyData = (): ActivityData => ({
   topActiveUsers: []
 });
 
-const loading = ref(false);
+const summaryLoading = ref(false);
+const detailLoading = ref(false);
 const days = ref(14);
 const data = ref<ActivityData>(emptyData());
 const chartRef = ref<HTMLElement>();
 let chart: ECharts | null = null;
 
 const metrics = computed(() => [
-  { label: '当前在线', value: data.value.summary.onlineCount, hint: `共 ${data.value.summary.totalStudents} 个有效账号`, icon: UserFilled, tone: 'blue' },
+  { label: '当前在线', value: data.value.summary.onlineCount, hint: `共 ${data.value.summary.totalStudents} 个有效学生账号总数`, icon: UserFilled, tone: 'blue' },
   { label: '今日活跃', value: data.value.summary.activeToday, hint: '今日有答题记录的用户', icon: User, tone: 'cyan' },
   { label: '今日答题', value: data.value.summary.answersToday, hint: '今日提交的答案总数', icon: Select, tone: 'indigo' },
   { label: '近 7 天活跃', value: data.value.summary.activeSevenDays, hint: '近 7 天独立答题用户', icon: DataAnalysis, tone: 'violet' },
   { label: '近 7 天答题', value: data.value.summary.answersSevenDays, hint: `累计 ${formatDuration(data.value.summary.durationSevenDays)}`, icon: Timer, tone: 'orange' },
-  { label: '近 7 天正确率', value: `${data.value.summary.accuracySevenDays}%`, hint: '按全部答题记录计算', icon: Clock, tone: 'green' }
+  { label: '近 7 天正确率', value: `${data.value.summary.accuracySevenDays}%`, hint: '按正式答题记录计算', icon: Clock, tone: 'green' }
 ]);
 
 const onlineWindowLabel = computed(() => {
@@ -259,17 +271,46 @@ function renderChart() {
   });
 }
 
-async function load() {
-  loading.value = true;
+async function loadSummary() {
+  summaryLoading.value = true;
   try {
-    data.value = await api.get<ActivityData>(`/admin/activity?days=${days.value}`);
+    const summary = await api.get<ActivitySummaryData>(`/admin/activity/summary?days=${days.value}`);
+    data.value = {
+      ...data.value,
+      ...summary,
+      onlineUsers: data.value.onlineUsers,
+      topActiveUsers: data.value.topActiveUsers
+    };
     await nextTick();
     renderChart();
   } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '活跃度数据加载失败');
+    ElMessage.error(error instanceof Error ? error.message : '活跃度摘要加载失败');
   } finally {
-    loading.value = false;
+    summaryLoading.value = false;
   }
+}
+
+async function loadDetail() {
+  detailLoading.value = true;
+  try {
+    const detail = await api.get<ActivityDetailData>(`/admin/activity/detail?days=${days.value}`);
+    data.value = {
+      ...data.value,
+      onlineUsers: detail.onlineUsers,
+      topActiveUsers: detail.topActiveUsers
+    };
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '活跃度明细加载失败');
+  } finally {
+    detailLoading.value = false;
+  }
+}
+
+async function loadActivity() {
+  await Promise.allSettled([
+    loadSummary(),
+    loadDetail()
+  ]);
 }
 
 function resizeChart() {
@@ -277,7 +318,7 @@ function resizeChart() {
 }
 
 onMounted(() => {
-  load();
+  void loadActivity();
   window.addEventListener('resize', resizeChart);
 });
 

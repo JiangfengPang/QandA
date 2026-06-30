@@ -16,6 +16,9 @@ export type PracticeResumeSessionRecord = {
 
 export type PracticeResumeSnapshot = {
   version: 1;
+  practiceSessionId?: string;
+  scope?: string;
+  submitted?: boolean;
   currentIndex: number;
   questionId: string;
   questionIds: string[];
@@ -85,6 +88,9 @@ function parseSnapshot(value: string | null): PracticeResumeSnapshot | null {
     if (!Array.isArray(parsed.questionIds)) return null;
     return {
       version: 1,
+      practiceSessionId: parsed.practiceSessionId ? String(parsed.practiceSessionId).slice(0, 191) : undefined,
+      scope: parsed.scope ? String(parsed.scope).slice(0, 120) : undefined,
+      submitted: Boolean(parsed.submitted),
       currentIndex: parsed.currentIndex,
       questionId: String(parsed.questionId),
       questionIds: parsed.questionIds.map((item) => String(item)).filter(Boolean),
@@ -124,9 +130,15 @@ export function savePracticeResume(
   questions: PracticeResumeQuestion[],
   currentIndex: number,
   sessionRecords?: Record<string, PracticeResumeSessionRecord>,
-  storage: ResumeStorage | null = storageAvailable()
+  metaOrStorage: { practiceSessionId?: string; scope?: string; submitted?: boolean } | ResumeStorage | null = {},
+  storage?: ResumeStorage | null
 ) {
-  if (!key || !storage || !questions.length) return null;
+  const looksLikeStorage = metaOrStorage
+    && typeof (metaOrStorage as ResumeStorage).getItem === 'function'
+    && typeof (metaOrStorage as ResumeStorage).setItem === 'function';
+  const meta = looksLikeStorage ? {} : (metaOrStorage || {}) as { practiceSessionId?: string; scope?: string; submitted?: boolean };
+  const targetStorage = looksLikeStorage ? metaOrStorage as ResumeStorage : storage ?? storageAvailable();
+  if (!key || !targetStorage || !questions.length) return null;
 
   const safeIndex = Math.max(0, Math.min(currentIndex, questions.length - 1));
   const currentQuestionId = questionId(questions[safeIndex]);
@@ -143,6 +155,9 @@ export function savePracticeResume(
 
   const snapshot: PracticeResumeSnapshot = {
     version: 1,
+    practiceSessionId: meta.practiceSessionId ? String(meta.practiceSessionId).slice(0, 191) : undefined,
+    scope: meta.scope ? String(meta.scope).slice(0, 120) : undefined,
+    submitted: Boolean(meta.submitted),
     currentIndex: safeIndex,
     questionId: currentQuestionId,
     questionIds: ids,
@@ -151,7 +166,7 @@ export function savePracticeResume(
   };
 
   try {
-    storage.setItem(key, JSON.stringify(snapshot));
+    targetStorage.setItem(key, JSON.stringify(snapshot));
   } catch {
     // Practice must keep working even when localStorage is full or disabled.
   }

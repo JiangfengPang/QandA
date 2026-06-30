@@ -14,8 +14,9 @@ const PRESENCE_CLEANUP_INTERVAL_MS = 12 * 60 * 60 * 1000;
 
 const SESSION_ID_PATTERN = /^[A-Za-z0-9._:-]+$/;
 let nextPresenceCleanupAt = 0;
-let onlineUsersCache: { expiresAt: number; value: OnlinePresenceUser[] } | null = null;
-let onlineCountCache: { expiresAt: number; value: number } | null = null;
+let onlineUsersCache: { key: string; expiresAt: number; value: OnlinePresenceUser[] } | null = null;
+let onlineCountCache: { key: string; expiresAt: number; value: number } | null = null;
+let nextHeartbeatFailureLogAt = 0;
 
 export type OnlinePresenceUser = {
   id: string;
@@ -38,6 +39,10 @@ type OnlinePresenceRow = {
 
 type OnlinePresenceCountRow = {
   onlineCount: bigint | number;
+};
+
+type EffectiveOnlineOptions = {
+  userForceLogoutAt?: Date | null;
 };
 
 function toNumber(value: bigint | number | null | undefined) {
@@ -65,6 +70,22 @@ function trimNullable(value: string | undefined, maxLength: number) {
 
 export function presenceOnlineSince(now = new Date(), windowMs = PRESENCE_ONLINE_WINDOW_MS) {
   return new Date(now.getTime() - windowMs);
+}
+
+function presenceCacheKey(windowMs: number, options: EffectiveOnlineOptions = {}) {
+  return `${windowMs}:${options.userForceLogoutAt?.getTime() || 0}`;
+}
+
+export function getEffectiveOnlinePresenceFilter(options: EffectiveOnlineOptions = {}) {
+  const forceLogoutAt = options.userForceLogoutAt;
+  return forceLogoutAt
+    ? Prisma.sql`AND p.\`lastSeenAt\` >= ${forceLogoutAt}`
+    : Prisma.empty;
+}
+
+function invalidatePresenceOnlineCache() {
+  onlineUsersCache = null;
+  onlineCountCache = null;
 }
 
 export async function cleanupStalePresenceSessions(now = new Date(), retentionDays = PRESENCE_SESSION_RETENTION_DAYS) {
@@ -148,9 +169,33 @@ export async function recordPresenceHeartbeat(input: {
       endedAt: null
     }
   });
-  onlineUsersCache = null;
-  onlineCountCache = null;
+  invalidatePresenceOnlineCache();
   return { ...session, throttled: false };
+}
+
+export async function recordPresenceHeartbeatBestEffort(input: {
+  userId: string;
+  sessionId: string;
+  userAgent?: string;
+  ipAddress?: string;
+  now?: Date;
+}) {
+  try {
+    return {
+      session: await recordPresenceHeartbeat(input),
+      degraded: false
+    };
+  } catch (error) {
+    const now = Date.now();
+    if (now >= nextHeartbeatFailureLogAt) {
+      nextHeartbeatFailureLogAt = now + 60_000;
+      console.error('在线心跳写入失败，已降级为非阻塞响应', error);
+    }
+    return {
+      session: null,
+      degraded: true
+    };
+  }
 }
 
 export async function endPresenceSession(input: { userId: string; sessionId: string; now?: Date }) {
@@ -166,18 +211,46 @@ export async function endPresenceSession(input: { userId: string; sessionId: str
     }
   });
   if (result.count > 0) {
-    onlineUsersCache = null;
-    onlineCountCache = null;
+    invalidatePresenceOnlineCache();
   }
   return result;
 }
 
-export async function listOnlinePresenceUsers(now = new Date(), windowMs = PRESENCE_ONLINE_WINDOW_MS) {
+export async function endStudentPresenceSessionsForMaintenance(now = new Date()) {
+  const result = await prisma.userPresenceSession.updateMany({
+    where: {
+      endedAt: null,
+      user: {
+        role: UserRole.STUDENT
+      }
+    },
+    data: {
+      endedAt: now
+    }
+  });
+  if (result.count > 0) invalidatePresenceOnlineCache();
+  return result;
+}
+
+export async function listOnlinePresenceUsers(
+  now = new Date(),
+  windowMs = PRESENCE_ONLINE_WINDOW_MS,
+  options: EffectiveOnlineOptions = {}
+) {
   const cacheTtlMs = env.presenceCountCacheSeconds * 1000;
   const cacheNow = Date.now();
-  if (cacheTtlMs > 0 && onlineUsersCache && onlineUsersCache.expiresAt > cacheNow) return onlineUsersCache.value;
+  const cacheKey = presenceCacheKey(windowMs, options);
+  if (
+    cacheTtlMs > 0
+    && onlineUsersCache
+    && onlineUsersCache.key === cacheKey
+    && onlineUsersCache.expiresAt > cacheNow
+  ) {
+    return onlineUsersCache.value;
+  }
 
   const onlineSince = presenceOnlineSince(now, windowMs);
+  const effectiveFilter = getEffectiveOnlinePresenceFilter(options);
   const rows = await prisma.$queryRaw<OnlinePresenceRow[]>(Prisma.sql`
     SELECT
       u.\`id\`,
@@ -188,6 +261,7 @@ export async function listOnlinePresenceUsers(now = new Date(), windowMs = PRESE
     INNER JOIN \`User\` u ON u.\`id\` = p.\`userId\`
     WHERE p.\`lastSeenAt\` >= ${onlineSince}
       AND p.\`endedAt\` IS NULL
+      ${effectiveFilter}
       AND u.\`role\` = ${UserRole.STUDENT}
       AND u.\`isActive\` = 1
     GROUP BY u.\`id\`, u.\`nickname\`, u.\`email\`
@@ -195,27 +269,41 @@ export async function listOnlinePresenceUsers(now = new Date(), windowMs = PRESE
     LIMIT 50
   `);
 
-  if (cacheTtlMs > 0) onlineUsersCache = { expiresAt: cacheNow + cacheTtlMs, value: rows };
+  if (cacheTtlMs > 0) onlineUsersCache = { key: cacheKey, expiresAt: cacheNow + cacheTtlMs, value: rows };
   return rows;
 }
 
-export async function countOnlinePresenceUsers(now = new Date(), windowMs = PRESENCE_ONLINE_WINDOW_MS) {
+export async function countOnlinePresenceUsers(
+  now = new Date(),
+  windowMs = PRESENCE_ONLINE_WINDOW_MS,
+  options: EffectiveOnlineOptions = {}
+) {
   const cacheTtlMs = env.presenceCountCacheSeconds * 1000;
   const cacheNow = Date.now();
-  if (cacheTtlMs > 0 && onlineCountCache && onlineCountCache.expiresAt > cacheNow) return onlineCountCache.value;
+  const cacheKey = presenceCacheKey(windowMs, options);
+  if (
+    cacheTtlMs > 0
+    && onlineCountCache
+    && onlineCountCache.key === cacheKey
+    && onlineCountCache.expiresAt > cacheNow
+  ) {
+    return onlineCountCache.value;
+  }
 
   const onlineSince = presenceOnlineSince(now, windowMs);
+  const effectiveFilter = getEffectiveOnlinePresenceFilter(options);
   const rows = await prisma.$queryRaw<OnlinePresenceCountRow[]>(Prisma.sql`
     SELECT COUNT(DISTINCT p.\`userId\`) AS \`onlineCount\`
     FROM \`UserPresenceSession\` p
     INNER JOIN \`User\` u ON u.\`id\` = p.\`userId\`
     WHERE p.\`lastSeenAt\` >= ${onlineSince}
       AND p.\`endedAt\` IS NULL
+      ${effectiveFilter}
       AND u.\`role\` = ${UserRole.STUDENT}
       AND u.\`isActive\` = 1
   `);
 
   const count = toNumber(rows[0]?.onlineCount);
-  if (cacheTtlMs > 0) onlineCountCache = { expiresAt: cacheNow + cacheTtlMs, value: count };
+  if (cacheTtlMs > 0) onlineCountCache = { key: cacheKey, expiresAt: cacheNow + cacheTtlMs, value: count };
   return count;
 }

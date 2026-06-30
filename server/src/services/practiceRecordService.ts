@@ -1,8 +1,14 @@
 import { prisma } from '../db/prisma.js';
 import { formatQuestion } from './questionService.js';
-import { isAnswerCorrect, isFillAnswerCorrect } from '../utils/answer.js';
-import { normalizeJudgeAnswerArray } from '../utils/judge.js';
+import { isAnswerCorrect, isFillAnswerCorrect, normalizeAnswer } from '../utils/answer.js';
 import { HttpError } from '../utils/http.js';
+import {
+  assertPracticeSelectedAnswerAllowed,
+  normalizeAnswerForObjectiveType,
+  normalizeSelectedForPracticeStorage
+} from '../utils/answerNormalization.js';
+
+export { assertPracticeSelectedAnswerAllowed, normalizeSelectedForPracticeStorage };
 
 function questionInclude(userId: string) {
   return {
@@ -42,7 +48,7 @@ function fillAnswerDisplayArray(answer: unknown): string[] {
   return normalizeAnswerArray(answer);
 }
 
-export async function submitPracticeAnswer(userId: string, questionId: string, selected: string[], durationSeconds = 0, clientAnswerId?: string) {
+export async function submitPracticeAnswer(userId: string, questionId: string, selected: unknown, durationSeconds = 0, clientAnswerId?: string) {
   const safeClientAnswerId = normalizeClientAnswerId(clientAnswerId);
   const [question, user] = await Promise.all([
     prisma.question.findFirst({
@@ -53,14 +59,11 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
   ]);
   if (!question) throw new HttpError('题目不存在或已停用', 404);
 
-  const selectedForStorage = question.type === 'judge' ? normalizeJudgeAnswerArray(selected) : selected;
+  const selectedForStorage = normalizeSelectedForPracticeStorage(question.type, selected);
   if (['single', 'multiple', 'judge', 'reading'].includes(question.type)) {
-    const allowedLabels = new Set(question.options.map((option) => option.label));
-    if (selectedForStorage.some((item) => !allowedLabels.has(item))) {
-      throw new HttpError('答案包含无效选项', 400);
-    }
+    assertPracticeSelectedAnswerAllowed(question.type, selectedForStorage, question.options.map((option) => option.label));
   }
-  const answerForCheck = question.type === 'judge' ? normalizeJudgeAnswerArray(question.answerJson) : question.answerJson;
+  const answerForCheck = question.type === 'judge' ? normalizeAnswerForObjectiveType(question.type, question.answerJson) : question.answerJson;
   const correct = question.type === 'fill'
     ? isFillAnswerCorrect(selectedForStorage, answerForCheck)
     : isAnswerCorrect(selectedForStorage, answerForCheck);
@@ -122,7 +125,7 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
 
   return {
     correct: writeResult.correct,
-    answer: question.type === 'fill' ? fillAnswerDisplayArray(answerForCheck) : answerForCheck,
+    answer: question.type === 'fill' ? fillAnswerDisplayArray(answerForCheck) : normalizeAnswer(answerForCheck),
     explanation: question.explanation,
     recorded: writeResult.recorded
   };

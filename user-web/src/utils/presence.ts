@@ -1,10 +1,11 @@
-import { api, getToken, postKeepalive } from '../api/request';
+import { getToken, postKeepalive, request } from '../api/request';
 import {
   DEFAULT_PRESENCE_HEARTBEAT_INTERVAL_MS,
   DEFAULT_PRESENCE_HIDDEN_HEARTBEAT_INTERVAL_MS
 } from '../config/presence';
 
 const PRESENCE_SESSION_KEY = 'qanda_presence_session_id';
+const PRESENCE_HEARTBEAT_TIMEOUT_MS = 5000;
 
 let heartbeatTimer: number | undefined;
 let heartbeatInFlight = false;
@@ -68,15 +69,22 @@ async function sendHeartbeat(reason: string) {
   if (!getToken() || heartbeatInFlight) return;
 
   heartbeatInFlight = true;
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), PRESENCE_HEARTBEAT_TIMEOUT_MS);
   try {
-    const response = await api.post<HeartbeatResponse>('/presence/heartbeat', {
-      sessionId: getPresenceSessionId(),
-      reason
+    const response = await request<HeartbeatResponse>('/presence/heartbeat', {
+      method: 'POST',
+      body: JSON.stringify({
+        sessionId: getPresenceSessionId(),
+        reason
+      }),
+      signal: controller.signal
     });
     updateHeartbeatInterval(response);
   } catch {
     // 在线心跳不能影响正常答题流程；下一轮心跳会继续修复状态。
   } finally {
+    window.clearTimeout(timeoutId);
     heartbeatInFlight = false;
   }
 }
@@ -142,7 +150,10 @@ export async function stopPresenceHeartbeat(options: { notify?: boolean } = {}) 
 
   if (notify && getToken() && wasStarted) {
     try {
-      await api.post('/presence/leave', { sessionId: getPresenceSessionId() });
+      await request('/presence/leave', {
+        method: 'POST',
+        body: JSON.stringify({ sessionId: getPresenceSessionId() })
+      });
     } catch {
       sendLeaveKeepalive();
     }

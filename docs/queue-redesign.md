@@ -2,7 +2,7 @@
 
 ## 目标
 
-当前低风险版本继续使用 `PracticeAnswerQueueItem` 作为 MySQL 应急队列，并加强幂等、去重、worker 节流、监控和清理。下一阶段可升级到 Redis + BullMQ + 独立 worker，把高峰 pending、retry、delayed、failed job 从 MySQL 主业务库移走。
+当前版本使用 `PracticeAnswerSubmissionQueue` 作为 MySQL 会话级主队列，`PracticeAnswerQueueItem` 继续保留为旧客户端兼容队列。下一阶段可升级到 Redis + BullMQ + 独立 worker，把高峰 pending、retry、delayed、failed job 从 MySQL 主业务库移走。
 
 ## 目标架构
 
@@ -14,11 +14,28 @@
 
 ## 入队协议
 
-`qanda-server` 接收 `/practice/answers` 和 `/practice/answers/batch` 后：
+`qanda-server` 接收 `/practice/answers/batch` 后，优先使用会话级提交协议：
+
+```json
+{
+  "practiceSessionId": "ps:uuid",
+  "clientSubmissionId": "ps:uuid:submit-uuid",
+  "answers": [
+    {
+      "questionId": "cuid",
+      "clientAnswerId": "question:uuid",
+      "selected": ["A"],
+      "durationSeconds": 3
+    }
+  ]
+}
+```
+
+旧 `/practice/answers` 和不带 `practiceSessionId` 的 batch 请求继续兼容旧题目级队列。Redis + BullMQ 阶段：
 
 1. 生成或接收幂等键：优先 `userId + clientAnswerId`。
-2. 可选读取轻量幂等收据表或 Redis SET，避免同一 `clientAnswerId` 重复 add。
-3. 使用 BullMQ `jobId = userId:clientAnswerId` 入队。
+2. 会话级 job 使用 `jobId = userId:practiceSessionId`，题目级兼容 job 使用 `jobId = userId:clientAnswerId`。
+3. 可选读取轻量幂等收据表或 Redis SET，避免同一 job 重复 add。
 4. 返回 `queued`、`duplicate:waiting`、`duplicate:active`、`duplicate:completed` 或 `duplicate:failed`。
 
 job payload 建议只放必要字段：
@@ -26,10 +43,16 @@ job payload 建议只放必要字段：
 ```json
 {
   "userId": "cuid",
-  "questionId": "cuid",
-  "clientAnswerId": "question:uuid",
-  "selected": ["A"],
-  "durationSeconds": 3,
+  "practiceSessionId": "ps:uuid",
+  "clientSubmissionId": "ps:uuid:submit-uuid",
+  "answers": [
+    {
+      "questionId": "cuid",
+      "clientAnswerId": "question:uuid",
+      "selected": ["A"],
+      "durationSeconds": 3
+    }
+  ],
   "createdAt": "2026-06-30T00:00:00.000Z"
 }
 ```
@@ -41,7 +64,7 @@ job payload 建议只放必要字段：
 - `concurrency` 由环境变量控制。
 - retry 使用 BullMQ attempts + exponential backoff。
 - 超过上限进入 failed，由后台监控展示。
-- 写 MySQL 时调用现有 `submitPracticeAnswer`，保留 `UserAnswer(userId, clientAnswerId)` 唯一键。
+- 写 MySQL 时逐题调用现有 `submitPracticeAnswer`，保留 `UserAnswer(userId, clientAnswerId)` 唯一键。
 - 对 4xx 永久错误不继续重试，记录失败原因。
 - 对数据库短暂错误、网络错误按退避重试。
 

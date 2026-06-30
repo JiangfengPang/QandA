@@ -105,6 +105,8 @@ export const env = {
   practiceAnswerQueueStatsLogIntervalMs: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_STATS_LOG_INTERVAL_MS, 30000, 1000, 300000),
   practiceAnswerQueueStrictInterval: parseBool(process.env.PRACTICE_ANSWER_QUEUE_STRICT_INTERVAL, true),
   practiceAnswerQueueMaxDrainRounds: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_MAX_DRAIN_ROUNDS, 5, 1, 100),
+  systemSettingsCacheMs: parseIntRange(process.env.SYSTEM_SETTINGS_CACHE_MS, 5000, 0, 60000),
+  systemHealthCacheMs: parseIntRange(process.env.SYSTEM_HEALTH_CACHE_MS, 15000, 0, 60000),
   practiceReviewSummaryCacheSeconds: parseIntRange(process.env.PRACTICE_REVIEW_SUMMARY_CACHE_SECONDS, 10, 0, 60),
   presenceHeartbeatIntervalMs: parseIntRange(process.env.PRESENCE_HEARTBEAT_INTERVAL_MS, 120000, 30000, 600000),
   presenceOnlineWindowSeconds: parseIntRange(process.env.PRESENCE_ONLINE_WINDOW_SECONDS, 300, 60, 1800),

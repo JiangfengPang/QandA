@@ -36,6 +36,8 @@ model User {
   updatedAt            DateTime        @updatedAt
   answers              UserAnswer[]
   answerQueueItems     PracticeAnswerQueueItem[]
+  practiceSessionsV2   PracticeSession[]
+  answerSubmissionJobs PracticeAnswerSubmissionQueue[]
   favorites            UserFavorite[]
   wrongs               WrongQuestion[]
   practiceSessions     UserPracticeSession[]
@@ -168,6 +170,62 @@ model PracticeAnswerQueueItem {
   @@index([questionId])
 }
 
+model SystemSetting {
+  id                                  String    @id @db.VarChar(32)
+  userLoginDisabled                   Boolean   @default(false)
+  userLoginDisabledUpdatedAt          DateTime?
+  userForceLogoutAt                   DateTime?
+  practiceAnswerWorkerPaused          Boolean   @default(false)
+  practiceAnswerWorkerPausedUpdatedAt DateTime?
+  createdAt                           DateTime  @default(now())
+  updatedAt                           DateTime  @updatedAt
+}
+
+model PracticeSession {
+  id              String   @id @default(cuid())
+  userId          String
+  scopeType       String   @default("practice") @db.VarChar(40)
+  scopeId         String?  @db.VarChar(191)
+  status          String   @default("in_progress") @db.VarChar(20)
+  answerCount     Int      @default(0)
+  correctCount    Int      @default(0)
+  durationSeconds Int      @default(0)
+  startedAt       DateTime @default(now())
+  submittedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submissionJobs  PracticeAnswerSubmissionQueue[]
+
+  @@index([userId, createdAt])
+  @@index([userId, status])
+}
+
+model PracticeAnswerSubmissionQueue {
+  id                 String    @id @default(cuid())
+  userId             String
+  practiceSessionId  String
+  clientSubmissionId String    @db.VarChar(120)
+  answersJson        Json
+  status             String    @default("pending") @db.VarChar(20)
+  retryCount         Int       @default(0)
+  lastError          String?   @db.VarChar(500)
+  nextRunAt          DateTime  @default(now())
+  lockedAt           DateTime?
+  processedAt        DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  practiceSession    PracticeSession @relation(fields: [practiceSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, practiceSessionId])
+  @@unique([userId, clientSubmissionId])
+  @@index([status, nextRunAt])
+  @@index([lockedAt])
+  @@index([userId, createdAt])
+  @@index([practiceSessionId])
+}
+
 model UserFavorite {
   id         String   @id @default(cuid())
   userId     String
@@ -221,6 +279,7 @@ model UserPresenceSession {
   @@unique([userId, sessionId])
   @@index([lastSeenAt])
   @@index([endedAt, lastSeenAt])
+  @@index([endedAt, lastSeenAt, userId])
   @@index([userId, lastSeenAt])
 }
 

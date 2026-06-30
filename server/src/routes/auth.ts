@@ -26,6 +26,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { recordAdminOperation } from '../services/adminAuditService.js';
 import { isQqEmail } from '../utils/email.js';
 import { NICKNAME_MAX_CHARS } from '../utils/nicknamePolicy.js';
+import { assertUserLoginAllowed } from '../services/systemControlService.js';
 
 const router = Router();
 
@@ -120,6 +121,7 @@ router.post(
   async (req, res) => {
     try {
       const input = registerCodeSchema.parse(req.body);
+      await assertUserLoginAllowed();
       return ok(res, await sendRegisterCode(input));
     } catch (error) {
       return failFromError(res, error, '验证码发送失败');
@@ -134,6 +136,7 @@ router.post(
   async (req, res) => {
     try {
       const input = registerSchema.parse(req.body);
+      await assertUserLoginAllowed();
       const data = await registerUser(input);
       setAuthCookies(res, data.token, data.csrfToken, 'user');
       return ok(res, { user: data.user }, '注册成功');
@@ -150,6 +153,7 @@ router.post(
   async (req, res) => {
     try {
       const input = loginSchema.parse(req.body);
+      if (!input.adminOnly) await assertUserLoginAllowed();
       const data = await loginUser(input);
       setAuthCookies(res, data.token, data.csrfToken, data.audience);
       if (data.audience === 'admin') {
