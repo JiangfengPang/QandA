@@ -6,6 +6,7 @@ import { isAnswerCorrect, isFillAnswerCorrect, normalizeAnswer, normalizeFillAns
 import { asyncHandler } from './asyncHandler.js';
 import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
+import { dayKey } from './date.js';
 import { createVerificationCode } from './verificationCode.js';
 import { assertAllowedNickname, hasForbiddenNickname, normalizeNickname } from './nicknamePolicy.js';
 import {
@@ -26,6 +27,7 @@ import {
   assertPracticeSelectedAnswerAllowed,
   normalizeSelectedForPracticeStorage
 } from '../services/practiceRecordService.js';
+import { buildActivityAggregatesFromAnswers } from '../services/activityAggregationService.js';
 import { dedupeSessionAnswers } from '../services/practiceAnswerQueueService.js';
 
 test('answer comparison normalizes case, order and duplicates', () => {
@@ -782,13 +784,68 @@ test('admin activity stats derive summary, trend and ranking from daily user agg
   ]);
 });
 
+test('activity aggregation batches compact answers by user and local day', () => {
+  const rows = buildActivityAggregatesFromAnswers([
+    {
+      id: 'a1',
+      userId: 'u-a',
+      createdAt: new Date(2026, 6, 1, 8, 0),
+      isCorrect: true,
+      durationSeconds: 30
+    },
+    {
+      id: 'a2',
+      userId: 'u-a',
+      createdAt: new Date(2026, 6, 1, 9, 0),
+      isCorrect: false,
+      durationSeconds: 5000
+    },
+    {
+      id: 'a3',
+      userId: 'u-b',
+      createdAt: new Date(2026, 6, 2, 10, 0),
+      isCorrect: true,
+      durationSeconds: 45
+    }
+  ]);
+
+  assert.deepEqual(rows.map((row) => ({
+    userId: row.userId,
+    date: dayKey(row.activityDate),
+    answerCount: row.answerCount,
+    correctCount: row.correctCount,
+    durationSeconds: row.durationSeconds,
+    firstAnsweredAt: row.firstAnsweredAt,
+    lastAnsweredAt: row.lastAnsweredAt
+  })), [
+    {
+      userId: 'u-a',
+      date: '2026-07-01',
+      answerCount: 2,
+      correctCount: 1,
+      durationSeconds: 1830,
+      firstAnsweredAt: new Date(2026, 6, 1, 8, 0),
+      lastAnsweredAt: new Date(2026, 6, 1, 9, 0)
+    },
+    {
+      userId: 'u-b',
+      date: '2026-07-02',
+      answerCount: 1,
+      correctCount: 1,
+      durationSeconds: 45,
+      firstAnsweredAt: new Date(2026, 6, 2, 10, 0),
+      lastAnsweredAt: new Date(2026, 6, 2, 10, 0)
+    }
+  ]);
+});
+
 test('admin activity detail cache is independent of trend-day selector', () => {
   const forceLogoutAt = new Date('2026-06-30T00:00:00.000Z');
   assert.equal(activityDetailCacheKey(forceLogoutAt), activityDetailCacheKey(forceLogoutAt));
   assert.notEqual(activityDetailCacheKey(forceLogoutAt), activityDetailCacheKey(new Date('2026-06-30T00:00:01.000Z')));
 });
 
-test('admin activity summary and detail share one daily user aggregate snapshot', () => {
+test('admin activity summary and detail read non-blocking daily aggregate stats', () => {
   const analytics = readFileSync(new URL('../services/adminAnalyticsService.ts', import.meta.url), 'utf8');
   const summaryBlock = analytics.slice(
     analytics.indexOf('async function buildAdminActivitySummary'),
@@ -801,10 +858,13 @@ test('admin activity summary and detail share one daily user aggregate snapshot'
 
   assert.match(analytics, /activitySnapshotCache/);
   assert.match(analytics, /loadDailyUserActivitySnapshot/);
+  assert.match(analytics, /userDailyActivityStat\.findMany/);
+  assert.match(analytics, /daily_activity_stats/);
+  assert.match(analytics, /activityAggregation/);
   assert.match(summaryBlock, /buildActivityStatsFromDailyUserAggregates/);
   assert.match(detailBlock, /loadDailyUserActivitySnapshot\(days,\s*systemControls/);
   assert.doesNotMatch(summaryBlock, /SevenDaySummaryRow/);
-  assert.doesNotMatch(detailBlock, /FROM `UserAnswer` a/);
+  assert.doesNotMatch(analytics, /FROM `UserAnswer`/);
 });
 
 test('admin activity view cancels stale panel requests', () => {
@@ -902,7 +962,7 @@ test('presence and activity monitoring stay effective and non-blocking during ma
   assert.match(route, /degraded:\s*true/);
   assert.match(analytics, /getAdminActivitySummary/);
   assert.match(analytics, /getAdminActivityDetail/);
-  assert.match(analytics, /source:\s*'official_answers'/);
+  assert.match(analytics, /source:\s*'daily_activity_stats'/);
   assert.match(adminRoute, /router\.get\('\/activity\/summary'/);
   assert.match(adminRoute, /router\.get\('\/activity\/detail'/);
   assert.match(activityView, /summaryLoading/);
@@ -910,4 +970,27 @@ test('presence and activity monitoring stay effective and non-blocking during ma
   assert.match(activityView, /@change="loadSummary"/);
   assert.doesNotMatch(activityView, /@change="loadActivity"/);
   assert.doesNotMatch(activityView, /v-loading="loading"/);
+});
+
+test('activity aggregation worker stays off the answer submission critical path', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260701000100_add_activity_aggregation/migration.sql', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/activityAggregationService.ts', import.meta.url), 'utf8');
+  const server = readFileSync(new URL('../server.ts', import.meta.url), 'utf8');
+  const practiceRecord = readFileSync(new URL('../services/practiceRecordService.ts', import.meta.url), 'utf8');
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+
+  assert.match(schema, /model UserDailyActivityStat/);
+  assert.match(schema, /model ActivityAggregationCursor/);
+  assert.match(schema, /@@index\(\[createdAt,\s*id\]\)/);
+  assert.match(migration, /DATE_SUB\(CURRENT_DATE\(\), INTERVAL 29 DAY\)/);
+  assert.match(service, /processActivityAggregationBatch/);
+  assert.match(service, /userAnswer\.findMany/);
+  assert.match(service, /userDailyActivityStat\.upsert/);
+  assert.match(service, /Activity aggregation drain failed/);
+  assert.match(server, /startActivityAggregationWorker\(\)/);
+  assert.match(server, /stopActivityAggregationWorker\(\)/);
+  assert.doesNotMatch(practiceRecord, /userDailyActivityStat/);
+  assert.doesNotMatch(practiceRecord, /ActivityAggregation/);
+  assert.match(activityView, /aggregationLagLabel/);
 });

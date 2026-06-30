@@ -35,6 +35,7 @@ model User {
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   answers              UserAnswer[]
+  dailyActivityStats   UserDailyActivityStat[]
   answerQueueItems     PracticeAnswerQueueItem[]
   practiceSessionsV2   PracticeSession[]
   answerSubmissionJobs PracticeAnswerSubmissionQueue[]
@@ -141,8 +142,39 @@ model UserAnswer {
   @@index([userId, questionId, createdAt])
   @@index([createdAt])
   @@index([createdAt, userId])
+  @@index([createdAt, id])
   @@index([createdAt, userId, isCorrect, durationSeconds])
   @@index([questionId])
+}
+
+model UserDailyActivityStat {
+  id              String   @id @default(cuid())
+  userId          String
+  activityDate    DateTime @db.Date
+  answerCount     Int      @default(0)
+  correctCount    Int      @default(0)
+  durationSeconds Int      @default(0)
+  firstAnsweredAt DateTime?
+  lastAnsweredAt  DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, activityDate])
+  @@index([activityDate])
+  @@index([activityDate, userId])
+  @@index([activityDate, answerCount])
+}
+
+model ActivityAggregationCursor {
+  id                  String    @id @db.VarChar(64)
+  lastAnswerCreatedAt DateTime?
+  lastAnswerId        String?   @db.VarChar(191)
+  processedCount      Int       @default(0)
+  lastRunAt           DateTime?
+  lastError           String?   @db.VarChar(500)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
 
 model PracticeAnswerQueueItem {

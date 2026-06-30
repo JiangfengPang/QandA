@@ -7,6 +7,7 @@
         <p>当前在线指最近 {{ onlineWindowLabel }}内持续发送心跳的有效学生端账号，答题活跃指标来自正式答题记录。</p>
       </div>
       <div class="hero-actions">
+        <el-tag :type="aggregationLagTone" effect="plain">{{ aggregationLagLabel }}</el-tag>
         <el-select v-model="days" style="width: 128px" @change="loadSummary">
           <el-option :value="7" label="近 7 天" />
           <el-option :value="14" label="近 14 天" />
@@ -114,6 +115,15 @@ import { api } from '../api/request';
 
 use([BarChart, LineChart, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer]);
 
+type ActivityAggregationStatus = {
+  generatedAt: string;
+  lagSeconds: number | null;
+  lastRunAt: string | null;
+  lastAnswerCreatedAt: string | null;
+  lastError: string | null;
+  processedCount: number;
+};
+
 type ActivityData = {
   onlineWindowMinutes: number;
   onlineWindowSeconds?: number;
@@ -123,9 +133,10 @@ type ActivityData = {
     validAccountTotal: number;
   };
   metrics?: {
-    source: 'official_answers' | 'daily_aggregate';
+    source: 'official_answers' | 'daily_aggregate' | 'daily_activity_stats';
     generatedAt: string;
   };
+  activityAggregation: ActivityAggregationStatus;
   summary: {
     totalStudents: number;
     onlineCount: number;
@@ -149,12 +160,24 @@ type ActivityData = {
 };
 
 type ActivitySummaryData = Omit<ActivityData, 'onlineUsers' | 'topActiveUsers'>;
-type ActivityDetailData = Pick<ActivityData, 'onlineUsers' | 'topActiveUsers'> & { checkedAt?: string; days?: number };
+type ActivityDetailData = Pick<ActivityData, 'onlineUsers' | 'topActiveUsers'> & {
+  activityAggregation?: ActivityAggregationStatus;
+  checkedAt?: string;
+  days?: number;
+};
 
 const emptyData = (): ActivityData => ({
   onlineWindowMinutes: 1.5,
   onlineWindowSeconds: 90,
   checkedAt: '',
+  activityAggregation: {
+    generatedAt: '',
+    lagSeconds: null,
+    lastRunAt: null,
+    lastAnswerCreatedAt: null,
+    lastError: null,
+    processedCount: 0
+  },
   summary: {
     totalStudents: 0,
     onlineCount: 0,
@@ -197,6 +220,27 @@ const onlineWindowLabel = computed(() => {
   const minutes = Number(data.value.onlineWindowMinutes || 0);
   if (minutes < 1) return '90 秒';
   return `${Number.isInteger(minutes) ? minutes : minutes.toFixed(1)} 分钟`;
+});
+
+const aggregationLagLabel = computed(() => {
+  const status = data.value.activityAggregation;
+  if (status.lastError) return '统计异常';
+  if (!status.lastRunAt) return '统计同步中';
+  const lag = Number(status.lagSeconds);
+  if (!Number.isFinite(lag)) return '统计同步中';
+  if (lag < 10) return '统计最新';
+  if (lag < 60) return `延迟 ${Math.round(lag)}s`;
+  return `延迟 ${Math.floor(lag / 60)}m`;
+});
+
+const aggregationLagTone = computed(() => {
+  const status = data.value.activityAggregation;
+  if (status.lastError) return 'danger';
+  const lag = Number(status.lagSeconds);
+  if (!status.lastRunAt || !Number.isFinite(lag)) return 'info';
+  if (lag < 10) return 'success';
+  if (lag < 60) return 'warning';
+  return 'danger';
 });
 
 function formatDuration(seconds: number) {
@@ -336,6 +380,7 @@ async function loadDetail() {
     if (requestId !== detailRequestId) return;
     data.value = {
       ...data.value,
+      activityAggregation: detail.activityAggregation || data.value.activityAggregation,
       onlineUsers: detail.onlineUsers,
       topActiveUsers: detail.topActiveUsers
     };

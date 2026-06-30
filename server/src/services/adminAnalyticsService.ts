@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client';
 import { prisma } from '../db/prisma.js';
+import { getActivityAggregationStatus } from './activityAggregationService.js';
 import {
   countOnlinePresenceUsers,
   listOnlinePresenceUsers,
@@ -7,7 +7,6 @@ import {
 } from './presenceService.js';
 import { getSystemControls } from './systemControlService.js';
 import { addDays, dayKey, dayLabel, dayStart } from '../utils/date.js';
-import { buildDateBuckets, dateBucketCaseSql } from '../utils/sqlDateBuckets.js';
 import { UserRole } from '../utils/roles.js';
 
 type DailyActivityRow = {
@@ -257,38 +256,33 @@ async function buildDailyUserActivitySnapshot(days: number) {
   const tomorrow = addDays(today, 1);
   const sevenDayStart = addDays(today, -6);
   const trendStart = addDays(today, -(days - 1));
-  const trendBucketSql = dateBucketCaseSql(Prisma.sql`a.\`createdAt\``, buildDateBuckets(trendStart, days));
-  const rows = await prisma.$queryRaw<DailyUserActivityAggregateRow[]>(Prisma.sql`
-    SELECT
-      bucketed.\`date\`,
-      bucketed.\`userId\`,
-      bucketed.\`nickname\`,
-      bucketed.\`email\`,
-      COUNT(bucketed.\`id\`) AS \`answerCount\`,
-      SUM(CASE WHEN bucketed.\`isCorrect\` = 1 THEN 1 ELSE 0 END) AS \`correctCount\`,
-      COALESCE(SUM(bucketed.\`durationSeconds\`), 0) AS \`durationSeconds\`
-    FROM (
-      SELECT
-        ${trendBucketSql} AS \`date\`,
-        a.\`id\`,
-        a.\`isCorrect\`,
-        a.\`userId\`,
-        a.\`durationSeconds\`,
-        u.\`nickname\`,
-        u.\`email\`
-      FROM \`UserAnswer\` a
-      INNER JOIN \`User\` u ON u.\`id\` = a.\`userId\`
-      WHERE a.\`createdAt\` >= ${trendStart}
-        AND a.\`createdAt\` < ${tomorrow}
-        AND u.\`role\` = 'STUDENT'
-        AND u.\`isActive\` = 1
-    ) bucketed
-    WHERE bucketed.\`date\` IS NOT NULL
-    GROUP BY bucketed.\`date\`, bucketed.\`userId\`, bucketed.\`nickname\`, bucketed.\`email\`
-    ORDER BY bucketed.\`date\` ASC
-  `);
-  const stats = buildActivityStatsFromDailyUserAggregates(rows, trendStart, days, sevenDayStart, today);
-  return { now, today, sevenDayStart, trendStart, rows, stats };
+  const statRows = await prisma.userDailyActivityStat.findMany({
+    where: {
+      activityDate: { gte: trendStart, lt: tomorrow },
+      user: { role: UserRole.STUDENT, isActive: true }
+    },
+    orderBy: [{ activityDate: 'asc' }, { userId: 'asc' }],
+    select: {
+      activityDate: true,
+      userId: true,
+      answerCount: true,
+      correctCount: true,
+      durationSeconds: true,
+      user: { select: { nickname: true, email: true } }
+    }
+  });
+
+  const rows: DailyUserActivityAggregateRow[] = statRows.map((row) => ({
+    date: dayKey(row.activityDate),
+    userId: row.userId,
+    nickname: row.user.nickname,
+    email: row.user.email,
+    answerCount: row.answerCount,
+    correctCount: row.correctCount,
+    durationSeconds: row.durationSeconds
+  }));
+  const computedStats = buildActivityStatsFromDailyUserAggregates(rows, trendStart, days, sevenDayStart, today);
+  return { now, today, sevenDayStart, trendStart, rows, stats: computedStats };
 }
 
 async function loadDailyUserActivitySnapshot(days: number, controls: { userForceLogoutAt: Date | null }) {
@@ -324,11 +318,13 @@ async function buildAdminActivitySummary(
   const [
     totalStudents,
     onlineCount,
-    snapshot
+    snapshot,
+    activityAggregation
   ] = await Promise.all([
     prisma.user.count({ where: { role: UserRole.STUDENT, isActive: true } }),
     countOnlinePresenceUsers(now, undefined, { userForceLogoutAt: systemControls.userForceLogoutAt }),
-    loadDailyUserActivitySnapshot(days, systemControls)
+    loadDailyUserActivitySnapshot(days, systemControls),
+    getActivityAggregationStatus(now)
   ]);
 
   const aggregateStats = buildActivityStatsFromDailyUserAggregates(
@@ -351,9 +347,10 @@ async function buildAdminActivitySummary(
       validAccountTotal: totalStudents
     },
     metrics: {
-      source: 'official_answers' as const,
-      generatedAt
+      source: 'daily_activity_stats' as const,
+      generatedAt: activityAggregation.generatedAt
     },
+    activityAggregation,
     summary: {
       totalStudents,
       onlineCount,
@@ -375,9 +372,10 @@ async function buildAdminActivityDetail(
   const days = clampActivityDays(trendDays);
   const now = new Date();
   const systemControls = controls || await getSystemControls();
-  const [onlineUsers, snapshot] = await Promise.all([
+  const [onlineUsers, snapshot, activityAggregation] = await Promise.all([
     listOnlinePresenceUsers(now, undefined, { userForceLogoutAt: systemControls.userForceLogoutAt }),
-    loadDailyUserActivitySnapshot(days, systemControls)
+    loadDailyUserActivitySnapshot(days, systemControls),
+    getActivityAggregationStatus(now)
   ]);
   const aggregateStats = buildActivityStatsFromDailyUserAggregates(
     snapshot.rows,
@@ -390,6 +388,7 @@ async function buildAdminActivityDetail(
   return {
     checkedAt: snapshot.now.toISOString(),
     days,
+    activityAggregation,
     onlineUsers,
     topActiveUsers: aggregateStats.topActiveUsers
   };
