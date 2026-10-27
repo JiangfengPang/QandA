@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [ "${ALLOW_INSECURE_HTTP:-0}" != "1" ]; then
+  echo "临时 HTTP 部署会以明文传输登录信息。正式部署请使用 HTTPS 配置模板。"
+  echo "明确选择临时 HTTP 部署时，设置 ALLOW_INSECURE_HTTP=1，并在 server/.env 设置 IP_HTTP_MODE=true。"
+  exit 1
+fi
+export NODE_ENV=production
+export TZ=Asia/Shanghai
+
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SERVICE_USER="${SUDO_USER:-$USER}"
 SERVICE_GROUP="$(id -gn "$SERVICE_USER")"
@@ -68,6 +76,12 @@ export npm_config_fund=false
 echo "==> 安装依赖"
 npm ci --no-audit --no-fund
 
+if ! (cd server && node scripts/run-with-env.mjs --mode production node -e 'process.exit(process.env.IP_HTTP_MODE === "true" ? 0 : 1)'); then
+  echo "ERROR: 临时 HTTP 部署要求 server/.env 或 server/.env.production 中设置 IP_HTTP_MODE=true。"
+  exit 1
+fi
+
+
 echo "==> 生成 Prisma Client"
 npm run db:generate
 
@@ -121,6 +135,7 @@ After=network.target docker.service
 Type=simple
 WorkingDirectory=$PROJECT_DIR
 Environment=NODE_ENV=production
+Environment=TZ=Asia/Shanghai
 ExecStart=/usr/bin/npm run start --workspace server
 Restart=always
 RestartSec=5

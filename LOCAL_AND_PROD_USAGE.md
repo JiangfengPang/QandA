@@ -60,7 +60,7 @@ npm run prod:migrate
 启动编译后的 API：
 
 ```bash
-NODE_ENV=production npm run start:prod
+npm run start:prod
 ```
 
 前端构建产物：
@@ -107,7 +107,7 @@ npm ci --no-audit --no-fund
 npm run db:generate
 npm run db:migrate
 npm run prod:prune
-NODE_ENV=production npm start
+npm start
 ```
 
 全新服务器需要初始化管理员时，在移除开发依赖前执行：
@@ -129,14 +129,14 @@ npm run db:import
 ```bash
 cp .env.production.example .env
 cp server/.env.production.example server/.env
-# 编辑两个 .env 后执行
-sudo bash deploy/scripts/deploy-ip-http.sh
+# 编辑两个 .env，显式设置 IP_HTTP_MODE=true、COOKIE_SECURE=false 和 HTTP CORS_ORIGIN 后执行
+sudo ALLOW_INSECURE_HTTP=1 bash deploy/scripts/deploy-ip-http.sh
 ```
 
 默认不会导入题库或重建管理员。仅全新服务器使用：
 
 ```bash
-sudo QANDA_BOOTSTRAP_DATA=1 bash deploy/scripts/deploy-ip-http.sh
+sudo ALLOW_INSECURE_HTTP=1 QANDA_BOOTSTRAP_DATA=1 bash deploy/scripts/deploy-ip-http.sh
 ```
 
 ## 环境文件
@@ -173,3 +173,19 @@ docker compose down -v
 ```
 
 除非你明确要初始化或重置对应数据。
+
+## 本次修复的部署要求
+
+生产启动、迁移、初始化、清理命令均显式选择 production，优先读取 `server/.env.production`，其次读取 `server/.env`；开发命令只读取开发配置。环境文件不能覆盖命令选择的模式。统计默认按 Asia/Shanghai 的自然日处理，服务和所有运行进程应保持相同 TZ。
+
+正式环境使用 `deploy/nginx/qanda.conf.template`，填写域名并配置有效证书，保持 `COOKIE_SECURE=true`、`IP_HTTP_MODE=false`。HTTP 脚本仅供显式选择的临时环境，不应传输真实账户的敏感信息。
+
+新增迁移 `20261007090000_activity_processing_marker` 会保留全部原始答案，重建每日活跃度汇总。部署时先停止旧后端进程，再备份数据库、应用迁移、启动新后端。重建期间后台活跃统计可能暂时不完整；后台任务会逐批恢复。不要同时运行使用旧聚合逻辑的进程。
+
+清空个人练习记录会同时清除待处理任务、历史答案和每日活跃汇总；后台任务不能重新写回已经清除的任务。刷新统计接口最多等待答题处理 250 毫秒，大量答案入队时最终统计在后台处理后更新。
+
+## 备份与恢复验证
+
+发布前通过数据库客户端对生产数据库执行完整备份（包含表结构、数据、触发器，InnoDB 使用一致性快照），凭据使用客户端配置文件，不放入命令行或仓库。上传目录也需单独备份。确认备份文件非空，并记录当前部署版本。
+
+恢复验证应在独立数据库中进行：导入备份，核对用户数、题目数和答题记录数，运行迁移状态检查，再执行登录、答题、统计和清空记录检查。验证成功后保留旧版本构建产物和备份；涉及数据库结构的回退先停止服务，按验证过的恢复流程处理，不能只替换代码。

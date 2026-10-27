@@ -93,7 +93,7 @@ export function usePracticeStats() {
   async function loadStats(options: { silent?: boolean } = {}) {
     if (!options.silent) loading.value = true;
     try {
-      requestLocalPendingAnswerFlush();
+      await requestLocalPendingAnswerFlush();
       stats.value = await api.get<StatsPayload>('/practice/stats');
     } catch (error) {
       showToast({ type: 'fail', message: error instanceof Error ? error.message : '统计加载失败' });
@@ -104,8 +104,8 @@ export function usePracticeStats() {
 
   function requestLocalPendingAnswerFlush() {
     const userKey = pendingAnswerUserKey.value;
-    if (!userKey) return;
-    void requestPendingAnswerSessionFlush(userKey, { dispatchStatsUpdated: true });
+    if (!userKey) return Promise.resolve(0);
+    return requestPendingAnswerSessionFlush(userKey, { dispatchStatsUpdated: true });
   }
 
   async function clearRecords() {

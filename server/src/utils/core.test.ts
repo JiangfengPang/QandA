@@ -6,7 +6,7 @@ import { isAnswerCorrect, isFillAnswerCorrect, normalizeAnswer, normalizeFillAns
 import { asyncHandler } from './asyncHandler.js';
 import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
-import { dayKey } from './date.js';
+import { dbDateForLocalDay, dbDateKey, dayKey } from './date.js';
 import { createVerificationCode } from './verificationCode.js';
 import { assertAllowedNickname, hasForbiddenNickname, normalizeNickname } from './nicknamePolicy.js';
 import {
@@ -537,7 +537,7 @@ test('practice answer queue worker consumes successfully and retries failed jobs
   const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
 
   assert.match(queueService, /await submitPracticeAnswer\(/);
-  assert.match(queueService, /await markQueueItemProcessed\(item\.id\)/);
+  assert.match(queueService, /await markQueueItemProcessed\(item\)/);
   assert.match(queueService, /return 'processed' as const/);
   assert.match(queueService, /await markQueueItemFailed\(item,\s*error\)/);
   assert.match(queueService, /return 'failed' as const/);
@@ -635,8 +635,8 @@ test('session queue merges repeat submissions and requeues newer payloads withou
   assert.match(schema, /@@unique\(\[userId,\s*practiceSessionId\]\)/);
   assert.match(queueService, /mergeSessionQueueAnswers/);
   assert.match(queueService, /payloadVersion:\s*\{\s*increment:\s*1\s*\}/);
-  assert.match(queueService, /existingBySession\.status === STATUS_PROCESSING/);
-  assert.match(queueService, /current\.payloadVersion !== item\.payloadVersion/);
+  assert.match(queueService, /existing\.status === STATUS_PROCESSING/);
+  assert.match(queueService, /payloadVersion: item\.payloadVersion/);
   assert.match(queueService, /status:\s*STATUS_RETRYING/);
 });
 
@@ -646,6 +646,50 @@ test('clearing practice records removes queued answer submissions to prevent sta
   assert.match(service, /practiceAnswerSubmissionQueue\.deleteMany\(\{ where: \{ userId \} \}\)/);
   assert.match(service, /practiceAnswerQueueItem\.deleteMany\(\{ where: \{ userId \} \}\)/);
   assert.match(service, /practiceSession\.deleteMany\(\{ where: \{ userId \} \}\)/);
+});
+
+test('practice stats briefly waits for authenticated user answers before reading metrics', () => {
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const statsRouteBody = route.match(/router\.get\('\/stats'[\s\S]*?\n\}\);/)?.[0] || '';
+
+  assert.match(route, /waitForPracticeAnswersForUser/);
+  assert.match(statsRouteBody, /await waitForPracticeAnswersForUser\(req\.auth!\.userId\)/);
+  assert.ok(
+    statsRouteBody.indexOf('waitForPracticeAnswersForUser') < statsRouteBody.indexOf('getPracticeStats'),
+    'stats route should drain queued answers before loading metrics'
+  );
+  assert.match(queueService, /export async function waitForPracticeAnswersForUser/);
+  assert.match(queueService, /practiceAnswerSubmissionQueue\.findMany/);
+  assert.match(queueService, /practiceAnswerQueueItem\.findMany/);
+});
+
+test('subject bank list briefly waits for authenticated user answers before reading progress', () => {
+  const route = readFileSync(new URL('../routes/public.ts', import.meta.url), 'utf8');
+  const routeStart = route.indexOf("router.get('/subjects/:subjectId/banks'");
+  const routeEnd = route.indexOf("router.get('/banks/:bankId/questions'", routeStart);
+  const bankListRouteBody = routeStart >= 0 && routeEnd > routeStart ? route.slice(routeStart, routeEnd) : '';
+
+  assert.match(route, /waitForPracticeAnswersForUser/);
+  assert.match(bankListRouteBody, /await waitForPracticeAnswersForUser\(userId\)/);
+  assert.ok(
+    bankListRouteBody.indexOf('waitForPracticeAnswersForUser') < bankListRouteBody.indexOf('getBanksProgress'),
+    'bank list route should drain queued answers before loading per-bank progress'
+  );
+});
+
+test('user-scoped answer queue drains are serialized for concurrent refresh requests', () => {
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const functionStart = queueService.indexOf('export async function drainPracticeAnswerQueueForUser');
+  const functionEnd = queueService.indexOf('async function drainPracticeAnswerQueueForUserUnlocked', functionStart);
+  const drainFunctionBody = functionStart >= 0 && functionEnd > functionStart
+    ? queueService.slice(functionStart, functionEnd)
+    : '';
+
+  assert.match(queueService, /userDrainPromises/);
+  assert.match(drainFunctionBody, /userDrainPromises\.get\(safeUserId\)/);
+  assert.match(drainFunctionBody, /userDrainPromises\.set\(safeUserId,\s*promise\)/);
+  assert.match(drainFunctionBody, /userDrainPromises\.delete\(safeUserId\)/);
 });
 
 test('practice resume sessions have account-scoped persistence safeguards', () => {
@@ -839,6 +883,7 @@ test('activity aggregation batches compact answers by user and local day', () =>
   assert.deepEqual(rows.map((row) => ({
     userId: row.userId,
     date: dayKey(row.activityDate),
+    dbDate: row.activityDate.toISOString(),
     answerCount: row.answerCount,
     correctCount: row.correctCount,
     durationSeconds: row.durationSeconds,
@@ -848,6 +893,7 @@ test('activity aggregation batches compact answers by user and local day', () =>
     {
       userId: 'u-a',
       date: '2026-07-01',
+      dbDate: '2026-07-01T00:00:00.000Z',
       answerCount: 2,
       correctCount: 1,
       durationSeconds: 1830,
@@ -857,6 +903,7 @@ test('activity aggregation batches compact answers by user and local day', () =>
     {
       userId: 'u-b',
       date: '2026-07-02',
+      dbDate: '2026-07-02T00:00:00.000Z',
       answerCount: 1,
       correctCount: 1,
       durationSeconds: 45,
@@ -866,10 +913,19 @@ test('activity aggregation batches compact answers by user and local day', () =>
   ]);
 });
 
-test('admin activity detail cache is independent of trend-day selector', () => {
+test('database DATE buckets use the local calendar date at UTC midnight', () => {
+  const localMorning = new Date(2026, 6, 1, 10, 30);
+  const dbDate = dbDateForLocalDay(localMorning);
+
+  assert.equal(dbDate.toISOString(), '2026-07-01T00:00:00.000Z');
+  assert.equal(dbDateKey(dbDate), '2026-07-01');
+});
+
+test('admin activity detail cache separates trend days and logout versions', () => {
   const forceLogoutAt = new Date('2026-06-30T00:00:00.000Z');
-  assert.equal(activityDetailCacheKey(forceLogoutAt), activityDetailCacheKey(forceLogoutAt));
-  assert.notEqual(activityDetailCacheKey(forceLogoutAt), activityDetailCacheKey(new Date('2026-06-30T00:00:01.000Z')));
+  assert.equal(activityDetailCacheKey(7, forceLogoutAt), activityDetailCacheKey(7, forceLogoutAt));
+  assert.notEqual(activityDetailCacheKey(7, forceLogoutAt), activityDetailCacheKey(30, forceLogoutAt));
+  assert.notEqual(activityDetailCacheKey(7, forceLogoutAt), activityDetailCacheKey(7, new Date('2026-06-30T00:00:01.000Z')));
 });
 
 test('admin activity summary and detail read non-blocking daily aggregate stats', () => {
@@ -908,6 +964,21 @@ test('admin activity view cancels stale panel requests', () => {
   assert.match(activityView, /api\.get<ActivityDetailData>\([^,]+,\s*\{\s*signal:/);
   assert.match(activityView, /function loadActivity\(\)/);
   assert.doesNotMatch(activityView, /async function loadActivity\(\)\s*\{\s*await loadSummary/);
+});
+
+test('admin activity manual refresh bypasses summary and detail caches', () => {
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+
+  assert.match(adminRoute, /function shouldForceRefresh/);
+  assert.match(adminRoute, /getAdminActivitySummary\(days,\s*\{\s*force\s*\}\)/);
+  assert.match(adminRoute, /getAdminActivityDetail\(days,\s*\{\s*force\s*\}\)/);
+  assert.match(activityView, /async function loadSummary\(force = false\)/);
+  assert.match(activityView, /async function loadDetail\(force = false\)/);
+  assert.match(activityView, /force \? '&force=1' : ''/);
+  assert.match(activityView, /void loadSummary\(true\)/);
+  assert.match(activityView, /void loadDetail\(true\)/);
+  assert.match(activityView, /@change="loadActivity"/);
 });
 
 test('presence online window requires a fresh unended heartbeat', () => {
@@ -994,8 +1065,8 @@ test('presence and activity monitoring stay effective and non-blocking during ma
   assert.match(adminRoute, /router\.get\('\/activity\/detail'/);
   assert.match(activityView, /summaryLoading/);
   assert.match(activityView, /detailLoading/);
-  assert.match(activityView, /@change="loadSummary"/);
-  assert.doesNotMatch(activityView, /@change="loadActivity"/);
+  assert.match(activityView, /@change="loadActivity"/);
+  assert.match(activityView, /@change="loadActivity"/);
   assert.doesNotMatch(activityView, /v-loading="loading"/);
 });
 
@@ -1017,7 +1088,7 @@ test('activity aggregation worker stays off the answer submission critical path'
   assert.match(service, /Activity aggregation drain failed/);
   assert.match(server, /startActivityAggregationWorker\(\)/);
   assert.match(server, /stopActivityAggregationWorker\(\)/);
-  assert.doesNotMatch(practiceRecord, /userDailyActivityStat/);
-  assert.doesNotMatch(practiceRecord, /ActivityAggregation/);
+  assert.doesNotMatch(practiceRecord.slice(practiceRecord.indexOf('export async function submitPracticeAnswer'), practiceRecord.indexOf('export async function toggleFavoriteQuestion')), /userDailyActivityStat/);
+  assert.match(practiceRecord, /acquireActivityAggregationLock/);
   assert.match(activityView, /aggregationLagLabel/);
 });

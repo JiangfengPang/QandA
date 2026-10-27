@@ -1,3 +1,6 @@
+import { invalidateAdminActivityCaches } from './adminAnalyticsService.js';
+import { invalidatePracticeReviewSummaryCache } from './practiceStatsService.js';
+import { acquireActivityAggregationLock } from './activityAggregationService.js';
 import { prisma } from '../db/prisma.js';
 import { formatQuestion } from './questionService.js';
 import { isAnswerCorrect, isFillAnswerCorrect, normalizeAnswer } from '../utils/answer.js';
@@ -48,7 +51,9 @@ function fillAnswerDisplayArray(answer: unknown): string[] {
   return normalizeAnswerArray(answer);
 }
 
-export async function submitPracticeAnswer(userId: string, questionId: string, selected: unknown, durationSeconds = 0, clientAnswerId?: string) {
+export type PracticeQueueLease = { kind: 'answer' | 'session'; id: string; lockedAt: Date };
+
+export async function submitPracticeAnswer(userId: string, questionId: string, selected: unknown, durationSeconds = 0, clientAnswerId?: string, lease?: PracticeQueueLease) {
   const safeClientAnswerId = normalizeClientAnswerId(clientAnswerId);
   const [question, user] = await Promise.all([
     prisma.question.findFirst({
@@ -70,6 +75,15 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
   let writeResult: { recorded: boolean; correct: boolean };
   try {
     writeResult = await prisma.$transaction(async (tx) => {
+      if (lease) {
+        // Lock the queue row until this answer commits. A cleared/expired job cannot recreate records.
+        const rows = lease.kind === 'session'
+          ? await tx.$queryRaw<Array<{ status: string; lockedAt: Date | null }>>`SELECT status, lockedAt FROM PracticeAnswerSubmissionQueue WHERE id = ${lease.id} FOR UPDATE`
+          : await tx.$queryRaw<Array<{ status: string; lockedAt: Date | null }>>`SELECT status, lockedAt FROM PracticeAnswerQueueItem WHERE id = ${lease.id} FOR UPDATE`;
+        if (rows[0]?.status !== 'processing' || rows[0]?.lockedAt?.getTime() !== lease.lockedAt.getTime()) {
+          throw new HttpError('答案处理任务已更新或清除', 409);
+        }
+      }
       if (safeClientAnswerId) {
         const existing = await tx.userAnswer.findUnique({
           where: { userId_clientAnswerId: { userId, clientAnswerId: safeClientAnswerId } },
@@ -201,15 +215,19 @@ export async function clearFavoriteQuestions(userId: string, subjectId?: string)
 }
 
 export async function clearPracticeRecords(userId: string) {
-  await prisma.$transaction([
-    prisma.practiceAnswerSubmissionQueue.deleteMany({ where: { userId } }),
-    prisma.practiceAnswerQueueItem.deleteMany({ where: { userId } }),
-    prisma.practiceSession.deleteMany({ where: { userId } }),
-    prisma.userPracticeSession.deleteMany({ where: { userId } }),
-    prisma.userAnswer.deleteMany({ where: { userId } }),
-    prisma.wrongQuestion.deleteMany({ where: { userId } }),
-    prisma.userFavorite.deleteMany({ where: { userId } })
-  ]);
+  await prisma.$transaction(async (tx) => {
+    await tx.practiceAnswerSubmissionQueue.deleteMany({ where: { userId } });
+    await tx.practiceAnswerQueueItem.deleteMany({ where: { userId } });
+    await acquireActivityAggregationLock(tx);
+    await tx.practiceSession.deleteMany({ where: { userId } });
+    await tx.userPracticeSession.deleteMany({ where: { userId } });
+    await tx.userAnswer.deleteMany({ where: { userId } });
+    await tx.userDailyActivityStat.deleteMany({ where: { userId } });
+    await tx.wrongQuestion.deleteMany({ where: { userId } });
+    await tx.userFavorite.deleteMany({ where: { userId } });
+  });
+  invalidatePracticeReviewSummaryCache(userId);
+  invalidateAdminActivityCaches();
   return { cleared: true };
 }
 

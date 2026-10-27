@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+const viteEnv = (import.meta as ImportMeta & { env?: Record<string, string> }).env || {};
+const API_BASE = viteEnv.VITE_API_BASE || '/api';
 
 type ApiResponse<T> = { code: number | string; message: string; data: T };
 

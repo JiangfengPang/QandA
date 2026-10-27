@@ -1,7 +1,7 @@
-import { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import { env } from '../config/env.js';
 import { prisma } from '../db/prisma.js';
-import { dayKey, dayStart } from '../utils/date.js';
+import { dbDateForLocalDay, dbDateKey } from '../utils/date.js';
 
 const CURSOR_ID = 'default';
 
@@ -53,8 +53,8 @@ export function buildActivityAggregatesFromAnswers(rows: ActivityAggregationAnsw
   const map = new Map<string, ActivityAggregate>();
 
   for (const row of rows) {
-    const activityDate = dayStart(row.createdAt);
-    const key = `${row.userId}:${dayKey(activityDate)}`;
+    const activityDate = dbDateForLocalDay(row.createdAt);
+    const key = `${row.userId}:${dbDateKey(activityDate)}`;
     const current = map.get(key);
     if (!current) {
       map.set(key, {
@@ -83,23 +83,10 @@ async function readCursor() {
   return prisma.activityAggregationCursor.findUnique({ where: { id: CURSOR_ID } });
 }
 
-function answerCursorWhere(cursor: Awaited<ReturnType<typeof readCursor>>): Prisma.UserAnswerWhereInput {
-  if (!cursor?.lastAnswerCreatedAt || !cursor.lastAnswerId) return {};
-  return {
-    OR: [
-      { createdAt: { gt: cursor.lastAnswerCreatedAt } },
-      { createdAt: cursor.lastAnswerCreatedAt, id: { gt: cursor.lastAnswerId } }
-    ]
-  };
-}
-
-async function markAggregationRunWithoutRows() {
-  const now = new Date();
-  await prisma.activityAggregationCursor.upsert({
-    where: { id: CURSOR_ID },
-    update: { lastRunAt: now, lastError: null },
-    create: { id: CURSOR_ID, lastRunAt: now, lastError: null }
-  });
+export async function acquireActivityAggregationLock(tx: Prisma.TransactionClient) {
+  await tx.$executeRaw`INSERT INTO ActivityAggregationCursor (id, createdAt, updatedAt)
+    VALUES (${CURSOR_ID}, NOW(3), NOW(3)) ON DUPLICATE KEY UPDATE id = ${CURSOR_ID}`;
+  await tx.$queryRaw`SELECT id FROM ActivityAggregationCursor WHERE id = ${CURSOR_ID} FOR UPDATE`;
 }
 
 async function markAggregationFailure(error: unknown) {
@@ -111,73 +98,51 @@ async function markAggregationFailure(error: unknown) {
   }).catch(() => undefined);
 }
 
-async function applyActivityAggregationBatch(rows: ActivityAnswerRow[]) {
-  const aggregates = buildActivityAggregatesFromAnswers(rows);
-  const last = rows[rows.length - 1];
-  const now = new Date();
-
-  await prisma.$transaction(async (tx) => {
-    for (const aggregate of aggregates) {
+export async function processActivityAggregationBatch(batchSize = env.activityAggregationBatchSize) {
+  const limit = Math.max(1, Math.min(Math.floor(batchSize) || 500, 500));
+  return prisma.$transaction(async (tx) => {
+    // Serialize workers across processes. Marking each row in the same transaction
+    // avoids both double counting and skipping an older transaction that commits late.
+    await acquireActivityAggregationLock(tx);
+    const rows = await tx.userAnswer.findMany({
+      where: { activityAggregatedAt: null },
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+      take: limit,
+      select: { id: true, userId: true, createdAt: true, isCorrect: true, durationSeconds: true }
+    });
+    const now = new Date();
+    for (const aggregate of buildActivityAggregatesFromAnswers(rows)) {
+      const key = { userId: aggregate.userId, activityDate: aggregate.activityDate };
+      const existing = await tx.userDailyActivityStat.findUnique({ where: { userId_activityDate: key } });
       await tx.userDailyActivityStat.upsert({
-        where: {
-          userId_activityDate: {
-            userId: aggregate.userId,
-            activityDate: aggregate.activityDate
-          }
-        },
+        where: { userId_activityDate: key },
         update: {
           answerCount: { increment: aggregate.answerCount },
           correctCount: { increment: aggregate.correctCount },
           durationSeconds: { increment: aggregate.durationSeconds },
-          lastAnsweredAt: aggregate.lastAnsweredAt
+          firstAnsweredAt: existing?.firstAnsweredAt && existing.firstAnsweredAt < aggregate.firstAnsweredAt
+            ? existing.firstAnsweredAt : aggregate.firstAnsweredAt,
+          lastAnsweredAt: existing?.lastAnsweredAt && existing.lastAnsweredAt > aggregate.lastAnsweredAt
+            ? existing.lastAnsweredAt : aggregate.lastAnsweredAt
         },
         create: aggregate
       });
     }
-
-    await tx.activityAggregationCursor.upsert({
+    // Unique primary-key writes avoid range/gap locks on the unprocessed index.
+    // A bulk update with activityAggregatedAt=null can block an earlier uncommitted insert.
+    for (const row of rows) await tx.userAnswer.update({
+      where: { id: row.id }, data: { activityAggregatedAt: now }
+    });
+    const last = rows[rows.length - 1];
+    await tx.activityAggregationCursor.update({
       where: { id: CURSOR_ID },
-      update: {
-        lastAnswerCreatedAt: last.createdAt,
-        lastAnswerId: last.id,
-        processedCount: { increment: rows.length },
-        lastRunAt: now,
-        lastError: null
-      },
-      create: {
-        id: CURSOR_ID,
-        lastAnswerCreatedAt: last.createdAt,
-        lastAnswerId: last.id,
-        processedCount: rows.length,
-        lastRunAt: now,
-        lastError: null
+      data: {
+        ...(last ? { lastAnswerCreatedAt: last.createdAt, lastAnswerId: last.id } : {}),
+        processedCount: { increment: rows.length }, lastRunAt: now, lastError: null
       }
     });
+    return { processedCount: rows.length, hasMore: rows.length >= limit };
   }, { timeout: 10_000 });
-}
-
-export async function processActivityAggregationBatch(batchSize = env.activityAggregationBatchSize) {
-  const cursor = await readCursor();
-  const rows = await prisma.userAnswer.findMany({
-    where: answerCursorWhere(cursor),
-    orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
-    take: batchSize,
-    select: {
-      id: true,
-      userId: true,
-      createdAt: true,
-      isCorrect: true,
-      durationSeconds: true
-    }
-  });
-
-  if (!rows.length) {
-    await markAggregationRunWithoutRows();
-    return { processedCount: 0, hasMore: false };
-  }
-
-  await applyActivityAggregationBatch(rows);
-  return { processedCount: rows.length, hasMore: rows.length >= batchSize };
 }
 
 async function drainActivityAggregation() {

@@ -36,6 +36,7 @@ test('stats page silently flushes local pending answers without showing sync cop
   assert.match(composable, /requestPendingAnswerSessionFlush/);
   assert.match(composable, /clearPendingAnswerQueue/);
   assert.match(composable, /requestLocalPendingAnswerFlush/);
+  assert.match(composable, /await requestLocalPendingAnswerFlush\(\)/);
   assert.doesNotMatch(composable, /同步中/);
   assert.doesNotMatch(composable, /待确认/);
   assert.doesNotMatch(composable, /答案正在同步/);

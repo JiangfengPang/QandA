@@ -284,10 +284,10 @@ test('queue keeps a same-page fallback when localStorage is unavailable', () => 
 test('practice view batches pending answer sync and keeps local pending records on batch failure', () => {
   const source = readFileSync(new URL('../src/views/PracticeView.vue', import.meta.url), 'utf8');
 
-  assert.match(source, /\/practice\/answers\/batch/);
+  assert.match(source, /syncPendingAnswerSessions/);
   assert.match(source, /PENDING_ANSWER_SYNC_BATCH_SIZE = 20/);
   assert.match(source, /dedupePendingAnswerRecords/);
-  assert.match(source, /buildPendingAnswerBatchPayload\(uniqueRecords/);
+  assert.match(source, /syncPendingAnswerSessions\(userKey, uniqueRecords/);
   assert.match(source, /groupPendingAnswerRecordsByPracticeSession\(batchRecords\)/);
   assert.match(source, /catch \(error\) \{[\s\S]*markPendingAnswerSyncError/);
   assert.doesNotMatch(

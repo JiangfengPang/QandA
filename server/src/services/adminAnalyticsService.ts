@@ -6,7 +6,7 @@ import {
   PRESENCE_ONLINE_WINDOW_SECONDS
 } from './presenceService.js';
 import { getSystemControls } from './systemControlService.js';
-import { addDays, dayKey, dayLabel, dayStart } from '../utils/date.js';
+import { addDays, addDbDays, dbDateForLocalDay, dbDateKey, dayKey, dayLabel } from '../utils/date.js';
 import { UserRole } from '../utils/roles.js';
 
 type DailyActivityRow = {
@@ -50,6 +50,14 @@ type ActivitySnapshot = Awaited<ReturnType<typeof buildDailyUserActivitySnapshot
 let summaryCache: { key: string; expiresAt: number; value: Awaited<ReturnType<typeof buildAdminActivitySummary>> } | null = null;
 let detailCache: { key: string; expiresAt: number; value: Awaited<ReturnType<typeof buildAdminActivityDetail>> } | null = null;
 let activitySnapshotCache: { key: string; expiresAt: number; value?: ActivitySnapshot; promise?: Promise<ActivitySnapshot> } | null = null;
+
+let activityCacheGeneration = 0;
+export function invalidateAdminActivityCaches() {
+  activityCacheGeneration += 1;
+  summaryCache = null;
+  detailCache = null;
+  activitySnapshotCache = null;
+}
 
 function toNumber(value: DbNumeric) {
   if (value === null || value === undefined) return 0;
@@ -249,16 +257,16 @@ function activitySnapshotCacheKey(days: number, userForceLogoutAt?: Date | null,
   return `snapshot:${activityCacheKey(days, userForceLogoutAt, ttlMs)}`;
 }
 
-export function activityDetailCacheKey(userForceLogoutAt?: Date | null, ttlMs = ACTIVITY_DETAIL_CACHE_TTL_MS) {
+export function activityDetailCacheKey(days: number, userForceLogoutAt?: Date | null, ttlMs = ACTIVITY_DETAIL_CACHE_TTL_MS) {
   const bucket = Math.floor(Date.now() / ttlMs);
-  return `detail:${userForceLogoutAt?.getTime() || 0}:${ttlMs}:${bucket}`;
+  return `detail:${days}:${userForceLogoutAt?.getTime() || 0}:${ttlMs}:${bucket}`;
 }
 
 async function buildDailyUserActivitySnapshot(days: number) {
   const now = new Date();
-  const today = dayStart(now);
-  const tomorrow = addDays(today, 1);
-  const trendStart = addDays(today, -(days - 1));
+  const today = dbDateForLocalDay(now);
+  const tomorrow = addDbDays(today, 1);
+  const trendStart = addDbDays(today, -(days - 1));
   const statRows = await prisma.userDailyActivityStat.findMany({
     where: {
       activityDate: { gte: trendStart, lt: tomorrow },
@@ -276,7 +284,7 @@ async function buildDailyUserActivitySnapshot(days: number) {
   });
 
   const rows: DailyUserActivityAggregateRow[] = statRows.map((row) => ({
-    date: dayKey(row.activityDate),
+    date: dbDateKey(row.activityDate),
     userId: row.userId,
     nickname: row.user.nickname,
     email: row.user.email,
@@ -298,11 +306,11 @@ async function loadDailyUserActivitySnapshot(days: number, controls: { userForce
 
   const promise = buildDailyUserActivitySnapshot(days)
     .then((value) => {
-      activitySnapshotCache = { key, expiresAt: Date.now() + ACTIVITY_SUMMARY_CACHE_TTL_MS, value };
+      if (activitySnapshotCache?.promise === promise) activitySnapshotCache = { key, expiresAt: Date.now() + ACTIVITY_SUMMARY_CACHE_TTL_MS, value };
       return value;
     })
     .catch((error) => {
-      if (activitySnapshotCache?.key === key) activitySnapshotCache = null;
+      if (activitySnapshotCache?.promise === promise) activitySnapshotCache = null;
       throw error;
     });
 
@@ -411,20 +419,22 @@ export async function getAdminActivitySummary(trendDays = 14, options: { force?:
   if (!options.force && summaryCache && summaryCache.key === key && summaryCache.expiresAt > Date.now()) {
     return summaryCache.value;
   }
+  const generation = activityCacheGeneration;
   const value = await buildAdminActivitySummary(days, controls);
-  summaryCache = { key, value, expiresAt: Date.now() + ACTIVITY_SUMMARY_CACHE_TTL_MS };
+  if (generation === activityCacheGeneration) summaryCache = { key, value, expiresAt: Date.now() + ACTIVITY_SUMMARY_CACHE_TTL_MS };
   return value;
 }
 
 export async function getAdminActivityDetail(trendDays = 14, options: { force?: boolean } = {}) {
   const days = clampActivityDays(trendDays);
   const controls = await getSystemControls();
-  const key = activityDetailCacheKey(controls.userForceLogoutAt);
+  const key = activityDetailCacheKey(days, controls.userForceLogoutAt);
   if (!options.force && detailCache && detailCache.key === key && detailCache.expiresAt > Date.now()) {
     return detailCache.value;
   }
+  const generation = activityCacheGeneration;
   const value = await buildAdminActivityDetail(days, controls);
-  detailCache = { key, value, expiresAt: Date.now() + ACTIVITY_DETAIL_CACHE_TTL_MS };
+  if (generation === activityCacheGeneration) detailCache = { key, value, expiresAt: Date.now() + ACTIVITY_DETAIL_CACHE_TTL_MS };
   return value;
 }
 

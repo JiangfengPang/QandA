@@ -1,6 +1,14 @@
 const viteEnv = (import.meta as ImportMeta & { env?: Record<string, string> }).env || {};
 const API_BASE = viteEnv.VITE_API_BASE || '/api';
 
+let keepaliveBytesInFlight = 0;
+function reserveKeepaliveBody(body: string) {
+  const bytes = new TextEncoder().encode(body).byteLength;
+  if (keepaliveBytesInFlight + bytes > 60 * 1024) return null;
+  keepaliveBytesInFlight += bytes;
+  return () => { keepaliveBytesInFlight -= bytes; };
+}
+
 type ApiResponse<T> = { code: number | string; message: string; data: T };
 
 export class ApiError extends Error {
@@ -69,13 +77,22 @@ export function postKeepalive(url: string, data?: unknown) {
   const csrfToken = readCookie('qanda_user_csrf');
   if (csrfToken) headers.set('X-CSRF-Token', csrfToken);
 
-  void fetch(apiUrl(url), {
+  const body = JSON.stringify(data || {});
+  const release = reserveKeepaliveBody(body);
+  if (!release) return false;
+  try {
+    void fetch(apiUrl(url), {
     method: 'POST',
     headers,
-    body: JSON.stringify(data || {}),
+    body,
     credentials: 'include',
     keepalive: true
-  }).catch(() => undefined);
+    }).catch(() => undefined).finally(release);
+    return true;
+  } catch {
+    release();
+    return false;
+  }
 }
 
 async function parseResponse<T>(res: Response): Promise<ApiResponse<T>> {
@@ -100,7 +117,14 @@ export async function request<T>(url: string, options: RequestInit = {}): Promis
     if (csrfToken) headers.set('X-CSRF-Token', csrfToken);
   }
 
-  const res = await fetch(`${API_BASE}${url}`, { ...options, method, headers, credentials: 'include' });
+  const release = options.keepalive ? reserveKeepaliveBody(String(options.body || '')) : undefined;
+  if (options.keepalive && !release) throw new Error('页面退出时的保存容量已满，请稍后重新提交');
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${url}`, { ...options, method, headers, credentials: 'include' });
+  } finally {
+    release?.();
+  }
   const payload = await parseResponse<T>(res);
   if (!res.ok || payload.code !== 0) {
     if (payload.code === 'USER_LOGIN_DISABLED') handleUserLoginDisabled();

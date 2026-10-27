@@ -3,6 +3,7 @@ import { prisma } from '../db/prisma.js';
 import { authRequired } from '../middleware/auth.js';
 import { getBankQuestions, getSubjectQuestions } from '../services/questionService.js';
 import { effectiveQuestionCount, getBanksProgress } from '../services/progressService.js';
+import { waitForPracticeAnswersForUser } from '../services/practiceAnswerQueueService.js';
 import { ok, fail } from '../utils/http.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import {
@@ -73,6 +74,8 @@ router.get('/subjects/:subjectId/banks', authRequired, asyncHandler(async (req, 
     select: { id: true }
   });
   if (!subject) return fail(res, '科目不存在', 404);
+
+  await waitForPracticeAnswersForUser(userId);
 
   const banks = await prisma.bank.findMany({
     where: { subjectId: req.params.subjectId, isActive: true },

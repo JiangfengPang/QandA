@@ -37,9 +37,14 @@ const RETRY_DELAYS_MS = [0, QUICK_RETRY_DELAY_MS, QUICK_RETRY_DELAY_MS, 5000, 15
 const STALE_SYNCING_MS = 30000;
 const SAME_SESSION_QUESTION_COLLAPSE_MS = 10000;
 const memoryQueues = new Map<string, string>();
+const memoryOnlyKeys = new Set<string>();
 
 function storageAvailable() {
-  return typeof localStorage !== 'undefined' ? localStorage : null;
+  try {
+    return typeof localStorage !== 'undefined' ? localStorage : null;
+  } catch {
+    return null;
+  }
 }
 
 export function pendingAnswerQueueKey(userKey: string) {
@@ -84,13 +89,14 @@ export function readPendingAnswerQueue(userKey: string, storage: QueueStorage | 
   if (!userKey) return [];
   const key = pendingAnswerQueueKey(userKey);
   let raw = '';
-  if (!storage) {
+  if (!storage || memoryOnlyKeys.has(key)) {
     raw = memoryQueues.get(key) || '';
-  }
-  try {
-    raw = storage ? storage.getItem(key) || '' : raw;
-  } catch {
-    raw = memoryQueues.get(key) || '';
+  } else {
+    try {
+      raw = storage.getItem(key) || '';
+    } catch {
+      raw = memoryQueues.get(key) || '';
+    }
   }
   if (!raw) return [];
 
@@ -108,17 +114,28 @@ export function writePendingAnswerQueue(userKey: string, records: PendingAnswerR
   const key = pendingAnswerQueueKey(userKey);
   const normalized = records.map(normalizeRecord).filter((record): record is PendingAnswerRecord => Boolean(record));
   const serialized = JSON.stringify(normalized);
-  if (!normalized.length) memoryQueues.delete(key);
-  else memoryQueues.set(key, serialized);
-  if (!storage) return;
+  memoryQueues.set(key, serialized);
+  const markMemoryOnly = () => {
+    const firstFailure = !memoryOnlyKeys.has(key);
+    memoryOnlyKeys.add(key);
+    if (firstFailure && normalized.length && typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('qanda:answer-storage-unavailable'));
+    }
+  };
+  if (!storage) {
+    markMemoryOnly();
+    return;
+  }
   try {
     if (!normalized.length) {
       storage.removeItem(key);
-      return;
+    } else {
+      storage.setItem(key, serialized);
     }
-    storage.setItem(key, serialized);
+    memoryOnlyKeys.delete(key);
   } catch {
-    // localStorage can be unavailable or full in private modes; answering must keep working.
+    // Even a successful read can return stale data after a quota/remove failure.
+    markMemoryOnly();
   }
 }
 

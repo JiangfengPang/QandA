@@ -15,6 +15,7 @@ type QueueItem = {
   durationSeconds: number;
   status: string;
   retryCount: number;
+  lockedAt?: Date | null;
 };
 
 type SessionQueueItem = {
@@ -25,6 +26,7 @@ type SessionQueueItem = {
   payloadVersion: number;
   status: string;
   retryCount: number;
+  lockedAt?: Date | null;
 };
 
 export type PracticeAnswerQueueInput = {
@@ -58,6 +60,7 @@ let stopRequested = false;
 let drainTimer: ReturnType<typeof setTimeout> | null = null;
 let drainTimerDueAt = 0;
 let drainPromise: Promise<void> | null = null;
+const userDrainPromises = new Map<string, Promise<{ processedCount: number; failedCount: number }>>();
 let startupLogged = false;
 let earliestNextDrainAt = 0;
 let consecutiveDrainRounds = 0;
@@ -87,7 +90,7 @@ function truncateError(error: unknown) {
 
 function isPermanentQueueError(error: unknown) {
   if (!(error instanceof HttpError)) return false;
-  return error.status >= 400 && error.status < 500 && error.status !== 429;
+  return error.status >= 400 && error.status < 500 && ![409, 429].includes(error.status);
 }
 
 function retryDelayMs(retryCount: number) {
@@ -240,20 +243,26 @@ export function mergeSessionQueueAnswers(practiceSessionId: string, existing: un
 async function ensurePracticeSession(userId: string, input: PracticeAnswerSessionSubmissionInput, answerCount: number) {
   const practiceSessionId = normalizeText(input.practiceSessionId, 191);
   if (!practiceSessionId) throw new HttpError('练习会话标识不能为空', 400);
-  const existing = await prisma.practiceSession.findUnique({ where: { id: practiceSessionId } });
-  if (existing && existing.userId !== userId) throw new HttpError('练习会话不存在或无权访问', 403);
-  if (existing) return existing;
-
-  return prisma.practiceSession.create({
-    data: {
-      id: practiceSessionId,
-      userId,
-      scopeType: normalizeText(input.scopeType || 'practice', 40) || 'practice',
-      scopeId: normalizeText(input.scopeId, 191) || null,
-      status: answerCount > 0 ? SESSION_STATUS_IN_PROGRESS : SESSION_STATUS_SYNC_FAILED,
-      answerCount
-    }
-  });
+  let session;
+  try {
+    session = await prisma.practiceSession.upsert({
+      where: { id: practiceSessionId },
+      update: {},
+      create: {
+        id: practiceSessionId, userId,
+        scopeType: normalizeText(input.scopeType || 'practice', 40) || 'practice',
+        scopeId: normalizeText(input.scopeId, 191) || null,
+        status: answerCount > 0 ? SESSION_STATUS_IN_PROGRESS : SESSION_STATUS_SYNC_FAILED,
+        answerCount
+      }
+    });
+  } catch (error) {
+    if ((error as { code?: string }).code !== 'P2002') throw error;
+    session = await prisma.practiceSession.findUnique({ where: { id: practiceSessionId } });
+    if (!session) throw error;
+  }
+  if (session.userId !== userId) throw new HttpError('练习会话不存在或无权访问', 403);
+  return session;
 }
 
 export async function enqueuePracticeAnswerSessionSubmission(userId: string, input: PracticeAnswerSessionSubmissionInput) {
@@ -267,69 +276,60 @@ export async function enqueuePracticeAnswerSessionSubmission(userId: string, inp
   if (!answers.length) return { accepted: 0, queued: 0, submissionStatus: 'empty', results: [] };
 
   await ensurePracticeSession(userId, { ...input, practiceSessionId, clientSubmissionId }, answers.length);
-  const payload = answers as unknown as Prisma.InputJsonValue;
-
-  const existingByClientSubmission = await prisma.practiceAnswerSubmissionQueue.findUnique({
-    where: { userId_clientSubmissionId: { userId, clientSubmissionId } },
-    select: { practiceSessionId: true }
-  });
-  if (existingByClientSubmission && existingByClientSubmission.practiceSessionId !== practiceSessionId) {
-    throw new HttpError('提交标识已用于其他练习会话', 409);
-  }
-
-  const existingBySession = await prisma.practiceAnswerSubmissionQueue.findUnique({
-    where: { userId_practiceSessionId: { userId, practiceSessionId } },
-    select: { id: true, status: true, answersJson: true, payloadVersion: true }
-  });
-
-  if (existingBySession) {
-    const mergedAnswers = mergeSessionQueueAnswers(practiceSessionId, existingBySession.answersJson, answers);
-    const mergedPayload = mergedAnswers as unknown as Prisma.InputJsonValue;
-    const nextStatus = existingBySession.status === STATUS_PROCESSING
-      ? STATUS_PROCESSING
-      : (existingBySession.status === STATUS_PENDING || existingBySession.status === STATUS_RETRYING)
-        ? existingBySession.status
-        : STATUS_RETRYING;
-
-    await prisma.practiceAnswerSubmissionQueue.update({
-      where: { id: existingBySession.id },
-      data: {
-        clientSubmissionId,
-        answersJson: mergedPayload,
-        payloadVersion: { increment: 1 },
-        status: nextStatus,
-        nextRunAt: new Date(),
-        processedAt: null,
-        lastError: null
-      }
+  // Compare-and-swap keeps concurrent appends from replacing accepted answers.
+  for (let attempt = 0; attempt < 16; attempt += 1) {
+    const existingByClientSubmission = await prisma.practiceAnswerSubmissionQueue.findUnique({
+      where: { userId_clientSubmissionId: { userId, clientSubmissionId } },
+      select: { practiceSessionId: true }
     });
-    schedulePracticeAnswerQueueDrain(0);
-    return {
-      accepted: answers.length,
-      queued: 0,
-      submissionStatus: nextStatus,
-      results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status: `duplicate:${queueStatusLabel(nextStatus)}` }))
-    };
-  }
-
-  await prisma.practiceAnswerSubmissionQueue.create({
-    data: {
-      userId,
-      practiceSessionId,
-      clientSubmissionId,
-      answersJson: payload,
-      status: STATUS_PENDING,
-      retryCount: 0,
-      nextRunAt: new Date()
+    if (existingByClientSubmission && existingByClientSubmission.practiceSessionId !== practiceSessionId) {
+      throw new HttpError('提交标识已用于其他练习会话', 409);
     }
-  });
-  schedulePracticeAnswerQueueDrain(0);
-  return {
-    accepted: answers.length,
-    queued: 1,
-    submissionStatus: STATUS_PENDING,
-    results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status: 'queued' }))
-  };
+    const existing = await prisma.practiceAnswerSubmissionQueue.findUnique({
+      where: { userId_practiceSessionId: { userId, practiceSessionId } },
+      select: { id: true, status: true, answersJson: true, payloadVersion: true }
+    });
+    let status = STATUS_PENDING;
+    try {
+      if (existing) {
+        const merged = mergeSessionQueueAnswers(practiceSessionId, existing.answersJson, answers);
+        const unchanged = JSON.stringify(merged) === JSON.stringify(dedupeSessionAnswers(practiceSessionId, normalizeSessionQueueAnswers(existing.answersJson)));
+        if (unchanged && existing.status !== STATUS_FAILED) {
+          schedulePracticeAnswerQueueDrain(0);
+          return { accepted: answers.length, queued: 0, submissionStatus: existing.status,
+            results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status: `duplicate:${existing.status}` })) };
+        }
+        status = existing.status === STATUS_PROCESSING ? STATUS_PROCESSING : STATUS_RETRYING;
+        const changed = await prisma.$transaction(async (tx) => {
+          const result = await tx.practiceAnswerSubmissionQueue.updateMany({
+            where: { id: existing.id, payloadVersion: existing.payloadVersion, status: existing.status },
+            data: {
+              clientSubmissionId, answersJson: merged as unknown as Prisma.InputJsonValue,
+              payloadVersion: { increment: 1 }, status, nextRunAt: new Date(),
+              processedAt: null, lastError: null, retryCount: 0
+            }
+          });
+          if (result.count) await tx.practiceSession.update({ where: { id: practiceSessionId },
+            data: { status: SESSION_STATUS_IN_PROGRESS, answerCount: merged.length, submittedAt: null } });
+          return result.count;
+        });
+        if (!changed) continue;
+      } else {
+        await prisma.practiceAnswerSubmissionQueue.create({ data: {
+          userId, practiceSessionId, clientSubmissionId,
+          answersJson: answers as unknown as Prisma.InputJsonValue,
+          status, retryCount: 0, nextRunAt: new Date()
+        } });
+      }
+    } catch (error) {
+      if (['P2002', 'P2034'].includes((error as { code?: string }).code || '')) continue;
+      throw error;
+    }
+    schedulePracticeAnswerQueueDrain(0);
+    return { accepted: answers.length, queued: existing ? 0 : 1, submissionStatus: status,
+      results: answers.map((answer) => ({ clientAnswerId: answer.clientAnswerId, status })) };
+  }
+  throw new HttpError('答案提交繁忙，请稍后重试', 503);
 }
 
 async function resetStaleProcessingLocks() {
@@ -363,6 +363,7 @@ async function resetStaleProcessingLocks() {
 }
 
 async function lockQueueItem(item: QueueItem) {
+  const lockedAt = new Date();
   const result = await prisma.practiceAnswerQueueItem.updateMany({
     where: {
       id: item.id,
@@ -371,15 +372,16 @@ async function lockQueueItem(item: QueueItem) {
     },
     data: {
       status: STATUS_PROCESSING,
-      lockedAt: new Date()
+      lockedAt
     }
   });
+  if (result.count) item.lockedAt = lockedAt;
   return result.count > 0;
 }
 
-async function markQueueItemProcessed(itemId: string) {
-  await prisma.practiceAnswerQueueItem.update({
-    where: { id: itemId },
+async function markQueueItemProcessed(item: QueueItem) {
+  await prisma.practiceAnswerQueueItem.updateMany({
+    where: { id: item.id, status: STATUS_PROCESSING, lockedAt: item.lockedAt },
     data: {
       status: STATUS_PROCESSED,
       lockedAt: null,
@@ -392,8 +394,8 @@ async function markQueueItemProcessed(itemId: string) {
 async function markQueueItemFailed(item: QueueItem, error: unknown) {
   const nextRetryCount = item.retryCount + 1;
   const permanent = isPermanentQueueError(error) || nextRetryCount >= env.practiceAnswerQueueMaxAttempts;
-  await prisma.practiceAnswerQueueItem.update({
-    where: { id: item.id },
+  await prisma.practiceAnswerQueueItem.updateMany({
+    where: { id: item.id, status: STATUS_PROCESSING, lockedAt: item.lockedAt },
     data: {
       status: permanent ? STATUS_FAILED : STATUS_RETRYING,
       retryCount: nextRetryCount,
@@ -418,9 +420,10 @@ async function processQueueItem(item: QueueItem) {
       item.questionId,
       normalizeSelected(item.selectedJson),
       item.durationSeconds,
-      item.clientAnswerId
+      item.clientAnswerId,
+      { kind: 'answer', id: item.id, lockedAt: item.lockedAt! }
     );
-    await markQueueItemProcessed(item.id);
+    await markQueueItemProcessed(item);
     return 'processed' as const;
   } catch (error) {
     await markQueueItemFailed(item, error);
@@ -442,95 +445,69 @@ function normalizeSessionQueueAnswers(value: unknown): PracticeAnswerQueueInput[
 }
 
 async function lockSessionQueueItem(item: SessionQueueItem) {
+  const lockedAt = new Date();
   const result = await prisma.practiceAnswerSubmissionQueue.updateMany({
     where: {
       id: item.id,
       status: item.status,
+      payloadVersion: item.payloadVersion,
       nextRunAt: { lte: new Date() }
     },
     data: {
       status: STATUS_PROCESSING,
-      lockedAt: new Date()
+      lockedAt
     }
   });
+  if (result.count) item.lockedAt = lockedAt;
   return result.count > 0;
 }
 
-async function markSessionQueueItemProcessed(item: SessionQueueItem, summary: {
-  answerCount: number;
-  correctCount: number;
-  durationSeconds: number;
+export async function markSessionQueueItemProcessed(item: SessionQueueItem, summary: {
+  answerCount: number; correctCount: number; durationSeconds: number;
 }) {
-  const current = await prisma.practiceAnswerSubmissionQueue.findUnique({
-    where: { id: item.id },
-    select: { payloadVersion: true }
-  });
-  if (!current) return;
-
-  if (current.payloadVersion !== item.payloadVersion) {
-    await prisma.practiceAnswerSubmissionQueue.update({
-      where: { id: item.id },
-      data: {
-        status: STATUS_RETRYING,
-        lockedAt: null,
-        processedAt: null,
-        processedPayloadVersion: item.payloadVersion,
-        lastError: null,
-        nextRunAt: new Date()
-      }
+  return prisma.$transaction(async (tx) => {
+    const completed = await tx.practiceAnswerSubmissionQueue.updateMany({
+      where: { id: item.id, status: STATUS_PROCESSING, lockedAt: item.lockedAt, payloadVersion: item.payloadVersion },
+      data: { status: STATUS_PROCESSED, lockedAt: null, processedAt: new Date(),
+        processedPayloadVersion: item.payloadVersion, lastError: null }
     });
-    return;
-  }
-
-  await prisma.$transaction([
-    prisma.practiceSession.update({
-      where: { id: item.practiceSessionId },
-      data: {
-        status: SESSION_STATUS_SUBMITTED,
-        answerCount: summary.answerCount,
-        correctCount: summary.correctCount,
-        durationSeconds: summary.durationSeconds,
-        submittedAt: new Date()
-      }
-    }),
-    prisma.practiceAnswerSubmissionQueue.update({
-      where: { id: item.id },
-      data: {
-        status: STATUS_PROCESSED,
-        lockedAt: null,
-        processedAt: new Date(),
-        processedPayloadVersion: item.payloadVersion,
-        lastError: null
-      }
-    })
-  ]);
+    if (completed.count) {
+      await tx.practiceSession.update({ where: { id: item.practiceSessionId }, data: {
+        status: SESSION_STATUS_SUBMITTED, ...summary, submittedAt: new Date()
+      } });
+      return true;
+    }
+    // A new payload still belongs to this lease; release it for another pass.
+    await tx.practiceAnswerSubmissionQueue.updateMany({
+      where: { id: item.id, status: STATUS_PROCESSING, lockedAt: item.lockedAt, payloadVersion: { not: item.payloadVersion } },
+      data: { status: STATUS_RETRYING, lockedAt: null, processedAt: null,
+        processedPayloadVersion: item.payloadVersion, nextRunAt: new Date(), lastError: null, retryCount: 0 }
+    });
+    return false;
+  });
 }
 
-async function markSessionQueueItemFailed(item: SessionQueueItem, error: unknown) {
+export async function markSessionQueueItemFailed(item: SessionQueueItem, error: unknown) {
   const nextRetryCount = item.retryCount + 1;
   const permanent = isPermanentQueueError(error) || nextRetryCount >= env.practiceAnswerQueueMaxAttempts;
-  await prisma.$transaction([
-    prisma.practiceAnswerSubmissionQueue.update({
-      where: { id: item.id },
-      data: {
-        status: permanent ? STATUS_FAILED : STATUS_RETRYING,
-        retryCount: nextRetryCount,
-        lockedAt: null,
-        lastError: truncateError(error),
+  await prisma.$transaction(async (tx) => {
+    const failed = await tx.practiceAnswerSubmissionQueue.updateMany({
+      where: { id: item.id, status: STATUS_PROCESSING, lockedAt: item.lockedAt, payloadVersion: item.payloadVersion },
+      data: { status: permanent ? STATUS_FAILED : STATUS_RETRYING,
+        retryCount: nextRetryCount, lockedAt: null, lastError: truncateError(error),
         nextRunAt: permanent ? new Date() : dueDate(retryDelayMs(nextRetryCount)),
-        processedAt: permanent ? new Date() : null
-      }
-    }),
-    ...(permanent ? [
-      prisma.practiceSession.update({
-        where: { id: item.practiceSessionId },
-        data: { status: SESSION_STATUS_SYNC_FAILED }
-      })
-    ] : [])
-  ]);
-
-  const label = permanent ? 'failed' : 'retry scheduled';
-  console.error(`Practice answer session queue item ${item.id} ${label}: ${truncateError(error)}`);
+        processedAt: permanent ? new Date() : null }
+    });
+    if (failed.count && permanent) await tx.practiceSession.update({
+      where: { id: item.practiceSessionId }, data: { status: SESSION_STATUS_SYNC_FAILED }
+    });
+    if (!failed.count) await tx.practiceAnswerSubmissionQueue.updateMany({
+      where: { id: item.id, status: STATUS_PROCESSING, lockedAt: item.lockedAt, payloadVersion: { not: item.payloadVersion } },
+      data: { status: STATUS_RETRYING, lockedAt: null, processedAt: null,
+        retryCount: 0, lastError: null, nextRunAt: new Date() }
+    });
+  });
+  console.error(`Practice answer session queue item ${item.id}: ${truncateError(error)}`);
 }
 
 async function processSessionQueueItem(item: SessionQueueItem) {
@@ -544,23 +521,33 @@ async function processSessionQueueItem(item: SessionQueueItem) {
     let correctCount = 0;
     let durationSeconds = 0;
     for (const answer of answers) {
+      if (Date.now() - item.lockedAt!.getTime() > PROCESSING_LOCK_MS / 4) {
+        const renewedAt = new Date();
+        const renewed = await prisma.practiceAnswerSubmissionQueue.updateMany({
+          where: { id: item.id, status: STATUS_PROCESSING, lockedAt: item.lockedAt },
+          data: { lockedAt: renewedAt }
+        });
+        if (!renewed.count) return 'skipped' as const;
+        item.lockedAt = renewedAt;
+      }
       const result = await submitPracticeAnswer(
         item.userId,
         answer.questionId,
         normalizeSelected(answer.selected),
         answer.durationSeconds,
-        answer.clientAnswerId
+        answer.clientAnswerId,
+        { kind: 'session', id: item.id, lockedAt: item.lockedAt! }
       );
       if (result.correct) correctCount += 1;
       durationSeconds += clampDurationSeconds(answer.durationSeconds);
     }
 
-    await markSessionQueueItemProcessed(item, {
+    const completed = await markSessionQueueItemProcessed(item, {
       answerCount: answers.length,
       correctCount,
       durationSeconds
     });
-    return 'processed' as const;
+    return completed ? 'processed' as const : 'skipped' as const;
   } catch (error) {
     await markSessionQueueItemFailed(item, error);
     return 'failed' as const;
@@ -582,14 +569,7 @@ async function drainPracticeAnswerQueue() {
     take: env.practiceAnswerQueueBatchSize
   });
 
-  let sessionProcessedCount = 0;
-  let sessionFailedCount = 0;
-  for (let index = 0; index < sessionItems.length && !stopRequested; index += env.practiceAnswerQueueConcurrency) {
-    const chunk = sessionItems.slice(index, index + env.practiceAnswerQueueConcurrency);
-    const results = await Promise.all(chunk.map((item) => processSessionQueueItem(item)));
-    sessionProcessedCount += results.filter((result) => result === 'processed').length;
-    sessionFailedCount += results.filter((result) => result === 'failed').length;
-  }
+  const sessionResult = await processSessionQueueItems(sessionItems);
 
   const items = await prisma.practiceAnswerQueueItem.findMany({
     where: {
@@ -600,17 +580,110 @@ async function drainPracticeAnswerQueue() {
     take: env.practiceAnswerQueueBatchSize
   });
 
-  let processedCount = sessionProcessedCount;
-  let failedCount = sessionFailedCount;
+  const itemResult = await processQueueItems(items);
+  const processedCount = sessionResult.processedCount + itemResult.processedCount;
+  const failedCount = sessionResult.failedCount + itemResult.failedCount;
+
+  await maybeLogPracticeAnswerQueueStats({ processedCount, failedCount });
+  return sessionItems.length >= env.practiceAnswerQueueBatchSize || items.length >= env.practiceAnswerQueueBatchSize;
+}
+
+async function processSessionQueueItems(sessionItems: SessionQueueItem[]) {
+  let processedCount = 0;
+  let failedCount = 0;
+  for (let index = 0; index < sessionItems.length && !stopRequested; index += env.practiceAnswerQueueConcurrency) {
+    const chunk = sessionItems.slice(index, index + env.practiceAnswerQueueConcurrency);
+    const results = await Promise.all(chunk.map((item) => processSessionQueueItem(item)));
+    processedCount += results.filter((result) => result === 'processed').length;
+    failedCount += results.filter((result) => result === 'failed').length;
+  }
+  return { processedCount, failedCount };
+}
+
+async function processQueueItems(items: QueueItem[]) {
+  let processedCount = 0;
+  let failedCount = 0;
   for (let index = 0; index < items.length && !stopRequested; index += env.practiceAnswerQueueConcurrency) {
     const chunk = items.slice(index, index + env.practiceAnswerQueueConcurrency);
     const results = await Promise.all(chunk.map((item) => processQueueItem(item)));
     processedCount += results.filter((result) => result === 'processed').length;
     failedCount += results.filter((result) => result === 'failed').length;
   }
+  return { processedCount, failedCount };
+}
 
-  await maybeLogPracticeAnswerQueueStats({ processedCount, failedCount });
-  return sessionItems.length >= env.practiceAnswerQueueBatchSize || items.length >= env.practiceAnswerQueueBatchSize;
+export async function waitForPracticeAnswersForUser(userId: string, timeoutMs = 250) {
+  const pending = drainPracticeAnswerQueueForUser(userId);
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    await Promise.race([pending, new Promise<void>((resolve) => { timer = setTimeout(resolve, timeoutMs); })]);
+  } catch (error) {
+    console.error(`Practice answer refresh failed: ${truncateError(error)}`);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+export async function drainPracticeAnswerQueueForUser(userId: string) {
+  const safeUserId = normalizeText(userId, 191);
+  if (!safeUserId || !shouldUseQueue()) return { processedCount: 0, failedCount: 0 };
+
+  const existing = userDrainPromises.get(safeUserId);
+  if (existing) return existing;
+
+  const promise = drainPracticeAnswerQueueForUserUnlocked(safeUserId)
+    .finally(() => {
+      userDrainPromises.delete(safeUserId);
+    });
+  userDrainPromises.set(safeUserId, promise);
+  return promise;
+}
+
+async function drainPracticeAnswerQueueForUserUnlocked(safeUserId: string) {
+  if (await shouldPauseWorker()) return { processedCount: 0, failedCount: 0 };
+
+  let processedCount = 0;
+  let failedCount = 0;
+  await resetStaleProcessingLocks();
+
+  for (let round = 0; round < 1 && !stopRequested; round += 1) {
+    const [sessionItems, items] = await Promise.all([
+      prisma.practiceAnswerSubmissionQueue.findMany({
+        where: {
+          userId: safeUserId,
+          status: { in: [STATUS_PENDING, STATUS_RETRYING] },
+          nextRunAt: { lte: new Date() }
+        },
+        orderBy: { createdAt: 'asc' },
+        take: 1
+      }),
+      prisma.practiceAnswerQueueItem.findMany({
+        where: {
+          userId: safeUserId,
+          status: { in: [STATUS_PENDING, STATUS_RETRYING] },
+          nextRunAt: { lte: new Date() }
+        },
+        orderBy: { createdAt: 'asc' },
+        take: 1
+      })
+    ]);
+
+    if (!sessionItems.length && !items.length) break;
+
+    const sessionResult = await processSessionQueueItems(sessionItems);
+    const itemResult = await processQueueItems(items);
+    processedCount += sessionResult.processedCount + itemResult.processedCount;
+    failedCount += sessionResult.failedCount + itemResult.failedCount;
+
+    if (
+      sessionItems.length < env.practiceAnswerQueueBatchSize
+      && items.length < env.practiceAnswerQueueBatchSize
+    ) {
+      break;
+    }
+  }
+
+  return { processedCount, failedCount };
 }
 
 function shouldLogPracticeAnswerQueueStats() {
@@ -720,6 +793,7 @@ export async function stopPracticeAnswerQueueWorker() {
     drainTimerDueAt = 0;
   }
   if (drainPromise) await drainPromise;
+  await Promise.allSettled(userDrainPromises.values());
   workerStarted = false;
 }
 

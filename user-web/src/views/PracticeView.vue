@@ -542,7 +542,7 @@ import {
   enqueuePendingAnswer,
   nextPendingRetryDelayMs,
   removePendingAnswer,
-  removePendingAnswersByClientAnswerIds,
+  readPendingAnswerQueue,
   resetAuthFailedPendingAnswers,
   selectDuePendingAnswers,
   selectPendingAnswersByPracticeSession,
@@ -551,11 +551,10 @@ import {
   type PendingAnswerRecord
 } from '../utils/pendingAnswerQueue';
 import {
-  buildPendingAnswerBatchPayload,
+  syncPendingAnswerSessions,
   createPendingAnswerClientSubmissionId,
   groupPendingAnswerRecordsByPracticeSession,
   postPendingAnswerSessionKeepalive,
-  type PendingAnswerBatchResponse,
   type PendingAnswerSyncResult
 } from '../utils/pendingAnswerSync';
 import type { PracticeSessionRecord } from '../types/practice';
@@ -1746,8 +1745,8 @@ function applySyncedPendingAnswer(record: PendingAnswerRecord, data: { correct: 
   }
   applyAnswerResult(question, record.selectedAnswer, {
     correct: data.correct,
-    answer: data.answer,
-    explanation: data.explanation || question.explanation || ''
+    answer: data.answer.length ? data.answer : record.answer || [],
+    explanation: data.explanation || record.explanation || question.explanation || ''
   }, record.clientAnswerId, 'synced');
 }
 
@@ -1797,9 +1796,7 @@ function markPendingAnswerSyncError(userKey: string, record: PendingAnswerRecord
   const status = pendingAnswerErrorStatus(error);
   const nextStatus: PendingAnswerRecord['status'] = status === 401 || status === 403
     ? 'auth_failed'
-    : status === 400
-      ? 'invalid'
-      : 'failed';
+    : 'failed';
   updatePendingAnswer(userKey, record.clientAnswerId, {
     status: nextStatus,
     lastError: pendingAnswerErrorMessage(error),
@@ -1833,22 +1830,22 @@ async function syncPendingAnswerBatch(
   });
 
   try {
-    const data = await api.post<PendingAnswerBatchResponse>('/practice/answers/batch', buildPendingAnswerBatchPayload(uniqueRecords, {
-      practiceSessionId: options.practiceSessionId,
-      clientSubmissionId: options.clientSubmissionId,
+    await syncPendingAnswerSessions(userKey, uniqueRecords, {
+      ...options,
       scopeType: 'practice',
-      scopeId: practiceSessionScope()
-    }));
-    const resultByClientAnswerId = new Map((data.results || []).map((item) => [item.clientAnswerId || '', item]));
-    removePendingAnswersByClientAnswerIds(userKey, uniqueRecords.map((record) => record.clientAnswerId));
-    uniqueRecords.forEach((record) => {
-      applySyncedPendingAnswer(record, resultByClientAnswerId.get(record.clientAnswerId) || pendingAnswerFallbackResult(record));
+      scopeId: practiceSessionScope(),
+      onAccepted: (acceptedRecords, data) => {
+        const resultByClientAnswerId = new Map((data.results || []).map((item) => [item.clientAnswerId || '', item]));
+        acceptedRecords.forEach((record) => {
+          applySyncedPendingAnswer(record, resultByClientAnswerId.get(record.clientAnswerId) || pendingAnswerFallbackResult(record));
+        });
+      }
     });
-    window.dispatchEvent(new Event('qanda:stats-updated'));
     return 'synced' as const;
   } catch (error) {
     let nextStatus: PendingAnswerRecord['status'] = 'failed';
-    uniqueRecords.forEach((record) => {
+    const remainingIds = new Set(readPendingAnswerQueue(userKey).map((record) => record.clientAnswerId));
+    uniqueRecords.filter((record) => remainingIds.has(record.clientAnswerId)).forEach((record) => {
       nextStatus = markPendingAnswerSyncError(userKey, record, error);
     });
     return nextStatus;

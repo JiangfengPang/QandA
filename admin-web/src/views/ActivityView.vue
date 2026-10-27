@@ -8,7 +8,7 @@
       </div>
       <div class="hero-actions">
         <el-tag :type="aggregationLagTone" effect="plain">{{ aggregationLagLabel }}</el-tag>
-        <el-select v-model="days" style="width: 128px" @change="loadSummary">
+        <el-select v-model="days" style="width: 128px" @change="loadActivity">
           <el-option :value="7" label="近 7 天" />
           <el-option :value="14" label="近 14 天" />
           <el-option :value="30" label="近 30 天" />
@@ -353,14 +353,15 @@ function clearScheduledDetailLoad() {
   detailFrameId = undefined;
 }
 
-async function loadSummary() {
+async function loadSummary(force = false) {
   abortActivityRequests('summary');
   const requestId = ++summaryRequestId;
   const controller = new AbortController();
   summaryController = controller;
   summaryLoading.value = true;
   try {
-    const summary = await api.get<ActivitySummaryData>(`/admin/activity/summary?days=${days.value}`, { signal: controller.signal });
+    const forceQuery = force ? '&force=1' : '';
+    const summary = await api.get<ActivitySummaryData>(`/admin/activity/summary?days=${days.value}${forceQuery}`, { signal: controller.signal });
     if (requestId !== summaryRequestId) return;
     data.value = {
       ...data.value,
@@ -381,14 +382,15 @@ async function loadSummary() {
   }
 }
 
-async function loadDetail() {
+async function loadDetail(force = false) {
   abortActivityRequests('detail');
   const requestId = ++detailRequestId;
   const controller = new AbortController();
   detailController = controller;
   detailLoading.value = true;
   try {
-    const detail = await api.get<ActivityDetailData>(`/admin/activity/detail?days=${days.value}`, { signal: controller.signal });
+    const forceQuery = force ? '&force=1' : '';
+    const detail = await api.get<ActivityDetailData>(`/admin/activity/detail?days=${days.value}${forceQuery}`, { signal: controller.signal });
     if (requestId !== detailRequestId) return;
     data.value = {
       ...data.value,
@@ -410,10 +412,10 @@ async function loadDetail() {
 function loadActivity() {
   abortActivityRequests();
   clearScheduledDetailLoad();
-  void loadSummary();
+  void loadSummary(true);
   detailFrameId = requestAnimationFrame(() => {
     detailFrameId = undefined;
-    void loadDetail();
+    void loadDetail(true);
   });
 }
 

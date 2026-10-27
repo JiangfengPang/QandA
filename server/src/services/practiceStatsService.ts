@@ -53,6 +53,12 @@ type PracticeReviewSummary = {
 
 const reviewSummaryCache = new Map<string, { expiresAt: number; value?: PracticeReviewSummary; promise?: Promise<PracticeReviewSummary> }>();
 
+export function invalidatePracticeReviewSummaryCache(userId: string) {
+  for (const key of reviewSummaryCache.keys()) {
+    if (key.startsWith(`${userId}:`)) reviewSummaryCache.delete(key);
+  }
+}
+
 function buildQuestionFilter(subjectId?: string): ScopedQuestionFilter {
   return subjectId
     ? { isActive: true, bank: { subjectId, isActive: true, subject: { isActive: true } } }
@@ -447,11 +453,11 @@ export async function getPracticeReviewSummary(userId: string, scope: PracticeRe
 
   const promise = loadPracticeReviewSummary(userId, scope)
     .then((value) => {
-      reviewSummaryCache.set(key, { expiresAt: Date.now() + ttlMs, value });
+      if (reviewSummaryCache.get(key)?.promise === promise) reviewSummaryCache.set(key, { expiresAt: Date.now() + ttlMs, value });
       return value;
     })
     .catch((error) => {
-      reviewSummaryCache.delete(key);
+      if (reviewSummaryCache.get(key)?.promise === promise) reviewSummaryCache.delete(key);
       throw error;
     });
 

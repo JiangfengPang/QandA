@@ -98,6 +98,10 @@ function percentage(correctCount: number, answerCount: number) {
   return answerCount ? Math.round((correctCount / answerCount) * 100) : 0;
 }
 
+function shouldForceRefresh(value: unknown) {
+  return ['1', 'true', 'yes', 'on'].includes(String(value || '').trim().toLowerCase());
+}
+
 router.get('/dashboard', asyncHandler(async (_req, res) => {
   return ok(res, await getAdminDashboardStats());
 }));
@@ -109,12 +113,14 @@ router.get('/activity', asyncHandler(async (req, res) => {
 
 router.get('/activity/summary', asyncHandler(async (req, res) => {
   const days = Math.min(Math.max(toInt(req.query.days, 14), 7), 30);
-  return ok(res, await getAdminActivitySummary(days));
+  const force = shouldForceRefresh(req.query.force);
+  return ok(res, await getAdminActivitySummary(days, { force }));
 }));
 
 router.get('/activity/detail', asyncHandler(async (req, res) => {
   const days = Math.min(Math.max(toInt(req.query.days, 14), 7), 30);
-  return ok(res, await getAdminActivityDetail(days));
+  const force = shouldForceRefresh(req.query.force);
+  return ok(res, await getAdminActivityDetail(days, { force }));
 }));
 
 router.get('/announcements', asyncHandler(async (req, res) => {
@@ -198,11 +204,20 @@ router.get('/users', asyncHandler(async (req, res) => {
   const baseWhere = userBaseWhere(req);
   const where = await userWhereWithNicknameStatus(baseWhere, nicknameStatus);
 
-  const [summaryRows, rows] = await Promise.all([
-    prisma.user.findMany({
-      where,
-      select: { id: true, nickname: true, isActive: true, lastActiveAt: true }
-    }),
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+  const thirtyDaysAgo = new Date(today);
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
+  const [total, activeCount, activeToday, activeSevenDays, inactiveThirtyDays, nicknameRows, rows] = await Promise.all([
+    prisma.user.count({ where }),
+    prisma.user.count({ where: { AND: [where, { isActive: true }] } }),
+    prisma.user.count({ where: { AND: [where, { lastActiveAt: { gte: today } }] } }),
+    prisma.user.count({ where: { AND: [where, { lastActiveAt: { gte: sevenDaysAgo } }] } }),
+    prisma.user.count({ where: { AND: [where, { OR: [{ lastActiveAt: null }, { lastActiveAt: { lt: thirtyDaysAgo } }] }] } }),
+    // Unicode nickname moderation remains in the shared policy; fetch only this field.
+    prisma.user.findMany({ where, select: { nickname: true } }),
     prisma.user.findMany({
       where,
       orderBy: { createdAt: 'desc' },
@@ -250,22 +265,15 @@ router.get('/users', asyncHandler(async (req, res) => {
   const correctByUser = new Map(correctStats.map((item) => [item.userId, item._count._all]));
   const wrongByUser = new Map(wrongStats.map((item) => [item.userId, item._count._all]));
   const favoriteByUser = new Map(favoriteStats.map((item) => [item.userId, item._count._all]));
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const sevenDaysAgo = new Date(today);
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-  const thirtyDaysAgo = new Date(today);
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
-
   return ok(res, {
     summary: {
-      total: summaryRows.length,
-      activeCount: summaryRows.filter((row) => row.isActive).length,
-      inactiveCount: summaryRows.filter((row) => !row.isActive).length,
-      nicknameViolationCount: summaryRows.filter((row) => hasForbiddenNickname(row.nickname)).length,
-      activeToday: summaryRows.filter((row) => row.lastActiveAt && row.lastActiveAt >= today).length,
-      activeSevenDays: summaryRows.filter((row) => row.lastActiveAt && row.lastActiveAt >= sevenDaysAgo).length,
-      inactiveThirtyDays: summaryRows.filter((row) => !row.lastActiveAt || row.lastActiveAt < thirtyDaysAgo).length
+      total,
+      activeCount,
+      inactiveCount: total - activeCount,
+      nicknameViolationCount: nicknameRows.filter((row) => hasForbiddenNickname(row.nickname)).length,
+      activeToday,
+      activeSevenDays,
+      inactiveThirtyDays
     },
     rows: rows.map((row) => {
       const answers = answerByUser.get(row.id);
@@ -283,7 +291,7 @@ router.get('/users', asyncHandler(async (req, res) => {
         lastAnsweredAt: answers?._max.createdAt || null
       };
     }),
-    meta: pageMeta(page, pageSize, summaryRows.length)
+    meta: pageMeta(page, pageSize, total)
   });
 }));
 

@@ -36,6 +36,10 @@ export type PendingAnswerFlushOptions = {
   dispatchStatsUpdated?: boolean;
 };
 
+export const PENDING_ANSWER_BATCH_LIMIT = 500;
+export const PENDING_ANSWER_BATCH_BYTES = 512 * 1024;
+export const PENDING_ANSWER_KEEPALIVE_BYTES = 48 * 1024;
+
 const pendingAnswerFlushByUserKey = new Map<string, Promise<number>>();
 
 function randomSuffix() {
@@ -108,31 +112,68 @@ export function buildPendingAnswerBatchPayload(records: PendingAnswerRecord[], o
   };
 }
 
-export function postPendingAnswerSessionKeepalive(records: PendingAnswerRecord[], options: PendingAnswerBatchOptions = {}) {
-  const payload = buildPendingAnswerBatchPayload(records, { ...options, compact: true });
-  if (!payload.practiceSessionId || !payload.answers.length) return false;
-  postKeepalive('/practice/answers/batch', payload);
-  return true;
+type PendingAnswerChunk = {
+  records: PendingAnswerRecord[];
+  payload: ReturnType<typeof buildPendingAnswerBatchPayload>;
+};
+
+export function buildPendingAnswerChunks(records: PendingAnswerRecord[], options: PendingAnswerBatchOptions = {}, maxBytes = PENDING_ANSWER_BATCH_BYTES) {
+  const chunks: PendingAnswerChunk[] = [];
+  for (const group of groupPendingAnswerRecordsByPracticeSession(records)) {
+    let current: PendingAnswerRecord[] = [];
+    const batchOptions = { ...options, practiceSessionId: group.practiceSessionId, compact: true };
+    let payload = buildPendingAnswerBatchPayload([], batchOptions);
+    const finish = () => {
+      if (current.length) chunks.push({ records: current, payload });
+      current = [];
+      payload = buildPendingAnswerBatchPayload([], { ...batchOptions,
+        clientSubmissionId: createPendingAnswerClientSubmissionId(group.practiceSessionId) });
+    };
+    for (const record of group.records) {
+      const candidate = buildPendingAnswerBatchPayload([...current, record], {
+        ...batchOptions, clientSubmissionId: payload.clientSubmissionId
+      });
+      if (current.length && (current.length >= PENDING_ANSWER_BATCH_LIMIT
+        || new TextEncoder().encode(JSON.stringify(candidate)).byteLength > maxBytes)) finish();
+      const next = buildPendingAnswerBatchPayload([...current, record], {
+        ...batchOptions, clientSubmissionId: payload.clientSubmissionId
+      });
+      if (new TextEncoder().encode(JSON.stringify(next)).byteLength > maxBytes) {
+        // Keep oversized records locally; ordinary requests can send larger records.
+        if (maxBytes === PENDING_ANSWER_KEEPALIVE_BYTES) continue;
+        throw new Error('单条答案超过提交大小限制，请检查答案内容');
+      }
+      current.push(record);
+      payload = next;
+    }
+    finish();
+  }
+  return chunks;
 }
 
-export async function syncPendingAnswerSessions(userKey: string, records: PendingAnswerRecord[], options: PendingAnswerBatchOptions = {}) {
-  const syncedClientAnswerIds: string[] = [];
-  for (const group of groupPendingAnswerRecordsByPracticeSession(records)) {
-    const payload = buildPendingAnswerBatchPayload(group.records, {
-      ...options,
-      practiceSessionId: group.practiceSessionId,
-      clientSubmissionId: options.clientSubmissionId || createPendingAnswerClientSubmissionId(group.practiceSessionId)
-    });
-    if (!payload.answers.length) continue;
-    await api.post<PendingAnswerBatchResponse>('/practice/answers/batch', payload);
-    syncedClientAnswerIds.push(...group.records.map((record) => record.clientAnswerId));
-  }
+export function postPendingAnswerSessionKeepalive(records: PendingAnswerRecord[], options: PendingAnswerBatchOptions = {}) {
+  // One bounded request shares the browser's 64 KiB budget with other unload requests.
+  const chunk = buildPendingAnswerChunks(records, options, PENDING_ANSWER_KEEPALIVE_BYTES)[0];
+  if (!chunk) return false;
+  // No acknowledgement on unload: retain every record for an idempotent retry.
+  return postKeepalive('/practice/answers/batch', chunk.payload);
+}
 
-  if (syncedClientAnswerIds.length) {
-    removePendingAnswersByClientAnswerIds(userKey, syncedClientAnswerIds);
-  }
+export type PendingAnswerSyncOptions = PendingAnswerBatchOptions & {
+  onAccepted?: (records: PendingAnswerRecord[], data: PendingAnswerBatchResponse) => void;
+};
 
-  return syncedClientAnswerIds.length;
+export async function syncPendingAnswerSessions(userKey: string, records: PendingAnswerRecord[], options: PendingAnswerSyncOptions = {}) {
+  let acceptedCount = 0;
+  for (const chunk of buildPendingAnswerChunks(records, options)) {
+    const data = await api.post<PendingAnswerBatchResponse>('/practice/answers/batch', chunk.payload);
+    if (data.accepted !== chunk.records.length) throw new Error('部分答案尚未确认，请重试');
+    removePendingAnswersByClientAnswerIds(userKey, chunk.records.map((record) => record.clientAnswerId));
+    acceptedCount += chunk.records.length;
+    options.onAccepted?.(chunk.records, data);
+    if (typeof window !== 'undefined') window.dispatchEvent(new Event('qanda:stats-updated'));
+  }
+  return acceptedCount;
 }
 
 export function requestPendingAnswerSessionFlush(userKey: string, options: PendingAnswerFlushOptions = {}) {

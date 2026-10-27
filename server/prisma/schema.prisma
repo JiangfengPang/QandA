@@ -134,6 +134,7 @@ model UserAnswer {
   isCorrect       Boolean
   durationSeconds Int      @default(0)
   createdAt       DateTime @default(now())
+  activityAggregatedAt DateTime?
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   question        Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
@@ -143,6 +144,7 @@ model UserAnswer {
   @@index([createdAt])
   @@index([createdAt, userId])
   @@index([createdAt, id])
+  @@index([activityAggregatedAt, createdAt, id])
   @@index([createdAt, userId, isCorrect, durationSeconds])
   @@index([questionId])
 }

@@ -3,11 +3,15 @@ import path from 'node:path';
 import dotenv from 'dotenv';
 
 const bootstrapNodeEnv = process.env.NODE_ENV || 'development';
+const inheritedEnvKeys = new Set(Object.keys(process.env));
 
 function loadEnvFile(fileName: string, override = false) {
   const filePath = path.resolve(process.cwd(), fileName);
   if (fs.existsSync(filePath)) {
-    dotenv.config({ path: filePath, override });
+    const values = dotenv.parse(fs.readFileSync(filePath));
+    for (const [key, value] of Object.entries(values)) {
+      if (!inheritedEnvKeys.has(key) && (override || process.env[key] === undefined)) process.env[key] = value;
+    }
   }
 }
 
@@ -27,7 +31,9 @@ if (bootstrapNodeEnv === 'production') {
   loadEnvFile('.env.local', true);
 }
 
-const isProduction = process.env.NODE_ENV === 'production';
+process.env.NODE_ENV = bootstrapNodeEnv;
+process.env.TZ ||= 'Asia/Shanghai';
+const isProduction = bootstrapNodeEnv === 'production';
 
 function parseBool(value: string | undefined, fallback: boolean) {
   if (typeof value === 'undefined' || value === '') return fallback;
@@ -42,6 +48,10 @@ function parseIntRange(value: string | undefined, fallback: number, min: number,
 
 const ipHttpMode = parseBool(process.env.IP_HTTP_MODE, false);
 const cookieSecure = ipHttpMode ? false : parseBool(process.env.COOKIE_SECURE, isProduction);
+if (isProduction && !cookieSecure && !ipHttpMode) {
+  throw new Error('生产环境要求 COOKIE_SECURE=true；临时 HTTP 部署需显式设置 IP_HTTP_MODE=true');
+}
+if (isProduction && ipHttpMode) console.warn('临时 HTTP 模式已启用，请在正式使用前配置 HTTPS。');
 const cookieSameSiteRaw = String(process.env.COOKIE_SAME_SITE || 'lax').trim().toLowerCase();
 const cookieSameSite = (['lax', 'strict', 'none'].includes(cookieSameSiteRaw) ? cookieSameSiteRaw : 'lax') as 'lax' | 'strict' | 'none';
 
