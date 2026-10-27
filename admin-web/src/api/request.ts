@@ -1,6 +1,7 @@
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+const viteEnv = (import.meta as ImportMeta & { env?: Record<string, string> }).env || {};
+const API_BASE = viteEnv.VITE_API_BASE || '/api';
 
-type ApiResponse<T> = { code: number; message: string; data: T };
+type ApiResponse<T> = { code: number | string; message: string; data: T };
 
 function readCookie(name: string) {
   if (typeof document === 'undefined') return '';
@@ -58,7 +59,7 @@ export async function request<T>(url: string, options: RequestInit = {}): Promis
 }
 
 export const api = {
-  get: <T>(url: string) => request<T>(url),
+  get: <T>(url: string, options?: RequestInit) => request<T>(url, options),
   post: <T>(url: string, data?: unknown) => request<T>(url, { method: 'POST', body: JSON.stringify(data || {}) }),
   put: <T>(url: string, data?: unknown) => request<T>(url, { method: 'PUT', body: JSON.stringify(data || {}) }),
   patch: <T>(url: string, data?: unknown) => request<T>(url, { method: 'PATCH', body: JSON.stringify(data || {}) }),

@@ -35,7 +35,10 @@ model User {
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   answers              UserAnswer[]
+  dailyActivityStats   UserDailyActivityStat[]
   answerQueueItems     PracticeAnswerQueueItem[]
+  practiceSessionsV2   PracticeSession[]
+  answerSubmissionJobs PracticeAnswerSubmissionQueue[]
   favorites            UserFavorite[]
   wrongs               WrongQuestion[]
   practiceSessions     UserPracticeSession[]
@@ -44,6 +47,7 @@ model User {
   adminOperationLogs   AdminOperationLog[]
 
   @@index([role, lastActiveAt])
+  @@index([role, isActive])
 }
 
 model Subject {
@@ -130,6 +134,7 @@ model UserAnswer {
   isCorrect       Boolean
   durationSeconds Int      @default(0)
   createdAt       DateTime @default(now())
+  activityAggregatedAt DateTime?
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   question        Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
@@ -138,7 +143,40 @@ model UserAnswer {
   @@index([userId, questionId, createdAt])
   @@index([createdAt])
   @@index([createdAt, userId])
+  @@index([createdAt, id])
+  @@index([activityAggregatedAt, createdAt, id])
+  @@index([createdAt, userId, isCorrect, durationSeconds])
   @@index([questionId])
+}
+
+model UserDailyActivityStat {
+  id              String   @id @default(cuid())
+  userId          String
+  activityDate    DateTime @db.Date
+  answerCount     Int      @default(0)
+  correctCount    Int      @default(0)
+  durationSeconds Int      @default(0)
+  firstAnsweredAt DateTime?
+  lastAnsweredAt  DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, activityDate])
+  @@index([activityDate])
+  @@index([activityDate, userId])
+  @@index([activityDate, answerCount])
+}
+
+model ActivityAggregationCursor {
+  id                  String    @id @db.VarChar(64)
+  lastAnswerCreatedAt DateTime?
+  lastAnswerId        String?   @db.VarChar(191)
+  processedCount      Int       @default(0)
+  lastRunAt           DateTime?
+  lastError           String?   @db.VarChar(500)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
 
 model PracticeAnswerQueueItem {
@@ -164,6 +202,64 @@ model PracticeAnswerQueueItem {
   @@index([lockedAt])
   @@index([userId, createdAt])
   @@index([questionId])
+}
+
+model SystemSetting {
+  id                                  String    @id @db.VarChar(32)
+  userLoginDisabled                   Boolean   @default(false)
+  userLoginDisabledUpdatedAt          DateTime?
+  userForceLogoutAt                   DateTime?
+  practiceAnswerWorkerPaused          Boolean   @default(false)
+  practiceAnswerWorkerPausedUpdatedAt DateTime?
+  createdAt                           DateTime  @default(now())
+  updatedAt                           DateTime  @updatedAt
+}
+
+model PracticeSession {
+  id              String   @id @default(cuid())
+  userId          String
+  scopeType       String   @default("practice") @db.VarChar(40)
+  scopeId         String?  @db.VarChar(191)
+  status          String   @default("in_progress") @db.VarChar(20)
+  answerCount     Int      @default(0)
+  correctCount    Int      @default(0)
+  durationSeconds Int      @default(0)
+  startedAt       DateTime @default(now())
+  submittedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submissionJobs  PracticeAnswerSubmissionQueue[]
+
+  @@index([userId, createdAt])
+  @@index([userId, status])
+}
+
+model PracticeAnswerSubmissionQueue {
+  id                 String    @id @default(cuid())
+  userId             String
+  practiceSessionId  String
+  clientSubmissionId String    @db.VarChar(120)
+  answersJson        Json
+  payloadVersion          Int       @default(1)
+  processedPayloadVersion Int       @default(0)
+  status             String    @default("pending") @db.VarChar(20)
+  retryCount         Int       @default(0)
+  lastError          String?   @db.VarChar(500)
+  nextRunAt          DateTime  @default(now())
+  lockedAt           DateTime?
+  processedAt        DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  practiceSession    PracticeSession @relation(fields: [practiceSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, practiceSessionId])
+  @@unique([userId, clientSubmissionId])
+  @@index([status, nextRunAt])
+  @@index([lockedAt])
+  @@index([userId, createdAt])
+  @@index([practiceSessionId])
 }
 
 model UserFavorite {
@@ -219,6 +315,7 @@ model UserPresenceSession {
   @@unique([userId, sessionId])
   @@index([lastSeenAt])
   @@index([endedAt, lastSeenAt])
+  @@index([endedAt, lastSeenAt, userId])
   @@index([userId, lastSeenAt])
 }
 

@@ -3,11 +3,15 @@ import path from 'node:path';
 import dotenv from 'dotenv';
 
 const bootstrapNodeEnv = process.env.NODE_ENV || 'development';
+const inheritedEnvKeys = new Set(Object.keys(process.env));
 
 function loadEnvFile(fileName: string, override = false) {
   const filePath = path.resolve(process.cwd(), fileName);
   if (fs.existsSync(filePath)) {
-    dotenv.config({ path: filePath, override });
+    const values = dotenv.parse(fs.readFileSync(filePath));
+    for (const [key, value] of Object.entries(values)) {
+      if (!inheritedEnvKeys.has(key) && (override || process.env[key] === undefined)) process.env[key] = value;
+    }
   }
 }
 
@@ -27,7 +31,9 @@ if (bootstrapNodeEnv === 'production') {
   loadEnvFile('.env.local', true);
 }
 
-const isProduction = process.env.NODE_ENV === 'production';
+process.env.NODE_ENV = bootstrapNodeEnv;
+process.env.TZ ||= 'Asia/Shanghai';
+const isProduction = bootstrapNodeEnv === 'production';
 
 function parseBool(value: string | undefined, fallback: boolean) {
   if (typeof value === 'undefined' || value === '') return fallback;
@@ -42,6 +48,10 @@ function parseIntRange(value: string | undefined, fallback: number, min: number,
 
 const ipHttpMode = parseBool(process.env.IP_HTTP_MODE, false);
 const cookieSecure = ipHttpMode ? false : parseBool(process.env.COOKIE_SECURE, isProduction);
+if (isProduction && !cookieSecure && !ipHttpMode) {
+  throw new Error('生产环境要求 COOKIE_SECURE=true；临时 HTTP 部署需显式设置 IP_HTTP_MODE=true');
+}
+if (isProduction && ipHttpMode) console.warn('临时 HTTP 模式已启用，请在正式使用前配置 HTTPS。');
 const cookieSameSiteRaw = String(process.env.COOKIE_SAME_SITE || 'lax').trim().toLowerCase();
 const cookieSameSite = (['lax', 'strict', 'none'].includes(cookieSameSiteRaw) ? cookieSameSiteRaw : 'lax') as 'lax' | 'strict' | 'none';
 
@@ -102,6 +112,16 @@ export const env = {
   practiceAnswerQueueConcurrency: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_CONCURRENCY, 1, 1, 10),
   practiceAnswerQueuePollMs: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_POLL_MS, 1000, 200, 30000),
   practiceAnswerQueueMaxAttempts: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_MAX_ATTEMPTS, 8, 1, 50),
+  practiceAnswerQueueStatsLogIntervalMs: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_STATS_LOG_INTERVAL_MS, 30000, 1000, 300000),
+  practiceAnswerQueueStrictInterval: parseBool(process.env.PRACTICE_ANSWER_QUEUE_STRICT_INTERVAL, true),
+  practiceAnswerQueueMaxDrainRounds: parseIntRange(process.env.PRACTICE_ANSWER_QUEUE_MAX_DRAIN_ROUNDS, 5, 1, 100),
+  activityAggregationEnabled: parseBool(process.env.ACTIVITY_AGGREGATION_ENABLED, true),
+  activityAggregationBatchSize: parseIntRange(process.env.ACTIVITY_AGGREGATION_BATCH_SIZE, 500, 10, 5000),
+  activityAggregationPollMs: parseIntRange(process.env.ACTIVITY_AGGREGATION_POLL_MS, 1000, 500, 60000),
+  activityAggregationMaxDrainRounds: parseIntRange(process.env.ACTIVITY_AGGREGATION_MAX_DRAIN_ROUNDS, 5, 1, 100),
+  activityAggregationStatsLogIntervalMs: parseIntRange(process.env.ACTIVITY_AGGREGATION_STATS_LOG_INTERVAL_MS, 60000, 5000, 300000),
+  systemSettingsCacheMs: parseIntRange(process.env.SYSTEM_SETTINGS_CACHE_MS, 5000, 0, 60000),
+  systemHealthCacheMs: parseIntRange(process.env.SYSTEM_HEALTH_CACHE_MS, 15000, 0, 60000),
   practiceReviewSummaryCacheSeconds: parseIntRange(process.env.PRACTICE_REVIEW_SUMMARY_CACHE_SECONDS, 10, 0, 60),
   presenceHeartbeatIntervalMs: parseIntRange(process.env.PRESENCE_HEARTBEAT_INTERVAL_MS, 120000, 30000, 600000),
   presenceOnlineWindowSeconds: parseIntRange(process.env.PRESENCE_ONLINE_WINDOW_SECONDS, 300, 60, 1800),

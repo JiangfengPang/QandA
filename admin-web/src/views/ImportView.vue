@@ -2,8 +2,8 @@
   <section>
     <el-card>
       <template #header><strong>JSON 题库导入</strong></template>
-      <el-alert title="填空题统一使用 fill + blanks；单空也写 blanks 里 1 个空，每个空只用 answer 数组。" type="info" show-icon class="mb" />
-      <el-input v-model="jsonText" type="textarea" :rows="18" placeholder='粘贴 JSON；填空题统一用 "blanks": [{ "label": "1", "answer": ["答案1", "答案2"] }]。' />
+      <el-alert title='选择题 answer 必须是数组；多选题要拆成 ["A","C","D"]，不要写 "ACD"。填空题统一使用 fill + blanks。' type="info" show-icon class="mb" />
+      <el-input v-model="jsonText" type="textarea" :rows="18" placeholder='粘贴 JSON；选择题使用 "answer": ["A"] 或 ["A","C","D"]；填空题使用 "blanks": [{ "label": "1", "answer": ["答案1", "答案2"] }]。' />
       <div class="toolbar bottom"><el-button @click="fillSample">填入示例</el-button><el-button type="primary" :loading="loading" @click="submit">开始导入</el-button></div>
     </el-card>
   </section>
@@ -19,6 +19,22 @@ function fillSample(){
     subject:{id:'demo-subject',name:'填空题示例',color:'#5b8def'},
     unit:{id:'demo-bank',name:'单空与多空'},
     questions:[
+      {
+        id:'demo-choice-001',
+        type:'multiple',
+        typeLabel:'多选题',
+        difficulty:'easy',
+        score:1,
+        question:'下列哪些选项属于标准多选题导入格式？',
+        options:[
+          {key:'A',text:'answer 使用数组'},
+          {key:'B',text:'多选答案拆成独立选项'},
+          {key:'C',text:'选项使用 key/text'},
+          {key:'D',text:'answer 写成 ACD'}
+        ],
+        answer:['A','B','C'],
+        explanation:'多选题必须写成 answer: ["A","B","C"]，不要写成 "ABC"。'
+      },
       {
         id:'demo-vocab-001',
         type:'fill',

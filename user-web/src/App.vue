@@ -72,9 +72,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { showToast } from 'vant';
 import AuthParticleBackground from './components/AuthParticleBackground.vue';
 import QxIcon from './components/QxIcon.vue';
 import { useAuthStore } from './stores/auth';
+import { requestPendingAnswerSessionFlush } from './utils/pendingAnswerSync';
 import { startPresenceHeartbeat, stopPresenceHeartbeat } from './utils/presence';
 import { fetchPracticeReviewSummary, type PracticeReviewSummary } from './utils/reviewSummary';
 
@@ -129,9 +131,24 @@ function resetAuthPointer() {
   setAuthPointer();
 }
 
+function pendingAnswerUserKey() {
+  return auth.user?.id || auth.user?.email || auth.user?.username || '';
+}
+
+function requestAppPendingAnswerFlush() {
+  if (isAuthLayout.value) return;
+  const userKey = pendingAnswerUserKey();
+  if (!userKey) return;
+  void requestPendingAnswerSessionFlush(userKey, { dispatchStatsUpdated: true });
+}
+
+function handlePendingAnswerOnline() {
+  requestAppPendingAnswerFlush();
+}
+
 async function refreshReviewSummary() {
   if (isAuthLayout.value) return;
-  const userKey = auth.user?.id || auth.user?.email || auth.user?.username || '';
+  const userKey = pendingAnswerUserKey();
   if (!userKey) return;
   try {
     reviewSummary.value = await fetchPracticeReviewSummary(userKey);
@@ -144,22 +161,34 @@ watch(() => route.fullPath, refreshReviewSummary);
 watch(
   () => Boolean(auth.user) && !isAuthLayout.value,
   (enabled) => {
-    if (enabled) startPresenceHeartbeat();
-    else void stopPresenceHeartbeat({ notify: true });
+    if (enabled) {
+      startPresenceHeartbeat();
+      requestAppPendingAnswerFlush();
+    } else {
+      void stopPresenceHeartbeat({ notify: true });
+    }
   },
   { immediate: true }
 );
 watch(() => auth.user?.avatarUrl, () => {
   sidebarAvatarLoadFailed.value = false;
 });
+function handleAnswerStorageUnavailable() {
+  showToast({ message: '本机存储不可用，答案仅暂存在当前页面。请保持页面打开并尽快提交。', duration: 6000 });
+}
+
 onMounted(() => {
+  window.addEventListener('qanda:answer-storage-unavailable', handleAnswerStorageUnavailable);
   setAuthPointer();
   refreshReviewSummary();
   window.addEventListener('qanda:stats-updated', refreshReviewSummary);
+  window.addEventListener('online', handlePendingAnswerOnline);
 });
 
 onBeforeUnmount(() => {
+  window.removeEventListener('qanda:answer-storage-unavailable', handleAnswerStorageUnavailable);
   window.removeEventListener('qanda:stats-updated', refreshReviewSummary);
+  window.removeEventListener('online', handlePendingAnswerOnline);
   void stopPresenceHeartbeat({ notify: true });
 });
 </script>

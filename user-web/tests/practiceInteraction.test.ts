@@ -6,16 +6,16 @@ import {
   shouldSubmitChoiceImmediately
 } from '../src/utils/practiceInteraction';
 
-test('reading choices submit immediately instead of requiring manual confirmation', () => {
+test('reading choices only update local state before explicit submit', () => {
   assert.equal(needsManualAnswerConfirm('reading', false), false);
-  assert.equal(shouldSubmitChoiceImmediately('reading'), true);
+  assert.equal(shouldSubmitChoiceImmediately('reading'), false);
 });
 
-test('only multiple choice options wait for a confirm action after selection', () => {
+test('all objective choices wait for explicit session submission after selection', () => {
   assert.equal(needsManualAnswerConfirm('multiple', false), true);
   assert.equal(shouldSubmitChoiceImmediately('multiple'), false);
-  assert.equal(shouldSubmitChoiceImmediately('single'), true);
-  assert.equal(shouldSubmitChoiceImmediately('judge'), true);
+  assert.equal(shouldSubmitChoiceImmediately('single'), false);
+  assert.equal(shouldSubmitChoiceImmediately('judge'), false);
 });
 
 test('correct-answer auto advance follows the preference and queue boundary', () => {

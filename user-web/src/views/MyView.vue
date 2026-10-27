@@ -6,9 +6,9 @@
           <img v-if="mineAvatarSrc" :src="mineAvatarSrc" alt="用户头像" @error="mineAvatarLoadFailed = true" />
           <span v-else>{{ avatarText }}</span>
         </button>
-        <div>
+        <div class="qmine-profile-copy">
           <h2>{{ auth.user?.nickname || '用户' }}</h2>
-          <p>注册时间：{{ createdDate }}</p>
+          <p class="qmine-created-date">注册时间：{{ createdDate }}</p>
           <span class="qmine-email-pill" :class="{ bound: Boolean(auth.user?.email) }">
             <QxIcon :name="auth.user?.email ? 'mail' : 'warning'" :tone="auth.user?.email ? 'green' : 'orange'" />{{ auth.user?.email ? maskedEmail : '邮箱未绑定' }}
           </span>

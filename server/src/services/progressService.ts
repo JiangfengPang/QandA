@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db/prisma.js';
 
 type AnswerSummaryInput = {
@@ -95,9 +96,11 @@ export function summarizeEffectiveAnswers(
 
   for (const questionIds of groups.values()) {
     const latestAnswers = questionIds.map((id) => latest.get(id)).filter(Boolean) as AnswerSummaryInput[];
-    if (latestAnswers.length !== questionIds.length) continue;
+    if (!latestAnswers.length) continue;
     answerCount += 1;
-    if (latestAnswers.every((answer) => answer.isCorrect)) correctCount += 1;
+    if (latestAnswers.length === questionIds.length && latestAnswers.every((answer) => answer.isCorrect)) {
+      correctCount += 1;
+    }
   }
 
   const wrongGroupKeys = new Set<string>();
@@ -171,22 +174,18 @@ export async function getBanksProgress(userId: string, bankIds: string[]) {
   if (!uniqueBankIds.length) return new Map<string, BankProgress>();
 
   const [answerRecords, wrongRecords, questionRows] = await Promise.all([
-    prisma.userAnswer.findMany({
-      where: {
-        userId,
-        question: {
-          bankId: { in: uniqueBankIds },
-          isActive: true,
-          bank: { isActive: true, subject: { isActive: true } }
-        }
-      },
-      select: {
-        questionId: true,
-        isCorrect: true,
-        createdAt: true,
-        question: { select: { bankId: true } }
-      }
-    }),
+    prisma.$queryRaw<BankAnswerSummaryInput[]>(Prisma.sql`
+      SELECT questionId, isCorrect, createdAt, bankId FROM (
+        SELECT a.questionId, a.isCorrect, a.createdAt, q.bankId,
+          ROW_NUMBER() OVER (PARTITION BY a.questionId ORDER BY a.createdAt DESC, a.id DESC) AS answerRank
+        FROM UserAnswer a
+        JOIN Question q ON q.id = a.questionId
+        JOIN Bank b ON b.id = q.bankId
+        JOIN Subject s ON s.id = b.subjectId
+        WHERE a.userId = ${userId} AND q.bankId IN (${Prisma.join(uniqueBankIds)})
+          AND q.isActive = true AND b.isActive = true AND s.isActive = true
+      ) latest WHERE answerRank = 1
+    `),
     prisma.wrongQuestion.findMany({
       where: {
         userId,
@@ -210,7 +209,7 @@ export async function getBanksProgress(userId: string, bankIds: string[]) {
 
   return summarizeBankProgress(
     uniqueBankIds,
-    answerRecords.map((record) => ({ ...record, bankId: record.question.bankId })),
+    answerRecords.map((record) => ({ ...record, isCorrect: Boolean(record.isCorrect) })),
     wrongRecords.map((record) => ({ bankId: record.question.bankId, questionId: record.questionId })),
     questionRows
   );

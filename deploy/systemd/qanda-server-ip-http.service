@@ -6,6 +6,7 @@ After=network.target
 Type=simple
 WorkingDirectory=/opt/qanda
 Environment=NODE_ENV=production
+Environment=TZ=Asia/Shanghai
 ExecStart=/usr/bin/npm run start --workspace server
 Restart=on-failure
 RestartSec=5

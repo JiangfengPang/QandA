@@ -9,23 +9,40 @@ function normalizeToken(value: unknown) {
   return text.toLocaleLowerCase('en-US');
 }
 
-function normalizeAnswerEntries(value: unknown): string[] {
+function expandCompactChoiceToken(value: unknown): string[] {
+  const text = String(value ?? '').trim();
+  const compact = text.replace(/[\s,，、;；/|]+/g, '');
+  if (compact.length < 2 || !/^[A-H]+$/.test(compact)) return [String(value ?? '')];
+  return compact.split('');
+}
+
+export function normalizeChoiceAnswerEntries(value: unknown): string[] {
+  const raw = Array.isArray(value) ? value : (value === null || value === undefined ? [] : [value]);
+  return raw.flatMap(expandCompactChoiceToken).map(normalizeToken).filter(Boolean);
+}
+
+function normalizeTextAnswerEntries(value: unknown): string[] {
   const raw = Array.isArray(value) ? value : (value === null || value === undefined ? [] : [value]);
   return raw.map(normalizeToken).filter(Boolean);
 }
 
 export function normalizeAnswer(value: unknown): string[] {
-  const unique = new Set(normalizeAnswerEntries(value));
+  const unique = new Set(normalizeChoiceAnswerEntries(value));
+  return Array.from(unique).sort((a, b) => a.localeCompare(b, 'zh-CN'));
+}
+
+export function normalizeTextAnswer(value: unknown): string[] {
+  const unique = new Set(normalizeTextAnswerEntries(value));
   return Array.from(unique).sort((a, b) => a.localeCompare(b, 'zh-CN'));
 }
 
 export function normalizeFillAnswerGroups(answer: unknown): string[][] {
   if (Array.isArray(answer) && answer.some((item) => Array.isArray(item))) {
     return answer
-      .map((item) => normalizeAnswer(item))
+      .map((item) => normalizeTextAnswer(item))
       .filter((group) => group.length > 0);
   }
-  const singleGroup = normalizeAnswer(answer);
+  const singleGroup = normalizeTextAnswer(answer);
   return singleGroup.length ? [singleGroup] : [];
 }
 
@@ -37,7 +54,7 @@ export function isAnswerCorrect(selected: unknown, answer: unknown) {
 }
 
 export function isFillAnswerCorrect(selected: unknown, answer: unknown) {
-  const selectedValues = normalizeAnswerEntries(selected);
+  const selectedValues = normalizeTextAnswerEntries(selected);
   const answerGroups = normalizeFillAnswerGroups(answer);
   if (!answerGroups.length) return false;
   if (answerGroups.length === 1) {

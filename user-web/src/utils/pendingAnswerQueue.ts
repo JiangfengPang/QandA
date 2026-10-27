@@ -3,6 +3,11 @@ export type PendingAnswerStatus = 'pending' | 'syncing' | 'failed' | 'auth_faile
 export type PendingAnswerRecord = {
   clientAnswerId: string;
   questionId: string;
+  practiceSessionId?: string;
+  sessionKey?: string;
+  clientSubmissionId?: string;
+  questionIndex?: number;
+  scope?: string;
   selectedAnswer: string[];
   isCorrect: boolean;
   answer?: string[];
@@ -30,10 +35,16 @@ const STORAGE_PREFIX = 'qanda:pending-answers';
 const QUICK_RETRY_DELAY_MS = 1000;
 const RETRY_DELAYS_MS = [0, QUICK_RETRY_DELAY_MS, QUICK_RETRY_DELAY_MS, 5000, 15000, 60000];
 const STALE_SYNCING_MS = 30000;
+const SAME_SESSION_QUESTION_COLLAPSE_MS = 10000;
 const memoryQueues = new Map<string, string>();
+const memoryOnlyKeys = new Set<string>();
 
 function storageAvailable() {
-  return typeof localStorage !== 'undefined' ? localStorage : null;
+  try {
+    return typeof localStorage !== 'undefined' ? localStorage : null;
+  } catch {
+    return null;
+  }
 }
 
 export function pendingAnswerQueueKey(userKey: string) {
@@ -55,6 +66,11 @@ function normalizeRecord(value: unknown): PendingAnswerRecord | null {
   return {
     clientAnswerId,
     questionId,
+    practiceSessionId: raw.practiceSessionId ? String(raw.practiceSessionId).trim().slice(0, 191) : undefined,
+    sessionKey: raw.sessionKey ? String(raw.sessionKey).trim().slice(0, 191) : undefined,
+    clientSubmissionId: raw.clientSubmissionId ? String(raw.clientSubmissionId).trim().slice(0, 120) : undefined,
+    questionIndex: raw.questionIndex === undefined ? undefined : Math.max(0, Math.floor(Number(raw.questionIndex) || 0)),
+    scope: raw.scope ? String(raw.scope).trim().slice(0, 120) : undefined,
     selectedAnswer: Array.isArray(raw.selectedAnswer) ? raw.selectedAnswer.map((item) => String(item)) : [],
     isCorrect: Boolean(raw.isCorrect),
     answer: Array.isArray(raw.answer) ? raw.answer.map((item) => String(item)) : undefined,
@@ -73,13 +89,14 @@ export function readPendingAnswerQueue(userKey: string, storage: QueueStorage | 
   if (!userKey) return [];
   const key = pendingAnswerQueueKey(userKey);
   let raw = '';
-  if (!storage) {
+  if (!storage || memoryOnlyKeys.has(key)) {
     raw = memoryQueues.get(key) || '';
-  }
-  try {
-    raw = storage ? storage.getItem(key) || '' : raw;
-  } catch {
-    raw = memoryQueues.get(key) || '';
+  } else {
+    try {
+      raw = storage.getItem(key) || '';
+    } catch {
+      raw = memoryQueues.get(key) || '';
+    }
   }
   if (!raw) return [];
 
@@ -97,38 +114,128 @@ export function writePendingAnswerQueue(userKey: string, records: PendingAnswerR
   const key = pendingAnswerQueueKey(userKey);
   const normalized = records.map(normalizeRecord).filter((record): record is PendingAnswerRecord => Boolean(record));
   const serialized = JSON.stringify(normalized);
-  if (!normalized.length) memoryQueues.delete(key);
-  else memoryQueues.set(key, serialized);
-  if (!storage) return;
+  memoryQueues.set(key, serialized);
+  const markMemoryOnly = () => {
+    const firstFailure = !memoryOnlyKeys.has(key);
+    memoryOnlyKeys.add(key);
+    if (firstFailure && normalized.length && typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('qanda:answer-storage-unavailable'));
+    }
+  };
+  if (!storage) {
+    markMemoryOnly();
+    return;
+  }
   try {
     if (!normalized.length) {
       storage.removeItem(key);
-      return;
+    } else {
+      storage.setItem(key, serialized);
     }
-    storage.setItem(key, serialized);
+    memoryOnlyKeys.delete(key);
   } catch {
-    // localStorage can be unavailable or full in private modes; answering must keep working.
+    // Even a successful read can return stale data after a quota/remove failure.
+    markMemoryOnly();
   }
+}
+
+export function clearPendingAnswerQueue(userKey: string, storage: QueueStorage | null = storageAvailable()) {
+  writePendingAnswerQueue(userKey, [], storage);
 }
 
 export function enqueuePendingAnswer(userKey: string, record: PendingAnswerRecord, storage: QueueStorage | null = storageAvailable()): PendingAnswerRecord | null {
   const records = readPendingAnswerQueue(userKey, storage);
-  const existingIndex = records.findIndex((item) => item.clientAnswerId === record.clientAnswerId);
-  if (existingIndex >= 0) {
-    return records[existingIndex];
-  }
-
   const normalized = normalizeRecord(record);
   if (!normalized) return null;
-  records.push(normalized);
-  writePendingAnswerQueue(userKey, records, storage);
+
+  const answeredAtMs = Date.parse(normalized.answeredAt || '');
+  const samePracticeQuestionKey = normalized.practiceSessionId
+    ? `${normalized.practiceSessionId}:${normalized.questionId}`
+    : '';
+  const sameSessionQuestionKey = normalized.sessionKey
+    ? `${normalized.sessionKey}:${normalized.questionId}`
+    : '';
+  const next = records.filter((item) => {
+    if (item.clientAnswerId === normalized.clientAnswerId) return false;
+    if (samePracticeQuestionKey && `${item.practiceSessionId || ''}:${item.questionId}` === samePracticeQuestionKey) return false;
+    if (!sameSessionQuestionKey || `${item.sessionKey || ''}:${item.questionId}` !== sameSessionQuestionKey) return true;
+    const itemAnsweredAtMs = Date.parse(item.answeredAt || '');
+    if (!Number.isFinite(answeredAtMs) || !Number.isFinite(itemAnsweredAtMs)) return true;
+    return Math.abs(answeredAtMs - itemAnsweredAtMs) > SAME_SESSION_QUESTION_COLLAPSE_MS;
+  });
+  next.push(normalized);
+  writePendingAnswerQueue(userKey, next, storage);
   return normalized;
+}
+
+export function dedupePendingAnswerRecords(records: PendingAnswerRecord[]) {
+  const byClientAnswerId = new Map<string, PendingAnswerRecord>();
+  for (const record of records) {
+    const normalized = normalizeRecord(record);
+    if (!normalized) continue;
+    byClientAnswerId.set(normalized.clientAnswerId, normalized);
+  }
+
+  const bySessionQuestion = new Map<string, PendingAnswerRecord>();
+  const deduped: PendingAnswerRecord[] = [];
+  for (const record of byClientAnswerId.values()) {
+    const key = record.practiceSessionId
+      ? `${record.practiceSessionId}:${record.questionId}`
+      : record.sessionKey ? `${record.sessionKey}:${record.questionId}` : '';
+    if (!key) {
+      deduped.push(record);
+      continue;
+    }
+
+    const existing = bySessionQuestion.get(key);
+    if (!existing) {
+      bySessionQuestion.set(key, record);
+      continue;
+    }
+
+    const existingTime = Date.parse(existing.answeredAt || '');
+    const recordTime = Date.parse(record.answeredAt || '');
+    const shouldReplace = !Number.isFinite(existingTime)
+      || (Number.isFinite(recordTime) && recordTime >= existingTime);
+    if (shouldReplace) bySessionQuestion.set(key, record);
+  }
+
+  deduped.push(...bySessionQuestion.values());
+  return deduped.sort((left, right) => {
+    const leftTime = Date.parse(left.answeredAt || '');
+    const rightTime = Date.parse(right.answeredAt || '');
+    const safeLeftTime = Number.isFinite(leftTime) ? leftTime : 0;
+    const safeRightTime = Number.isFinite(rightTime) ? rightTime : 0;
+    return safeLeftTime - safeRightTime;
+  });
 }
 
 export function removePendingAnswer(userKey: string, clientAnswerId: string, storage: QueueStorage | null = storageAvailable()) {
   const records = readPendingAnswerQueue(userKey, storage);
   const next = records.filter((record) => record.clientAnswerId !== clientAnswerId);
   writePendingAnswerQueue(userKey, next, storage);
+}
+
+export function removePendingAnswersByClientAnswerIds(
+  userKey: string,
+  clientAnswerIds: Iterable<string>,
+  storage: QueueStorage | null = storageAvailable()
+) {
+  const ids = new Set([...clientAnswerIds].map((item) => String(item || '').trim()).filter(Boolean));
+  if (!ids.size) return;
+  const records = readPendingAnswerQueue(userKey, storage);
+  const next = records.filter((record) => !ids.has(record.clientAnswerId));
+  writePendingAnswerQueue(userKey, next, storage);
+}
+
+export function selectPendingAnswersByPracticeSession(
+  userKey: string,
+  practiceSessionId: string,
+  storage: QueueStorage | null = storageAvailable()
+) {
+  const sessionId = String(practiceSessionId || '').trim();
+  if (!sessionId) return [];
+  return readPendingAnswerQueue(userKey, storage).filter((record) => record.practiceSessionId === sessionId);
 }
 
 export function updatePendingAnswer(

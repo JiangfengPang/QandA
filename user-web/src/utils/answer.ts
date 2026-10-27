@@ -9,9 +9,16 @@ function normalizeToken(value: unknown) {
   return text.toLocaleLowerCase('en-US');
 }
 
+function expandCompactChoiceToken(value: unknown): string[] {
+  const text = String(value ?? '').trim();
+  const compact = text.replace(/[\s,，、;；/|]+/g, '');
+  if (compact.length < 2 || !/^[A-H]+$/.test(compact)) return [String(value ?? '')];
+  return compact.split('');
+}
+
 function normalizeAnswerEntries(value: unknown): string[] {
   const raw = Array.isArray(value) ? value : (value === null || value === undefined ? [] : [value]);
-  return raw.map(normalizeToken).filter(Boolean);
+  return raw.flatMap(expandCompactChoiceToken).map(normalizeToken).filter(Boolean);
 }
 
 export function normalizeAnswer(value: unknown): string[] {

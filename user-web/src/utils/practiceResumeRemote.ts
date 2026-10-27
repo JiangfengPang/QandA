@@ -29,7 +29,7 @@ export type RemotePracticeResumeSaveControllerOptions = {
   clearTimeoutFn?: typeof clearTimeout;
 };
 
-export const REMOTE_PRACTICE_RESUME_SAVE_DEBOUNCE_MS = 7000;
+export const REMOTE_PRACTICE_RESUME_SAVE_DEBOUNCE_MS = 30000;
 const REMOTE_PRACTICE_RESUME_RETRY_BASE_MS = 5000;
 const REMOTE_PRACTICE_RESUME_RETRY_MAX_MS = 60000;
 

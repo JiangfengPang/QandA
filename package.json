@@ -19,7 +19,7 @@
     "db:seed": "npm run seed --workspace server",
     "db:import": "npm run import:legacy --workspace server",
     "setup": "npm run db:generate && npm run db:migrate:deploy && npm run db:seed && npm run db:import",
-    "test": "npm run test --workspace server && npm run test --workspace user-web",
+    "test": "npm run test --workspace server && npm run test --workspace user-web && npm run test --workspace admin-web",
     "build": "npm run build --workspace server && npm run build --workspace user-web && npm run build --workspace admin-web",
     "check": "npm run test && npm run build",
     "clean": "node scripts/clean.mjs",
@@ -51,7 +51,8 @@
     "prod:migrate": "npm run db:migrate:deploy",
     "prod:prune": "npm prune --omit=dev --workspaces --include-workspace-root",
     "db:normalize:judge": "npm run normalize:judge --workspace server",
-    "db:normalize:judge:dev": "npm run normalize:judge:dev --workspace server"
+    "db:normalize:judge:dev": "npm run normalize:judge:dev --workspace server",
+    "practice-answer-queue:cleanup": "npm run practice-answer-queue:cleanup --workspace server --"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"

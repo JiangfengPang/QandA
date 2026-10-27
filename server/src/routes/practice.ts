@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
+import { sessionSnapshotSchema } from '../utils/practiceSessionSchema.js';
 import { authRequired } from '../middleware/auth.js';
 import {
   clearFavoriteQuestions,
@@ -20,14 +21,23 @@ import {
 } from '../services/practiceSessionService.js';
 import { ok } from '../utils/http.js';
 import { env } from '../config/env.js';
-import { enqueuePracticeAnswerSubmissions } from '../services/practiceAnswerQueueService.js';
+import {
+  waitForPracticeAnswersForUser,
+  enqueuePracticeAnswerSessionSubmission,
+  enqueuePracticeAnswerSubmissions
+} from '../services/practiceAnswerQueueService.js';
 
 const router = Router();
 router.use(authRequired);
 
+const selectedAnswerSchema = z.union([
+  z.string().max(5000),
+  z.array(z.string().max(5000)).max(20)
+]).default([]);
+
 const answerSchema = z.object({
   questionId: z.string().min(1),
-  selected: z.array(z.string().max(5000)).max(20).default([]),
+  selected: selectedAnswerSchema,
   clientAnswerId: z.string().trim().min(1).max(120).optional(),
   durationSeconds: z.number().int().min(0).max(30 * 60).optional().default(0),
   isCorrect: z.boolean().optional(),
@@ -41,41 +51,14 @@ const queuedAnswerSchema = answerSchema.extend({
   explanation: z.string().max(20_000).default('')
 });
 const answerBatchSchema = z.object({
-  answers: z.array(queuedAnswerSchema).min(1).max(50)
+  practiceSessionId: z.string().trim().min(1).max(191).optional(),
+  clientSubmissionId: z.string().trim().min(1).max(120).optional(),
+  scopeType: z.string().trim().min(1).max(40).optional(),
+  scopeId: z.string().trim().max(191).optional(),
+  answers: z.array(queuedAnswerSchema).min(1).max(500)
 });
 
 const sessionKeySchema = z.string().trim().min(1).max(191);
-const sessionRecordSchema = z.object({
-  correct: z.boolean(),
-  userAnswer: z.array(z.string().max(5000)).max(20).default([]),
-  answer: z.array(z.string().max(5000)).max(20).default([]),
-  explanation: z.string().max(20_000).default(''),
-  clientAnswerId: z.string().trim().min(1).max(120).optional(),
-  syncStatus: z.enum(['pending', 'synced', 'failed']).optional()
-}).strict();
-const sessionSnapshotSchema = z.object({
-  version: z.literal(1),
-  currentIndex: z.number().int().min(0).max(100_000),
-  questionId: z.string().trim().min(1).max(191),
-  questionIds: z.array(z.string().trim().min(1).max(191)).min(1).max(5000),
-  sessionRecords: z.record(z.string().trim().min(1).max(191), sessionRecordSchema).default({}),
-  updatedAt: z.string().trim().max(80).optional().default('')
-}).strict().superRefine((value, context) => {
-  if (value.currentIndex >= value.questionIds.length) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ['currentIndex'],
-      message: 'currentIndex 超出题目范围'
-    });
-  }
-
-  if (JSON.stringify(value).length > 1_000_000) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: '练习会话数据过大'
-    });
-  }
-});
 const saveSessionSchema = z.object({
   key: sessionKeySchema,
   snapshot: sessionSnapshotSchema
@@ -166,6 +149,47 @@ router.post('/answers', async (req, res, next) => {
 router.post('/answers/batch', async (req, res, next) => {
   try {
     const input = answerBatchSchema.parse(req.body);
+    if (input.practiceSessionId) {
+      const clientSubmissionId = input.clientSubmissionId || `${input.practiceSessionId}:${Date.now()}`;
+      if (!env.practiceAnswerQueueEnabled) {
+        const results: Array<{ clientAnswerId: string; correct: boolean; answer: unknown; explanation: string | null; recorded?: boolean }> = [];
+        for (const item of input.answers) {
+          const result = await submitPracticeAnswer(req.auth!.userId, item.questionId, item.selected, item.durationSeconds, item.clientAnswerId);
+          results.push({ clientAnswerId: item.clientAnswerId, ...result });
+        }
+        return ok(res, {
+          practiceSessionId: input.practiceSessionId,
+          clientSubmissionId,
+          accepted: results.length,
+          queued: 0,
+          submissionStatus: 'processed',
+          results
+        });
+      }
+
+      const enqueueResult = await enqueuePracticeAnswerSessionSubmission(req.auth!.userId, {
+        practiceSessionId: input.practiceSessionId,
+        clientSubmissionId,
+        scopeType: input.scopeType,
+        scopeId: input.scopeId,
+        answers: input.answers.map((item) => ({
+          questionId: item.questionId,
+          selected: item.selected,
+          clientAnswerId: item.clientAnswerId,
+          durationSeconds: item.durationSeconds
+        }))
+      });
+      const statusByClientAnswerId = new Map(enqueueResult.results.map((item) => [item.clientAnswerId, item.status]));
+      return ok(res, {
+        practiceSessionId: input.practiceSessionId,
+        clientSubmissionId,
+        accepted: enqueueResult.accepted,
+        queued: enqueueResult.queued,
+        submissionStatus: enqueueResult.submissionStatus,
+        results: input.answers.map((item) => queuedAnswerResultWithStatus(item, statusByClientAnswerId.get(item.clientAnswerId) || 'queued'))
+      });
+    }
+
     if (!env.practiceAnswerQueueEnabled) {
       const results: Array<{ clientAnswerId: string; correct: boolean; answer: unknown; explanation: string | null; recorded?: boolean }> = [];
       for (const item of input.answers) {
@@ -194,7 +218,8 @@ router.post('/answers/batch', async (req, res, next) => {
 
 router.post('/favorites/:questionId/toggle', async (req, res, next) => {
   try {
-    return ok(res, await toggleFavoriteQuestion(req.auth!.userId, req.params.questionId));
+    const desiredFavorite = typeof req.body?.favorite === 'boolean' ? req.body.favorite : undefined;
+    return ok(res, await toggleFavoriteQuestion(req.auth!.userId, req.params.questionId, desiredFavorite));
   } catch (error) {
     return next(error);
   }
@@ -258,6 +283,7 @@ router.delete('/records', async (req, res, next) => {
 
 router.get('/stats', async (req, res, next) => {
   try {
+    await waitForPracticeAnswersForUser(req.auth!.userId);
     return ok(res, await getPracticeStats(req.auth!.userId, getSubjectId(req.query.subjectId)));
   } catch (error) {
     return next(error);

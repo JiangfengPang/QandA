@@ -1,5 +1,7 @@
 import { prisma } from '../db/prisma.js';
-import { normalizeJudgeAnswerArray, normalizeJudgeAnswerKey, judgeOptionTextByKey } from '../utils/judge.js';
+import { normalizeJudgeAnswerKey, judgeOptionTextByKey } from '../utils/judge.js';
+import { normalizeAnswer } from '../utils/answer.js';
+import { isObjectiveQuestionType, normalizeAnswerForObjectiveType, normalizeSelectedForPracticeStorage } from '../utils/answerNormalization.js';
 
 function normalizeAnswerArray(value: unknown): string[] {
   if (Array.isArray(value)) return value.map(String).map((item) => item.trim()).filter(Boolean);
@@ -78,9 +80,12 @@ function fillAnswerDisplayArray(question: any) {
 }
 
 function questionAnswerArray(question: any) {
-  const raw = Array.isArray(question.answerJson) ? question.answerJson : [];
   if (question.type === 'fill') return fillAnswerDisplayArray(question);
-  return question.type === 'judge' ? normalizeJudgeAnswerArray(raw) : raw;
+  const raw = Array.isArray(question.answerJson)
+    ? question.answerJson
+    : (question.answerJson === null || typeof question.answerJson === 'undefined' ? [] : [question.answerJson]);
+  if (question.type === 'python') return raw.map((item: unknown) => String(item));
+  return isObjectiveQuestionType(question.type) ? normalizeAnswerForObjectiveType(question.type, question.answerJson) : normalizeAnswer(raw);
 }
 
 function optionLabelDisplay(option: any, questionType?: string) {
@@ -101,7 +106,9 @@ function optionMatchesAnswer(option: any, answer: string, questionType?: string)
 }
 
 function answerTextByOptions(selected: unknown, options: any[], questionType?: string) {
-  const values = questionType === 'judge' ? normalizeJudgeAnswerArray(selected) : normalizeAnswerArray(selected);
+  const values = questionType && isObjectiveQuestionType(questionType)
+    ? normalizeSelectedForPracticeStorage(questionType, selected)
+    : normalizeAnswerArray(selected);
   if (!values.length) return '';
   return values
     .map((answer) => {
@@ -165,7 +172,7 @@ export function formatQuestion(question: any, userId?: string) {
     })),
     favorite: userId ? Boolean(question.favorites?.length) : false,
     wrongCount: userId && question.wrongs?.[0] ? question.wrongs[0].wrongCount : 0,
-    userAnswer: latestAnswer ? (question.type === 'judge' ? normalizeJudgeAnswerArray(latestAnswer.selectedJson) : normalizeAnswerArray(latestAnswer.selectedJson)) : undefined,
+    userAnswer: latestAnswer ? normalizeSelectedForPracticeStorage(question.type, latestAnswer.selectedJson) : undefined,
     userAnswerText: latestAnswer ? answerTextByOptions(latestAnswer.selectedJson, optionRows, question.type) : undefined,
     lastAnsweredAt: latestAnswer?.createdAt || undefined
   };

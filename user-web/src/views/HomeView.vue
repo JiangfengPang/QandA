@@ -135,7 +135,7 @@
             <RouterLink class="qx-study-stat" to="/stats">
               <span class="green" aria-hidden="true"><QxIcon name="check-circle" tone="light" /></span>
               <em>已完成</em>
-              <strong>{{ stats.answerCount || 0 }}</strong>
+              <strong>{{ displayAnswerCount }}</strong>
             </RouterLink>
             <RouterLink class="qx-study-stat" to="/wrongs">
               <span class="red" aria-hidden="true"><QxIcon name="x-circle" tone="light" /></span>
@@ -201,7 +201,7 @@ import QxIcon from '../components/QxIcon.vue';
 import type { AnnouncementItem } from '../data/announcementMock';
 import { useAuthStore } from '../stores/auth';
 import type { StatsPayload } from '../types/stats';
-import { defaultStatsPayload } from '../types/stats';
+import { answeredCountForDisplay, defaultStatsPayload } from '../types/stats';
 import { copyTextToClipboard } from '../utils/clipboard';
 import { decodeMarkdownCode, renderMarkdown } from '../utils/markdown';
 import { formatDuration } from '../utils/duration';
@@ -431,6 +431,7 @@ const timeThemeStyle = computed(() => ({
   '--home-time-duration-dark': currentTimeVisual.value.metricDurationDark
 }));
 const totalQuestions = computed(() => Number(stats.value.totalQuestionCount || 0));
+const displayAnswerCount = computed(() => answeredCountForDisplay(stats.value));
 const studySecondsLabel = computed(() => formatDuration(Number(stats.value.totalDurationSeconds || 0)));
 const latestAnnouncement = computed(() => announcements.value[0] || null);
 const unreadAnnouncements = computed(() => announcements.value.filter((item) => !item.read));

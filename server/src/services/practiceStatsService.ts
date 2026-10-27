@@ -5,10 +5,7 @@ import { addDays, dayStart } from '../utils/date.js';
 import { buildDateBuckets, dateBucketCaseSql } from '../utils/sqlDateBuckets.js';
 import { effectiveQuestionCount, effectiveQuestionCountsByBank, summarizeEffectiveAnswers } from './progressService.js';
 
-type ScopedQuestionFilter = {
-  isActive?: boolean;
-  bank?: { subjectId?: string; isActive?: boolean; subject?: { isActive?: boolean } };
-};
+type ScopedQuestionFilter = Prisma.QuestionWhereInput;
 
 type DbNumeric = bigint | number | string | null | undefined;
 
@@ -36,6 +33,10 @@ type SubjectFavoriteRow = {
   favoriteCount: DbNumeric;
 };
 
+type PendingSessionQueuePayloadRow = {
+  answersJson: unknown;
+};
+
 export type PracticeReviewSummaryScope = {
   subjectId?: string;
   bankId?: string;
@@ -51,6 +52,12 @@ type PracticeReviewSummary = {
 };
 
 const reviewSummaryCache = new Map<string, { expiresAt: number; value?: PracticeReviewSummary; promise?: Promise<PracticeReviewSummary> }>();
+
+export function invalidatePracticeReviewSummaryCache(userId: string) {
+  for (const key of reviewSummaryCache.keys()) {
+    if (key.startsWith(`${userId}:`)) reviewSummaryCache.delete(key);
+  }
+}
 
 function buildQuestionFilter(subjectId?: string): ScopedQuestionFilter {
   return subjectId
@@ -109,6 +116,67 @@ function buildDailyTrend(rows: DailyTrendAggregateRow[], trendStart: Date, days:
   });
 }
 
+function pendingSessionAnswerQuestionIds(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      const raw = item && typeof item === 'object' ? item as { questionId?: unknown } : {};
+      return String(raw.questionId || '').trim();
+    })
+    .filter(Boolean);
+}
+
+export function countPendingSessionAnswersFromQueuePayloads(
+  payloads: unknown[],
+  allowedQuestionIds?: Set<string>
+) {
+  const questionIds = new Set<string>();
+  for (const payload of payloads) {
+    for (const questionId of pendingSessionAnswerQuestionIds(payload)) {
+      if (!allowedQuestionIds || allowedQuestionIds.has(questionId)) {
+        questionIds.add(questionId);
+      }
+    }
+  }
+  return questionIds.size;
+}
+
+async function countPendingPracticeAnswers(userId: string, questionFilter: ScopedQuestionFilter = buildQuestionFilter()) {
+  const queueStatuses = ['pending', 'processing', 'retrying'];
+  const [legacyCount, sessionRows] = await Promise.all([
+    prisma.practiceAnswerQueueItem.count({
+      where: {
+        userId,
+        status: { in: queueStatuses },
+        question: questionFilter
+      }
+    }),
+    prisma.practiceAnswerSubmissionQueue.findMany({
+      where: {
+        userId,
+        status: { in: queueStatuses }
+      },
+      select: { answersJson: true }
+    }) as Promise<PendingSessionQueuePayloadRow[]>
+  ]);
+
+  const sessionPayloads = sessionRows.map((row) => row.answersJson);
+  const queuedQuestionIds = Array.from(new Set(sessionPayloads.flatMap(pendingSessionAnswerQuestionIds)));
+  if (!queuedQuestionIds.length) return legacyCount;
+
+  const scopedQuestions = await prisma.question.findMany({
+    where: {
+      id: { in: queuedQuestionIds },
+      ...questionFilter
+    },
+    select: { id: true }
+  });
+  return legacyCount + countPendingSessionAnswersFromQueuePayloads(
+    sessionPayloads,
+    new Set(scopedQuestions.map((question) => question.id))
+  );
+}
+
 export async function getPracticeStats(userId: string, subjectId?: string) {
   const questionFilter = buildQuestionFilter(subjectId);
   const today = dayStart(new Date());
@@ -125,7 +193,8 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
     answerSummaryRows,
     latestAnswerRows,
     trendRows,
-    recentAnswer
+    recentAnswer,
+    pendingAnswerCount
   ] = await Promise.all([
     prisma.subject.findMany({
       where: { isActive: true, ...(subjectId ? { id: subjectId } : {}) },
@@ -250,7 +319,8 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
           }
         }
       }
-    })
+    }),
+    countPendingPracticeAnswers(userId, questionFilter)
   ]);
 
   const effectiveQuestions = banks.flatMap((bank) => bank.questions.map((question) => ({
@@ -339,6 +409,9 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
     accuracy: summary.accuracy,
     favoriteCount: Array.from(favoriteBySubject.values()).reduce((sum, value) => sum + value, 0),
     wrongQuestionCount: summary.wrongQuestionCount,
+    pendingAnswerCount,
+    queuedAnswerCount: pendingAnswerCount,
+    syncing: pendingAnswerCount > 0,
     totalQuestionCount: banks.reduce((sum, bank) => sum + effectiveQuestionCount(bank.questions), 0),
     subjectCount: subjects.length,
     bankCount: banks.length,
@@ -353,17 +426,10 @@ export async function getPracticeStats(userId: string, subjectId?: string) {
 
 async function loadPracticeReviewSummary(userId: string, scope: PracticeReviewSummaryScope = {}): Promise<PracticeReviewSummary> {
   const questionFilter = buildReviewQuestionFilter(scope);
-  const queueStatuses = ['pending', 'processing', 'retrying'];
   const [wrongQuestionCount, favoriteCount, queuedAnswerCount] = await Promise.all([
     prisma.wrongQuestion.count({ where: { userId, question: questionFilter } }),
     prisma.userFavorite.count({ where: { userId, question: questionFilter } }),
-    prisma.practiceAnswerQueueItem.count({
-      where: {
-        userId,
-        status: { in: queueStatuses },
-        question: questionFilter
-      }
-    })
+    countPendingPracticeAnswers(userId, questionFilter)
   ]);
 
   return {
@@ -387,11 +453,11 @@ export async function getPracticeReviewSummary(userId: string, scope: PracticeRe
 
   const promise = loadPracticeReviewSummary(userId, scope)
     .then((value) => {
-      reviewSummaryCache.set(key, { expiresAt: Date.now() + ttlMs, value });
+      if (reviewSummaryCache.get(key)?.promise === promise) reviewSummaryCache.set(key, { expiresAt: Date.now() + ttlMs, value });
       return value;
     })
     .catch((error) => {
-      reviewSummaryCache.delete(key);
+      if (reviewSummaryCache.get(key)?.promise === promise) reviewSummaryCache.delete(key);
       throw error;
     });
 

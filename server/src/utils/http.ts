@@ -2,9 +2,9 @@ import type { Response } from 'express';
 
 export class HttpError extends Error {
   status: number;
-  code: number;
+  code: number | string;
 
-  constructor(message: string, status = 400, code = status) {
+  constructor(message: string, status = 400, code: number | string = status) {
     super(message);
     this.status = status;
     this.code = code;
@@ -15,7 +15,7 @@ export function ok<T>(res: Response, data: T, message = 'ok') {
   return res.json({ code: 0, message, data });
 }
 
-export function fail(res: Response, message: string, status = 400, code = status) {
+export function fail(res: Response, message: string, status = 400, code: number | string = status) {
   return res.status(status).json({ code, message, data: null });
 }
 

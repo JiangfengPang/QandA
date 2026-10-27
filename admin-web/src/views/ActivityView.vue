@@ -1,22 +1,23 @@
 <template>
-  <section class="activity-page" v-loading="loading">
+  <section class="activity-page">
     <el-card class="activity-hero" shadow="never">
       <div>
         <div class="activity-kicker">用户实时状态</div>
         <h2>在线用户与答题活跃度</h2>
-        <p>当前在线指最近 {{ onlineWindowLabel }}内持续发送心跳的学生端账号，答题活跃指标来自真实答题记录。</p>
+        <p>当前在线指最近 {{ onlineWindowLabel }}内持续发送心跳的有效学生端账号，答题活跃指标来自正式答题记录。</p>
       </div>
       <div class="hero-actions">
-        <el-select v-model="days" style="width: 128px" @change="load">
+        <el-tag :type="aggregationLagTone" effect="plain">{{ aggregationLagLabel }}</el-tag>
+        <el-select v-model="days" style="width: 128px" @change="loadActivity">
           <el-option :value="7" label="近 7 天" />
           <el-option :value="14" label="近 14 天" />
           <el-option :value="30" label="近 30 天" />
         </el-select>
-        <el-button type="primary" :icon="Refresh" @click="load">刷新数据</el-button>
+        <el-button type="primary" :icon="Refresh" :loading="summaryLoading || detailLoading" @click="loadActivity">刷新数据</el-button>
       </div>
     </el-card>
 
-    <div class="metric-grid">
+    <div class="metric-grid" v-loading="summaryLoading">
       <el-card v-for="item in metrics" :key="item.label" class="metric-card" shadow="never">
         <div class="metric-top">
           <span>{{ item.label }}</span>
@@ -28,20 +29,20 @@
     </div>
 
     <div class="activity-grid">
-      <el-card class="content-card trend-card" shadow="never">
+      <el-card class="content-card trend-card" shadow="never" v-loading="summaryLoading">
         <template #header>
           <div class="card-heading">
             <div>
               <strong>答题趋势</strong>
               <span>每日答题次数与活跃用户数</span>
             </div>
-            <el-tag effect="plain">{{ days }} 天</el-tag>
+            <el-tag effect="plain">{{ rangeLabel }}</el-tag>
           </div>
         </template>
         <div ref="chartRef" class="activity-chart" />
       </el-card>
 
-      <el-card class="content-card online-card" shadow="never">
+      <el-card class="content-card online-card" shadow="never" v-loading="detailLoading">
         <template #header>
           <div class="card-heading">
             <div>
@@ -63,16 +64,16 @@
       </el-card>
     </div>
 
-    <el-card class="content-card ranking-card" shadow="never">
+    <el-card class="content-card ranking-card" shadow="never" v-loading="detailLoading">
       <template #header>
         <div class="card-heading">
           <div>
-            <strong>近 7 天活跃用户排行</strong>
+            <strong>{{ rangeLabel }}活跃用户排行</strong>
             <span>按答题次数排序，帮助识别高活跃学习用户</span>
           </div>
         </div>
       </template>
-      <el-table :data="data.topActiveUsers" stripe empty-text="近 7 天暂无答题记录">
+      <el-table :data="data.topActiveUsers" stripe :empty-text="`${rangeLabel}暂无答题记录`">
         <el-table-column type="index" label="排名" width="72" align="center" />
         <el-table-column prop="nickname" label="昵称" min-width="140" />
         <el-table-column prop="email" label="QQ 邮箱" min-width="190">
@@ -114,21 +115,44 @@ import { api } from '../api/request';
 
 use([BarChart, LineChart, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer]);
 
+type ActivityAggregationStatus = {
+  generatedAt: string;
+  lagSeconds: number | null;
+  lastRunAt: string | null;
+  lastAnswerCreatedAt: string | null;
+  lastError: string | null;
+  processedCount: number;
+};
+
 type ActivityData = {
   onlineWindowMinutes: number;
   onlineWindowSeconds?: number;
   checkedAt: string;
+  rangeDays?: number;
+  online?: {
+    effectiveUsers: number;
+    validAccountTotal: number;
+  };
+  metrics?: {
+    source: 'official_answers' | 'daily_aggregate' | 'daily_activity_stats';
+    generatedAt: string;
+  };
+  activityAggregation: ActivityAggregationStatus;
   summary: {
     totalStudents: number;
     onlineCount: number;
     activeToday: number;
+    activeRangeDays: number;
     activeSevenDays: number;
     answersToday: number;
+    answersRangeDays: number;
     answersSevenDays: number;
+    accuracyRangeDays: number;
     accuracySevenDays: number;
+    durationRangeDays: number;
     durationSevenDays: number;
   };
-  onlineUsers: Array<{ id: string; nickname: string; email: string; lastSeenAt: string }>;
+  onlineUsers: Array<{ id: string; nickname: string; email: string | null; lastSeenAt: string }>;
   trend: Array<{ date: string; label: string; answerCount: number; activeUserCount: number; accuracy: number }>;
   topActiveUsers: Array<{
     id: string;
@@ -140,18 +164,38 @@ type ActivityData = {
   }>;
 };
 
+type ActivitySummaryData = Omit<ActivityData, 'onlineUsers' | 'topActiveUsers'>;
+type ActivityDetailData = Pick<ActivityData, 'onlineUsers' | 'topActiveUsers'> & {
+  activityAggregation?: ActivityAggregationStatus;
+  checkedAt?: string;
+  days?: number;
+};
+
 const emptyData = (): ActivityData => ({
   onlineWindowMinutes: 1.5,
   onlineWindowSeconds: 90,
   checkedAt: '',
+  rangeDays: 14,
+  activityAggregation: {
+    generatedAt: '',
+    lagSeconds: null,
+    lastRunAt: null,
+    lastAnswerCreatedAt: null,
+    lastError: null,
+    processedCount: 0
+  },
   summary: {
     totalStudents: 0,
     onlineCount: 0,
     activeToday: 0,
+    activeRangeDays: 0,
     activeSevenDays: 0,
     answersToday: 0,
+    answersRangeDays: 0,
     answersSevenDays: 0,
+    accuracyRangeDays: 0,
     accuracySevenDays: 0,
+    durationRangeDays: 0,
     durationSevenDays: 0
   },
   onlineUsers: [],
@@ -159,19 +203,27 @@ const emptyData = (): ActivityData => ({
   topActiveUsers: []
 });
 
-const loading = ref(false);
+const summaryLoading = ref(false);
+const detailLoading = ref(false);
 const days = ref(14);
 const data = ref<ActivityData>(emptyData());
 const chartRef = ref<HTMLElement>();
 let chart: ECharts | null = null;
+let summaryController: AbortController | null = null;
+let detailController: AbortController | null = null;
+let summaryRequestId = 0;
+let detailRequestId = 0;
+let detailFrameId: number | undefined;
+
+const rangeLabel = computed(() => `近 ${data.value.rangeDays || days.value} 天`);
 
 const metrics = computed(() => [
-  { label: '当前在线', value: data.value.summary.onlineCount, hint: `共 ${data.value.summary.totalStudents} 个有效账号`, icon: UserFilled, tone: 'blue' },
+  { label: '当前在线', value: data.value.summary.onlineCount, hint: `共 ${data.value.summary.totalStudents} 个有效学生账号总数`, icon: UserFilled, tone: 'blue' },
   { label: '今日活跃', value: data.value.summary.activeToday, hint: '今日有答题记录的用户', icon: User, tone: 'cyan' },
   { label: '今日答题', value: data.value.summary.answersToday, hint: '今日提交的答案总数', icon: Select, tone: 'indigo' },
-  { label: '近 7 天活跃', value: data.value.summary.activeSevenDays, hint: '近 7 天独立答题用户', icon: DataAnalysis, tone: 'violet' },
-  { label: '近 7 天答题', value: data.value.summary.answersSevenDays, hint: `累计 ${formatDuration(data.value.summary.durationSevenDays)}`, icon: Timer, tone: 'orange' },
-  { label: '近 7 天正确率', value: `${data.value.summary.accuracySevenDays}%`, hint: '按全部答题记录计算', icon: Clock, tone: 'green' }
+  { label: `${rangeLabel.value}活跃`, value: data.value.summary.activeRangeDays, hint: `${rangeLabel.value}独立答题用户`, icon: DataAnalysis, tone: 'violet' },
+  { label: `${rangeLabel.value}答题`, value: data.value.summary.answersRangeDays, hint: `累计 ${formatDuration(data.value.summary.durationRangeDays)}`, icon: Timer, tone: 'orange' },
+  { label: `${rangeLabel.value}正确率`, value: `${data.value.summary.accuracyRangeDays}%`, hint: '按正式答题记录计算', icon: Clock, tone: 'green' }
 ]);
 
 const onlineWindowLabel = computed(() => {
@@ -180,6 +232,27 @@ const onlineWindowLabel = computed(() => {
   const minutes = Number(data.value.onlineWindowMinutes || 0);
   if (minutes < 1) return '90 秒';
   return `${Number.isInteger(minutes) ? minutes : minutes.toFixed(1)} 分钟`;
+});
+
+const aggregationLagLabel = computed(() => {
+  const status = data.value.activityAggregation;
+  if (status.lastError) return '统计异常';
+  if (!status.lastRunAt) return '统计同步中';
+  const lag = Number(status.lagSeconds);
+  if (!Number.isFinite(lag)) return '统计同步中';
+  if (lag < 10) return '统计最新';
+  if (lag < 60) return `延迟 ${Math.round(lag)}s`;
+  return `延迟 ${Math.floor(lag / 60)}m`;
+});
+
+const aggregationLagTone = computed(() => {
+  const status = data.value.activityAggregation;
+  if (status.lastError) return 'danger';
+  const lag = Number(status.lagSeconds);
+  if (!status.lastRunAt || !Number.isFinite(lag)) return 'info';
+  if (lag < 10) return 'success';
+  if (lag < 60) return 'warning';
+  return 'danger';
 });
 
 function formatDuration(seconds: number) {
@@ -259,17 +332,91 @@ function renderChart() {
   });
 }
 
-async function load() {
-  loading.value = true;
+function isAbortError(error: unknown) {
+  return typeof error === 'object' && error !== null && 'name' in error && error.name === 'AbortError';
+}
+
+function abortActivityRequests(scope: 'summary' | 'detail' | 'all' = 'all') {
+  if ((scope === 'summary' || scope === 'all') && summaryController) {
+    summaryController.abort();
+    summaryController = null;
+  }
+  if ((scope === 'detail' || scope === 'all') && detailController) {
+    detailController.abort();
+    detailController = null;
+  }
+}
+
+function clearScheduledDetailLoad() {
+  if (detailFrameId === undefined) return;
+  cancelAnimationFrame(detailFrameId);
+  detailFrameId = undefined;
+}
+
+async function loadSummary(force = false) {
+  abortActivityRequests('summary');
+  const requestId = ++summaryRequestId;
+  const controller = new AbortController();
+  summaryController = controller;
+  summaryLoading.value = true;
   try {
-    data.value = await api.get<ActivityData>(`/admin/activity?days=${days.value}`);
+    const forceQuery = force ? '&force=1' : '';
+    const summary = await api.get<ActivitySummaryData>(`/admin/activity/summary?days=${days.value}${forceQuery}`, { signal: controller.signal });
+    if (requestId !== summaryRequestId) return;
+    data.value = {
+      ...data.value,
+      ...summary,
+      onlineUsers: data.value.onlineUsers,
+      topActiveUsers: data.value.topActiveUsers
+    };
     await nextTick();
     renderChart();
   } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '活跃度数据加载失败');
+    if (isAbortError(error)) return;
+    ElMessage.error(error instanceof Error ? error.message : '活跃度摘要加载失败');
   } finally {
-    loading.value = false;
+    if (requestId === summaryRequestId) {
+      summaryLoading.value = false;
+      if (summaryController === controller) summaryController = null;
+    }
   }
+}
+
+async function loadDetail(force = false) {
+  abortActivityRequests('detail');
+  const requestId = ++detailRequestId;
+  const controller = new AbortController();
+  detailController = controller;
+  detailLoading.value = true;
+  try {
+    const forceQuery = force ? '&force=1' : '';
+    const detail = await api.get<ActivityDetailData>(`/admin/activity/detail?days=${days.value}${forceQuery}`, { signal: controller.signal });
+    if (requestId !== detailRequestId) return;
+    data.value = {
+      ...data.value,
+      activityAggregation: detail.activityAggregation || data.value.activityAggregation,
+      onlineUsers: detail.onlineUsers,
+      topActiveUsers: detail.topActiveUsers
+    };
+  } catch (error) {
+    if (isAbortError(error)) return;
+    ElMessage.error(error instanceof Error ? error.message : '活跃度明细加载失败');
+  } finally {
+    if (requestId === detailRequestId) {
+      detailLoading.value = false;
+      if (detailController === controller) detailController = null;
+    }
+  }
+}
+
+function loadActivity() {
+  abortActivityRequests();
+  clearScheduledDetailLoad();
+  void loadSummary(true);
+  detailFrameId = requestAnimationFrame(() => {
+    detailFrameId = undefined;
+    void loadDetail(true);
+  });
 }
 
 function resizeChart() {
@@ -277,12 +424,14 @@ function resizeChart() {
 }
 
 onMounted(() => {
-  load();
+  void loadActivity();
   window.addEventListener('resize', resizeChart);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeChart);
+  abortActivityRequests();
+  clearScheduledDetailLoad();
   chart?.dispose();
   chart = null;
 });

@@ -1,9 +1,12 @@
 import { computed, ref } from 'vue';
 import { showConfirmDialog, showToast } from 'vant';
 import { api } from '../api/request';
+import { useAuthStore } from '../stores/auth';
 import type { LearningAdvice, StatsPayload, SubjectStat } from '../types/stats';
-import { defaultStatsPayload } from '../types/stats';
+import { answeredCountForDisplay, completionRateForDisplay, defaultStatsPayload } from '../types/stats';
 import { formatDuration } from '../utils/duration';
+import { clearPendingAnswerQueue } from '../utils/pendingAnswerQueue';
+import { requestPendingAnswerSessionFlush } from '../utils/pendingAnswerSync';
 
 export function subjectProgress(subject: SubjectStat) {
   const total = Number(subject.totalQuestionCount || 0);
@@ -12,18 +15,17 @@ export function subjectProgress(subject: SubjectStat) {
 }
 
 export function usePracticeStats() {
+  const auth = useAuthStore();
   const loading = ref(true);
   const clearing = ref(false);
   const stats = ref<StatsPayload>(defaultStatsPayload());
+  const displayAnswerCount = computed(() => answeredCountForDisplay(stats.value));
+  const completionRate = computed(() => completionRateForDisplay(stats.value));
+  const pendingAnswerUserKey = computed(() => auth.user?.id || auth.user?.email || auth.user?.username || '');
 
-  const completionRate = computed(() => {
-    const total = Number(stats.value.totalQuestionCount || 0);
-    if (!total) return 0;
-    return Math.min(100, Math.round((Number(stats.value.answerCount || 0) / total) * 100));
-  });
-
-  const unansweredCount = computed(() => Math.max(Number(stats.value.totalQuestionCount || 0) - Number(stats.value.answerCount || 0), 0));
+  const unansweredCount = computed(() => Math.max(Number(stats.value.totalQuestionCount || 0) - displayAnswerCount.value, 0));
   const studyDurationLabel = computed(() => formatDuration(Number(stats.value.totalDurationSeconds || 0)));
+  const answerProgressSubText = computed(() => `完成度 ${completionRate.value}%`);
 
   const wrongDistribution = computed(() => {
     return [...(stats.value.subjectStats || [])]
@@ -88,15 +90,22 @@ export function usePracticeStats() {
     return advice.slice(0, 3);
   });
 
-  async function loadStats() {
-    loading.value = true;
+  async function loadStats(options: { silent?: boolean } = {}) {
+    if (!options.silent) loading.value = true;
     try {
+      await requestLocalPendingAnswerFlush();
       stats.value = await api.get<StatsPayload>('/practice/stats');
     } catch (error) {
       showToast({ type: 'fail', message: error instanceof Error ? error.message : '统计加载失败' });
     } finally {
-      loading.value = false;
+      if (!options.silent) loading.value = false;
     }
+  }
+
+  function requestLocalPendingAnswerFlush() {
+    const userKey = pendingAnswerUserKey.value;
+    if (!userKey) return Promise.resolve(0);
+    return requestPendingAnswerSessionFlush(userKey, { dispatchStatsUpdated: true });
   }
 
   async function clearRecords() {
@@ -114,6 +123,7 @@ export function usePracticeStats() {
     clearing.value = true;
     try {
       await api.delete('/practice/records');
+      if (pendingAnswerUserKey.value) clearPendingAnswerQueue(pendingAnswerUserKey.value);
       showToast({ type: 'success', message: '记录已清空' });
       window.dispatchEvent(new Event('qanda:stats-updated'));
       await loadStats();
@@ -128,14 +138,17 @@ export function usePracticeStats() {
     stats,
     loading,
     clearing,
+    displayAnswerCount,
     completionRate,
     unansweredCount,
     studyDurationLabel,
+    answerProgressSubText,
     wrongDistribution,
     hasWrongDistribution,
     subjectMasteryList,
     learningAdvice,
     loadStats,
+    requestLocalPendingAnswerFlush,
     clearRecords
   };
 }

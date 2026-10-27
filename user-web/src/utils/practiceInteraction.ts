@@ -4,7 +4,8 @@ export function needsManualAnswerConfirm(questionType: unknown, submitted: boole
 }
 
 export function shouldSubmitChoiceImmediately(questionType: unknown) {
-  return String(questionType || '').toLowerCase() !== 'multiple';
+  void questionType;
+  return false;
 }
 
 export function canAutoAdvanceAfterCorrectAnswer(options: {

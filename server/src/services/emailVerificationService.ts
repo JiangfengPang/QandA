@@ -37,11 +37,20 @@ export async function sendEmailCode(input: { email: string; purpose: EmailCodePu
     data: { consumedAt: new Date() }
   });
 
-  await prisma.emailVerificationCode.create({
+  const record = await prisma.emailVerificationCode.create({
     data: { email, purpose: input.purpose, codeHash, expiresAt }
   });
 
-  const mail = await sendEmailVerificationCode(email, code, PURPOSE_SCENE[input.purpose]);
+  const mail = await sendEmailVerificationCode(email, code, PURPOSE_SCENE[input.purpose]).catch(async (error) => {
+    await prisma.emailVerificationCode.update({
+      where: { id: record.id },
+      data: { consumedAt: new Date() }
+    }).catch((cleanupError) => {
+      console.error('验证码发送失败后的记录清理失败', cleanupError);
+    });
+    throw error;
+  });
+
   return {
     sent: mail.sent,
     devCode: mail.devCode,

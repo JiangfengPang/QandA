@@ -19,3 +19,11 @@ test('presence heartbeat sends immediately when page becomes visible again', () 
   assert.match(source, /sendHeartbeat\('visible'\)/);
   assert.match(source, /postKeepalive\('\/presence\/leave'/);
 });
+
+test('presence heartbeat uses a short abortable request so it cannot block the app', () => {
+  const source = readFileSync(new URL('../src/utils/presence.ts', import.meta.url), 'utf8');
+  assert.match(source, /PRESENCE_HEARTBEAT_TIMEOUT_MS/);
+  assert.match(source, /new AbortController\(\)/);
+  assert.match(source, /controller\.abort\(\)/);
+  assert.match(source, /signal:\s*controller\.signal/);
+});

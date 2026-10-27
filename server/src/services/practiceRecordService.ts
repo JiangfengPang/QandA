@@ -1,8 +1,17 @@
+import { invalidateAdminActivityCaches } from './adminAnalyticsService.js';
+import { invalidatePracticeReviewSummaryCache } from './practiceStatsService.js';
+import { acquireActivityAggregationLock } from './activityAggregationService.js';
 import { prisma } from '../db/prisma.js';
 import { formatQuestion } from './questionService.js';
-import { isAnswerCorrect, isFillAnswerCorrect } from '../utils/answer.js';
-import { normalizeJudgeAnswerArray } from '../utils/judge.js';
+import { isAnswerCorrect, isFillAnswerCorrect, normalizeAnswer } from '../utils/answer.js';
 import { HttpError } from '../utils/http.js';
+import {
+  assertPracticeSelectedAnswerAllowed,
+  normalizeAnswerForObjectiveType,
+  normalizeSelectedForPracticeStorage
+} from '../utils/answerNormalization.js';
+
+export { assertPracticeSelectedAnswerAllowed, normalizeSelectedForPracticeStorage };
 
 function questionInclude(userId: string) {
   return {
@@ -42,7 +51,9 @@ function fillAnswerDisplayArray(answer: unknown): string[] {
   return normalizeAnswerArray(answer);
 }
 
-export async function submitPracticeAnswer(userId: string, questionId: string, selected: string[], durationSeconds = 0, clientAnswerId?: string) {
+export type PracticeQueueLease = { kind: 'answer' | 'session'; id: string; lockedAt: Date };
+
+export async function submitPracticeAnswer(userId: string, questionId: string, selected: unknown, durationSeconds = 0, clientAnswerId?: string, lease?: PracticeQueueLease) {
   const safeClientAnswerId = normalizeClientAnswerId(clientAnswerId);
   const [question, user] = await Promise.all([
     prisma.question.findFirst({
@@ -53,20 +64,26 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
   ]);
   if (!question) throw new HttpError('题目不存在或已停用', 404);
 
-  const selectedForStorage = question.type === 'judge' ? normalizeJudgeAnswerArray(selected) : selected;
+  const selectedForStorage = normalizeSelectedForPracticeStorage(question.type, selected);
   if (['single', 'multiple', 'judge', 'reading'].includes(question.type)) {
-    const allowedLabels = new Set(question.options.map((option) => option.label));
-    if (selectedForStorage.some((item) => !allowedLabels.has(item))) {
-      throw new HttpError('答案包含无效选项', 400);
-    }
+    assertPracticeSelectedAnswerAllowed(question.type, selectedForStorage, question.options.map((option) => option.label));
   }
-  const answerForCheck = question.type === 'judge' ? normalizeJudgeAnswerArray(question.answerJson) : question.answerJson;
+  const answerForCheck = question.type === 'judge' ? normalizeAnswerForObjectiveType(question.type, question.answerJson) : question.answerJson;
   const correct = question.type === 'fill'
     ? isFillAnswerCorrect(selectedForStorage, answerForCheck)
     : isAnswerCorrect(selectedForStorage, answerForCheck);
   let writeResult: { recorded: boolean; correct: boolean };
   try {
     writeResult = await prisma.$transaction(async (tx) => {
+      if (lease) {
+        // Lock the queue row until this answer commits. A cleared/expired job cannot recreate records.
+        const rows = lease.kind === 'session'
+          ? await tx.$queryRaw<Array<{ status: string; lockedAt: Date | null }>>`SELECT status, lockedAt FROM PracticeAnswerSubmissionQueue WHERE id = ${lease.id} FOR UPDATE`
+          : await tx.$queryRaw<Array<{ status: string; lockedAt: Date | null }>>`SELECT status, lockedAt FROM PracticeAnswerQueueItem WHERE id = ${lease.id} FOR UPDATE`;
+        if (rows[0]?.status !== 'processing' || rows[0]?.lockedAt?.getTime() !== lease.lockedAt.getTime()) {
+          throw new HttpError('答案处理任务已更新或清除', 409);
+        }
+      }
       if (safeClientAnswerId) {
         const existing = await tx.userAnswer.findUnique({
           where: { userId_clientAnswerId: { userId, clientAnswerId: safeClientAnswerId } },
@@ -122,26 +139,48 @@ export async function submitPracticeAnswer(userId: string, questionId: string, s
 
   return {
     correct: writeResult.correct,
-    answer: question.type === 'fill' ? fillAnswerDisplayArray(answerForCheck) : answerForCheck,
+    answer: question.type === 'fill' ? fillAnswerDisplayArray(answerForCheck) : normalizeAnswer(answerForCheck),
     explanation: question.explanation,
     recorded: writeResult.recorded
   };
 }
 
-export async function toggleFavoriteQuestion(userId: string, questionId: string) {
+export async function toggleFavoriteQuestion(userId: string, questionId: string, desiredFavorite?: boolean) {
   const question = await prisma.question.findFirst({
     where: { id: questionId, isActive: true, bank: { isActive: true, subject: { isActive: true } } },
     select: { id: true }
   });
   if (!question) throw new HttpError('题目不存在或已停用', 404);
 
-  const existed = await prisma.userFavorite.findUnique({ where: { userId_questionId: { userId, questionId } } });
-  if (existed) {
-    await prisma.userFavorite.delete({ where: { id: existed.id } });
+  if (desiredFavorite === true) {
+    await prisma.userFavorite.upsert({
+      where: { userId_questionId: { userId, questionId } },
+      update: {},
+      create: { userId, questionId }
+    });
+    return { favorite: true };
+  }
+
+  if (desiredFavorite === false) {
+    await prisma.userFavorite.deleteMany({ where: { userId, questionId } });
     return { favorite: false };
   }
 
-  await prisma.userFavorite.create({ data: { userId, questionId } });
+  const existed = await prisma.userFavorite.findUnique({
+    where: { userId_questionId: { userId, questionId } },
+    select: { id: true }
+  });
+  if (existed) {
+    await prisma.userFavorite.deleteMany({ where: { userId, questionId } });
+    return { favorite: false };
+  }
+
+  try {
+    await prisma.userFavorite.create({ data: { userId, questionId } });
+  } catch (error) {
+    if ((error as { code?: string }).code === 'P2002') return { favorite: true };
+    throw error;
+  }
   return { favorite: true };
 }
 
@@ -176,11 +215,19 @@ export async function clearFavoriteQuestions(userId: string, subjectId?: string)
 }
 
 export async function clearPracticeRecords(userId: string) {
-  await prisma.$transaction([
-    prisma.userAnswer.deleteMany({ where: { userId } }),
-    prisma.wrongQuestion.deleteMany({ where: { userId } }),
-    prisma.userFavorite.deleteMany({ where: { userId } })
-  ]);
+  await prisma.$transaction(async (tx) => {
+    await tx.practiceAnswerSubmissionQueue.deleteMany({ where: { userId } });
+    await tx.practiceAnswerQueueItem.deleteMany({ where: { userId } });
+    await acquireActivityAggregationLock(tx);
+    await tx.practiceSession.deleteMany({ where: { userId } });
+    await tx.userPracticeSession.deleteMany({ where: { userId } });
+    await tx.userAnswer.deleteMany({ where: { userId } });
+    await tx.userDailyActivityStat.deleteMany({ where: { userId } });
+    await tx.wrongQuestion.deleteMany({ where: { userId } });
+    await tx.userFavorite.deleteMany({ where: { userId } });
+  });
+  invalidatePracticeReviewSummaryCache(userId);
+  invalidateAdminActivityCaches();
   return { cleared: true };
 }
 

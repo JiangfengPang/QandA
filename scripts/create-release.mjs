@@ -22,6 +22,7 @@ const directories = [
   'question-banks',
   'server/dist',
   'server/prisma',
+  'server/scripts',
   'user-web/dist'
 ];
 
@@ -55,11 +56,11 @@ await cp(
 const serverPackageJsonPath = path.join(bundleRoot, 'server', 'package.json');
 const serverPackageJson = JSON.parse(await readFile(serverPackageJsonPath, 'utf8'));
 serverPackageJson.scripts = {
-  start: 'node dist/server.js',
-  'prisma:generate': 'prisma generate',
-  'prisma:migrate:deploy': 'prisma migrate deploy',
-  seed: 'node dist/scripts/seedAdmin.js',
-  'import:legacy': 'node dist/scripts/importLegacyBanks.js'
+  start: 'node scripts/run-with-env.mjs --mode production node dist/server.js',
+  'prisma:generate': 'node scripts/run-with-env.mjs --mode production prisma generate',
+  'prisma:migrate:deploy': 'node scripts/run-with-env.mjs --mode production prisma migrate deploy',
+  seed: 'node scripts/run-with-env.mjs --mode production node dist/scripts/seedAdmin.js',
+  'import:legacy': 'node scripts/run-with-env.mjs --mode production node dist/scripts/importLegacyBanks.js'
 };
 await writeFile(serverPackageJsonPath, `${JSON.stringify(serverPackageJson, null, 2)}\n`);
 

@@ -6,10 +6,16 @@ import { isAnswerCorrect, isFillAnswerCorrect, normalizeAnswer, normalizeFillAns
 import { asyncHandler } from './asyncHandler.js';
 import { isSupportedImageBuffer } from '../services/avatarStorage.js';
 import { clientIp } from '../middleware/rateLimit.js';
+import { dbDateForLocalDay, dbDateKey, dayKey } from './date.js';
 import { createVerificationCode } from './verificationCode.js';
 import { assertAllowedNickname, hasForbiddenNickname, normalizeNickname } from './nicknamePolicy.js';
-import { buildDailyActivityTrend } from '../services/adminAnalyticsService.js';
-import { assertStandardReadingQuestionImport } from '../services/importService.js';
+import {
+  activityDetailCacheKey,
+  buildActivityStatsFromDailyUserAggregates,
+  buildDailyActivityTrend
+} from '../services/adminAnalyticsService.js';
+import { assertStandardObjectiveQuestionImport, assertStandardReadingQuestionImport } from '../services/importService.js';
+import { countPendingSessionAnswersFromQueuePayloads } from '../services/practiceStatsService.js';
 import {
   isPresenceSessionOnline,
   normalizePresenceSessionId,
@@ -17,8 +23,15 @@ import {
 } from '../services/presenceService.js';
 import { effectiveQuestionCount, summarizeBankProgress, summarizeEffectiveAnswers, summarizeLatestAnswers } from '../services/progressService.js';
 import { formatQuestion } from '../services/questionService.js';
+import {
+  assertPracticeSelectedAnswerAllowed,
+  normalizeSelectedForPracticeStorage
+} from '../services/practiceRecordService.js';
+import { buildActivityAggregatesFromAnswers } from '../services/activityAggregationService.js';
+import { dedupeSessionAnswers } from '../services/practiceAnswerQueueService.js';
 
 test('answer comparison normalizes case, order and duplicates', () => {
+  assert.deepEqual(normalizeAnswer([null, undefined, '']), []);
   assert.deepEqual(normalizeAnswer(['b', ' A ', 'a']), ['A', 'B']);
   assert.equal(isAnswerCorrect(['b', 'a'], ['A', 'B']), true);
   assert.equal(isAnswerCorrect(['A'], ['A', 'B']), false);
@@ -26,11 +39,151 @@ test('answer comparison normalizes case, order and duplicates', () => {
   assert.equal(isAnswerCorrect(['look upon ... as'], ['look upon … as']), true);
 });
 
+test('multiple choice comparison accepts compact answer strings in any order', () => {
+  assert.deepEqual(normalizeAnswer(['ACD']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('CDA'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer(['CDA']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('A,C,D'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('A、C、D'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer('A C D'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer(['c', 'd', 'a']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeAnswer(['A', 'A', 'C']), ['A', 'C']);
+  assert.equal(isAnswerCorrect(['C', 'D', 'A'], ['ACD']), true);
+  assert.equal(isAnswerCorrect('CDA', ['A', 'C', 'D']), true);
+  assert.equal(isAnswerCorrect(['B', 'D', 'A'], ['ABD']), true);
+  assert.equal(isAnswerCorrect(['A', 'C'], ['ACD']), false);
+});
+
+test('practice answer submission normalizes compact objective selections before option validation', () => {
+  const allowedLabels = ['A', 'B', 'C', 'D'];
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', ['CDA']), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', 'CDA'), ['A', 'C', 'D']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', ['C', 'D', 'A']), ['A', 'C', 'D']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('multiple', normalizeSelectedForPracticeStorage('multiple', ['CDA']), allowedLabels);
+  });
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('multiple', normalizeSelectedForPracticeStorage('multiple', ['A', 'E']), allowedLabels),
+    /答案包含无效选项/
+  );
+});
+
+test('practice answer submission keeps single reading judge and fill selection rules', () => {
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('single', ['A', 'C'], ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('single', normalizeSelectedForPracticeStorage('single', 'AB'), ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('reading', ['A', 'B'], ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('reading', normalizeSelectedForPracticeStorage('reading', 'AB'), ['A', 'B', 'C']),
+    /单选题只能选择一个答案/
+  );
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['true']), ['A']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['错误']), ['B']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('fill', ['CDA']), ['CDA']);
+  assert.deepEqual(normalizeSelectedForPracticeStorage('fill', 'CDA'), ['CDA']);
+});
+
+test('practice judge answer validation normalizes option labels before comparing selections', () => {
+  const trueFalseLabels = ['true', 'false'];
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], trueFalseLabels));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['B'], trueFalseLabels));
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['true']), ['A']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['true']), trueFalseLabels);
+  });
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['false']), ['B']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['false']), trueFalseLabels);
+  });
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['正确']), ['A']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['正确']), trueFalseLabels);
+  });
+  assert.deepEqual(normalizeSelectedForPracticeStorage('judge', ['错误']), ['B']);
+  assert.doesNotThrow(() => {
+    assertPracticeSelectedAnswerAllowed('judge', normalizeSelectedForPracticeStorage('judge', ['错误']), trueFalseLabels);
+  });
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], ['A', 'B']));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['B'], ['正确', '错误']));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], ['对', '错']));
+  assert.doesNotThrow(() => assertPracticeSelectedAnswerAllowed('judge', ['A'], ['是', '否']));
+  assert.throws(
+    () => assertPracticeSelectedAnswerAllowed('judge', ['C'], trueFalseLabels),
+    /答案包含无效选项/
+  );
+});
+
 test('fill answer comparison accepts any configured answer variant', () => {
   assert.equal(isFillAnswerCorrect([' Colour '], ['color', 'colour']), true);
   assert.equal(isFillAnswerCorrect(['color'], ['color', 'colour']), true);
   assert.equal(isFillAnswerCorrect(['colours'], ['color', 'colour']), false);
   assert.equal(isAnswerCorrect(['color'], ['color', 'colour']), false);
+  assert.equal(isFillAnswerCorrect(['CDA'], ['CDA']), true);
+  assert.equal(isFillAnswerCorrect(['A、C、D'], ['A、C、D']), true);
+});
+
+test('practice queue preserves scalar selected values for service-level normalization', () => {
+  assert.deepEqual(dedupeSessionAnswers('session-a', [{
+    questionId: 'question-a',
+    selected: 'CDA' as any,
+    clientAnswerId: 'client-a',
+    durationSeconds: 3
+  }]), [{
+    questionId: 'question-a',
+    selected: ['CDA'],
+    clientAnswerId: 'client-a',
+    durationSeconds: 3
+  }]);
+});
+
+test('direct and queued practice submissions use the same selected normalization before judging', () => {
+  const directSelected = normalizeSelectedForPracticeStorage('multiple', 'CDA');
+  const queuedSelected = dedupeSessionAnswers('session-a', [{
+    questionId: 'question-a',
+    selected: 'CDA' as any,
+    clientAnswerId: 'client-a',
+    durationSeconds: 3
+  }])[0].selected;
+
+  assert.deepEqual(normalizeSelectedForPracticeStorage('multiple', queuedSelected), directSelected);
+  assert.equal(isAnswerCorrect(directSelected, ['A', 'C', 'D']), true);
+  assert.equal(isAnswerCorrect(normalizeSelectedForPracticeStorage('multiple', queuedSelected), ['A', 'C', 'D']), true);
+});
+
+test('formatted judge questions normalize scalar historical answers and labels', () => {
+  const formatted = formatQuestion({
+    id: 'judge-true-false',
+    bankId: 'bank-a',
+    type: 'judge',
+    typeLabel: '判断题',
+    difficulty: 'easy',
+    score: 1,
+    stem: 'The statement is true.',
+    answerJson: 'true',
+    tagsJson: [],
+    explanation: '',
+    rawJson: {},
+    options: [
+      { id: 'opt-true', label: 'true', content: '正确' },
+      { id: 'opt-false', label: 'false', content: '错误' }
+    ],
+    answers: [{ selectedJson: 'false', createdAt: new Date('2026-06-30T00:00:00.000Z') }]
+  }) as any;
+
+  assert.deepEqual(formatted.answer, ['A']);
+  assert.deepEqual(formatted.userAnswer, ['B']);
+  assert.equal(formatted.options[0].key, 'A');
+  assert.equal(formatted.options[0].isCorrect, true);
+  assert.equal(formatted.options[1].key, 'B');
+  assert.equal(formatted.options[1].isCorrect, false);
 });
 
 test('multi blank fill comparison preserves blank order and per-blank variants', () => {
@@ -78,6 +231,15 @@ test('verification codes are six numeric digits', () => {
   for (let index = 0; index < 100; index += 1) {
     assert.match(createVerificationCode(), /^\d{6}$/);
   }
+});
+
+test('mail service uses accepted-delivery errors without leaking SMTP secrets', () => {
+  const service = readFileSync(new URL('../services/mailService.ts', import.meta.url), 'utf8');
+
+  assert.match(service, /nodemailer\.createTransport/);
+  assert.match(service, /SMTP_SEND_FAILED/);
+  assert.match(service, /redactSecrets/);
+  assert.doesNotMatch(service, /SMTP 命令失败：\$\{command\}/);
 });
 
 test('nickname policy normalizes and accepts meaningful nicknames', () => {
@@ -167,6 +329,37 @@ test('reading passage counts as one effective question group', () => {
   assert.equal(summary.accuracy, 50);
 });
 
+test('partial reading passage answers still count as started progress', () => {
+  const answeredAt = new Date('2026-06-01T09:00:00.000Z');
+  const questions = [
+    { id: 'r1', bankId: 'bank-a', type: 'reading', rawJson: { passageId: 'passage-one' } },
+    { id: 'r2', bankId: 'bank-a', type: 'reading', rawJson: { passageId: 'passage-one' } },
+    { id: 'q1', bankId: 'bank-a', type: 'single', rawJson: null }
+  ];
+
+  const summary = summarizeEffectiveAnswers(questions, [
+    { questionId: 'r1', isCorrect: true, createdAt: answeredAt }
+  ]);
+
+  assert.equal(effectiveQuestionCount(questions), 2);
+  assert.equal(summary.answerCount, 1);
+  assert.equal(summary.correctCount, 0);
+  assert.equal(summary.wrongCount, 1);
+  assert.equal(summary.accuracy, 0);
+});
+
+test('practice review summary counts pending session queue answers', () => {
+  const service = readFileSync(new URL('../services/practiceStatsService.ts', import.meta.url), 'utf8');
+  const loadSummaryBlock = service.slice(
+    service.indexOf('async function loadPracticeReviewSummary'),
+    service.indexOf('export async function getPracticeReviewSummary')
+  );
+
+  assert.match(loadSummaryBlock, /countPendingPracticeAnswers\(userId,\s*questionFilter\)/);
+  assert.doesNotMatch(loadSummaryBlock, /practiceAnswerQueueItem\.count/);
+  assert.doesNotMatch(loadSummaryBlock, /queueStatuses/);
+});
+
 test('reading JSON import accepts only the standard field names', () => {
   const standardReadingQuestion = {
     id: 'passage-one-q1',
@@ -200,6 +393,66 @@ test('reading JSON import accepts only the standard field names', () => {
     }),
     /必须使用 \{ "key": "A", "text": "\.\.\." \}/
   );
+});
+
+test('objective JSON import requires canonical answer arrays and option fields', () => {
+  const standardMultipleQuestion = {
+    id: 'objective-multiple',
+    type: 'multiple',
+    question: 'Which options are correct?',
+    options: [
+      { key: 'A', text: 'Alpha' },
+      { key: 'B', text: 'Beta' },
+      { key: 'C', text: 'Gamma' },
+      { key: 'D', text: 'Delta' }
+    ],
+    answer: ['A', 'C', 'D'],
+    explanation: 'A, C and D are correct.'
+  };
+
+  assert.doesNotThrow(() => assertStandardObjectiveQuestionImport(standardMultipleQuestion));
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, answer: 'ACD' }),
+    /必须使用 answer 数组/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, answer: ['ACD'] }),
+    /每个答案项必须是一个独立选项标识/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, answer: ['C', 'A', 'D'] }),
+    /必须按选项顺序填写/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({
+      ...standardMultipleQuestion,
+      choices: standardMultipleQuestion.options,
+      options: undefined
+    }),
+    /不要使用 choices，请使用 options/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({
+      ...standardMultipleQuestion,
+      options: standardMultipleQuestion.options.map((option) => ({ label: option.key, content: option.text }))
+    }),
+    /必须使用 \{ "key": "A", "text": "\.\.\." \}/
+  );
+  assert.throws(
+    () => assertStandardObjectiveQuestionImport({ ...standardMultipleQuestion, type: 'single', answer: ['A', 'C'] }),
+    /单选题只能设置一个正确答案/
+  );
+
+  assert.doesNotThrow(() => assertStandardObjectiveQuestionImport({
+    id: 'objective-judge',
+    type: 'judge',
+    question: 'This statement is true.',
+    options: [
+      { key: 'A', text: '正确' },
+      { key: 'B', text: '错误' }
+    ],
+    answer: ['A']
+  }));
 });
 
 test('admin generic question writes reject reading questions', () => {
@@ -236,12 +489,23 @@ test('practice answer idempotency keeps database and service safeguards', () => 
   assert.match(service, /code\?:\s*string\s*\}\)\.code === 'P2002'/);
 });
 
+test('favorite submission can set a desired state idempotently', () => {
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/practiceRecordService.ts', import.meta.url), 'utf8');
+
+  assert.match(route, /typeof req\.body\?\.favorite === 'boolean'/);
+  assert.match(service, /desiredFavorite\?: boolean/);
+  assert.match(service, /prisma\.userFavorite\.upsert/);
+  assert.match(service, /prisma\.userFavorite\.deleteMany\(\{ where: \{ userId, questionId \} \}\)/);
+});
+
 test('practice answer queue is wired through schema, API and server worker', () => {
   const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
   const migration = readFileSync(new URL('../../prisma/migrations/20260629000300_add_practice_answer_queue/migration.sql', import.meta.url), 'utf8');
   const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
   const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
   const server = readFileSync(new URL('../server.ts', import.meta.url), 'utf8');
+  const env = readFileSync(new URL('../config/env.ts', import.meta.url), 'utf8');
 
   assert.match(schema, /model PracticeAnswerQueueItem/);
   assert.match(schema, /@@unique\(\[userId,\s*clientAnswerId\]\)/);
@@ -259,7 +523,12 @@ test('practice answer queue is wired through schema, API and server worker', () 
   assert.match(queueService, /STATUS_RETRYING = 'retrying'/);
   assert.match(queueService, /status:\s*permanent \? STATUS_FAILED : STATUS_RETRYING/);
   assert.match(queueService, /practiceAnswerQueueConcurrency/);
-  assert.match(queueService, /existingClientAnswerIds/);
+  assert.match(queueService, /dedupeQueueInputs/);
+  assert.match(queueService, /existingStatusByClientAnswerId/);
+  assert.match(queueService, /duplicate:\$\{existingStatusByClientAnswerId\.get\(row\.clientAnswerId\)\}/);
+  assert.match(env, /PRACTICE_ANSWER_QUEUE_STATS_LOG_INTERVAL_MS/);
+  assert.match(env, /PRACTICE_ANSWER_QUEUE_STRICT_INTERVAL/);
+  assert.match(env, /PRACTICE_ANSWER_QUEUE_MAX_DRAIN_ROUNDS/);
   assert.doesNotMatch(queueService, /STATUS_DEAD/);
   assert.match(server, /startPracticeAnswerQueueWorker\(\)/);
 });
@@ -268,12 +537,159 @@ test('practice answer queue worker consumes successfully and retries failed jobs
   const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
 
   assert.match(queueService, /await submitPracticeAnswer\(/);
-  assert.match(queueService, /await markQueueItemProcessed\(item\.id\)/);
+  assert.match(queueService, /await markQueueItemProcessed\(item\)/);
   assert.match(queueService, /return 'processed' as const/);
   assert.match(queueService, /await markQueueItemFailed\(item,\s*error\)/);
   assert.match(queueService, /return 'failed' as const/);
   assert.match(queueService, /retryDelayMs\(nextRetryCount\)/);
   assert.match(queueService, /nextRetryCount >= env\.practiceAnswerQueueMaxAttempts/);
+  assert.match(queueService, /practiceAnswerQueueStrictInterval/);
+  assert.match(queueService, /practiceAnswerQueueMaxDrainRounds/);
+  assert.match(queueService, /processedSinceLastLog/);
+});
+
+test('practice answer queue exposes admin monitoring and safe processed cleanup', () => {
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const cleanupScript = readFileSync(new URL('../scripts/cleanupPracticeAnswerQueue.ts', import.meta.url), 'utf8');
+  const serverPackage = readFileSync(new URL('../../package.json', import.meta.url), 'utf8');
+  const redesignDoc = readFileSync(new URL('../../../docs/queue-redesign.md', import.meta.url), 'utf8');
+
+  assert.match(adminRoute, /\/system\/practice-answer-queue/);
+  assert.match(adminRoute, /getPracticeAnswerQueueMonitor/);
+  assert.match(queueService, /recentFiveMinutes/);
+  assert.match(queueService, /failedReasonsTop10/);
+  assert.match(queueService, /practiceAnswerQueueWorkerConfig/);
+  assert.match(cleanupScript, /status:\s*'processed'/);
+  assert.match(cleanupScript, /createdAt:\s*\{\s*lt:\s*cutoff\s*\}/);
+  assert.match(cleanupScript, /--confirm/);
+  assert.match(cleanupScript, /dry-run/);
+  assert.doesNotMatch(cleanupScript, /pending|processing|failed/);
+  assert.match(serverPackage, /practice-answer-queue:cleanup/);
+  assert.match(redesignDoc, /Redis \+ BullMQ/);
+  assert.match(redesignDoc, /qanda-worker/);
+  assert.match(redesignDoc, /灰度/);
+});
+
+test('system controls persist maintenance and worker pause settings safely', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260630000100_add_system_controls_and_session_submission_queue/migration.sql', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/systemControlService.ts', import.meta.url), 'utf8');
+  const authMiddleware = readFileSync(new URL('../middleware/auth.ts', import.meta.url), 'utf8');
+  const authService = readFileSync(new URL('../services/authService.ts', import.meta.url), 'utf8');
+  const authRoute = readFileSync(new URL('../routes/auth.ts', import.meta.url), 'utf8');
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const env = readFileSync(new URL('../config/env.ts', import.meta.url), 'utf8');
+
+  assert.match(schema, /model SystemSetting/);
+  assert.match(schema, /userLoginDisabled\s+Boolean\s+@default\(false\)/);
+  assert.match(schema, /practiceAnswerWorkerPaused\s+Boolean\s+@default\(false\)/);
+  assert.match(migration, /CREATE TABLE `SystemSetting`/);
+  assert.match(service, /USER_LOGIN_DISABLED/);
+  assert.match(service, /SYSTEM_SETTINGS_CACHE_MS/);
+  assert.match(service, /userForceLogoutAt: now/);
+  assert.match(authMiddleware, /assertUserAccessAllowed/);
+  assert.match(authMiddleware, /clearAuthCookies\(res,\s*'user'\)/);
+  assert.match(authService, /assertUserLoginAllowed\(\)/);
+  assert.match(authRoute, /assertUserLoginAllowed\(\)/);
+  assert.match(adminRoute, /\/system\/controls/);
+  assert.match(adminRoute, /\/system\/health/);
+  assert.match(env, /SYSTEM_SETTINGS_CACHE_MS/);
+  assert.match(env, /SYSTEM_HEALTH_CACHE_MS/);
+});
+
+test('session-level practice answer queue is wired through schema, API and worker', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260630000100_add_system_controls_and_session_submission_queue/migration.sql', import.meta.url), 'utf8');
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const cleanupScript = readFileSync(new URL('../scripts/cleanupPracticeAnswerQueue.ts', import.meta.url), 'utf8');
+  const workerSplitDoc = readFileSync(new URL('../../../docs/worker-split.md', import.meta.url), 'utf8');
+
+  assert.match(schema, /model PracticeSession/);
+  assert.match(schema, /model PracticeAnswerSubmissionQueue/);
+  assert.match(schema, /@@unique\(\[userId,\s*practiceSessionId\]\)/);
+  assert.match(schema, /@@unique\(\[userId,\s*clientSubmissionId\]\)/);
+  assert.match(schema, /@@index\(\[status,\s*nextRunAt\]\)/);
+  assert.match(migration, /CREATE TABLE `PracticeSession`/);
+  assert.match(migration, /CREATE TABLE `PracticeAnswerSubmissionQueue`/);
+  assert.match(route, /practiceSessionId/);
+  assert.match(route, /clientSubmissionId/);
+  assert.match(route, /enqueuePracticeAnswerSessionSubmission/);
+  assert.match(queueService, /dedupeSessionAnswers/);
+  assert.match(queueService, /processSessionQueueItem/);
+  assert.match(queueService, /getPracticeAnswerWorkerPaused/);
+  assert.match(queueService, /answer queue worker paused/);
+  assert.match(queueService, /practiceAnswerSubmissionQueue/);
+  assert.match(cleanupScript, /practiceAnswerSubmissionQueue/);
+  assert.match(workerSplitDoc, /qanda-server/);
+  assert.match(workerSplitDoc, /qanda-worker/);
+});
+
+test('session queue merges repeat submissions and requeues newer payloads without extra rows', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+
+  assert.match(schema, /payloadVersion\s+Int\s+@default\(1\)/);
+  assert.match(schema, /processedPayloadVersion\s+Int\s+@default\(0\)/);
+  assert.match(schema, /@@unique\(\[userId,\s*practiceSessionId\]\)/);
+  assert.match(queueService, /mergeSessionQueueAnswers/);
+  assert.match(queueService, /payloadVersion:\s*\{\s*increment:\s*1\s*\}/);
+  assert.match(queueService, /existing\.status === STATUS_PROCESSING/);
+  assert.match(queueService, /payloadVersion: item\.payloadVersion/);
+  assert.match(queueService, /status:\s*STATUS_RETRYING/);
+});
+
+test('clearing practice records removes queued answer submissions to prevent stale writeback', () => {
+  const service = readFileSync(new URL('../services/practiceRecordService.ts', import.meta.url), 'utf8');
+
+  assert.match(service, /practiceAnswerSubmissionQueue\.deleteMany\(\{ where: \{ userId \} \}\)/);
+  assert.match(service, /practiceAnswerQueueItem\.deleteMany\(\{ where: \{ userId \} \}\)/);
+  assert.match(service, /practiceSession\.deleteMany\(\{ where: \{ userId \} \}\)/);
+});
+
+test('practice stats briefly waits for authenticated user answers before reading metrics', () => {
+  const route = readFileSync(new URL('../routes/practice.ts', import.meta.url), 'utf8');
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const statsRouteBody = route.match(/router\.get\('\/stats'[\s\S]*?\n\}\);/)?.[0] || '';
+
+  assert.match(route, /waitForPracticeAnswersForUser/);
+  assert.match(statsRouteBody, /await waitForPracticeAnswersForUser\(req\.auth!\.userId\)/);
+  assert.ok(
+    statsRouteBody.indexOf('waitForPracticeAnswersForUser') < statsRouteBody.indexOf('getPracticeStats'),
+    'stats route should drain queued answers before loading metrics'
+  );
+  assert.match(queueService, /export async function waitForPracticeAnswersForUser/);
+  assert.match(queueService, /practiceAnswerSubmissionQueue\.findMany/);
+  assert.match(queueService, /practiceAnswerQueueItem\.findMany/);
+});
+
+test('subject bank list briefly waits for authenticated user answers before reading progress', () => {
+  const route = readFileSync(new URL('../routes/public.ts', import.meta.url), 'utf8');
+  const routeStart = route.indexOf("router.get('/subjects/:subjectId/banks'");
+  const routeEnd = route.indexOf("router.get('/banks/:bankId/questions'", routeStart);
+  const bankListRouteBody = routeStart >= 0 && routeEnd > routeStart ? route.slice(routeStart, routeEnd) : '';
+
+  assert.match(route, /waitForPracticeAnswersForUser/);
+  assert.match(bankListRouteBody, /await waitForPracticeAnswersForUser\(userId\)/);
+  assert.ok(
+    bankListRouteBody.indexOf('waitForPracticeAnswersForUser') < bankListRouteBody.indexOf('getBanksProgress'),
+    'bank list route should drain queued answers before loading per-bank progress'
+  );
+});
+
+test('user-scoped answer queue drains are serialized for concurrent refresh requests', () => {
+  const queueService = readFileSync(new URL('../services/practiceAnswerQueueService.ts', import.meta.url), 'utf8');
+  const functionStart = queueService.indexOf('export async function drainPracticeAnswerQueueForUser');
+  const functionEnd = queueService.indexOf('async function drainPracticeAnswerQueueForUserUnlocked', functionStart);
+  const drainFunctionBody = functionStart >= 0 && functionEnd > functionStart
+    ? queueService.slice(functionStart, functionEnd)
+    : '';
+
+  assert.match(queueService, /userDrainPromises/);
+  assert.match(drainFunctionBody, /userDrainPromises\.get\(safeUserId\)/);
+  assert.match(drainFunctionBody, /userDrainPromises\.set\(safeUserId,\s*promise\)/);
+  assert.match(drainFunctionBody, /userDrainPromises\.delete\(safeUserId\)/);
 });
 
 test('practice resume sessions have account-scoped persistence safeguards', () => {
@@ -308,6 +724,24 @@ test('practice review summary uses user-scoped short cache and reports queued an
   assert.match(service, /syncing: queuedAnswerCount > 0/);
 });
 
+test('practice stats can expose pending session queue answer counts', () => {
+  const payloads = [
+    [
+      { questionId: 'q-a', clientAnswerId: 'a-1' },
+      { questionId: 'q-b', clientAnswerId: 'b-1' },
+      { questionId: '', clientAnswerId: 'missing-question' }
+    ],
+    [
+      { questionId: 'q-c', clientAnswerId: 'c-1' },
+      { questionId: 'q-b', clientAnswerId: 'b-latest' }
+    ],
+    { not: 'an array' }
+  ];
+
+  assert.equal(countPendingSessionAnswersFromQueuePayloads(payloads), 3);
+  assert.equal(countPendingSessionAnswersFromQueuePayloads(payloads, new Set(['q-b', 'q-c'])), 2);
+});
+
 test('admin activity trend uses application day buckets and distinct active users', () => {
   const trendStart = new Date(2026, 5, 26);
   const trend = buildDailyActivityTrend([
@@ -331,6 +765,220 @@ test('admin activity trend uses application day buckets and distinct active user
       { date: '2026-06-27', answerCount: 3, activeUserCount: 2, correctCount: 2, accuracy: 67 }
     ]
   );
+});
+
+test('admin activity stats derive summary, trend and ranking from daily user aggregates', () => {
+  const trendStart = new Date(2026, 5, 24);
+  const rangeStart = trendStart;
+  const today = new Date(2026, 6, 2);
+  const stats = buildActivityStatsFromDailyUserAggregates([
+    {
+      date: '2026-06-24',
+      userId: 'u-old',
+      nickname: '旧记录',
+      email: null,
+      answerCount: 10,
+      correctCount: 10,
+      durationSeconds: 100
+    },
+    {
+      date: '2026-06-26',
+      userId: 'u-a',
+      nickname: '甲同学',
+      email: 'a@qq.com',
+      answerCount: 2,
+      correctCount: 1,
+      durationSeconds: 30
+    },
+    {
+      date: '2026-06-27',
+      userId: 'u-a',
+      nickname: '甲同学',
+      email: 'a@qq.com',
+      answerCount: 3,
+      correctCount: 3,
+      durationSeconds: 50
+    },
+    {
+      date: '2026-07-02',
+      userId: 'u-b',
+      nickname: '乙同学',
+      email: null,
+      answerCount: 4,
+      correctCount: 2,
+      durationSeconds: 80
+    }
+  ], trendStart, 9, rangeStart, today);
+
+  assert.deepEqual(stats.summary, {
+    activeToday: 1,
+    activeRangeDays: 3,
+    activeSevenDays: 3,
+    answersToday: 4,
+    answersRangeDays: 19,
+    answersSevenDays: 19,
+    correctRangeDays: 16,
+    correctSevenDays: 16,
+    durationRangeDays: 260,
+    durationSevenDays: 260
+  });
+  assert.deepEqual(
+    stats.trend.map((row) => ({
+      date: row.date,
+      answerCount: row.answerCount,
+      activeUserCount: row.activeUserCount,
+      correctCount: row.correctCount,
+      accuracy: row.accuracy
+    })),
+    [
+      { date: '2026-06-24', answerCount: 10, activeUserCount: 1, correctCount: 10, accuracy: 100 },
+      { date: '2026-06-25', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-06-26', answerCount: 2, activeUserCount: 1, correctCount: 1, accuracy: 50 },
+      { date: '2026-06-27', answerCount: 3, activeUserCount: 1, correctCount: 3, accuracy: 100 },
+      { date: '2026-06-28', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-06-29', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-06-30', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-07-01', answerCount: 0, activeUserCount: 0, correctCount: 0, accuracy: 0 },
+      { date: '2026-07-02', answerCount: 4, activeUserCount: 1, correctCount: 2, accuracy: 50 }
+    ]
+  );
+  assert.deepEqual(stats.topActiveUsers.map((row) => ({
+    id: row.id,
+    answerCount: row.answerCount,
+    correctCount: row.correctCount,
+    accuracy: row.accuracy,
+    durationSeconds: row.durationSeconds
+  })), [
+    { id: 'u-old', answerCount: 10, correctCount: 10, accuracy: 100, durationSeconds: 100 },
+    { id: 'u-a', answerCount: 5, correctCount: 4, accuracy: 80, durationSeconds: 80 },
+    { id: 'u-b', answerCount: 4, correctCount: 2, accuracy: 50, durationSeconds: 80 }
+  ]);
+});
+
+test('activity aggregation batches compact answers by user and local day', () => {
+  const rows = buildActivityAggregatesFromAnswers([
+    {
+      id: 'a1',
+      userId: 'u-a',
+      createdAt: new Date(2026, 6, 1, 8, 0),
+      isCorrect: true,
+      durationSeconds: 30
+    },
+    {
+      id: 'a2',
+      userId: 'u-a',
+      createdAt: new Date(2026, 6, 1, 9, 0),
+      isCorrect: false,
+      durationSeconds: 5000
+    },
+    {
+      id: 'a3',
+      userId: 'u-b',
+      createdAt: new Date(2026, 6, 2, 10, 0),
+      isCorrect: true,
+      durationSeconds: 45
+    }
+  ]);
+
+  assert.deepEqual(rows.map((row) => ({
+    userId: row.userId,
+    date: dayKey(row.activityDate),
+    dbDate: row.activityDate.toISOString(),
+    answerCount: row.answerCount,
+    correctCount: row.correctCount,
+    durationSeconds: row.durationSeconds,
+    firstAnsweredAt: row.firstAnsweredAt,
+    lastAnsweredAt: row.lastAnsweredAt
+  })), [
+    {
+      userId: 'u-a',
+      date: '2026-07-01',
+      dbDate: '2026-07-01T00:00:00.000Z',
+      answerCount: 2,
+      correctCount: 1,
+      durationSeconds: 1830,
+      firstAnsweredAt: new Date(2026, 6, 1, 8, 0),
+      lastAnsweredAt: new Date(2026, 6, 1, 9, 0)
+    },
+    {
+      userId: 'u-b',
+      date: '2026-07-02',
+      dbDate: '2026-07-02T00:00:00.000Z',
+      answerCount: 1,
+      correctCount: 1,
+      durationSeconds: 45,
+      firstAnsweredAt: new Date(2026, 6, 2, 10, 0),
+      lastAnsweredAt: new Date(2026, 6, 2, 10, 0)
+    }
+  ]);
+});
+
+test('database DATE buckets use the local calendar date at UTC midnight', () => {
+  const localMorning = new Date(2026, 6, 1, 10, 30);
+  const dbDate = dbDateForLocalDay(localMorning);
+
+  assert.equal(dbDate.toISOString(), '2026-07-01T00:00:00.000Z');
+  assert.equal(dbDateKey(dbDate), '2026-07-01');
+});
+
+test('admin activity detail cache separates trend days and logout versions', () => {
+  const forceLogoutAt = new Date('2026-06-30T00:00:00.000Z');
+  assert.equal(activityDetailCacheKey(7, forceLogoutAt), activityDetailCacheKey(7, forceLogoutAt));
+  assert.notEqual(activityDetailCacheKey(7, forceLogoutAt), activityDetailCacheKey(30, forceLogoutAt));
+  assert.notEqual(activityDetailCacheKey(7, forceLogoutAt), activityDetailCacheKey(7, new Date('2026-06-30T00:00:01.000Z')));
+});
+
+test('admin activity summary and detail read non-blocking daily aggregate stats', () => {
+  const analytics = readFileSync(new URL('../services/adminAnalyticsService.ts', import.meta.url), 'utf8');
+  const summaryBlock = analytics.slice(
+    analytics.indexOf('async function buildAdminActivitySummary'),
+    analytics.indexOf('async function buildAdminActivityDetail')
+  );
+  const detailBlock = analytics.slice(
+    analytics.indexOf('async function buildAdminActivityDetail'),
+    analytics.indexOf('export async function getAdminActivitySummary')
+  );
+
+  assert.match(analytics, /activitySnapshotCache/);
+  assert.match(analytics, /loadDailyUserActivitySnapshot/);
+  assert.match(analytics, /userDailyActivityStat\.findMany/);
+  assert.match(analytics, /daily_activity_stats/);
+  assert.match(analytics, /activityAggregation/);
+  assert.match(summaryBlock, /buildActivityStatsFromDailyUserAggregates/);
+  assert.match(detailBlock, /loadDailyUserActivitySnapshot\(days,\s*systemControls/);
+  assert.doesNotMatch(summaryBlock, /SevenDaySummaryRow/);
+  assert.doesNotMatch(analytics, /FROM `UserAnswer`/);
+});
+
+test('admin activity view cancels stale panel requests', () => {
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+  const request = readFileSync(new URL('../../../admin-web/src/api/request.ts', import.meta.url), 'utf8');
+
+  assert.match(request, /get:\s*<T>\(url:\s*string,\s*options\?:\s*RequestInit\)/);
+  assert.match(activityView, /AbortController/);
+  assert.match(activityView, /summaryRequestId/);
+  assert.match(activityView, /detailRequestId/);
+  assert.match(activityView, /abortActivityRequests/);
+  assert.match(activityView, /isAbortError/);
+  assert.match(activityView, /api\.get<ActivitySummaryData>\([^,]+,\s*\{\s*signal:/);
+  assert.match(activityView, /api\.get<ActivityDetailData>\([^,]+,\s*\{\s*signal:/);
+  assert.match(activityView, /function loadActivity\(\)/);
+  assert.doesNotMatch(activityView, /async function loadActivity\(\)\s*\{\s*await loadSummary/);
+});
+
+test('admin activity manual refresh bypasses summary and detail caches', () => {
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+
+  assert.match(adminRoute, /function shouldForceRefresh/);
+  assert.match(adminRoute, /getAdminActivitySummary\(days,\s*\{\s*force\s*\}\)/);
+  assert.match(adminRoute, /getAdminActivityDetail\(days,\s*\{\s*force\s*\}\)/);
+  assert.match(activityView, /async function loadSummary\(force = false\)/);
+  assert.match(activityView, /async function loadDetail\(force = false\)/);
+  assert.match(activityView, /force \? '&force=1' : ''/);
+  assert.match(activityView, /void loadSummary\(true\)/);
+  assert.match(activityView, /void loadDetail\(true\)/);
+  assert.match(activityView, /@change="loadActivity"/);
 });
 
 test('presence online window requires a fresh unended heartbeat', () => {
@@ -382,8 +1030,8 @@ test('presence heartbeat architecture is wired through schema, API and user clie
   assert.match(service, /throttled: true/);
   assert.match(service, /presenceCountCacheSeconds/);
   assert.match(service, /onlineCountCache/);
-  assert.match(analytics, /listOnlinePresenceUsers\(now\)/);
-  assert.match(analytics, /countOnlinePresenceUsers\(now\)/);
+  assert.match(analytics, /listOnlinePresenceUsers\(now,\s*undefined,\s*\{\s*userForceLogoutAt/);
+  assert.match(analytics, /countOnlinePresenceUsers\(now,\s*undefined,\s*\{\s*userForceLogoutAt/);
   assert.match(userPresenceConfig, /120000/);
   assert.match(userPresenceConfig, /300000/);
   assert.match(userPresence, /window\.setTimeout/);
@@ -391,4 +1039,56 @@ test('presence heartbeat architecture is wired through schema, API and user clie
   assert.match(userPresence, /window\.addEventListener\('pagehide', handlePageHide\)/);
   assert.match(userApp, /startPresenceHeartbeat\(\)/);
   assert.match(authStore, /stopPresenceHeartbeat\(\{ notify: true \}\)/);
+});
+
+test('presence and activity monitoring stay effective and non-blocking during maintenance', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const route = readFileSync(new URL('../routes/presence.ts', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/presenceService.ts', import.meta.url), 'utf8');
+  const controls = readFileSync(new URL('../services/systemControlService.ts', import.meta.url), 'utf8');
+  const analytics = readFileSync(new URL('../services/adminAnalyticsService.ts', import.meta.url), 'utf8');
+  const adminRoute = readFileSync(new URL('../routes/admin.ts', import.meta.url), 'utf8');
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+
+  assert.match(schema, /@@index\(\[endedAt,\s*lastSeenAt,\s*userId\]\)/);
+  assert.match(service, /getEffectiveOnlinePresenceFilter/);
+  assert.match(service, /endStudentPresenceSessionsForMaintenance/);
+  assert.match(service, /userForceLogoutAt/);
+  assert.match(controls, /endStudentPresenceSessionsForMaintenance/);
+  assert.match(route, /recordPresenceHeartbeatBestEffort/);
+  assert.match(route, /alive:\s*false/);
+  assert.match(route, /degraded:\s*true/);
+  assert.match(analytics, /getAdminActivitySummary/);
+  assert.match(analytics, /getAdminActivityDetail/);
+  assert.match(analytics, /source:\s*'daily_activity_stats'/);
+  assert.match(adminRoute, /router\.get\('\/activity\/summary'/);
+  assert.match(adminRoute, /router\.get\('\/activity\/detail'/);
+  assert.match(activityView, /summaryLoading/);
+  assert.match(activityView, /detailLoading/);
+  assert.match(activityView, /@change="loadActivity"/);
+  assert.match(activityView, /@change="loadActivity"/);
+  assert.doesNotMatch(activityView, /v-loading="loading"/);
+});
+
+test('activity aggregation worker stays off the answer submission critical path', () => {
+  const schema = readFileSync(new URL('../../prisma/schema.prisma', import.meta.url), 'utf8');
+  const migration = readFileSync(new URL('../../prisma/migrations/20260701000100_add_activity_aggregation/migration.sql', import.meta.url), 'utf8');
+  const service = readFileSync(new URL('../services/activityAggregationService.ts', import.meta.url), 'utf8');
+  const server = readFileSync(new URL('../server.ts', import.meta.url), 'utf8');
+  const practiceRecord = readFileSync(new URL('../services/practiceRecordService.ts', import.meta.url), 'utf8');
+  const activityView = readFileSync(new URL('../../../admin-web/src/views/ActivityView.vue', import.meta.url), 'utf8');
+
+  assert.match(schema, /model UserDailyActivityStat/);
+  assert.match(schema, /model ActivityAggregationCursor/);
+  assert.match(schema, /@@index\(\[createdAt,\s*id\]\)/);
+  assert.match(migration, /DATE_SUB\(CURRENT_DATE\(\), INTERVAL 29 DAY\)/);
+  assert.match(service, /processActivityAggregationBatch/);
+  assert.match(service, /userAnswer\.findMany/);
+  assert.match(service, /userDailyActivityStat\.upsert/);
+  assert.match(service, /Activity aggregation drain failed/);
+  assert.match(server, /startActivityAggregationWorker\(\)/);
+  assert.match(server, /stopActivityAggregationWorker\(\)/);
+  assert.doesNotMatch(practiceRecord.slice(practiceRecord.indexOf('export async function submitPracticeAnswer'), practiceRecord.indexOf('export async function toggleFavoriteQuestion')), /userDailyActivityStat/);
+  assert.match(practiceRecord, /acquireActivityAggregationLock/);
+  assert.match(activityView, /aggregationLagLabel/);
 });

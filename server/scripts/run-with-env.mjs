@@ -4,14 +4,24 @@ import fs from 'node:fs';
 import path from 'node:path';
 import dotenv from 'dotenv';
 
+const inheritedEnvKeys = new Set(Object.keys(process.env));
 const args = process.argv.slice(2);
+let envMode = process.env.NODE_ENV || 'development';
+if (args[0] === '--mode') {
+  envMode = args[1];
+  args.splice(0, 2);
+}
+if (!['development', 'test', 'production'].includes(envMode)) {
+  console.error('环境模式必须为 development、test 或 production');
+  process.exit(1);
+}
+process.env.NODE_ENV = envMode;
 
 if (!args.length) {
-  console.error('Usage: node scripts/run-with-env.mjs <command> [...args]');
+  console.error('Usage: node scripts/run-with-env.mjs [--mode production|development|test] <command> [...args]');
   process.exit(1);
 }
 
-const envMode = process.env.NODE_ENV || 'development';
 const envFiles = envMode === 'production'
   ? [['.env.production', false], ['.env', false]]
   : envMode === 'test'
@@ -21,11 +31,25 @@ const envFiles = envMode === 'production'
 for (const [fileName, override] of envFiles) {
   const filePath = path.resolve(process.cwd(), fileName);
   if (fs.existsSync(filePath)) {
-    dotenv.config({ path: filePath, override });
+    const values = dotenv.parse(fs.readFileSync(filePath));
+    for (const [key, value] of Object.entries(values)) {
+      if (!inheritedEnvKeys.has(key) && (override || process.env[key] === undefined)) process.env[key] = value;
+    }
   }
 }
 
+// The selected mode is authoritative even when an env file contains NODE_ENV.
+process.env.NODE_ENV = envMode;
+process.env.TZ ||= 'Asia/Shanghai';
+
 const [command, ...commandArgs] = args;
+if (/^prisma(?:\.cmd)?$/i.test(path.basename(command)) && commandArgs[0] !== 'generate') {
+  const databaseUrl = process.env.DATABASE_URL || '';
+  if (!databaseUrl || /请填写|你的|your_|change[_-]?me/i.test(databaseUrl)) {
+    console.error(`缺少 ${envMode} 环境的有效 DATABASE_URL，已阻止数据库命令`);
+    process.exit(1);
+  }
+}
 
 function resolveCommand(commandName) {
   if (/[\\/]/.test(commandName)) return commandName;
